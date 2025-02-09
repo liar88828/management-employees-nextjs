@@ -1,0 +1,61 @@
+@api = http://localhost:3000/api/delivery/
+
+### get data Travel
+GET {{api}}
+Content-Type: application/json
+
+### get data Travel
+GET {{api}}?address=kosong&type=batu&name=kosong
+Content-Type: application/json
+
+
+### get data Travel by id
+GET {{api}}/d55ae41c-54fc-4335-b3fe-1756408ab20c
+Content-Type: application/json
+
+{
+}
+
+### create data Travel
+POST {{api}}
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHBpcmVzQXQiOiIyMDI1LTAxLTEyVDE0OjEzOjMxLjI3MloiLCJyb2xlIjoiQURNSU4iLCJzZXNzaW9uSW
+QiOiI4NmI4Y2NlYS0xMDMyLTQ2ZWUtYjk3Yi02NWM5YWQ2YWE5MDkiLCJpYXQiOjE3MzY2ODc2MTEsImV4cCI6MTczNzI5MjQxMX0.TmSyRZzyLmX33nJsANvRgT1sK96ndl7vBJltXBqkAyw
+
+{
+  "id": "kosong_kosong_kosong_kosong_travel",
+  "name": "kosong",
+  "phone": "082-1231-1232-23",
+  "address": "jl.semarang raya",
+  "type": "kosong",
+  "price": 0,
+  "img": "kosong",
+  "desc": "kosong"
+}
+
+
+### Edit data Travel Text Only
+PUT {{api}}/5c13752e-ddbc-4972-89f2-7d11b23a2072
+Content-Type: application/json
+
+{
+  "id": "test_rest_1234567890_test_rest_123456789",
+  "name": "test",
+  "phone": "0123456789",
+  "address": "test",
+  "type": "test",
+  "price": 20000,
+  "img": "test",
+  "desc": "test"
+}
+
+
+
+
+
+### delete data Travel
+DELETE {{api}}/d55ae41c-54fc-4335-b3fe-1756408ab20c
+Content-Type: application/json
+
+{
+}

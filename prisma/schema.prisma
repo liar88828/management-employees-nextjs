@@ -1,0 +1,204 @@
+generator client {
+  provider = "prisma-client-js"
+  // output   = "data"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Orders {
+  id        String   @id @default(uuid())
+  orderTime DateTime
+  sendTime  DateTime
+  desc      String
+  address   String
+
+  // travel
+  Deliverys     Deliverys? @relation(fields: [id_delivery], references: [id])
+  id_delivery   String
+  nameDelivery  String
+  phoneDelivery String
+  priceDelivery Int
+
+  // payment
+  Payments     Payments? @relation(fields: [id_payment], references: [id])
+  id_payment   String
+  totalPayment Int // for product
+  totalAll     Int
+
+  // at update / create
+  status      String
+  Trolleys    Trolleys[]
+  Customers   Customers  @relation(fields: [id_customer], references: [id])
+  id_customer String
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+
+  // pending_at  DateTime  @default(now())
+  // complete_at DateTime?
+  // fail_at     DateTime?
+}
+
+model Customers {
+  id      String   @id @default(uuid())
+  name    String
+  address String
+  phone   String
+  Orders  Orders[]
+}
+
+model Trolleys {
+  id           String   @id @default(uuid())
+  id_order     String?
+  Order        Orders?  @relation(fields: [id_order], references: [id])
+  id_product   String
+  Product      Products @relation(fields: [id_product], references: [id])
+  qty_at_buy   Int
+  price_at_buy Int
+  Users        Users    @relation(fields: [id_user], references: [id])
+  id_user      String
+}
+
+model Products {
+  id           String     @id @default(uuid())
+  name         String
+  location     String
+  type         String
+  img          String
+  price        Int
+  qty          Int
+  desc         String
+  sold         Int        @default(0)
+  // at update / create
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
+  update_stock DateTime   @default(now())
+  Trolleys     Trolleys[]
+}
+
+model Deliverys {
+  id         String   @id @default(uuid())
+  name       String
+  phone      String
+  address    String
+  type       String
+  price      Int
+  img        String
+  desc       String
+  Orders     Orders[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Payments {
+  id         String   @id @default(uuid())
+  name       String
+  phone      String
+  accounting String
+  address    String
+  type       String
+  img        String
+  desc       String
+  Orders     Orders[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Users {
+  id            String     @id @default(uuid())
+  name          String
+  phone         String
+  address       String
+  email         String     @unique
+  password      String
+  role          String
+  otp           String?
+  otpCount      Int        @default(0)
+  otpRegenerate DateTime   @default(now())
+  otpExpired    DateTime   @default(now())
+  status        String     @default("OTP")
+  Trolleys      Trolleys[]
+  Session       Sessions?
+}
+
+model Sessions {
+  id        String   @id @default(uuid())
+  usersId   String   @unique
+  expiresAt DateTime
+  role      String
+  Users     Users    @relation(fields: [usersId], references: [id])
+}
+
+model Employees {
+  id             String           @id @default(uuid()) // Primary key with auto-increment
+  name           String
+  email          String           @unique
+  phone          String
+  gender         String // Gender (e.g., "Male", "Female", "Other")
+  dateOfBirth    DateTime
+  hireDate       DateTime
+  jobTitle       String // Employee's job position
+  department     String // Department where the employee works
+  salary         Int // Employee's salary
+  managerId      Int? // Foreign key referencing the manager
+  status         String           @default("Active") // Employment status
+  address        String
+  city           String // City where the employee lives
+  postalCode     String // Postal/ZIP code
+  employmentType String // Employment type (e.g., "Full-Time", "Part-Time")
+  notes          String // Additional notes about the employee
+  img            String
+  //
+  country        String
+  education      String
+  skills         Skills[] // Stored as an array of strings
+  languages      Languages[] // Stored as an array of strings
+  certifications Certifications[] // Stored as an array of strings
+  projects       Projects[] // Stored as an array of strings
+  //
+  photoKtp       String?
+  photo3x4       String?
+
+  //
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Skills {
+  id   Int    @id @default(autoincrement())
+  text String
+
+  Employees   Employees @relation(fields: [employeesId], references: [id])
+  employeesId String
+}
+
+model Languages {
+  id          Int       @id @default(autoincrement())
+  text        String
+  Employees   Employees @relation(fields: [employeesId], references: [id])
+  employeesId String
+}
+
+model Certifications {
+  id          Int       @id @default(autoincrement())
+  text        String
+  Employees   Employees @relation(fields: [employeesId], references: [id])
+  employeesId String
+}
+
+model Projects {
+  id          Int       @id @default(autoincrement())
+  text        String
+  Employees   Employees @relation(fields: [employeesId], references: [id])
+  employeesId String
+}
+
+model Testimonials {
+  id     Int    @id @default(autoincrement())
+  name   String
+  desc   String
+  social String
+  jobs   String
+}

@@ -1,0 +1,83 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+/.idea.
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+/public/product/
+/prisma/data/
+/public/img/
+/.idea/sonarlint/
+/prisma/dev.db
+.env
+.env.local
+prisma/dev.db
+/.idea/httpRequests/2024-12-07T194940.200.json
+/.idea/httpRequests/2024-12-07T195005.200.json
+/.idea/httpRequests/2024-12-07T195100.200.json
+/.idea/httpRequests/2024-12-07T195216.200.json
+/.idea/httpRequests/2024-12-07T195229.200.json
+/.idea/httpRequests/2024-12-07T195458.200.json
+/.idea/httpRequests/2024-12-07T195521.400.json
+/.idea/httpRequests/2024-12-07T195807.200.json
+/.idea/httpRequests/2024-12-07T195818.400.json
+/.idea/httpRequests/2024-12-07T195951.200.json
+/.idea/httpRequests/2024-12-07T195956.200.json
+/.idea/httpRequests/2024-12-07T200008.200.json
+/.idea/httpRequests/2024-12-07T200036.200.json
+/.idea/httpRequests/2024-12-07T200037.200.json
+/.idea/httpRequests/2024-12-07T200038.200.json
+/.idea/httpRequests/2024-12-07T200042.200.json
+/.idea/httpRequests/2024-12-07T200539.200.json
+/.idea/httpRequests/2024-12-07T201622.200.json
+/.idea/httpRequests/2024-12-07T201623.200.json
+/.idea/httpRequests/2024-12-07T201623-1.200.json
+/.idea/httpRequests/2024-12-07T202350.200.json
+/.idea/httpRequests/2024-12-07T202354.400.json
+/.idea/httpRequests/2024-12-07T202540.400.json
+/.idea/httpRequests/2024-12-07T202548.200.json
+/.idea/httpRequests/2024-12-07T202604.400.json
+/.idea/httpRequests/2024-12-07T202615.200.json
+/.idea/httpRequests/2024-12-07T202726.200.json
+/identifier.sqlite
+/.idea/httpRequests/2024-12-10T183027.500.json
+/.idea/httpRequests/2024-12-10T183036.500.json
+.idea
+.idea/workspace.xml
+/public/uploads/
+/prisma/dev_dev.db
+/.vscode/settings.json
+/test.sql
+/prisma/dev_test.db
+*.db

@@ -1,0 +1,57 @@
+@api = http://localhost:3000/api/trolley/
+
+### get data trolley
+GET {{api}}
+
+### get data trolley
+GET {{api}}/count
+
+### get data trolley by id
+GET {{api}}2ddee5d7-1105-4bde-84f6-aea2237b72c9
+
+### create data trolley
+POST {{api}}/
+Content-Type: application/json
+
+{
+  "id_product": "1da116c8-2d8a-4f9b-ae93-37cbad1bd83d",
+  "qty": 2
+
+}
+
+### update data trolley
+PUT {{api}}/d77c6eee-c6dd-4bd0-9e14-38a6e89d41cd
+Content-Type: application/json
+
+{
+  "id_product": "1da116c8-2d8a-4f9b-ae93-37cbad1bd83d",
+  "qty": 10
+
+}
+
+
+### delete data trolley
+DELETE {{api}}/5087c549-9ee9-4d3c-ab65-480ed8645556
+Content-Type: application/json
+
+
+
+
+### increment data trolley
+POST {{api}}/counter/null
+Content-Type: application/json
+
+{
+  "id_product": "1da116c8-2d8a-4f9b-ae93-37cbad1bd83d",
+  "qty": 1
+}
+
+### decrement data trolley
+DELETE {{api}}/counter/334a7a6c-f070-4df1-92e5-c53407d43c45
+Content-Type: application/json
+
+{
+  "id_product": "1da116c8-2d8a-4f9b-ae93-37cbad1bd83d",
+  "qty": 10
+}
+

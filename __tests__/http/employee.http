@@ -1,0 +1,27 @@
+@api=http://localhost:3000/api/employee
+### GET data Travel
+GET {{api}}
+Content-Type: application/json
+
+### create data Travel
+POST {{api}}
+Content-Type: application/json
+
+{
+	"name": "Clio Hardin",
+    "email": "kojugy@mailinator.com",
+	"phone": "+1 (385) 486-6014",
+	"gender": "Male",
+	"dateOfBirth":  {{$timestamp}},
+	"hireDate": {{$timestamp}},
+	"jobTitle": "Amet eligendi neces",
+	"department": "Illo rem pariatur V",
+	"salary": 68,
+	"status": "Active",
+	"address": "Fugiat dolor corrup",
+	"city": "Quae commodo molesti",
+	"postalCode": "Eaque aperiam id se",
+	"employmentType": "Part-Time",
+	"notes": "Sequi qui numquam co",
+	"img": "asdasd"
+}

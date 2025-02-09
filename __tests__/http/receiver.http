@@ -1,0 +1,54 @@
+@api = http://localhost:3000/api/receiver/
+
+### get data receiver
+GET {{api}}
+Content-Type: application/json
+
+### get data receiver
+GET {{api}}?address=kosong&type=batu&name=kosong
+Content-Type: application/json
+
+
+### get data receiver by id
+GET {{api}}/d55ae41c-54fc-4335-b3fe-1756408ab20c
+Content-Type: application/json
+
+{
+}
+
+### create data receiver
+POST {{api}}
+Content-Type: application/json
+
+{
+  "name": "orang create",
+  "phone": "123413423",
+  "address": "jl orak ngerti"
+}
+
+
+### Edit data receiver Text Only
+PUT {{api}}/d55ae41c-54fc-4335-b3fe-1756408ab20c
+Content-Type: application/json
+
+{
+  "id": "test_rest_1234567890_test_rest_123456789",
+  "name": "test",
+  "phone": "0123456789",
+  "address": "test",
+  "type": "test",
+  "price": 20000,
+  "img": "test",
+  "desc": "test"
+}
+
+
+
+
+
+### delete data receiver
+DELETE {{api}}/d55ae41c-54fc-4335-b3fe-1756408ab20c
+Content-Type: application/json
+
+{
+}

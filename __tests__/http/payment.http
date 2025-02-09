@@ -1,0 +1,50 @@
+@api = http://localhost:3000/api/payment/
+
+### get data Bank
+GET {{api}}?name=kosong
+Content-Type: application/json
+
+### get data Bank by id
+####GET http://localhost:3000/api/bank?id=kosongkosongkosongkosongkosong
+GET {{api}}/0c927250-b41b-48c6-87f2-908c123c2444
+Content-Type: application/json
+
+{}
+
+### create data Bank
+POST {{api}}
+Content-Type: application/json
+
+{
+  "accounting": "asdasdas",
+  "address": "Semrang",
+  "desc": "orak jelas",
+  "img": "https://logowik.com/content/uploads/images/cash2548.jpg",
+  "name": "mandiri",
+  "phone": "test1",
+  "type": "Kredit"
+}
+
+###
+
+### update data Bank
+PUT {{api}}/9733a794-e6ab-41dc-ab3c-659c504719e1
+Content-Type: application/json
+
+{
+  "phone": "test1",
+  "accounting": "asdasdas",
+  "name": "mandiri",
+  "address": "Semrang",
+  "desc": "orak jelas",
+  "img": "https://logowik.com/content/uploads/images/cash2548.jpg",
+  "type": "Kredit"
+}
+
+### delete data Bank
+DELETE {{api}}/Ma_09_Un_Kr_Bi_1693367481941
+Content-Type: application/json
+
+{}
+
+

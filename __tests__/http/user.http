@@ -1,0 +1,54 @@
+@api = http://localhost:3000/api/user/
+
+### get data Travel
+GET {{api}}
+Content-Type: application/json
+
+### get data Travel
+GET {{api}}?address=kosong&type=batu&name=kosong
+Content-Type: application/json
+
+
+### get data Travel by id
+GET {{api}}/ce2d9fac-7ab6-4b66-9e3a-8ef979b16dbe
+Content-Type: application/json
+
+{
+}
+
+### create data Travel
+POST {{api}}
+Content-Type: application/json
+
+{
+  "name": "kosong",
+  "phone": "kosong",
+  "address": "kosong"
+}
+
+
+### Edit data Travel Text Only
+PUT {{api}}/5c13752e-ddbc-4972-89f2-7d11b23a2072
+Content-Type: application/json
+
+{
+  "id": "test_rest_1234567890_test_rest_123456789",
+  "name": "test",
+  "phone": "0123456789",
+  "address": "test",
+  "type": "test",
+  "price": 20000,
+  "img": "test",
+  "desc": "test"
+}
+
+
+
+
+
+### delete data Travel
+DELETE {{api}}/d55ae41c-54fc-4335-b3fe-1756408ab20c
+Content-Type: application/json
+
+{
+}

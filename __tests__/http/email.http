@@ -1,0 +1,12 @@
+@api = http://localhost:3000/api/email
+
+### create data Travel
+POST {{api}}
+Content-Type: application/json
+
+{
+  "email": "liar780@gmail.com",
+  "otp": "123456"
+}
+
+

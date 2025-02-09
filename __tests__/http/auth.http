@@ -1,0 +1,8 @@
+@api = http://localhost:3000/api/auth/
+@token = eyJhbGciOiJIUzI1NiJ9.eyJleHBpcmVzQXQiOiIyMDI1LTAyLTA4VDE0OjU2OjM0LjMzMloiLCJyb2xlIjoiVVNFUiIsInNlc3Npb25JZCI6IjU1ZTc0ZTQwLWM4MmItNGQ3NC1iYjYzLTNkYmMyMWYxYzE5ZiIsImlhdCI6MTczOTAyMjk5NCwiZXhwIjoxNzM5NjI3Nzk0fQ.h_PX03Awpxy4e8oLVX-3Rws2L-Y76LHXcH5c8GrfR_o
+
+### check token
+GET {{api}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+

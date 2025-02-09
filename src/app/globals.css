@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/*@import '~react-toastify/dist/ReactToastify.min.css';*/
+
+
+@layer utilities {
+
+}
+
+@layer components {
+    .text-title {
+        @apply text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl;
+    }
+
+    .container {
+        @apply scroll-pl-6
+    }
+}
+
+/* width */
+::-webkit-scrollbar {
+    @apply w-2.5 h-2.5  border-2 border-red-50
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    @apply bg-neutral rounded-md m-1
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    @apply bg-info/50 rounded-xl
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-info rounded-xl
+
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    @apply bg-info/20 rounded-xl
+
+}
+
+
+/*::-webkit-scrollbar {*/
+/*    width: 12px;*/
+/*    margin: 10px;*/
+/*}*/
+
+/*::-webkit-scrollbar-track {*/
+/*    -webkit-box-shadow: inset 0 0 1px rgb(255, 240, 0);*/
+/*    -webkit-border-radius: 10px;*/
+/*    border-radius: 10px;*/
+/*    padding: 20px*/
+/*}*/
+
+/*::-webkit-scrollbar-thumb {*/
+/*    -webkit-border-radius: 10px;*/
+/*    border-radius: 10px;*/
+/*    background: rgba(255, 0, 0, 0.8);*/
+/*    -webkit-box-shadow: inset 0 0 6px rgb(17, 245, 54);*/
+/*}*/
+
+/*::-webkit-scrollbar-thumb:window-inactive {*/
+/*    background: rgb(255, 255, 255);*/
+/*}*/

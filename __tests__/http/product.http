@@ -1,0 +1,47 @@
+@api = http://localhost:3000/api/product/
+
+### get data Produk
+GET {{api}}
+
+
+### get data Produk
+GET {{api}}?page=1
+
+### get data Produk
+GET {{api}}?name=tahu baxo&location=Semarang
+
+### get data Produk by id
+GET {{api}}/aac8cd37-6c9a-49a1-95b0-fe4a0ac6ae79
+
+### create data Produk`
+POST {{api}}
+Content-Type: application/json
+
+{
+  "desc": "Pedas",
+  "img": "tidak ada ",
+  "location": "Semarang",
+  "name": "tahu baxo",
+  "price": 20000,
+  "qty": 86,
+  "type": "orderan"
+}
+
+
+### update data Produk`
+PUT {{api}}/aac8cd37-6c9a-49a1-95b0-fe4a0ac6ae79
+Content-Type: application/json
+
+{
+  "name": "tahu baxo update lagi 1x",
+  "price": 20000,
+  "img": "tidak ada ",
+  "type": "orderan",
+  "qty": 1,
+  "desc": "Pedas",
+  "location": "Semarang"
+}
+
+### delete data Produk`
+DELETE {{api}}/aac8cd37-6c9a-49a1-95b0-fe4a0ac6ae79
+Content-Type: application/json
