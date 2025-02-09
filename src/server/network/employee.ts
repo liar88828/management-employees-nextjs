@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { toFetch } from "@/hook/toFetch";
-import { TDeliveryDB } from "@/interface/entity/delivery.model";
 import { ResponseAll } from "@/interface/server/param";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { EmployeeCreateZodClient } from "@/validation/employee.valid";
@@ -82,9 +81,3 @@ export async function onUpsertData(method: "POST" | "PUT", data: EmployeeCreateZ
         return employeeUpdate(data, id)
     }
 }
-
-export const employeeDelete = async (id: string) => {
-    return toFetch<TDeliveryDB>('DELETE', {
-        url: `employee/${ id }`
-    })
-};

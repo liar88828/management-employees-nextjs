@@ -1,14 +1,11 @@
 import React from "react";
-import type { TCustomersDB } from "@/interface/entity/receiver.model";
-import { OrderMonthTotal, TOrderTopTotal } from "@/interface/entity/transaction.model";
 import { toDate } from "@/utils/toDate";
 import { toRupiah } from "@/utils/toRupiah";
 import { toStatus } from "@/app/components/toStatus";
-import { TProductDB } from "@/interface/entity/product.model";
 
 export function GridCardChild({ classNames, data, title }: {
     title: string,
-    data: OrderMonthTotal,
+    data: Object[],
     classNames: string
 }) {
     return (
@@ -16,11 +13,15 @@ export function GridCardChild({ classNames, data, title }: {
             <div className="card-body">
                 <div className=" flex md:flex-col xl:flex-row justify-around items-end md:items-start xl:items-end">
                     <div className="">
-                        <h1 className={ 'font-bold ~text-2xl/3xl' }>{ toRupiah(data.totalAll) }</h1>
+                        <h1 className={ 'font-bold ~text-2xl/3xl' }>
+                            {/*{ toRupiah(data.totalAll) }*/ }
+                        </h1>
                         <p className={ 'text-base-content/50 ~text-xs/base' }>{ title }</p>
                     </div>
                     <div className="">
-                        <h2 className="text-xl font-bold  text-end sm:text-end md:text-start xl:text-end ">{ data.count }</h2>
+                        <h2 className="text-xl font-bold  text-end sm:text-end md:text-start xl:text-end ">
+                            {/*{ data.count }*/ }
+                        </h2>
                         <p className={ 'text-base-content/50 ~text-xs/base text-nowrap  text-start md:text-end' }>
                             This Mouth
                         </p>
@@ -31,7 +32,7 @@ export function GridCardChild({ classNames, data, title }: {
     );
 }
 
-export function DashboardOrderPage(props: { orders: TOrderTopTotal[] }) {
+export function DashboardOrderPage(props: { orders: Object[] }) {
     return (
         <div className="card bg-base-200/30 card-compact md:card-normal">
             <div className="card-body ">
@@ -48,26 +49,33 @@ export function DashboardOrderPage(props: { orders: TOrderTopTotal[] }) {
                         </tr>
                         </thead>
                         <tbody>
-                        { props.orders.map((order) => (
-                            <tr key={ order.id }>
+                        { props.orders.map((order, i) => (
+                            <tr
+                                key={ `${ i }` }
+                            >
                                 <td>
                                     {/* eslint-disable-next-line @next/next/no-img-element */ }
                                     <img
                                         className={ 'rounded-2xl w-20' }
-                                        src="https://picsum.photos/200" alt={ order.Customers.name }
+                                        src="https://picsum.photos/200" alt=
+                                            { ''
+                                                // order.Customers.name
+                                            }
                                     />
                                 </td>
                                 <td>
                                     <div className=" space-y-1">
-                                        <p className={ ` badge badge-outline badge-${ toStatus(order.status) }` }>{ order.status }</p>
-                                        <p className={ '~text-xs/base' }>{ toDate(order.sendTime) }</p>
+                                        <p className={ ` badge badge-outline badge-${ toStatus('') }` }>
+                                            {/*{ order.status }*/ }
+                                        </p>
+                                        <p className={ '~text-xs/base' }>{ toDate() }</p>
                                     </div>
                                 </td>
-                                <td>{ order.Customers.name }</td>
-                                <td>{ order.Trolleys.reduce((total, item) => {
-                                    return total + item.qty_at_buy
-                                }, 0) }</td>
-                                <td>{ toRupiah(order.totalAll) }</td>
+                                {/*<td>{ order.Customers.name }</td>*/ }
+                                {/*<td>{ order.Trolleys.reduce((total, item) => {*/ }
+                                {/*    return total + item.qty_at_buy*/ }
+                                {/*}, 0) }</td>*/ }
+                                {/*<td>{ toRupiah(order.totalAll) }</td>*/ }
                                 {/*<td>{ order.nameDelivery }</td>*/ }
                             </tr> )) }
                         </tbody>
@@ -77,15 +85,15 @@ export function DashboardOrderPage(props: { orders: TOrderTopTotal[] }) {
         </div> );
 }
 
-export function DashboardCustomerPage({ customers }: { customers: TCustomersDB[] }) {
+export function DashboardCustomerPage({ customers }: { customers: Object[] }) {
     return (
         <div className="card card-compact bg-base-200/30  ">
             <div className="card-body">
                 <h2 className="card-title">Top Customers</h2>
                 <div className="divider m-0"></div>
-                { customers.map((customer) => (
+                { customers.map((customer, i) => (
                     <div className="flex items-center justify-between"
-                         key={ customer.id }
+                         key={ `${ i }` }
                     >
                         <div className="flex gap-2">
                             <div className="avatar">
@@ -93,12 +101,14 @@ export function DashboardCustomerPage({ customers }: { customers: TCustomersDB[]
                                     {/* eslint-disable-next-line @next/next/no-img-element */ }
                                     <img
                                         src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                                        alt={ customer.id }
+                                        alt={ '' }
                                     />
                                 </div>
                             </div>
                             <div className="">
-                                <h2 className="font-bold ">{ customer.name }</h2>
+                                <h2 className="font-bold ">
+                                    {/*{ customer.name }*/ }
+                                </h2>
                                 <p className={ 'text-base-content/50 text-nowrap' }>{ 20 } Purchase xxx</p>
                             </div>
                         </div>
@@ -112,15 +122,15 @@ export function DashboardCustomerPage({ customers }: { customers: TCustomersDB[]
     );
 }
 
-export function DashboardProductPage({ products }: { products: TProductDB[] }) {
+export function DashboardProductPage({ products }: { products: Object[] }) {
     return (
         <div className="card card-compact bg-base-200/30 ">
             <div className="card-body">
                 <h2 className="card-title">Recent Product</h2>
                 <div className="divider m-0"></div>
-                { products.map((product) => (
+                { products.map((product, i) => (
                     <div className="flex  items-center justify-between"
-                         key={ product.id }
+                         key={ `${ i }` }
                     >
                         <div className="flex gap-2">
 
@@ -130,18 +140,24 @@ export function DashboardProductPage({ products }: { products: TProductDB[] }) {
                                     {/* eslint-disable-next-line @next/next/no-img-element */ }
                                     <img
                                         src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                                        alt={ product.id }
+                                        alt={ '' }
                                     />
                                 </div>
                             </div>
                             <div className="">
-                                <h2 className="font-bold ">{ product.name }</h2>
-                                <p className={ 'text-base-content/50' }>{ product.type } </p>
+                                <h2 className="font-bold ">
+                                    {/*{ product.name }*/ }
+                                </h2>
+                                <p className={ 'text-base-content/50' }>
+                                    {/*{ product.type }*/ }
+                                </p>
                             </div>
                         </div>
 
                         <div className="">
-                            <p className={ 'font-bold' }>{ product.qty }</p>
+                            <p className={ 'font-bold' }>
+                                {/*{ product.qty }*/ }
+                            </p>
                         </div>
                     </div>
                 )) }

@@ -29,14 +29,6 @@ export const employeeClientExample: EmployeeCreateZodClient = {
         { text: "English" },
         { text: "Spanish" },
     ],
-    certifications: [
-        { text: "AWS Certified Developer" },
-        { text: "Certified Scrum Master" },
-    ],
-    projects: [
-        { text: "E-commerce Platform Development" },
-        { text: "Real-time Chat Application" },
-    ],
 };
 
 export const employeeServerExample: EmployeeCreateZodServer = {
@@ -67,12 +59,5 @@ export const employeeServerExample: EmployeeCreateZodServer = {
         { text: "English" },
         { text: "German" },
     ],
-    certifications: [
-        { text: "Certified Kubernetes Administrator" },
-        { text: "Google Professional Cloud Architect" },
-    ],
-    projects: [
-        { text: "AI-Powered Recommendation System" },
-        { text: "Cloud Infrastructure Automation" },
-    ],
+
 }

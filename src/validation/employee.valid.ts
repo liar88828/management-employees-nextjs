@@ -75,16 +75,15 @@ export const employeeCreateServer: z.ZodType<EmployeeCreate> = z.object({
 		text: z.string().min(2, "Languages must be at least 2 characters"),
 	})),
 
-	certifications: z.array(z.object({
-		text: z.string().min(2, "Certifications must be at least 2 characters"),
-	})),
-
-	projects: z.array(z.object({
-		text: z.string().min(2, "Projects must be at least 2 characters"),
-	})),
+    // certifications: z.array(z.object({
+    // 	text: z.string().min(2, "Certifications must be at least 2 characters"),
+    // })),
+    //
+    // projects: z.array(z.object({
+    // 	text: z.string().min(2, "Projects must be at least 2 characters"),
+    // })),
 
 });
 
 export type EmployeeCreateZodClient = z.infer<typeof employeeCreateClient>;
 export type EmployeeCreateZodServer = z.infer<typeof employeeCreateServer>;
-

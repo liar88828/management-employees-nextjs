@@ -1,13 +1,11 @@
 'use client'
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
-import useTrolleyStore from "@/store/trolley";
 import { BackButton } from "@/app/components/backButton";
 import { DollarSign, ShoppingCart } from "lucide-react";
 import { menuUser } from "@/assets/MenuList";
 import { usePathname } from "next/navigation";
 import { useScrollVisibility } from "@/hook/UseScrollVisibility";
-import { useTrolley } from "@/hook/useTrolley";
 
 export function NavbarMarketLayoutClientUser({ children, isLogin }: { isLogin: boolean, children: ReactNode }) {
     const showNavbar = useScrollVisibility(true);
@@ -27,7 +25,6 @@ export function NavbarMarketLayoutClientUser({ children, isLogin }: { isLogin: b
                         <div className="indicator">
                             <ShoppingCart />
                             <span className="badge badge-sm indicator-item badge-neutral">
-                          { isLogin ? <CountTrolley /> : null }
                             </span>
                         </div>
                     </div>
@@ -43,12 +40,6 @@ export function NavbarMarketLayoutClientUser({ children, isLogin }: { isLogin: b
     )
 }
 
-export function CountTrolley() {
-    // console.log('is valid')
-    const { count } = useTrolley()
-    const { data, isLoading } = count()
-    return ( isLoading ? 0 : data )
-}
 
 export function NavButtonMarketLayoutClientUser() {
     const path = usePathname()
@@ -75,7 +66,6 @@ export function NavButtonMarketLayoutClientUser() {
 
 export function NavbarTransactionLayoutClientUser({ children }: { children: ReactNode }) {
     const path = usePathname()
-    const { onSelected } = useTrolleyStore()
 
     return <div className="navbar bg-base-300 fixed z-50">
         <div className="flex-1 ">
@@ -88,7 +78,6 @@ export function NavbarTransactionLayoutClientUser({ children }: { children: Reac
                         <div className="indicator">
                             <DollarSign />
                             <span className="badge badge-sm indicator-item">
-                                { onSelected.length }
                             </span>
                         </div>
                     </div>

@@ -34,9 +34,11 @@ export const getDates = (option: MyTypeObject, value: number) => {
 	return d.toLocaleString('id-ID', formattingOptions[option]);
 }
 
-export const toDate = (value: number | string | Date) => {
+export const toDate = (value?: number | string | Date) => {
 
-
+    if (!value) {
+        return "Date Invalid";
+    }
 	// @ts-ignore
 	return new Date(Date.parse(value)).toLocaleString(
 		"id-ID",
@@ -66,5 +68,3 @@ export const defaultDate = () => {
 export const getKirim = (waktuKirim: string | Date) => {
 	return new Date(waktuKirim)
 }
-
- 

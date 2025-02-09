@@ -86,7 +86,7 @@ export async function ceremonyFindAll({ query, page }: { query: string, page: nu
     return { profiles, totalPages };
 }
 
-export async function testimonialLandingPage() {
+export async function testimonialLandingAction() {
     return prisma.testimonials.findMany({
         take: 3
     });

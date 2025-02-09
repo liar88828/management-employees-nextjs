@@ -1,35 +1,17 @@
 'use client'
-import Link from "next/link";
 import React, { useActionState } from "react";
-import { MoveRight, Palette, ShoppingCartIcon, } from 'lucide-react';
-import { EmptyData, PageErrorData } from "@/app/components/PageErrorData";
-import { LoadingSpin, PageLoadingSpin } from "@/app/components/LoadingData";
+import { Palette, ShoppingCartIcon, } from 'lucide-react';
 import { ProfileStatusCountPage } from "@/app/components/profile/profile.page";
 import { TStatusOrder } from "@/interface/Utils";
 import { Users } from "@prisma/client";
 import { changeProfile } from "@/server/action/auth";
-import { findHistoryUser } from "@/server/network/order";
-import { toDate } from "@/utils/toDate";
-import { toRupiah } from "@/utils/toRupiah";
-import { toStatus } from "@/app/components/toStatus";
-import { useOrder } from "@/hook/useOrder";
-import { useOrderStore } from "@/store/order";
-import { useQuery } from "@tanstack/react-query";
-import { useTrolley } from "@/hook/useTrolley";
-import { ORDER } from "@/interface/entity/order.model";
 
 export function ProfileTrolleyCountClientUser() {
-
-    const { count } = useTrolley()
-    const { data, isLoading } = count()
-    if (isLoading || data !== 0) {
-        return <LoadingSpin/>
-    }
 
     return (
         <ProfileStatusCountPage
             isStatus={ false }
-            countStatus={ data ?? 0 }
+            countStatus={ 0 }
             onStatusAction={ () => {
             } }
         >
@@ -42,83 +24,16 @@ export function ProfileStatusClient({ statusOrder, children }: {
     statusOrder: TStatusOrder,
     children: React.ReactNode
 }) {
-    const { status, setStatus } = useOrderStore()
-    const { getOrderStatus } = useOrder()
-    const { data, isFetching } = getOrderStatus(statusOrder)
-
-    if (!data || isFetching) {
-        return <LoadingSpin />
-    }
 
     return (
         <ProfileStatusCountPage
             isStatus={ status === statusOrder }
-            countStatus={ data }
-            onStatusAction={ () => setStatus(statusOrder) }
+            countStatus={ 0 }
+            onStatusAction={ () => {
+            } }
         >
             { children }
         </ProfileStatusCountPage>
-    );
-}
-
-export function ProfileOrderHistoryUser() {
-    const status = useOrderStore(state => state.status)
-    const { data: invoices, isError, isLoading, error } = useQuery({
-        queryKey: [ ORDER.KEY, ORDER.HISTORY, status ],
-
-        queryFn: () => findHistoryUser(status),
-        select: (response) => response.data
-    })
-
-    if (isLoading || !invoices) return <PageLoadingSpin />
-    if (isError) return <PageErrorData msg={ error.message } code={ 404 } />
-
-    const loadEmpty = invoices.length === 0 && (
-        <div className={ 'flex justify-center' }>
-            <EmptyData page={ 'Order Profile' } />
-        </div>
-    )
-
-    const loadData = invoices.map((invoice) => (
-        <div
-            key={ invoice.id }
-            className="card card-compact bg-base-300"
-        >
-            <div className="card-body">
-                <div className="flex justify-between">
-                    <h2 className="text-base font-bold  sm:card-title ">#{ invoice.id }</h2>
-                    <div className={ `badge badge-${ toStatus(invoice.status) }` }>
-                        { invoice.status }
-                    </div>
-                </div>
-                <div className="flex justify-between text-xs sm:text-sm">
-                    <div className="">
-                        <div className=" flex gap-2 mb-2">
-                            <p>Total Item: { invoice.Trolleys.length },</p>
-                            <p>Total Price: { toRupiah(invoice.totalAll) },</p>
-                        </div>
-                        <p>{ toDate(invoice.orderTime) }</p>
-                    </div>
-                    <Link
-                        href={ `/invoice/${ invoice.id }?redirect=/profile` }
-                        className=' btn btn-square'
-                    >
-                        <MoveRight />
-                    </Link>
-                </div>
-            </div>
-        </div>
-    ))
-
-    return (
-        <div className="">
-            <h2 className='card-title'>History</h2>
-            <div className="space-y-1 overflow-y-auto h-[60vh] py-2">
-                { loadEmpty }
-                { loadData }
-            </div>
-        </div>
-
     );
 }
 

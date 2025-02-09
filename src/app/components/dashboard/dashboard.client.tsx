@@ -14,7 +14,6 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import useWindowResizeThreshold from "@/hook/useWindowResizeThreshold";
-import { ResponseMonthData } from "@/interface/entity/order.model";
 
 ChartJS.register(
     CategoryScale,
@@ -25,7 +24,14 @@ ChartJS.register(
     Tooltip,
     Legend
 );
+type ResponseMonthData = {
+    year: number
+    dataMonth: {
+        month: number,
+        total: number,
+    }[],
 
+}
 export function EarningClient({ year_new, year_old }: { year_new: ResponseMonthData, year_old: ResponseMonthData }) {
     const isMobileSize = useWindowResizeThreshold(600)
 

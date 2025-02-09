@@ -1,9 +1,6 @@
 import React from "react";
 import { EarningClient } from "@/app/components/dashboard/dashboard.client";
 import { TStatusOrder } from "@/interface/Utils";
-import { findTopOrderTotal, getEarningNew, getEarningOld, orderMonthTotal } from "@/server/network/order";
-import { productRecent } from "@/server/network/product";
-import { receiverAll } from "@/server/network/receiver";
 import {
     DashboardCustomerPage,
     DashboardOrderPage,
@@ -16,43 +13,50 @@ export async function DashboardGridDataServerAdmin({ text, color, title }: {
     text: TStatusOrder,
     color: string
 }) {
-    const response = await orderMonthTotal(text)
+    // const response = await orderMonthTotal(text)
     return (
-        <GridCardChild data={ response.data } classNames={ color } title={ title } />
+        <GridCardChild data={ [] } classNames={ color } title={ title } />
     )
 }
 
 export async function DashboardTopOrderServerAdmin() {
-    const { data: orders } = await findTopOrderTotal()
+    // const { data: orders } = await findTopOrderTotal()
     return (
-        <DashboardOrderPage orders={ orders } />
+        <DashboardOrderPage orders={ [] } />
     );
 }
 
 export async function DashboardTopCustomersServerAdmin() {
-    const { data: receivers } = await receiverAll({ filter: {}, pagination: { limit: 5 } })
+    // const { data: receivers } = await receiverAll({ filter: {}, pagination: { limit: 5 } })
     return (
-        <DashboardCustomerPage customers={ receivers.data }/>
+        <DashboardCustomerPage customers={ [] } />
     );
 }
 
 export async function DashboardRecentProductServerAdmin() {
-    const { data: products } = await productRecent()
+    // const { data: products } = await productRecent()
     return (
-        <DashboardProductPage products={ products } />
+        <DashboardProductPage products={ [] } />
     );
 }
 
 export async function DashboardEarningServerServerAdmin() {
     const year = new Date().getFullYear()
-    const earningDataOld = await getEarningOld(year)
-    const earningDataNew = await getEarningNew(year)
+    // const earningDataOld = await getEarningOld(year)
+    // const earningDataNew = await getEarningNew(year)
     // console.log(earningDataOld)
     // console.log(earningDataNew)
+    const testData = {
+        year: 123, dataMonth: [ {
+            month: 123,
+            total: 123,
+        } ]
+
+    };
     return (
         <EarningClient
-            year_new={ earningDataNew.data }
-            year_old={ earningDataOld.data }
+            year_new={ testData }
+            year_old={ testData }
         />
     );
 }

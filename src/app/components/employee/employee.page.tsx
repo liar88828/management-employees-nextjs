@@ -138,23 +138,23 @@ export function EmployeeCVPageAdmin({ employee, onPrintAction, isPrinting }: {
                         </ul>
                     </section>
 
-                    <section>
-                        <h3 className="font-semibold mb-2">Certifications</h3>
-                        <ul className="list-disc list-inside text-sm">
-                            { employee.certifications && employee.certifications.map(({ text: cert }, index) => (
-                                <li key={ index }>{ cert }</li>
-                            )) }
-                        </ul>
-                    </section>
+                    {/*<section>*/ }
+                    {/*    <h3 className="font-semibold mb-2">Certifications</h3>*/ }
+                    {/*    <ul className="list-disc list-inside text-sm">*/ }
+                    {/*        { employee.certifications && employee.certifications.map(({ text: cert }, index) => (*/ }
+                    {/*            <li key={ index }>{ cert }</li>*/ }
+                    {/*        )) }*/ }
+                    {/*    </ul>*/ }
+                    {/*</section>*/ }
 
-                    <section>
-                        <h3 className="font-semibold mb-2">Projects</h3>
-                        <ul className="list-disc list-inside text-sm">
-                            { employee.projects && employee.projects.map(({ text: project }, index) => (
-                                <li key={ index }>{ project }</li>
-                            )) }
-                        </ul>
-                    </section>
+                    {/*<section>*/ }
+                    {/*    <h3 className="font-semibold mb-2">Projects</h3>*/ }
+                    {/*    <ul className="list-disc list-inside text-sm">*/ }
+                    {/*        { employee.projects && employee.projects.map(({ text: project }, index) => (*/ }
+                    {/*            <li key={ index }>{ project }</li>*/ }
+                    {/*        )) }*/ }
+                    {/*    </ul>*/ }
+                    {/*</section>*/ }
                 </div>
                 <div className="  flex justify-end print:hidden gap-2 mt-2">
                     <Link href={ +employee.id + '/edit' }
