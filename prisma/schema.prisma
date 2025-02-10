@@ -9,19 +9,19 @@ datasource db {
 }
 
 model Users {
-  id            String    @id @default(uuid())
+  id            String     @id @default(uuid())
   name          String
   phone         String
-  address       String
-  email         String    @unique
+  email         String     @unique
   password      String
   role          String
   otp           String?
-  otpCount      Int       @default(0)
-  otpRegenerate DateTime  @default(now())
-  otpExpired    DateTime  @default(now())
-  status        String    @default("OTP")
+  otpCount      Int        @default(0)
+  otpRegenerate DateTime   @default(now())
+  otpExpired    DateTime   @default(now())
+  status        String     @default("OTP")
   Session       Sessions?
+  Employees     Employees?
 }
 
 model Sessions {
@@ -60,6 +60,8 @@ model Employees {
   photoKtp       String?
   photo3x4       String?
   photoIjasah    String?
+  User           Users       @relation(fields: [userId], references: [id])
+  userId         String      @unique
 
   //
   createdAt DateTime @default(now())

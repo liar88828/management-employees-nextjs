@@ -2,10 +2,9 @@ import {NextRequest, NextResponse} from 'next/server'
 import {cookies} from 'next/headers'
 import {decrypt} from "@/server/lib/jwt";
 import {updateSession} from "@/server/lib/db";
-import {consoleLog} from "@/utils/consoleLog";
 
 // 1. Specify protected and public routes
-const protectedRoutes = ['/dashboard', '/admin', '/profile', '/trolley', '/invoice', '/checkout']
+const protectedRoutes = ['/dashboard', '/admin', '/trolley', '/invoice', '/checkout']
 const publicRoutes = ['/login', '/register']
 // const adminRoutes = [ '/login', '/register'  ]
 // const userRoutes = [ '/login', '/register'  ]

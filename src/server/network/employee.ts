@@ -1,24 +1,32 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { toFetch } from "@/hook/toFetch";
-import { ResponseAll } from "@/interface/server/param";
-import { TEmployeeDB } from "@/interface/entity/employee.model";
-import { EmployeeCreateZodClient } from "@/validation/employee.valid";
-import { toUrl } from "@/utils/toUrl";
-import { EmployeeParams } from "@/server/repository/employee.repo";
+import {toFetch} from "@/hook/toFetch";
+import {ResponseAll} from "@/interface/server/param";
+import {TEmployeeDB} from "@/interface/entity/employee.model";
+import {EmployeeCreateZodClient} from "@/validation/employee.valid";
+import {toUrl} from "@/utils/toUrl";
+import {EmployeeParams} from "@/server/repository/employee.repo";
+import {ErrorFetch} from "@/utils/ErrorResponse";
 
-export const employeeAll = async ({ filter, pagination }: EmployeeParams) => {
-    const url = toUrl('employee', { ...filter, ...pagination })
-    return toFetch<ResponseAll<TEmployeeDB>>('GET', { url })
+export const employeeAll = async ({filter, pagination}: EmployeeParams) => {
+    const url = toUrl('employee', {...filter, ...pagination})
+    return toFetch<ResponseAll<TEmployeeDB>>('GET', {url})
 };
 
 export const employeeId = async (id: string) => {
     return toFetch<TEmployeeDB>('GET', {
-        url: `employee/${ id }`
+        url: `employee/${id}`
     })
 };
 
-export const employeeCreate = async ({ img, ...data }: EmployeeCreateZodClient) => {
+export const employeeFindByUserId = async (userId: string) => {
+    return toFetch<TEmployeeDB>('GET', {
+        url: `employee/user/${userId}`
+    })
+};
+
+
+export const employeeCreate = async ({img, ...data}: EmployeeCreateZodClient) => {
     try {
         const formData = new FormData();
 
@@ -47,14 +55,14 @@ export const employeeCreate = async ({ img, ...data }: EmployeeCreateZodClient) 
     }
 };
 
-export const employeeUpdate = async ({ img, ...data }: EmployeeCreateZodClient, id: string) => {
+export const employeeUpdate = async ({img, ...data}: EmployeeCreateZodClient, id: string) => {
     try {
         const formData = new FormData();
 
         formData.append('file', img[0]);
         formData.append('data', JSON.stringify(data));
 
-        const response = await fetch(`/api/employee/${ id }`, {
+        const response = await fetch(`/api/employee/${id}`, {
             method: 'PUT',
             body: formData, // Send as FormData
         });
@@ -73,6 +81,28 @@ export const employeeUpdate = async ({ img, ...data }: EmployeeCreateZodClient, 
         return false
     }
 };
+export const employeeCreateUser = async ({img, ...data}: EmployeeCreateZodClient) => {
+    const formData = new FormData();
+
+    formData.append('file', img[0]);
+    formData.append('data', JSON.stringify(data));
+
+    const response = await fetch(`/api/employee/user/${data.userId}`, {
+        method: 'POST',
+        body: formData, // Send as FormData
+    });
+
+    if (!response.ok) {
+        const data = await response.json();
+        console.error(data)
+        const errorData: { msg: string, error: any, code: number } = data
+        throw new ErrorFetch(errorData.msg || 'Failed to create employee');
+    }
+
+    // Optionally redirect or show success message
+    // router.push('/employees'); // Redirect to employees list
+    return response.json();
+}
 
 export async function onUpsertData(method: "POST" | "PUT", data: EmployeeCreateZodClient, id?: string) {
     if (method === "POST") {
@@ -80,4 +110,19 @@ export async function onUpsertData(method: "POST" | "PUT", data: EmployeeCreateZ
     } else if (method === "PUT" && id) {
         return employeeUpdate(data, id)
     }
+}
+
+export async function onUpsertDataUser(
+    method: "POST" | "PUT",
+    data: EmployeeCreateZodClient,
+    id?: string) {
+    if (method === "POST") {
+        data.userId
+        data.employmentType = 'Full-Time'
+        data.status = 'Pending'
+        return employeeCreateUser(data)
+    } else if (method === "PUT" && id) {
+        return employeeUpdate(data, id)
+    }
+
 }

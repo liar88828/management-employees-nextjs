@@ -3,13 +3,13 @@ import { TContext } from "@/interface/server/param";
 
 export interface InterfaceController {
 	
-	findAll(request: NextRequest, context: TContext): Promise<any>;
+	getTestimonialAll(request: NextRequest, context: TContext): Promise<any>;
 	
-	findById(request: NextRequest, context: TContext): Promise<any>;
+	testimonialById(request: NextRequest, context: TContext): Promise<any>;
 	
-	createOne(request: NextRequest, context: TContext): Promise<any>;
+	testimonialCreate(request: NextRequest, context: TContext): Promise<any>;
 	
-	updateOne(request: NextRequest, context: TContext): Promise<any>;
+	testimonialUpdate(request: NextRequest, context: TContext): Promise<any>;
 	
-	deleteOne(request: NextRequest, context: TContext): Promise<any>;
+	testimonialDelete(request: NextRequest, context: TContext): Promise<any>;
 }

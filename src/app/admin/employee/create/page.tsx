@@ -1,8 +1,14 @@
 import React from 'react';
-import { EmployeeFormClientAdmin } from "@/app/components/employee/employee.client";
+import {EmployeeFormClientAdmin, EmployeeFormClientUser} from "@/app/components/employee/employee.client";
+import {getUser, validSession} from "@/server/lib/db";
+import {redirect} from "next/navigation";
 
-export default function PageEmployeeFormAdmin() {
+export default async function PageEmployeeFormAdmin() {
+    const user = await getUser()
+    if (!user) {
+        redirect('/login');
+    }
     return (
-        <EmployeeFormClientAdmin method={ 'POST' } />
+        <EmployeeFormClientUser method={'POST'} user={user}/>
     );
 }

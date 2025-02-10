@@ -5,19 +5,18 @@ import { getId, getJson, getParams } from "@/utils/requestHelper"
 import UserRepository from "@/server/repository/user.repo";
 import { UserCreate } from "@/validation/user.valid";
 import { authApi } from "@/server/lib/api";
-import { UUIDSchema } from "@/validation/zod.valid";
+import { zodUUID } from "@/validation/zod.valid";
 
 export default class UserController
 	implements InterfaceController {
 	constructor(private userRepository: UserRepository) {
 	}
 
-	async findAll(request: NextRequest, __: TContext): Promise<any> {
+	async getTestimonialAll(request: NextRequest, __: TContext): Promise<any> {
         await authApi(request, true)
 		return this.userRepository.findAll({
 			filter: {
 				name: getParams(request, "name") ?? '',
-				address: getParams(request, "address") ?? '',
 			},
 			pagination: {
                 page: Number(getParams(request, "page") ?? '1'),
@@ -26,33 +25,33 @@ export default class UserController
         })
 	}
 
-    async findById(request: NextRequest, context: TContext): Promise<any> {
+    async testimonialById(request: NextRequest, context: TContext): Promise<any> {
         await authApi(request)
 		const id = await getId(context)
 		return this.userRepository.findById(
 			// id
-			UUIDSchema.parse(id)
+			zodUUID.parse(id)
 		)
 	}
 
-	async createOne(request: NextRequest, context: TContext): Promise<any> {
+	async testimonialCreate(request: NextRequest, context: TContext): Promise<any> {
         await authApi(request, true)
 		const json = await getJson(request)
         // console.log(`test :${ json }`)
 		return this.userRepository.createOne(UserCreate.parse(json))
 	}
 
-	async updateOne(request: NextRequest, context: TContext): Promise<any> {
+	async testimonialUpdate(request: NextRequest, context: TContext): Promise<any> {
         await authApi(request, true)
 		const id = await getId(context)
 		const json = await getJson(request)
 		return this.userRepository.updateOne(
 			UserCreate.parse(json),
-			UUIDSchema.parse(id)
+			zodUUID.parse(id)
 		)
 	}
 
-	async deleteOne(request: NextRequest, context: TContext) {
+	async testimonialDelete(request: NextRequest, context: TContext) {
         await authApi(request, true)
 		const id = await getId(context)
         // if (res) {
@@ -60,7 +59,7 @@ export default class UserController
 		// }
         return await this.userRepository.deleteOne(
             // UUIDSchema.parse(id)
-            UUIDSchema.parse(id)
+            zodUUID.parse(id)
         )
 	}
 }

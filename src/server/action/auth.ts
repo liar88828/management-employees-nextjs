@@ -65,7 +65,6 @@ export async function signUp(state: FormStateRegister, formData: FormData): Prom
         email,
         password: hashedPassword,
         phone,
-        address,
         role: ROLE.USER,
     })
 
@@ -139,7 +138,7 @@ export async function signIn(state: FormState, formData: FormData): Promise<Form
         if (user.role === 'ADMIN') {
             redirect('/admin')
         } else if (user.role === 'USER') {
-            redirect('/profile')
+            redirect('/home')
         }
 
     } catch (e) {
@@ -322,7 +321,6 @@ export async function changeProfile(state: FormState, formData: FormData) {
             email,
             password: hashedPassword,
             phone,
-            address,
             role: ROLE.USER,
         },
         userDB.id

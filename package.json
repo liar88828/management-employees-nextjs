@@ -9,7 +9,8 @@
     "lint": "next lint",
     "test": "vitest",
     "open": "next dev & open http://localhost:3000",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "migration": "bunx prisma db push"
   },
   "keywords": [
     "react",

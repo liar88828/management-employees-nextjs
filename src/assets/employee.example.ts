@@ -1,6 +1,7 @@
 import { EmployeeCreateZodClient, EmployeeCreateZodServer } from "@/validation/employee.valid";
 
 export const employeeClientExample: EmployeeCreateZodClient = {
+    userId:"",
     name: "John Doe",
     email: "johndoe@example.com",
     phone: "+1-123-456-7890",
@@ -32,6 +33,7 @@ export const employeeClientExample: EmployeeCreateZodClient = {
 };
 
 export const employeeServerExample: EmployeeCreateZodServer = {
+    userId:"",
     name: "Jane Doe",
     email: "janedoe@example.com",
     phone: "082-987-654-3210",

@@ -5,7 +5,7 @@ import { userController } from "@/server/controller";
 
 export async function GET(request: NextRequest, context: TContext) {
 	return await ResponseJson(
-		async () => userController.findAll(request, context),
+		async () => userController.getTestimonialAll(request, context),
 		"GET",
 		"user"
 	)
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest, context: TContext) {
 
 export async function POST(request: NextRequest, context: TContext) {
 	return await ResponseJson(
-		async () => userController.createOne(request, context),
+		async () => userController.testimonialCreate(request, context),
 		"POST",
 		"user"
 	)

@@ -3,6 +3,8 @@ import {getSession} from "@/server/lib/db";
 import {ErrorResponse} from "@/utils/ErrorResponse";
 import {decrypt} from "@/server/lib/jwt";
 import {ROLE} from "@/interface/Utils";
+import {prisma} from "@/config/prisma";
+import {deleteSession} from "@/server/lib/state";
 
 export async function fromRequest(request: NextRequest,) {
     const fromHeader = request.headers.get('authorization')
@@ -16,18 +18,21 @@ export async function fromRequest(request: NextRequest,) {
 
 
 export async function authApi(request: NextRequest, isAdmin: boolean = false) {
-    let session
-    session = await getSession()
-    if (session) {
-        if (isAdmin) {
-            session.role = ROLE.ADMIN
-            throw new ErrorResponse('is Secure Admin Only', 401)
-        }
-    }
-    session = await fromRequest(request);
-    if (session) {
-        session.role = ROLE.ADMIN
+    let session = await getSession() || await fromRequest(request);
+
+    if (isAdmin && session.role !== ROLE.ADMIN) {
         throw new ErrorResponse('is Secure Admin Only', 401)
+    }
+
+    if (!session) {
+        throw new ErrorResponse('No token provided', 401)
+    }
+
+    const user = prisma.users.findUnique({where: {id: session.sessionId}})
+
+    if (!user) {
+        await deleteSession()
+        throw new ErrorResponse('User Session Is Not Found', 401)
     }
     return session
 }

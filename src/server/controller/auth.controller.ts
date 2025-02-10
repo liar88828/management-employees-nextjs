@@ -125,7 +125,6 @@ export default class AuthController {
             email,
             password: hashedPassword,
             phone,
-            address,
             role: ROLE.USER,
         })
 

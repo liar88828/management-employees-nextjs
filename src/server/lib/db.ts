@@ -1,11 +1,12 @@
 import 'server-only'
-import { prisma } from "@/config/prisma";
-import { cookies } from "next/headers";
-import { cache } from "react";
-import { redirect } from "next/navigation";
-import { decrypt, encrypt } from "@/server/lib/jwt";
-import { NextRequest, NextResponse } from "next/server";
-import { ROLE } from "@/interface/Utils";
+import {prisma} from "@/config/prisma";
+import {cookies} from "next/headers";
+import {cache} from "react";
+import {redirect} from "next/navigation";
+import {decrypt, encrypt} from "@/server/lib/jwt";
+import {NextRequest, NextResponse} from "next/server";
+import {ROLE} from "@/interface/Utils";
+import {TUserDB, UserDB} from "@/interface/entity/user.model";
 
 export type UserSession = { isAuth: boolean, userId: string }
 
@@ -40,7 +41,7 @@ export async function createSessionDB(id: string) {
 }
 
 export const getSession = async () => {
-    const cookie = ( await cookies() ).get('session')?.value
+    const cookie = (await cookies()).get('session')?.value
     return await decrypt(cookie)
 }
 
@@ -85,21 +86,21 @@ export const validSession = cache(async () => {
     }
 
     return {
-        isAuth: true,
+        isLogin: true,
         userId: session.sessionId as string,
     }
 })
 
 export const getUser = cache(async () => {
     const session = await validSession()
-
     if (!session) return null
-
     try {
-        return await prisma.users.findUniqueOrThrow({
-            where: { id: session.userId },
+        const user = await prisma.users.findUniqueOrThrow({
+            where: {id: session.userId}
         })
+        const {password, ...data} = user
 
+        return data as UserDB
     } catch (error) {
         console.log('Failed to fetch user')
         return null

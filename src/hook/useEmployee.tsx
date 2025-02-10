@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, {useEffect, useRef} from "react";
 import toast from "react-hot-toast";
-import { EMPLOYEE, TEmployeeDB, TEmployeeSearch } from "@/interface/entity/employee.model";
-import { EmployeeCreateZodClient } from "@/validation/employee.valid";
-import { PaginatedResponse } from "@/interface/server/param";
-import { employeeAll, onUpsertData } from "@/server/network/employee";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import {EMPLOYEE, TEmployeeDB, TEmployeeSearch} from "@/interface/entity/employee.model";
+import {EmployeeCreateZodClient} from "@/validation/employee.valid";
+import {PaginatedResponse} from "@/interface/server/param";
+import {employeeAll, onUpsertData} from "@/server/network/employee";
+import {useInfiniteQuery} from "@tanstack/react-query";
+import {useRouter} from "next/navigation";
 
 export function useEmployee() {
     const router = useRouter();
@@ -22,12 +22,12 @@ export function useEmployee() {
         toast.dismiss(idToast)
     };
 
-    const GetAll = ({ search, status }: { search: string, status: string }) => {
+    const GetAll = ({search, status}: { search: string, status: string }) => {
         return useInfiniteQuery({
-            queryKey: [ EMPLOYEE.KEY, search, status ],
-            queryFn: ({ pageParam }) => employeeAll({
-                filter: { name: search, status },
-                pagination: { page: pageParam }
+            queryKey: [EMPLOYEE.KEY, search, status],
+            queryFn: ({pageParam}) => employeeAll({
+                filter: {name: search, status},
+                pagination: {page: pageParam}
             }),
             initialPageParam: 1, // Starting page number
             getNextPageParam: (lastPage, allPages) => {
@@ -67,11 +67,11 @@ export function useEmployee() {
             staleTime: 1000 * 10,
             gcTime: 1000 * 10,
             enabled: debouncedSearch.name === filter.name && debouncedSearch.status === filter.status,
-            queryKey: [ EMPLOYEE.KEY, debouncedSearch.name, debouncedSearch.status ],
-            queryFn: async ({ pageParam }): Promise<PaginatedResponse<TEmployeeDB>> => {
+            queryKey: [EMPLOYEE.KEY, debouncedSearch.name, debouncedSearch.status],
+            queryFn: async ({pageParam}): Promise<PaginatedResponse<TEmployeeDB>> => {
                 // const url = `/product?page=${ pageParam }&name=${ debouncedSearch }`;
                 // console.log(url);
-                const { data } = await employeeAll({
+                const {data} = await employeeAll({
                     pagination: {
                         page: pageParam as number,
                         limit: 20,
@@ -105,12 +105,12 @@ export function useEmployee() {
             if (!hasNextPage) return;
 
             const observer = new IntersectionObserver(
-                ([ entry ]) => {
+                ([entry]) => {
                     if (entry.isIntersecting) { // noinspection JSIgnoredPromiseFromCall
                         fetchNextPage()
                     }
                 },
-                { rootMargin: '200px' }
+                {rootMargin: '200px'}
             );
 
             const observerRefCurrent = observerRef.current
@@ -120,18 +120,18 @@ export function useEmployee() {
             return () => {
                 if (observerRefCurrent) observer.unobserve(observerRefCurrent);
             };
-        }, [ hasNextPage, fetchNextPage, observerRef ]);
+        }, [hasNextPage, fetchNextPage, observerRef]);
 
         const targetTrigger = <>
-            {/* Observer Target for Infinite Scroll */ }
-            <div ref={ observerRef } className="text-center py-4 text-gray-500">
-                { isFetchingNextPage
+            {/* Observer Target for Infinite Scroll */}
+            <div ref={observerRef} className="text-center py-4 text-gray-500">
+                {isFetchingNextPage
                     ? 'Loading more...'
                     : hasNextPage
                         ? 'Scroll down to load more'
-                        : 'No more data to load' }
+                        : 'No more data to load'}
             </div>
-            { isFetching && !isFetchingNextPage && <div>Fetching...</div> }
+            {isFetching && !isFetchingNextPage && <div>Fetching...</div>}
         </>
 
         return {
