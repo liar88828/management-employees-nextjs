@@ -6,7 +6,7 @@ import { createSession } from "@/server/lib/state";
 import {
     ForgetFormSchema,
     FormFail,
-    FormState,
+    FormStateAuth,
     FormStateRegister,
     ResetFormSchema,
     SignInFormSchema,
@@ -87,12 +87,11 @@ export async function signUp(state: FormStateRegister, formData: FormData): Prom
 
 }
 
-export async function signIn(state: FormState, formData: FormData): Promise<FormState> {
+export async function signIn(state: FormStateAuth, formData: FormData): Promise<FormStateAuth> {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
     try {
-
         // Validate form fields
         const validatedFields = SignInFormSchema.safeParse({
             email,
@@ -102,7 +101,6 @@ export async function signIn(state: FormState, formData: FormData): Promise<Form
         // If any form fields are invalid, return early
         if (!validatedFields.success) {
             return {
-
                 errors: validatedFields.error.flatten().fieldErrors,
             }
         }
@@ -129,7 +127,6 @@ export async function signIn(state: FormState, formData: FormData): Promise<Form
 
         if (!validPassword) {
             throw new Error('Password is incorrect')
-
         }
         // 4. Create user session
         await createSession(user)
@@ -162,7 +159,7 @@ export async function signIn(state: FormState, formData: FormData): Promise<Form
 
 }
 
-export async function forget(state: FormState, formData: FormData) {
+export async function forget(state: FormStateAuth, formData: FormData) {
     const email = formData.get('email') as string;
     try {
 
@@ -217,7 +214,7 @@ export async function forget(state: FormState, formData: FormData) {
 
 }
 
-export async function reset(state: FormState, formData: FormData) {
+export async function reset(state: FormStateAuth, formData: FormData) {
     const password = formData.get('password') as string;
     const confirm = formData.get('confirm') as string;
     const email = formData.get('email') as string;
@@ -285,7 +282,7 @@ export async function reset(state: FormState, formData: FormData) {
 
 }
 
-export async function changeProfile(state: FormState, formData: FormData) {
+export async function changeProfile(state: FormStateAuth, formData: FormData) {
     // Validate form fields
     const validatedFields = SignupFormSchema.safeParse({
         address: formData.get('address'),

@@ -1,5 +1,5 @@
-import {Employees, Languages, Skills} from "@prisma/client";
-import {STATUS_EMPLOYEE} from "@/interface/Utils";
+import { Employees, Languages, Skills } from "@prisma/client";
+import { STATUS_EMPLOYEE } from "@/interface/Utils";
 
 export type TEmployeeDB = Employees & {
     status: string|STATUS_EMPLOYEE;
@@ -16,8 +16,9 @@ export type TEmployeeSearch = {
 
 
 export type EmployeeCreate =
-    Omit<Employees, 'updatedAt' | 'createdAt' | 'id' | 'managerId' | 'photoKtp' | 'photo3x4' | "photoIjasah">
+    Omit<Employees, 'updatedAt' | 'createdAt' | 'id' | 'managerId' | 'photoKtp' | 'photo3x4' | "photoIjasah"|'userId'>
     & {
+    userId?: string
     status: string|STATUS_EMPLOYEE
     skills: Pick<Skills, 'text'>[];
     languages: Pick<Languages, 'text'>[];

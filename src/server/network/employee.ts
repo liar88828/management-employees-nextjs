@@ -1,12 +1,11 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 
-import {toFetch} from "@/hook/toFetch";
-import {ResponseAll} from "@/interface/server/param";
-import {TEmployeeDB} from "@/interface/entity/employee.model";
-import {EmployeeCreateZodClient} from "@/validation/employee.valid";
-import {toUrl} from "@/utils/toUrl";
-import {EmployeeParams} from "@/server/repository/employee.repo";
-import {ErrorFetch} from "@/utils/ErrorResponse";
+import { toFetch } from "@/hook/toFetch";
+import { ResponseAll } from "@/interface/server/param";
+import { TEmployeeDB } from "@/interface/entity/employee.model";
+import { EmployeeCreateZodClient } from "@/validation/employee.valid";
+import { toUrl } from "@/utils/toUrl";
+import { EmployeeParams } from "@/server/repository/employee.repo";
+import { ErrorFetch } from "@/utils/ErrorResponse";
 
 export const employeeAll = async ({filter, pagination}: EmployeeParams) => {
     const url = toUrl('employee', {...filter, ...pagination})
@@ -81,9 +80,17 @@ export const employeeUpdate = async ({img, ...data}: EmployeeCreateZodClient, id
         return false
     }
 };
-export const employeeCreateUser = async ({img, ...data}: EmployeeCreateZodClient) => {
-    const formData = new FormData();
 
+export async function onUpsertData(method: "POST" | "PUT", data: EmployeeCreateZodClient, id?: string) {
+    if (method === "POST") {
+        return employeeCreate(data)
+    } else if (method === "PUT" && id) {
+        return employeeUpdate(data, id)
+    }
+}
+
+export const employeeCreateUserApi = async ({ img, ...data }: EmployeeCreateZodClient) => {
+    const formData = new FormData();
     formData.append('file', img[0]);
     formData.append('data', JSON.stringify(data));
 
@@ -104,25 +111,3 @@ export const employeeCreateUser = async ({img, ...data}: EmployeeCreateZodClient
     return response.json();
 }
 
-export async function onUpsertData(method: "POST" | "PUT", data: EmployeeCreateZodClient, id?: string) {
-    if (method === "POST") {
-        return employeeCreate(data)
-    } else if (method === "PUT" && id) {
-        return employeeUpdate(data, id)
-    }
-}
-
-export async function onUpsertDataUser(
-    method: "POST" | "PUT",
-    data: EmployeeCreateZodClient,
-    id?: string) {
-    if (method === "POST") {
-        data.userId
-        data.employmentType = 'Full-Time'
-        data.status = 'Pending'
-        return employeeCreateUser(data)
-    } else if (method === "PUT" && id) {
-        return employeeUpdate(data, id)
-    }
-
-}

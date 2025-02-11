@@ -1,13 +1,13 @@
 'use client'
-import React, {ReactNode, useState} from "react";
-import {usePathname} from "next/navigation";
-import {useScrollVisibility} from "@/hook/UseScrollVisibility";
-import {BackButton} from "@/app/components/backButton";
-import {LogOut, Menu} from "lucide-react";
-import {logout} from "@/server/lib/state";
-import {linkPrimary,} from "@/assets/MenuList";
+import React, { ReactNode, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useScrollVisibility } from "@/hook/UseScrollVisibility";
+import { BackButton } from "@/app/components/backButton";
+import { LogOut, Menu } from "lucide-react";
+import { logout } from "@/server/lib/state";
+import { linkPrimary, } from "@/assets/MenuList";
 import Link from "next/link";
-import {LinkListLayoutAdmin} from "@/app/components/Layout/admin.client";
+import { LinkListLayoutAdmin } from "@/app/components/Layout/admin.client";
 
 export function BaseLayoutAdmin({children, isLogin}: {
     children: ReactNode,
@@ -39,14 +39,10 @@ export function BaseLayoutAdmin({children, isLogin}: {
                     </button>
                 </div>
                 <div className="flex-none ">
-
                     {isLogin && (
                         <button
                             className="btn btn-square btn-ghost"
-                            onClick={async () => {
-                                await logout()
-                            }}
-                        >
+                            onClick={ async () => await logout() }>
                             <LogOut/>
                         </button>
                     )}
@@ -85,12 +81,9 @@ export function BaseLayoutAdmin({children, isLogin}: {
                             {linkPrimary.map(item => (
                                 <LinkListLayoutAdmin key={item.label} item={item} path={path}/>
                             ))}
-
                         </ul>
-
                     </div>
                 </aside>
-
                 <div
                     className={`${sideMenuIsExpand ? 'sm:ml-52' : 'ml-0'}  transition-transform  sm:px-2   pt-20 `}
                 >

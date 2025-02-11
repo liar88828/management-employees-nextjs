@@ -1,15 +1,15 @@
-import {InterfaceController} from "@/interface/server/InterfaceController"
-import {NextRequest} from "next/server"
-import {TContext} from "@/interface/server/param"
-import {getId, getParams} from "@/utils/requestHelper"
+import { InterfaceController } from "@/interface/server/InterfaceController"
+import { NextRequest } from "next/server"
+import { TContext } from "@/interface/server/param"
+import { getId, getParams } from "@/utils/requestHelper"
 import EmployeeRepository from "@/server/repository/employee.repo";
-import {pathImage, saveImage} from "@/server/repository/image.repo";
-import {employeeSanitize} from "@/sanitize/employe.sanitize";
-import {employeeCreateServer} from "@/validation/employee.valid";
-import {authApi} from "@/server/lib/api";
-import {zodUUID} from "@/validation/zod.valid";
-import {prisma} from "@/config/prisma";
-import {TEmployeeDB} from "@/interface/entity/employee.model";
+import { pathImage, saveImage } from "@/server/repository/image.repo";
+import { employeeSanitize } from "@/sanitize/employe.sanitize";
+import { employeeCreateServer } from "@/validation/employee.valid";
+import { authApi } from "@/server/lib/api";
+import { zodUUID } from "@/validation/zod.valid";
+import { prisma } from "@/config/prisma";
+import { TEmployeeDB } from "@/interface/entity/employee.model";
 
 export default class EmployeeController
     implements InterfaceController {
@@ -18,7 +18,6 @@ export default class EmployeeController
     }
 
     async getTestimonialAll(request: NextRequest, __: TContext): Promise<any> {
-        await authApi(request, true)
         return this.employeeRepository.findAll({
                 filter: {
                     name: getParams(request, "name") ?? '',
@@ -53,7 +52,7 @@ export default class EmployeeController
         const formData = await request.formData();
 
         // Save the image path to the database
-        const filePath = await pathImage(formData)
+        const filePath = await pathImage(formData, true)
         // console.log(filePath)
         const data = employeeSanitize(formData, filePath, '')
         const response = await this.employeeRepository.createOne(
@@ -95,7 +94,7 @@ export default class EmployeeController
     async createByUserId(request: NextRequest, context: TContext) {
         const userId = await getId(context)
         const formData = await request.formData();          // Parse the incoming form data
-        const filePath = await pathImage(formData)    // Save the image path to the database
+        const filePath = await pathImage(formData, true)    // Save the image path to the database
         const data = employeeSanitize(formData, filePath, userId)
         const response = await this.employeeRepository.createOne(data)
         if (response) {
@@ -106,19 +105,18 @@ export default class EmployeeController
 
 }
 
-
 export async function getEmployeeByUserId(userId: string): Promise<TEmployeeDB | undefined> {
     return prisma.employees.findUnique({
-        where: {
-            userId
-        },
+        where: { userId },
         include: {
             languages: true,
             skills: true,
         },
     })
-        .then(data => {
-            if (!data) return undefined;
-            return data
-        })
+    .then(data => {
+        if (!data) return undefined;
+        return data
+    })
+
 }
+

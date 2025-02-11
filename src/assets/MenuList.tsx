@@ -1,17 +1,18 @@
 import {
     Apple,
-    BookA,
     CakeSlice,
-    Car,
-    CreditCard,
+    Factory,
     GlassWater,
     GraduationCap,
-    HandPlatter,
     HomeIcon,
+    IdCard,
     LucidePackageSearch,
-    PcCase, Printer,
+    NotepadText,
+    PcCase,
+    PersonStanding,
     User,
     UserIcon,
+    Waypoints,
 } from "lucide-react";
 import React from "react";
 
@@ -71,6 +72,25 @@ export const linkPrimary: TMenuList[] = [
         icon: <User className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
         label: 'Employee',
     },
+
+    {
+        href: '/admin/position',
+        icon: <Factory className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'Position',
+    },
+
+    {
+        href: '/admin/account',
+        icon: <PersonStanding className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'Account',
+    },
+
+    {
+        href: '/admin/department',
+        icon: <Waypoints className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'Department',
+    },
+
 ]
 
 export const linkUser: TMenuList[] = [
@@ -89,9 +109,14 @@ export const linkUser: TMenuList[] = [
 
 
     {
-        href: '/employee/print',
-        icon: <Printer className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
-        label: 'Print',
+        href: '/employee/cv',
+        icon: <NotepadText className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'CV',
+    },
+    {
+        href: '/employee/card',
+        icon: <IdCard className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'ID-Card',
     },
 
 ]

@@ -48,3 +48,16 @@ export function LoadingSpin() {
             className="loading loading-spinner loading-lg"></span>
     );
 }
+
+export function LoadingAction({ isLoading }: { isLoading: boolean }) {
+    return isLoading && (
+        <span
+            data-testid={ 'LoadingSpin' }
+            className="loading loading-spinner loading-lg"></span>
+    );
+}
+
+
+
+
+

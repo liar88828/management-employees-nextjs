@@ -1,7 +1,7 @@
 import React from 'react';
-import {getEmployeeByUserId} from "@/server/controller/employee.controller";
-import {validSession} from "@/server/lib/db";
-import {toDateIndo} from "@/utils/toDate";
+import { getEmployeeByUserId } from "@/server/controller/employee.controller";
+import { validSession } from "@/server/lib/db";
+import { toDateIndo } from "@/utils/toDate";
 
 async function Page() {
     const {userId} = await validSession()
@@ -15,18 +15,20 @@ async function Page() {
 
                 <div className="card">
                     <div className="card-body">
-                        <h1 className={'card-title'}>
+                        <h1 className={ `card-title` }>
                             Register ID # {employee ? employee.id : 'Empty'}
                         </h1>
                         <p>
                             Register At {employee ? toDateIndo(employee.createdAt) : 'Empty'}
                         </p>
                         <p>
-                            Status : Active
+                            Status : { employee ? employee.status : 'Not Available' }
                         </p>
                         <div className="">
                             <p className={'font-bold'}>Note : </p>
                             <p className={'text-xs text-base/50 italic'}>- Status is wait from admin</p>
+                            { !employee && <p className={ 'text-xs text-error italic' }>- Please Complete Register will Show CV</p> }
+                            { !employee && <p className={ 'text-xs text-error italic' }>- Please Complete Register will Show ID-Card</p> }
                         </div>
                         <div className="card-actions">
                             <button className={`btn btn-primary ${employee && 'btn-disabled'}`}>

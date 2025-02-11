@@ -1,10 +1,10 @@
-import {NextRequest} from "next/server";
-import {getSession} from "@/server/lib/db";
-import {ErrorResponse} from "@/utils/ErrorResponse";
-import {decrypt} from "@/server/lib/jwt";
-import {ROLE} from "@/interface/Utils";
-import {prisma} from "@/config/prisma";
-import {deleteSession} from "@/server/lib/state";
+import { NextRequest } from "next/server";
+import { getSession } from "@/server/lib/db";
+import { ErrorResponse } from "@/utils/ErrorResponse";
+import { decrypt } from "@/server/lib/jwt";
+import { ROLE } from "@/interface/Utils";
+import { prisma } from "@/config/prisma";
+import { deleteSession } from "@/server/lib/state";
 
 export async function fromRequest(request: NextRequest,) {
     const fromHeader = request.headers.get('authorization')
@@ -16,11 +16,9 @@ export async function fromRequest(request: NextRequest,) {
 
 }
 
-
-export async function authApi(request: NextRequest, isAdmin: boolean = false) {
+export async function authApi(request: NextRequest, isAdminOnly: boolean = false) {
     let session = await getSession() || await fromRequest(request);
-
-    if (isAdmin && session.role !== ROLE.ADMIN) {
+    if (isAdminOnly && session.role !== ROLE.ADMIN) {
         throw new ErrorResponse('is Secure Admin Only', 401)
     }
 
@@ -34,5 +32,6 @@ export async function authApi(request: NextRequest, isAdmin: boolean = false) {
         await deleteSession()
         throw new ErrorResponse('User Session Is Not Found', 401)
     }
+
     return session
 }

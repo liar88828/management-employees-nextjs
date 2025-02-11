@@ -8,10 +8,8 @@ export default async function Page(context: TContext) {
     const idEmployee = await getId(context);
 
     return (
-        <div className="pb-20 space-y-5">
             <Suspense fallback={ <PageLoadingSpin /> }>
                 <EmployeeDetailServerAdmin idEmployee={ idEmployee } />
             </Suspense>
-        </div>
     )
 }

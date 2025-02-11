@@ -16,7 +16,7 @@ export type FormStateRegister = {
 } | undefined
 
 
-export type FormState = {
+export type FormStateAuth = {
     errors?: {
         name?: string[]
         email?: string[]

@@ -8,7 +8,6 @@ import { FormError } from "@/app/components/FormError";
 
 export default function LoginForm() {
     const { store, setData } = useOtpStore()
-
 	const [ state, action, pending ] = useActionState(signIn, undefined);
     // console.log(state);
 	return (
@@ -90,7 +89,6 @@ export default function LoginForm() {
                         </div>
                     </div>
                 </div>
-
             </form>
         </div>
     );

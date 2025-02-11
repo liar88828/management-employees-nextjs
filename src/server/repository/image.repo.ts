@@ -1,13 +1,12 @@
+'use server'
 import path from "path";
 import fs from "fs";
-
-import {ErrorResponse} from "@/utils/ErrorResponse";
+import { ErrorResponse } from "@/utils/ErrorResponse";
 
 export const saveImage = async (formData: FormData, pathImage: string) => {// Get the image file from the form data
     const imgFile = formData.get('file') as File;
-
     if (!imgFile) {
-        throw new Error('Image is required',);
+        throw new Error('Image is required');
     }
 
     const relativeUploadDir = `/uploads/${new Date(Date.now())
@@ -31,6 +30,29 @@ export const saveImage = async (formData: FormData, pathImage: string) => {// Ge
     fs.writeFileSync(filePath, buffer);
     return pathImage
 }
+
+export const deleteImage = async (imagePath: string) => {
+    // Get the absolute file path
+    const filePath = path.join(process.cwd(), 'public', imagePath);
+
+    // Check if the file exists
+    if (fs.existsSync(filePath)) {
+        // Delete the file
+        fs.unlinkSync(filePath);
+        console.log(`File ${ imagePath } deleted successfully.`);
+    } else {
+        throw new Error(`File ${ imagePath } not found.`);
+    }
+};
+
+export const updateImage = async (formData: FormData, imagePath: string) => {
+    await deleteImage(imagePath)
+    return saveImage(formData, imagePath);
+}
+
+
+
+
 export const saveImageAction = async (imgFile: File, pathImage: string) => {// Get the image file from the form data
 
     if (!imgFile) {
@@ -59,11 +81,11 @@ export const saveImageAction = async (imgFile: File, pathImage: string) => {// G
     return pathImage
 }
 
-
-export const pathImage = async (formData: FormData) => {// Get the image file from the form data
+export const pathImage = async (formData: FormData, isThrow?: boolean) => {// Get the image file from the form data
     const imgFile = formData.get('file') as File;
     // console.log(imgFile)
-    if (!imgFile) {
+
+    if (!imgFile && isThrow === true) {
         throw new ErrorResponse('Image is required', 401);
     }
 

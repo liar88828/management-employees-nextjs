@@ -5,7 +5,6 @@ import {employeeController} from "@/server/controller";
 import {authApi} from "@/server/lib/api";
 
 export async function GET(request: NextRequest, context: TContext) {
-    console.log('test ')
     return ResponseJson(
         async () => employeeController.findByUserId(request, context),
         "GET",

@@ -9,12 +9,18 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
 ];
 const ACCEPTED_IMAGE_TYPES = [ "jpeg", "jpg", "png", "webp" ];
 
-export const zImage = z
-.any()
-.refine((files) => {
-	return files?.[0]?.size <= MAX_FILE_SIZE;
-}, `Max image size is 5MB.`)
-.refine(
-	(files) => ACCEPTED_IMAGE_MIME_TYPES.includes(files?.[0]?.type),
-	"Only .jpg, .jpeg, .png and .webp formats are supported."
-)
+export const zImage = (isNotRequired?: boolean) => {
+    if (isNotRequired===true) {
+        return z.any().optional()
+    }
+    return z
+    .any()
+    .refine((files) => {
+
+        return files?.[0]?.size <= MAX_FILE_SIZE;
+    }, `Max image size is 5MB.`)
+    .refine(
+        (files) => ACCEPTED_IMAGE_MIME_TYPES.includes(files?.[0]?.type),
+        "Only .jpg, .jpeg, .png and .webp formats are supported."
+    )
+}

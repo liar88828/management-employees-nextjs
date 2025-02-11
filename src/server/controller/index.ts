@@ -7,6 +7,7 @@ import TestimonialRepository from "@/server/repository/testimonial.repo";
 
 export const userRepository = new UserRepository();
 export const testimonialRepository = new TestimonialRepository();
-export const employeeController = new EmployeeController(new EmployeeRepository())
+export const employeeRepository=  new EmployeeRepository()
+export const employeeController = new EmployeeController(employeeRepository)
 export const userController = new UserController(userRepository)
 export const ceremonyController = new TestimonialController(testimonialRepository)

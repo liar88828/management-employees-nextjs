@@ -1,14 +1,10 @@
 import React from 'react';
-import {EmployeeFormClientAdmin, EmployeeFormClientUser} from "@/app/components/employee/employee.client";
-import {getUser, validSession} from "@/server/lib/db";
-import {redirect} from "next/navigation";
+import { prisma } from "@/config/prisma";
+import { EmployeeFormClientAdmin } from "@/app/components/employee/employee.client.admin";
 
 export default async function PageEmployeeFormAdmin() {
-    const user = await getUser()
-    if (!user) {
-        redirect('/login');
-    }
+    const departments = await prisma.departements.findMany()
     return (
-        <EmployeeFormClientUser method={'POST'} user={user}/>
+        <EmployeeFormClientAdmin method={ 'POST' } departments={ departments }/>
     );
 }

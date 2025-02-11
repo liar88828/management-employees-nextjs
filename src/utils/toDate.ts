@@ -68,3 +68,8 @@ export const defaultDate = () => {
 export const getKirim = (waktuKirim: string | Date) => {
 	return new Date(waktuKirim)
 }
+
+export const formDate = (value: string|Date ):Date => {
+    // @ts-ignore
+    return new Date(value).toISOString().split('T')[0]
+}

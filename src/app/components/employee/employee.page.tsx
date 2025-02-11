@@ -1,15 +1,16 @@
 import React from "react";
 import { EmployeeCVProps, i3x4, ktp, TEmployeeDB } from "@/interface/entity/employee.model";
-import { EmployeePhotosUploadClientAdmin } from "@/app/components/employee/employee.client";
 import { Employees } from "@prisma/client";
 import { toDate } from "@/utils/toDate";
 import Link from "next/link";
 import { Printer } from "lucide-react";
 import { TypeFile } from "@/server/action/upload";
 
+import { EmployeePhotosUploadClientAdmin } from "@/app/components/employee/employee.client.admin";
+
 export function EmployeePhotoAdmin({ employee }: EmployeeCVProps) {
     return (
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2  ">
             <EmployeePhotosUploadClientAdmin employee={ employee } type={ 'KTP' } />
             <EmployeePhotosUploadClientAdmin employee={ employee } type={ "3x4" } />
         </div>
@@ -75,7 +76,7 @@ export function EmployeeCVPageAdmin({ employee, onPrintAction, isPrinting }: {
                             <img
                                 className="rounded-full"
                                 // src={ `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.name }` }
-                                src={ `/${ employee.img }` }
+                                src={ `${ employee.img }` }
                                 alt={ employee.name }
                             />
                             {/*<p>{ employee.name.split(' ').map(n => n[0]).join('') }</p>*/ }
@@ -185,10 +186,12 @@ export function EmployeePhotoPageAdmin(props: {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }) {
     return (
-        <div className="card card-bordered">
+        <div className="card card-bordered "  data-theme={"light"}>
             <div className="card-body">
-                <h2 className="card-title">Add { props.type } </h2>
+                <h2 className="card-title">Add { props.type }
+                    { !props.imagePreview && <p className={'text-error '}> *Please Complete</p> }
 
+                </h2>
                 <div className="w-48 h-auto">
                     { props.imagePreview
                         ? (
@@ -213,17 +216,20 @@ export function EmployeePhotoPageAdmin(props: {
 
                     }
                 </div>
-                <form action={ props.action } className="flex flex-col gap-4">
-                    <label>
-                        <span>Upload a file</span>
+
+                <form action={ props.action } className="form-control">
+                    <label className="label">
+                        <span className="label-text">Upload a file</span>
                         {/*<input type="hidden"/>*/ }
+                    </label>
+
                         <input
+                            className="file-input file-input-bordered w-full"
                             type="file"
                             name="file"
                             accept="image/*"
                             onChange={ props.onChange }
                         />
-                    </label>
                     <button
                         className={ "btn btn-info" }
                         type="submit"

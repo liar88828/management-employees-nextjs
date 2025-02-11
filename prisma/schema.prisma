@@ -60,8 +60,8 @@ model Employees {
   photoKtp       String?
   photo3x4       String?
   photoIjasah    String?
-  User           Users       @relation(fields: [userId], references: [id])
-  userId         String      @unique
+  User           Users?      @relation(fields: [userId], references: [id])
+  userId         String?     @unique
 
   //
   createdAt DateTime @default(now())
@@ -89,4 +89,9 @@ model Testimonials {
   desc   String
   social String
   jobs   String
+}
+
+model Departements {
+  id       Int    @id @default(autoincrement())
+  position String @unique
 }

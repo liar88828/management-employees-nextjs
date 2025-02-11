@@ -36,9 +36,8 @@ export function BaseLayoutUser({children, isLogin}: {
                         <Menu/>
                     </button>
                 </div>
+                {/*--------------*/}
                 <div className="flex-none ">
-
-
                     {isLogin && (
                         <button
                             className="btn btn-square btn-ghost"
@@ -50,6 +49,8 @@ export function BaseLayoutUser({children, isLogin}: {
                         </button>
                     )}
                 </div>
+                {/*--------------*/}
+
             </div>
 
             <div className=" container max-w-full px-2 ">
@@ -78,7 +79,7 @@ export function BaseLayoutUser({children, isLogin}: {
                         </div>
 
                         <div className="divider"></div>
-                        {/*------------SideBar------------*/}
+                        {/*------------SideBar----------------------------------*/}
                         <ul className="space-y-2 font-medium">
                             {linkUser.map(item => (
                                 <li key={item.label}>
@@ -93,6 +94,8 @@ export function BaseLayoutUser({children, isLogin}: {
                                 </li>
                             ))}
                         </ul>
+                        {/*------------SideBar----------------------------------*/}
+
                     </div>
                 </aside>
 

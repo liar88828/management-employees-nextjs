@@ -1,10 +1,9 @@
-import {prisma} from "@/config/prisma";
-import {EmployeeCreateZodClient} from "@/validation/employee.valid";
-import {EmployeeCreate, TEmployeeDB, TEmployeeSearch} from "@/interface/entity/employee.model";
-import {ResponseAll,} from "@/interface/server/param";
-import {InterfaceRepository, ParamsApi} from "@/interface/server/InterfaceRepository";
-import {ErrorCodes} from "parse5";
-import {ErrorPrisma, ErrorResponse} from "@/utils/ErrorResponse";
+import { prisma } from "@/config/prisma";
+import { EmployeeCreateZodClient } from "@/validation/employee.valid";
+import { EmployeeCreate, TEmployeeDB, TEmployeeSearch } from "@/interface/entity/employee.model";
+import { ResponseAll, } from "@/interface/server/param";
+import { InterfaceRepository, ParamsApi } from "@/interface/server/InterfaceRepository";
+import { ErrorPrisma } from "@/utils/ErrorResponse";
 
 export type EmployeeParams = ParamsApi<TEmployeeSearch>
 
@@ -67,11 +66,12 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
     }
 
     async createOne({skills, languages, ...employees}: EmployeeCreate) {
-        console.log(employees);
         return prisma.$transaction(async (tx) => {
+
             const foundEmployee = await tx.employees.findUnique(
                 {
-                    where: {userId: employees.userId}
+                    select: { email: true },
+                    where: { email: employees.email }
                 }
             );
             if (foundEmployee) {
@@ -94,21 +94,6 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
                     text,
                 }))
             })
-            //
-            // const certificationsDB = await tx.certifications.createMany({
-            // 	data: certifications.map(({ text }) => ({
-            // 		employeesId: employeeDB.id,
-            // 		text,
-            // 	}))
-            // })
-
-            // const projectDB = await tx.projects.createMany({
-            // 	data: projects.map(({ text }) => ({
-            // 		employeesId: employeeDB.id,
-            // 		text
-            // 	}))
-            // })
-
             return {employeeDB, skillDB, languageDB,};
         })
     }
@@ -178,58 +163,96 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
         })
     }
 
-    setOne(d: (EmployeeCreateZodClient) & { id?: string }) {
-        return {}
-    }
-
-    setMany(data: EmployeeCreateZodClient []) {
-        return data.map((d) => (this.setOne(d)))
-    }
-
-    async createMany(data: EmployeeCreateZodClient[]) {
-    }
-
-    async updateMany(data: EmployeeCreateZodClient[], id: string) {
-    }
-
-    async deleteMany(id: string) {
-        return prisma.employees.deleteMany({where: {id}})
-
-    }
-
-}
-
-
-export async function employeeCreateUserRepo({skills, languages, ...employees}: EmployeeCreate) {
-    console.log(employees);
-    return prisma.$transaction(async (tx) => {
-        const foundEmployee = await tx.employees.findUnique(
+    async employeeFindAll({ filter, pagination: { limit = 20, page = 1 } }: Required<EmployeeParams>,
+    ): Promise<ResponseAll<Omit<TEmployeeDB, 'status'> & { status: string }>> {
+        const skip = (page - 1) * limit;
+        const take = limit;
+        const employees = await prisma.employees.findMany(
             {
-                where: {userId: employees.userId}
+                include: {
+                    languages: true,
+                    skills: true,
+                },
+                skip,
+                take,
+                where: {
+                    AND: [
+                        {
+                            ...(filter.name ? { name: { contains: filter.name, } } : {}),
+                            ...(filter.status ? { status: { contains: filter.status, } } : {}),
+                        }
+                    ],
+                }
             }
         );
-        if (foundEmployee) {
-            throw new ErrorPrisma("Employee already exists", 404);
-        }
-        const employeeDB = await tx.employees.create({
-            data: {...employees}
-        });
+        return { data: employees, page, limit };
+    }
 
-        const skillDB = await tx.skills.createMany({
-            data: skills.map(({text}) => ({
-                employeesId: employeeDB.id,
-                text,
-            })),
+    async createUserRepo({ skills, languages, ...employees }: EmployeeCreate) {
+        return prisma.$transaction(async (tx) => {
+            const foundEmployee = await tx.employees.findUnique(
+                {
+                    select: { email: true },
+                    where: { email: employees.email }
+                }
+            );
+            if (foundEmployee) {
+                throw new ErrorPrisma("Employee already exists", 404);
+            }
+            const employeeDB = await tx.employees.create({
+                data: { ...employees }
+            });
+
+            const skillDB = await tx.skills.createMany({
+                data: skills.map(({ text }) => ({
+                    employeesId: employeeDB.id,
+                    text,
+                })),
+            })
+
+            const languageDB = await tx.languages.createMany({
+                data: languages.map(({ text }) => ({
+                    employeesId: employeeDB.id,
+                    text,
+                }))
+            })
+            return { employeeDB, skillDB, languageDB };
         })
+    }
 
-        const languageDB = await tx.languages.createMany({
-            data: languages.map(({text}) => ({
-                employeesId: employeeDB.id,
-                text,
-            }))
+    async updateUserRepo({ skills, languages, ...employees }: EmployeeCreate, id: string) {
+        return prisma.$transaction(async (tx) => {
+            await tx.skills.deleteMany({ where: { employeesId: id } })
+            await tx.languages.deleteMany({ where: { employeesId: id } })
+            const foundEmployee = await tx.employees.findFirst({
+                where: { userId: employees.userId }
+            });
+            if (!foundEmployee) {
+                throw new ErrorPrisma("Is Not Found", 404);
+            }
+            const employeeDB = await tx.employees.update({
+                where: { id },
+                data: { ...employees }
+            });
+
+            const skillDB = await tx.skills.createMany({
+                data: skills.map(({ text }) => ({
+                    employeesId: employeeDB.id,
+                    text,
+                })),
+            })
+
+            const languageDB = await tx.languages.createMany({
+                data: languages.map(({ text }) => ({
+                    employeesId: employeeDB.id,
+                    text,
+                }))
+            })
+            return { employeeDB, skillDB, languageDB, };
         })
+    }
 
-
-        return {employeeDB, skillDB, languageDB,};
-    })
 }
+
+
+
