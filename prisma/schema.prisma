@@ -33,35 +33,37 @@ model Sessions {
 }
 
 model Employees {
-  id             String      @id @default(uuid()) // Primary key with auto-increment
-  name           String
-  email          String      @unique
-  phone          String
-  gender         String // Gender (e.g., "Male", "Female", "Other")
-  dateOfBirth    DateTime
-  hireDate       DateTime
-  jobTitle       String // Employee's job position
-  department     String // Department where the employee works
-  salary         Int // Employee's salary
-  managerId      Int? // Foreign key referencing the manager
-  status         String      @default("Active") // Employment status
-  address        String
-  city           String // City where the employee lives
-  postalCode     String // Postal/ZIP code
-  employmentType String // Employment type (e.g., "Full-Time", "Part-Time")
-  notes          String // Additional notes about the employee
-  img            String
+  id              String            @id @default(uuid()) // Primary key with auto-increment
+  name            String
+  email           String            @unique
+  phone           String
+  gender          String // Gender (e.g., "Male", "Female", "Other")
+  dateOfBirth     DateTime
+  hireDate        DateTime
+  jobTitle        String // Employee's job position
+  department      String // Department where the employee works
+  salary          Int // Employee's salary
+  // managerId      Int? // Foreign key referencing the manager
+  status          String            @default("Active") // Employment status
+  address         String
+  city            String // City where the employee lives
+  postalCode      String // Postal/ZIP code
+  employmentType  String // Employment type (e.g., "Full-Time", "Part-Time")
+  notes           String // Additional notes about the employee
+  img             String
   //
-  country        String
-  education      String
-  skills         Skills[] // Stored as an array of strings
-  languages      Languages[] // Stored as an array of strings
+  country         String
+  education       String
+  skills          Skills[] // Stored as an array of strings
+  languages       Languages[] // Stored as an array of strings
   //
-  photoKtp       String?
-  photo3x4       String?
-  photoIjasah    String?
-  User           Users?      @relation(fields: [userId], references: [id])
-  userId         String?     @unique
+  photoKtp        String?
+  photo3x4        String?
+  photoIjasah     String?
+  User            Users?            @relation(fields: [userId], references: [id])
+  userId          String?           @unique
+  // Latters        Latters[]
+  LatterEmployees LatterEmployees[]
 
   //
   createdAt DateTime @default(now())
@@ -94,4 +96,34 @@ model Testimonials {
 model Departements {
   id       Int    @id @default(autoincrement())
   position String @unique
+}
+
+model LatterEmployees {
+  id          String    @id @default(uuid())
+  Employees   Employees @relation(fields: [employeesId], references: [id])
+  employeesId String
+  Latters     Latters   @relation(fields: [lattersId], references: [id])
+  lattersId   String
+}
+
+model Latters {
+  id                String            @id @default(uuid())
+  interviewDate     DateTime
+  interviewLocation String
+  dressCode         String
+  signerName        String
+  // Employees         Employees        @relation(fields: [employeesId], references: [id])
+  // employeesId       String
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  LatterEmployees   LatterEmployees[]
+}
+
+model Companys {
+  id      Int    @id @default(autoincrement())
+  name    String
+  address String
+  phone   String
+  email   String
+  img     String
 }

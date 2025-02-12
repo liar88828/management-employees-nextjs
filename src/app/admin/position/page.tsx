@@ -5,11 +5,11 @@ import { toDateIndo } from "@/utils/toDate";
 import { TContext } from "@/interface/server/param";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getSearchName } from "@/utils/requestHelper";
+import { getContextQuery } from "@/utils/requestHelper";
 
 async function Page(context: TContext) {
-    const positionQuery = await getSearchName(context, 'query')
-    const search = await getSearchName(context, 'search')
+    const positionQuery = await getContextQuery(context, 'query')
+    const search = await getContextQuery(context, 'search')
     const departments = await prisma.employees.groupBy({ by: [ 'department' ] })
 
     async function onSearch(formData: FormData) {

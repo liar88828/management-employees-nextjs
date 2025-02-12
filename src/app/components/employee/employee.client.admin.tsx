@@ -95,14 +95,11 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
             return onUpsertDataAdmin(method, data, employee?.id)
         }
     })
-    const onSubmit = async (data: EmployeeCreateZodClient) => {
-        mutate(data)
-    };
-    // console.log(methods.formState.errors)
+
     return (
         <div className="container mx-auto p-4 pb-20">
             <FormProvider { ...methods }>
-                <form onSubmit={ handleSubmit(onSubmit) } className="space-y-4">
+                <form onSubmit={ handleSubmit((data) => mutate(data)) } className="space-y-4">
                     <input
                         type="hidden"
                         { ...register('status',
@@ -175,8 +172,8 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                             { ...register('dateOfBirth') }
                             className="input input-bordered"
                         />
-                        { errors.dateOfBirth &&
-													<p className="text-error text-sm mt-1">{ errors.dateOfBirth.message }</p> }
+                        { errors.dateOfBirth
+                            && <p className="text-error text-sm mt-1">{ errors.dateOfBirth.message }</p> }
 
                     </div>
 
@@ -209,26 +206,19 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                         <label className="label">
                             <span className="label-text">Department</span>
                         </label>
-                        {/*<input*/ }
-                        {/*    type="text"*/ }
-                        {/*    {...register('department')}*/ }
-                        {/*    className="input input-bordered"*/ }
-                        {/*    placeholder="Department"*/ }
-                        {/*/>*/ }
-
 
                         <select
                             { ...register('department') }
                             className={ `select select-bordered ${ errors.gender ? 'select-error' : '' }` }
                         >
-                            <option value="">Select Gender</option>
+                            <option value="">Select Department</option>
                             { departments.map(item => (
-                                <option key={ item.id }>{ item.position }</option>
+                                <option key={ item.id } value={ item.position }>{ item.position }</option>
                             )) }
                         </select>
 
-                        { errors.department &&
-													<p className="text-error text-sm mt-1">{ errors.department.message }</p> }
+                        { errors.department
+                            && <p className="text-error text-sm mt-1">{ errors.department.message }</p> }
 
                     </div>
 

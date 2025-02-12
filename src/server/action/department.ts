@@ -4,6 +4,29 @@ import { prisma } from "@/config/prisma";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { DepartmentFormSchema, DepartmentFormState } from "@/validation/departement.valid";
 import { ErrorAction } from "@/utils/ErrorResponse";
+import { redirect } from "next/navigation";
+
+export async function departmentGetAllPage() {
+    const departments = await prisma.departements.findMany()
+
+    if (departments.length === 0) {
+        redirect(`/admin/department`)
+    }
+    return departments
+}
+
+export async function checkDepartmentPosition(departmentPosition: string) {
+    const department = await prisma.departements.findUnique({
+        where: {
+            position: departmentPosition
+        }
+    })
+    if (!department) {
+        throw new Error(`Department not found for ${ departmentPosition }`)
+    }
+}
+
+
 
 export async function departmentCheck(id: number) {
     const departmentDB = await prisma.departements.findUnique({

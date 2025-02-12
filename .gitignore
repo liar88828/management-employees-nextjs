@@ -81,3 +81,4 @@ prisma/dev.db
 /test.sql
 /prisma/dev_test.db
 *.db
+*.png

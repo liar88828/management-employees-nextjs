@@ -1,7 +1,6 @@
-import {z} from "zod";
-import {zImage} from "@/validation/image";
-import {EmployeeCreate} from "@/interface/entity/employee.model";
-import {zodUUID, zodAddress, zodEmail, zodPhone} from "@/validation/zod.valid";
+import { z } from "zod";
+import { zodImage } from "@/validation/image";
+import { zodAddress, zodEmail, zodPhone } from "@/validation/zod.valid";
 
 // : z.ZodType<EmployeeCreate>
 export const employeeCreateClient= z.object({
@@ -27,7 +26,7 @@ export const employeeCreateClient= z.object({
     // employmentType: z.enum(["Full-Time", "Part-Time"]),
     employmentType: z.string(),
     notes: z.string(),
-    img: zImage(true),
+    img: zodImage(true),
     country: z.string(),
     education: z.string(),
     skills: z.array(z.object({
@@ -50,29 +49,29 @@ export const employeeCreateClient= z.object({
 // : z.ZodType<EmployeeCreate>
 export const employeeCreateServer= z.object({
     userId: z.string().optional(),
-    name: z.string().min(2, "Name must be at least 2 characters"),
+    name: z.string().min(2).max(100),
     email: z.string().email("Invalid email address"),
     phone: zodPhone,
-    gender: z.string(),//[ "Male", "Female" ]
+    gender: z.string().min(2).max(100),
     dateOfBirth: z.coerce.date(),
     hireDate: z.coerce.date(),
     jobTitle: z.string().min(2, "Job Title must be at least 2 characters"),
-    department: z.string(),
+    department: z.string().min(2).max(100),
     salary: z.number().min(0, "Salary must be a positive number"),
     status: z.enum(['Fail', 'Complete', 'Pending', 'Active', 'Disabled']),
     address: zodAddress,
-    city: z.string(),
-    postalCode: z.string(),
+    city: z.string().min(2).max(100),
+    postalCode: z.string().min(2).max(100),
     employmentType: z.string(),//[ "Full-Time", "Part-Time" ]
-    notes: z.string(),
+    notes: z.string().min(2).max(100),
     img: z.string(),
-    country: z.string(),
-    education: z.string(),
+    country: z.string().min(2).max(100),
+    education: z.string().min(2).max(100),
     skills: z.array(z.object({
-        text: z.string().min(2, "Skills must be at least 2 characters"),
+        text: z.string().min(2).max(100),
     })),
     languages: z.array(z.object({
-        text: z.string().min(2, "Languages must be at least 2 characters"),
+        text: z.string().min(2).max(100),
     })),
 })
 

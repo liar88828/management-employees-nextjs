@@ -1,10 +1,10 @@
-import {TContext} from "@/interface/server/param"
-import {NextRequest, NextResponse} from "next/server"
+import { TContext } from "@/interface/server/param"
+import { NextRequest, NextResponse } from "next/server"
 import Zod from "zod"
-import {Prisma} from ".prisma/client"
-import type {TMethod, ToModel} from "@/interface/Utils"
-import {ErrorPrisma, ErrorResponse} from "@/utils/ErrorResponse";
-import {ErrorResponseCode, ErrorResponseName} from "@/utils/errorHandler";
+import { Prisma } from ".prisma/client"
+import type { TMethod, ToModel } from "@/interface/Utils"
+import { ErrorPrisma, ErrorResponse } from "@/utils/ErrorResponse";
+import { ErrorResponseCode, ErrorResponseName } from "@/utils/errorHandler";
 
 export async function getId({params}: TContext) {
     const param = await params
@@ -22,7 +22,7 @@ export async function getIdNum({params}: TContext): Promise<number> {
     throw new Error("please add id")
 }
 
-export async function getContext({params}: TContext, key: keyof Awaited<TContext['params']>) {
+export async function getContextParam({ params }: TContext, key: keyof Awaited<TContext['params']>) {
 
     const param = await params
     if (param && key in param) {
@@ -31,7 +31,7 @@ export async function getContext({params}: TContext, key: keyof Awaited<TContext
     return ''
 }
 
-export async function getSearchName({searchParams}: TContext, text: keyof Awaited<TContext['searchParams']>) {
+export async function getContextQuery({ searchParams }: TContext, text: keyof Awaited<TContext['searchParams']>) {
     const searchParam = await searchParams
     if (searchParam && text in searchParam) {
         return searchParam[text]

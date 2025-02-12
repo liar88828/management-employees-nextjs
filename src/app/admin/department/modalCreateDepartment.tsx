@@ -1,12 +1,12 @@
 'use client'
 import React, { useActionState } from "react";
-import { FormError } from "@/app/components/FormError";
 import { departmentCreate, departmentDelete } from "@/server/action/department";
 import { Departements } from ".prisma/client";
 import { Plus, Trash } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { LoadingAction } from "@/app/components/LoadingData";
+import { FormError } from "@/app/components/form";
 
 export function ModalCreateDepartment() {
     const [ state, action, pending ] = useActionState(departmentCreate, undefined);

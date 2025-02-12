@@ -10,6 +10,7 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { ZodError } from "zod";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/config/prisma";
+import { checkDepartmentPosition } from "@/server/action/department";
 
 export async function createEmployeeActionAdmin(_prev: TestimonialFormState, formData: FormData): Promise<TestimonialFormState> {
     const formRaw = testimonialSanitize(formData);
@@ -52,13 +53,11 @@ export async function updateEmployeeActionAdmin(_prev: TestimonialFormState, for
         if (isRedirectError(error)) {
             throw error;
         }
-
         if (error instanceof Error) {
             return {
                 message: 'Something Error failed',
             }
         }
-
     }
 }
 
@@ -67,6 +66,7 @@ export const employeeCreateAdmin = async ({ img, ...data }: EmployeeCreateZodCli
     const formData = new FormData();
     formData.append('file', img[0]);
     formData.append('data', JSON.stringify(data));
+
     const filePath = await pathImage(formData)    // Save the image path to the database
     const employeeData = employeeSanitize(formData, filePath)
     const response = await employeeRepository.createUserRepo(employeeData)
@@ -102,6 +102,7 @@ export async function onUpsertDataAdmin(
     data: EmployeeCreateZodClient,
     id?: string) {
     try {
+        await checkDepartmentPosition(data.department);
         if (method === "POST") {
             data.status = "Pending"
             return employeeCreateAdmin(data)
@@ -113,7 +114,6 @@ export async function onUpsertDataAdmin(
         if (error instanceof ZodError) {
             throw error.flatten().fieldErrors
         }
-
         if (error instanceof Error) {
             console.log(error.message);
             throw error.message;

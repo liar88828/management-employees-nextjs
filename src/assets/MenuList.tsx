@@ -1,15 +1,18 @@
 import {
     Apple,
+    Building2,
     CakeSlice,
     Factory,
     GlassWater,
     GraduationCap,
     HomeIcon,
     IdCard,
+    Inbox,
     LucidePackageSearch,
     NotepadText,
     PcCase,
     PersonStanding,
+    SendHorizontal,
     User,
     UserIcon,
     Waypoints,
@@ -60,7 +63,10 @@ export type TMenuList = {
     label: string,
     add?: string | number
 }
-export const linkPrimary: TMenuList[] = [
+
+export const listStatusEmployee = [ 'Pending', "Interview", "Complete", "Active", "Disabled", ];
+
+export const linkAdmin: TMenuList[] = [
     {
         href: '/admin/dashboard',
         icon: <HomeIcon className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
@@ -84,11 +90,26 @@ export const linkPrimary: TMenuList[] = [
         icon: <PersonStanding className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
         label: 'Account',
     },
+    {
+        href: '/admin/inbox',
+        icon: <Inbox className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'Inbox',
+    },
+    {
+        href: '/admin/send',
+        icon: <SendHorizontal className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'Send Email',
+    },
 
     {
         href: '/admin/department',
         icon: <Waypoints className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
         label: 'Department',
+    },
+    {
+        href: '/admin/company',
+        icon: <Building2 className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'Company',
     },
 
 ]

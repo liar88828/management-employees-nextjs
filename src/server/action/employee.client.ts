@@ -6,6 +6,7 @@ import { pathImage, updateImage } from "@/server/repository/image.repo";
 import { employeeSanitize } from "@/sanitize/employe.sanitize";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { getEmployeeByUserId } from "@/server/controller/employee.controller";
+import { checkDepartmentPosition } from "@/server/action/department";
 
 export const employeeCreateUser = async ({ img, ...data }: EmployeeCreateZodClient) => {
     try {
@@ -50,7 +51,7 @@ export async function onUpsertDataUser(
     method: "POST" | "PUT",
     data: EmployeeCreateZodClient,
     id?: string) {
-
+    await checkDepartmentPosition(data.department);
     if (method === "POST") {
         data.userId
         // data.employmentType = 'Full-Time'

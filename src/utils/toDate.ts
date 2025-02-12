@@ -73,3 +73,19 @@ export const formDate = (value: string|Date ):Date => {
     // @ts-ignore
     return new Date(value).toISOString().split('T')[0]
 }
+
+export function toDateDayName(data: Date) {
+    return data.toLocaleDateString('en-US', { weekday: 'long' });
+}
+
+export function toDateClock(data: Date) {
+    return data.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
+}
+
+export const getDateCalender = (data: Date) => {
+    return data.toISOString().split('T')[0];
+}

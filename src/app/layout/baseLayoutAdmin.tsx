@@ -5,7 +5,7 @@ import { useScrollVisibility } from "@/hook/UseScrollVisibility";
 import { BackButton } from "@/app/components/backButton";
 import { LogOut, Menu } from "lucide-react";
 import { logout } from "@/server/lib/state";
-import { linkPrimary, } from "@/assets/MenuList";
+import { linkAdmin, } from "@/assets/MenuList";
 import Link from "next/link";
 import { LinkListLayoutAdmin } from "@/app/components/Layout/admin.client";
 
@@ -78,14 +78,14 @@ export function BaseLayoutAdmin({children, isLogin}: {
 
                         <ul className="space-y-2 font-medium">
                             {/*------------SideBar------------*/}
-                            {linkPrimary.map(item => (
+                            { linkAdmin.map(item => (
                                 <LinkListLayoutAdmin key={item.label} item={item} path={path}/>
                             ))}
                         </ul>
                     </div>
                 </aside>
                 <div
-                    className={`${sideMenuIsExpand ? 'sm:ml-52' : 'ml-0'}  transition-transform  sm:px-2   pt-20 `}
+                    className={ `${ sideMenuIsExpand ? 'sm:ml-52' : 'ml-0' } transition-transform sm:px-2 pt-20 mb-10` }
                 >
                     {children}
                 </div>
@@ -99,7 +99,7 @@ export function BaseLayoutAdmin({children, isLogin}: {
                             showBottomNav ? 'translate-y-0' : 'translate-y-full'
                         }`}
                     >
-                        {linkPrimary.map((item) => (
+                        { linkAdmin.map((item) => (
                             <Link
                                 key={item.href}
                                 href={item.href}

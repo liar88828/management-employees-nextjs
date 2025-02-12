@@ -3,19 +3,19 @@ import path from "path";
 import fs from "fs";
 import { ErrorResponse } from "@/utils/ErrorResponse";
 
-export const saveImage = async (formData: FormData, pathImage: string) => {// Get the image file from the form data
-    const imgFile = formData.get('file') as File;
+export const saveImage = async (formData: FormData, pathImage: string, key: string = 'file') => {// Get the image file from the form data
+    const imgFile = formData.get(key) as File;
     if (!imgFile) {
-        throw new Error('Image is required');
+        throw new Error('Image is required')
     }
 
-    const relativeUploadDir = `/uploads/${new Date(Date.now())
-        .toLocaleDateString("id-ID", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-        })
-        .replace(/\//g, "-")}`;
+    // const relativeUploadDir = `/uploads/${new Date(Date.now())
+    //     .toLocaleDateString("id-ID", {
+    //         day: "2-digit",
+    //         month: "2-digit",
+    //         year: "numeric",
+    //     })
+    //     .replace(/\//g, "-")}`;
 
     // Save the image file locally (You can also upload it to a cloud storage service like AWS S3, Cloudinary, etc.)
     const filePath = path.join(process.cwd(), 'public', pathImage);
@@ -45,9 +45,9 @@ export const deleteImage = async (imagePath: string) => {
     }
 };
 
-export const updateImage = async (formData: FormData, imagePath: string) => {
+export const updateImage = async (formData: FormData, imagePath: string, key: string = "file") => {
     await deleteImage(imagePath)
-    return saveImage(formData, imagePath);
+    return saveImage(formData, imagePath, key);
 }
 
 

@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { FormError } from "../../../src/app/components/FormError";
+
+import { FormError } from "../../../src/app/components/form";
 
 describe('Error Form Test Components', async () => {
 

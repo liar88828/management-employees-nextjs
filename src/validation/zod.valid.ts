@@ -28,6 +28,7 @@ export const zodEmail = z.string()
 .trim()
 
 export const zodDesc = z.string().min(1).max(200)
+export const zodDate = z.coerce.date()
 
 export const zodInt = z.number().int().nonnegative()
 

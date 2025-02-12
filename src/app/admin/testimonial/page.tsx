@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Pen, Plus } from "lucide-react";
 import { TContext } from "@/interface/server/param";
-import { getSearchName, getSearchNameNum } from "@/utils/requestHelper";
+import { getContextQuery, getSearchNameNum } from "@/utils/requestHelper";
 import { Pagination } from "@/app/components/pagination";
 import TestimonialSearch, { DeleteTestimonial } from "@/app/admin/testimonial/deleteTestimonial";
 import { ceremonyFindAll } from "@/server/action/testimonial";
@@ -9,7 +9,7 @@ import { ceremonyFindAll } from "@/server/action/testimonial";
 export default async function Home(context: TContext) {
     const page = await getSearchNameNum(context, 'page') || 1
     const { profiles, totalPages } = await ceremonyFindAll({
-        query: await getSearchName(context, 'query'),
+        query: await getContextQuery(context, 'query'),
         page
     })
 

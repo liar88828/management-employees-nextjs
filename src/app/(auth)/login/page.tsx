@@ -4,7 +4,8 @@ import { signIn } from "@/server/action/auth";
 import { useActionState } from "react";
 import Link from "next/link";
 import { useOtpStore } from "@/store/otp";
-import { FormError } from "@/app/components/FormError";
+
+import { FormError } from "@/app/components/form";
 
 export default function LoginForm() {
     const { store, setData } = useOtpStore()

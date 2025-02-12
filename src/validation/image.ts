@@ -9,14 +9,14 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
 ];
 const ACCEPTED_IMAGE_TYPES = [ "jpeg", "jpg", "png", "webp" ];
 
-export const zImage = (isNotRequired?: boolean) => {
+export const zodImage = (isNotRequired?: boolean) => {
     if (isNotRequired===true) {
         return z.any().optional()
     }
     return z
     .any()
     .refine((files) => {
-
+        console.log(files);
         return files?.[0]?.size <= MAX_FILE_SIZE;
     }, `Max image size is 5MB.`)
     .refine(
