@@ -104,7 +104,9 @@ export function MyInputImage({ title, error, defaultValue }: {
                 className="file-input file-input-bordered w-full"
             />
             <FormError errors={ error } title="must add:"/>
-            <img src={ previewImage }
+            {/* eslint-disable-next-line @next/next/no-img-element */ }
+            <img
+                src={ previewImage }
                  alt="Image Employee"
                  className="size-40 mt-2 rounded-lg border"
             />

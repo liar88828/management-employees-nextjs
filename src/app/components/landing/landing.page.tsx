@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
+import { SessionPayload } from "@/server/lib/jwt";
 
 export function Header(
     { isLogin }:
-    { isLogin: boolean }
+    { isLogin: SessionPayload }
 ) {
     return <header className="navbar bg-base-300 ">
         <div className="flex justify-between  w-full">

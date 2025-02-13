@@ -9,6 +9,7 @@ import {
     IdCard,
     Inbox,
     LucidePackageSearch,
+    MailOpen,
     NotepadText,
     PcCase,
     PersonStanding,
@@ -134,10 +135,17 @@ export const linkUser: TMenuList[] = [
         icon: <NotepadText className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
         label: 'CV',
     },
+
     {
         href: '/employee/card',
         icon: <IdCard className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
         label: 'ID-Card',
+    },
+
+    {
+        href: '/employee/letter',
+        icon: <MailOpen className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'Letter',
     },
 
 ]

@@ -3,7 +3,7 @@ import { TContext } from "@/interface/server/param"
 import { SignInFormSchema, SignupFormSchema } from "@/validation/auth.valid";
 import { prisma } from "@/config/prisma";
 import bcrypt from "bcrypt";
-import { createSession, deleteSession } from "@/server/lib/state";
+import { createSession, deleteSession } from "@/server/lib/cookies";
 import { ErrorOTP } from "@/utils/ErrorResponse";
 import { userRepository } from "@/server/controller/index";
 import { ROLE, USER_STATUS } from "@/interface/Utils";

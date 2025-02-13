@@ -1,39 +1,39 @@
 'use client';
 
 import React, { useActionState, useState } from "react";
-import { Employees, Latters } from "@prisma/client";
+import { Employees, Letters } from "@prisma/client";
 import { MyInput, MyInputDate } from "@/app/components/form";
-import { latterEmployeeAction } from "@/server/action/latter.action";
+import { letterEmployeeAction } from "@/server/action/letter.action";
 import { LoadingSpin } from "@/app/components/LoadingData";
-import { LatterForm } from "@/assets/latter";
+import { LetterForm } from "@/assets/letter";
 import { toDateIndo } from "@/utils/toDate";
 import Link from "next/link";
 
-export function SendForm({ employees, latter }: { latter?: Latters, employees: Employees[] }) {
-    const [ state, action, pending ] = useActionState(latterEmployeeAction, undefined);
+export function SendForm({ employees, letter }: { letter?: Letters, employees: Employees[] }) {
+    const [ state, action, pending ] = useActionState(letterEmployeeAction, undefined);
     // console.log(state)
     return (
         <div className="flex items-center justify-center">
             <div className="w-full max-w-4xl card card-bordered bg-base-200 ">
                 <form action={ action } className="card-body">
-                    <h2 className="card-title">Create Form latter</h2>
+                    <h2 className="card-title">Create Form letter</h2>
 
-                    { latter?.id && <input type="hidden" value={ latter?.id } name={ 'id' }/> }
+                    { letter?.id && <input type="hidden" value={ letter?.id } name={ 'id' }/> }
 
                     <MyInput title={ "signerName" }
-                             defaultValue={ state?.value.signerName ?? latter?.signerName }
+                             defaultValue={ state?.value.signerName ?? letter?.signerName }
                              error={ state?.errors?.dressCode }/>
 
                     <MyInputDate title={ "interviewDate" }
-                                 defaultValue={ state?.value.interviewDate ?? latter?.interviewDate }
+                                 defaultValue={ state?.value.interviewDate ?? letter?.interviewDate }
                                  error={ state?.errors?.interviewDate }/>
 
                     <MyInput title={ "interviewLocation" }
-                             defaultValue={ state?.value.interviewLocation ?? latter?.interviewLocation }
+                             defaultValue={ state?.value.interviewLocation ?? letter?.interviewLocation }
                              error={ state?.errors?.interviewLocation }/>
 
                     <MyInput title={ "dressCode" }
-                             defaultValue={ state?.value.dressCode ?? latter?.dressCode }
+                             defaultValue={ state?.value.dressCode ?? letter?.dressCode }
                              error={ state?.errors?.dressCode }/>
 
                     <div className="">
@@ -84,11 +84,11 @@ export function TableEmployees({ employees }: { employees: Employees[] }) {
     };
     return (
         <section className="space-y-2">
-            <h1>Please Select Want To Send Latter</h1>
+            <h1>Please Select Want To Send Letter</h1>
 
             {/*<input*/ }
             {/*    type="text"*/ }
-            {/*    name={ 'latter Id' }*/ }
+            {/*    name={ 'letter Id' }*/ }
             {/*    className="input input-bordered"/>*/ }
             <div className="overflow-x-auto">
                 <table className="table bg-base-200 ">
@@ -146,7 +146,7 @@ export function TableEmployees({ employees }: { employees: Employees[] }) {
     );
 }
 
-export function SendTableEmployee({ employees, latter }: { latter: LatterForm, employees: Employees[] }) {
+export function SendTableEmployee({ employees, letter }: { letter: LetterForm, employees: Employees[] }) {
     return (
         <div className="overflow-x-auto p-4">
             <table className="table  bg-base-200">
@@ -160,7 +160,7 @@ export function SendTableEmployee({ employees, latter }: { latter: LatterForm, e
                     <th className="p-2">Employee Status</th>
                     <th className="p-2">Interview Date</th>
                     <th className="p-2">Interview Location</th>
-                    <th className="p-2">Latter Create</th>
+                    <th className="p-2">Letter Create</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -175,9 +175,9 @@ export function SendTableEmployee({ employees, latter }: { latter: LatterForm, e
                         <td className="">{ toDateIndo(item.dateOfBirth) }</td>
                         <td className="">{ item.status }</td>
                         {/**/ }
-                        <td className="">{ toDateIndo(latter.interviewDate) }</td>
-                        <td className="">{ latter.interviewLocation }</td>
-                        <td className="">{ toDateIndo(latter.createdAt) }</td>
+                        <td className="">{ toDateIndo(letter.interviewDate) }</td>
+                        <td className="">{ letter.interviewLocation }</td>
+                        <td className="">{ toDateIndo(letter.createdAt) }</td>
                     </tr>
                 )) }
                 </tbody>
@@ -186,7 +186,7 @@ export function SendTableEmployee({ employees, latter }: { latter: LatterForm, e
     );
 }
 
-export function SendTableLatter({ data }: { data: Latters[] }) {
+export function SendTableLetter({ data }: { data: Letters[] }) {
     return (
         <div className="overflow-x-auto p-4">
             <table className="table w-full  bg-base-200">
@@ -196,7 +196,7 @@ export function SendTableLatter({ data }: { data: Latters[] }) {
                     <th className="">ID</th>
                     <th className="">Interview Date</th>
                     <th className="">Interview Location</th>
-                    <th className="">Latter Create</th>
+                    <th className="">Letter Create</th>
                     <th className="">Action</th>
                 </tr>
                 </thead>

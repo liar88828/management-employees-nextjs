@@ -5,11 +5,7 @@ import { createCompanyAction } from "@/server/action/company";
 import { Companys } from "@prisma/client";
 import { MyInput, MyInputImage } from "@/app/components/form";
 
-interface CompanyClientProps {
-    company?: Companys
-}
-
-export default function CompanyClient({ company }: CompanyClientProps) {
+export default function CompanyClient({ company }: { company?: Companys }) {
     const [ state, action, pending ] = useActionState(createCompanyAction, undefined);
     return (
         <div className="flex items-center justify-center">

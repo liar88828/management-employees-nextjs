@@ -4,7 +4,7 @@ import { ErrorResponse } from "@/utils/ErrorResponse";
 import { decrypt } from "@/server/lib/jwt";
 import { ROLE } from "@/interface/Utils";
 import { prisma } from "@/config/prisma";
-import { deleteSession } from "@/server/lib/state";
+import { deleteSession } from "@/server/lib/cookies";
 
 export async function fromRequest(request: NextRequest,) {
     const fromHeader = request.headers.get('authorization')

@@ -1,115 +1,15 @@
-import { i3x4, ijazah, ktp, TEmployeeDB } from "@/interface/entity/employee.model";
-import { toDate, toDateIndo } from "@/utils/toDate";
+import { TEmployeeDB } from "@/interface/entity/employee.model";
+import { toDateIndo } from "@/utils/toDate";
 import React from "react";
 import Link from "next/link";
 import { Employees } from "@prisma/client";
+import { EmployeeCV, EmployeePhotos } from "@/app/components/employee/employee.page";
 
-export function EmployeeCVPageAdmin({ employee }: {
-    employee: TEmployeeDB;
-}) {
+export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
     return (
-        <div className="card w-full max-w-3xl mx-auto bg-white card-bordered">
-            <div className="card-body">
-                <div className="flex justify-between items-center">
-                    <div className="flex items-center space-x-4">
-                        <div className="w-20 h-20 avatar">
-                            {/* eslint-disable-next-line @next/next/no-img-element */ }
-                            <img
-                                className="rounded-full"
-                                src={ `${ employee.img }` }
-                                alt={ employee.name }
-                            />
-                            {/*<p>{ employee.name.split(' ').map(n => n[0]).join('') }</p>*/ }
-                        </div>
-                        <div>
-                            <div className="card-title text-2xl">{ employee.name }</div>
-                            <p className="text-sm text-muted-foreground">{ employee.jobTitle }</p>
-                        </div>
-                    </div>
-
-                </div>
-                <div className="divider "></div>
-
-                <div className=" grid gap-6 mt-2">
-                    <section>
-                        <h3 className="font-semibold mb-2">Contact Information</h3>
-                        <div className="grid grid-cols-2 gap-2 text-sm">
-                            <p><strong>Email:</strong> { employee.email }</p>
-                            <p><strong>Phone:</strong> { employee.phone }</p>
-                            <p><strong>Birth Date:</strong> { toDate(employee.dateOfBirth) }</p>
-                            <p><strong>Address:</strong> { employee.address }</p>
-                            <p><strong>City:</strong> { employee.city }</p>
-                            <p><strong>Country:</strong> { employee.country }</p>
-                        </div>
-                    </section>
-
-                    <section>
-                        <h3 className="font-semibold mb-2">Professional Details</h3>
-                        <div className="grid grid-cols-2 gap-2 text-sm">
-                            <p><strong>Department:</strong> { employee.department }</p>
-                            <p><strong>Hire Date:</strong> { toDate(employee.hireDate) }</p>
-                            <p><strong>Employee ID:</strong> { employee.id }</p>
-                        </div>
-                        <div className="divider "></div>
-
-                    </section>
-
-                    <section>
-                        <h3 className="font-semibold mb-2">Skills</h3>
-                        <div className="flex flex-wrap gap-2">
-                            { employee.skills && employee.skills.map(({ text }, index) => (
-                                <div className="badge badge-neutral badge-outline" key={ index }>
-                                    { text }
-                                </div>
-                            )) }
-                        </div>
-                    </section>
-
-                    <section>
-                        <h3 className="font-semibold mb-2">Education</h3>
-                        <p className="text-sm">{ employee.education }</p>
-                    </section>
-
-                    <section>
-                        <h3 className="font-semibold mb-2">Languages</h3>
-                        <ul className="list-disc list-inside text-sm">
-                            { employee.languages && employee.languages.map(({ text: language }, index) => (
-                                <li key={ index }>{ language }</li>
-                            )) }
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h3 className="font-semibold mb-2">Ktp</h3>
-                        {/* eslint-disable-next-line @next/next/no-img-element */ }
-                        <img src={ employee?.photoKtp ?? ktp }
-                             alt="image ktp"
-                             className={ "aspect-[4/3] " }
-                        />
-                    </section>
-
-                    <section>
-                        <h3 className="font-semibold mb-2">Photo 3x4</h3>
-                        {/* eslint-disable-next-line @next/next/no-img-element */ }
-                        <img src={ employee.photoKtp ?? i3x4 }
-                             alt=""
-                             className={ "aspect-[4/3] " }
-                        />
-                    </section>
-
-                    <section>
-                        <h3 className="font-semibold mb-2">Ijazah</h3>
-                        {/* eslint-disable-next-line @next/next/no-img-element */ }
-                        <img src={ employee?.photoIjasah ?? ijazah }
-                             alt="image ktp"
-                             className={
-                                 // "w-[21cm] h-[33cm]"
-                                 'aspect-[33/21]'
-                             }
-                        />
-                    </section>
-                </div>
-            </div>
+        <div className={ 'space-y-10' }>
+            <EmployeeCV employee={ employee }/>
+            <EmployeePhotos employee={ employee }/>
         </div>
     );
 }

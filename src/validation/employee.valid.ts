@@ -28,13 +28,17 @@ export const employeeCreateClient= z.object({
     notes: z.string(),
     img: zodImage(true),
     country: z.string(),
-    education: z.string(),
+    // education: z.string(),
     skills: z.array(z.object({
         text: z.string().min(2, "Skills must be at least 2 characters"),
     })),
 
     languages: z.array(z.object({
         text: z.string().min(2, "Languages must be at least 2 characters"),
+    })),
+
+    educations: z.array(z.object({
+        text: z.string().min(2, "Educations must be at least 2 characters"),
     })),
 
     // certifications: z.array(z.object({
@@ -66,11 +70,14 @@ export const employeeCreateServer= z.object({
     notes: z.string().min(2).max(100),
     img: z.string(),
     country: z.string().min(2).max(100),
-    education: z.string().min(2).max(100),
+    // education: z.string().min(2).max(100),
     skills: z.array(z.object({
         text: z.string().min(2).max(100),
     })),
     languages: z.array(z.object({
+        text: z.string().min(2).max(100),
+    })),
+    educations: z.array(z.object({
         text: z.string().min(2).max(100),
     })),
 })

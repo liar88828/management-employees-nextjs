@@ -123,5 +123,52 @@ export async function departmentDelete(departmentId: number): Promise<{
             message: 'Something went wrong',
         }
     }
+}
+
+export type DepartmentUpdateActionType = { departmentId: number, position: string };
+
+export async function departmentUpdate({ departmentId, position }: DepartmentUpdateActionType): Promise<{
+    success: boolean,
+    message: string,
+}> {
+    try {
+        return prisma.$transaction(async (tx) => {
+
+            const departmentDB = await tx.departements.findUnique({ where: { id: departmentId } })
+            .then(data => {
+                if (!data) {
+                    throw new ErrorAction("Department Not Exist")
+                }
+                return data
+            })
+
+            await tx.departements.update({
+                where: { id: departmentId },
+                data: { position }
+            })
+
+            await tx.employees.updateMany({
+                where: { department: departmentDB.position },
+                data: { department: position }
+            })
+
+            return {
+                success: true,
+                message: "Successfully deleted "
+            };
+        })
+
+    } catch (e) {
+        if (e instanceof ErrorAction) {
+            return {
+                success: false,
+                message: e.message,
+            }
+        }
+        return {
+            success: false,
+            message: 'Something went wrong',
+        }
+    }
 
 }

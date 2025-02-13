@@ -6,8 +6,7 @@ import { TContext } from "@/interface/server/param";
 import { getContextQuery } from "@/utils/requestHelper";
 import Link from "next/link";
 import { listStatusEmployee } from "@/assets/MenuList";
-import { TableEmployees } from "@/app/admin/send/send.client";
-import { Pagination } from "@/app/admin/inbox/inbox.client";
+import { Pagination, TableEmployees } from "@/app/admin/inbox/inbox.client";
 
 async function Page(context: TContext) {
     const search = await getContextQuery(context, 'search')
@@ -32,7 +31,7 @@ async function Page(context: TContext) {
     });
 
     const totalPages = Math.ceil(totalEmployees / pageSize);
-    console.log(employees);
+    // console.log(employees);
     return (
         <div>
             <h1 className={ 'text-xl font-bold' }>Hello Inbox</h1>

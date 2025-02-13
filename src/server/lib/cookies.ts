@@ -26,9 +26,6 @@ export async function updateSession() {
         sameSite: 'lax',
         path: '/',
 	})
-    // console.log(cookieStore.get('session'))
-
-	// console.log(' is validate')
 }
 
 export async function createSession(data: Pick<Users, 'id' | 'role'>) {

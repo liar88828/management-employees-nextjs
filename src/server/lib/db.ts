@@ -72,12 +72,6 @@ export const updateSession = async (request: NextRequest) => {
     return res
 }
 
-export const checkGuest = async () => {
-    const session = await getSession()
-    if (!session) return false
-    return true
-}
-
 export const validSession = cache(async () => {
     const session = await getSession()
 
@@ -88,6 +82,7 @@ export const validSession = cache(async () => {
     return {
         isLogin: true,
         userId: session.sessionId as string,
+        session
     }
 })
 

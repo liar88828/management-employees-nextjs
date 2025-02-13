@@ -34,14 +34,14 @@ export default class EmployeeController
     async testimonialById(request: NextRequest, context: TContext) {
         await authApi(request, true)
         const id = await getId(context)
-        return this.employeeRepository.findById(zodUUID.parse(id))
+        return this.employeeRepository.findById({ employeeId: zodUUID.parse(id) })
     }
 
 
     async findPhotoById(request: NextRequest, context: TContext) {
         await authApi(request, true)
         const id = await getId(context)
-        return this.employeeRepository.findById(zodUUID.parse(id))
+        return this.employeeRepository.findById({ employeeId: zodUUID.parse(id) })
     }
 
 
@@ -88,7 +88,7 @@ export default class EmployeeController
     async findByUserId(request: NextRequest, context: TContext) {
         await authApi(request)
         const userId = await getId(context)
-        return this.employeeRepository.findByUserId(zodUUID.parse(userId))
+        return this.employeeRepository.findById({ userId: zodUUID.parse(userId) })
     }
 
     async createByUserId(request: NextRequest, context: TContext) {
@@ -105,12 +105,16 @@ export default class EmployeeController
 
 }
 
-export async function getEmployeeByUserId(userId: string): Promise<TEmployeeDB | undefined> {
+export async function getEmployeeById({ userId, employeeId }: {
+    userId?: string,
+    employeeId?: string
+}): Promise<TEmployeeDB | undefined> {
     return prisma.employees.findUnique({
-        where: { userId },
+        where: { userId, id: employeeId },
         include: {
             languages: true,
             skills: true,
+            educations: true
         },
     })
     .then(data => {

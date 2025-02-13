@@ -84,7 +84,7 @@ export async function employeeUpdateAdmin({ img, ...data }: EmployeeCreateZodCli
         formData.append('file', img[0]);
         formData.append('data', JSON.stringify(data));
         const filePath = await pathImage(formData, false)    // Save the image path to the database
-        const employeeData = employeeSanitize(formData, filePath, data.userId, typeImage)
+        const employeeData = employeeSanitize(formData, filePath, data.userId)
         const response = await employeeRepository.updateUserRepo(employeeData, employeeId)
         if (response && typeImage) {
             await updateImage(formData, filePath)

@@ -1,11 +1,11 @@
 'use client'
-import React, {ReactNode, useState} from "react";
-import {usePathname} from "next/navigation";
-import {useScrollVisibility} from "@/hook/UseScrollVisibility";
-import {BackButton} from "@/app/components/backButton";
-import {LogOut, Menu} from "lucide-react";
-import {logout} from "@/server/lib/state";
-import {linkUser} from "@/assets/MenuList";
+import React, { ReactNode, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useScrollVisibility } from "@/hook/UseScrollVisibility";
+import { BackButton } from "@/app/components/backButton";
+import { LogOut, Menu } from "lucide-react";
+import { logout } from "@/server/lib/cookies";
+import { linkUser } from "@/assets/MenuList";
 import Link from "next/link";
 
 export function BaseLayoutUser({children, isLogin}: {
@@ -41,10 +41,7 @@ export function BaseLayoutUser({children, isLogin}: {
                     {isLogin && (
                         <button
                             className="btn btn-square btn-ghost"
-                            onClick={async () => {
-                                await logout()
-                            }}
-                        >
+                            onClick={ async () => await logout() }>
                             <LogOut/>
                         </button>
                     )}

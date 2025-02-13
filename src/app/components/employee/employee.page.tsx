@@ -1,14 +1,12 @@
 import React from "react";
-import { EmployeeCVProps, i3x4, ktp, TEmployeeDB } from "@/interface/entity/employee.model";
+import { i3x4, ijazah, ktp, TEmployeeDB } from "@/interface/entity/employee.model";
 import { Employees } from "@prisma/client";
 import { toDate } from "@/utils/toDate";
-import Link from "next/link";
-import { Printer } from "lucide-react";
 import { TypeFile } from "@/server/action/upload";
-
 import { EmployeePhotosUploadClientAdmin } from "@/app/components/employee/employee.client.admin";
+import Image from "next/image";
 
-export function EmployeePhotoAdmin({ employee }: EmployeeCVProps) {
+export function EmployeePhotoAdmin({ employee }: { employee: TEmployeeDB }) {
     return (
         <div className="grid grid-cols-2 gap-2  ">
             <EmployeePhotosUploadClientAdmin employee={ employee } type={ 'KTP' } />
@@ -60,14 +58,10 @@ export function EmployeeDetail({ employee }: {
     );
 }
 
-export function EmployeeCVPageAdmin({ employee, onPrintAction, isPrinting }: {
-    employee: TEmployeeDB;
-    isPrinting: boolean;
-    onPrintAction: () => void;
-
-}) {
+export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
     return (
-        <div className="card w-full max-w-3xl mx-auto bg-white card-bordered">
+        <div
+            className=" bg-white text-black print:shadow-none shadow-lg card w-[210mm] h-[297mm] print:h-screen print:w-screen">
             <div className="card-body">
                 <div className="flex justify-between items-center">
                     <div className="flex items-center space-x-4">
@@ -76,7 +70,7 @@ export function EmployeeCVPageAdmin({ employee, onPrintAction, isPrinting }: {
                             <img
                                 className="rounded-full"
                                 // src={ `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.name }` }
-                                src={ `${ employee.img }` }
+                                src={ employee.img }
                                 alt={ employee.name }
                             />
                             {/*<p>{ employee.name.split(' ').map(n => n[0]).join('') }</p>*/ }
@@ -88,9 +82,9 @@ export function EmployeeCVPageAdmin({ employee, onPrintAction, isPrinting }: {
                     </div>
 
                 </div>
-                <div className="divider "></div>
 
-                <div className=" grid gap-6 mt-2">
+                <div className="divider"></div>
+                <div className=" grid gap-6 ">
                     <section>
                         <h3 className="font-semibold mb-2">Contact Information</h3>
                         <div className="grid grid-cols-2 gap-2 text-sm">
@@ -111,33 +105,7 @@ export function EmployeeCVPageAdmin({ employee, onPrintAction, isPrinting }: {
                             <p><strong>Hire Date:</strong> { toDate(employee.hireDate) }</p>
                             <p><strong>Employee ID:</strong> { employee.id }</p>
                         </div>
-                        <div className="divider "></div>
 
-                    </section>
-
-                    <section>
-                        <h3 className="font-semibold mb-2">Skills</h3>
-                        <div className="flex flex-wrap gap-2">
-                            { employee.skills && employee.skills.map(({ text }, index) => (
-                                <div className="badge badge-neutral badge-outline" key={ index }>
-                                    { text }
-                                </div>
-                            )) }
-                        </div>
-                    </section>
-
-                    <section>
-                        <h3 className="font-semibold mb-2">Education</h3>
-                        <p className="text-sm">{ employee.education }</p>
-                    </section>
-
-                    <section>
-                        <h3 className="font-semibold mb-2">Languages</h3>
-                        <ul className="list-disc list-inside text-sm">
-                            { employee.languages && employee.languages.map(({ text: language }, index) => (
-                                <li key={ index }>{ language }</li>
-                            )) }
-                        </ul>
                     </section>
 
                     {/*<section>*/ }
@@ -158,21 +126,80 @@ export function EmployeeCVPageAdmin({ employee, onPrintAction, isPrinting }: {
                     {/*    </ul>*/ }
                     {/*</section>*/ }
                 </div>
-                <div className="  flex justify-end print:hidden gap-2 mt-2">
-                    <Link href={ +employee.id + '/edit' }
-                          className={ 'btn ' }
-                    >
-                        Edit
-                    </Link>
 
-                    <button
-                        onClick={ onPrintAction }
-                        disabled={ isPrinting }
-                        className={ 'btn btn-info' }
-                    >
-                        { isPrinting ? 'Printing...' : <Printer /> }
-                    </button>
+                <div className="divider "></div>
+                <div className="grid grid-cols-2 sm:grid-cols-2 ">
+                    <section>
+                        <h3 className="font-semibold mb-2">Educations</h3>
+                        <ul className="list-disc list-inside text-sm">
+                            { employee.educations && employee.educations.map(({ text }, index) => (
+                                <li key={ index }>{ text }</li>
+                            )) }
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3 className="font-semibold mb-2">Skills</h3>
+                        <ul className="list-disc list-inside text-sm">
+                            { employee.skills && employee.skills.map(({ text }, index) => (
+                                <li key={ index }>{ text }</li>
+                            )) }
+                        </ul>
+                    </section>
+
+
+                    <section>
+                        <h3 className="font-semibold mb-2">Languages</h3>
+                        <ul className="list-disc list-inside text-sm">
+                            { employee.languages && employee.languages.map(({ text }, index) => (
+                                <li key={ index }>{ text }</li>
+                            )) }
+                        </ul>
+                    </section>
                 </div>
+            </div>
+        </div>
+    );
+}
+
+export function EmployeePhotos({ employee }: { employee: TEmployeeDB }) {
+    return (
+        <div className="card card-body  bg-white">
+            <div className="grid grid-cols-2 ">
+
+                <section>
+                    <h3 className="font-semibold mb-2">Ktp</h3>
+                    <Image src={ employee?.photoKtp ?? ktp }
+                           alt="image ktp"
+                           width={ 300 }
+                           height={ 400 }
+                           className={ "aspect-[4/3] " }
+                    />
+                </section>
+
+                <section>
+                    <h3 className="font-semibold mb-2">Photo 4x6</h3>
+                    <Image src={ employee.photoKtp ?? i3x4 }
+                           alt=""
+                           width={ 300 }
+                           height={ 600 }
+                           className={ "aspect-[4/6] " }
+                    />
+                </section>
+
+                <section>
+                    <h3 className="font-semibold mb-2">Ijazah</h3>
+                    <Image
+                        src={ employee?.photoIjasah ?? ijazah }
+                        alt="image ktp"
+                        width={ 300 }
+                        height={ 400 }
+                        className={
+                            // "w-[21cm] h-[33cm]"
+                            'aspect-[3/4]'
+                        }
+                    />
+                </section>
             </div>
         </div>
     );
@@ -183,13 +210,13 @@ export function EmployeePhotoPageAdmin(props: {
     imagePreview: string | null,
     employee: TEmployeeDB,
     action: (formData: FormData) => Promise<void>,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 }) {
     return (
-        <div className="card card-bordered "  data-theme={"light"}>
+        <div className="card card-bordered " data-theme={ "light" }>
             <div className="card-body">
                 <h2 className="card-title">Add { props.type }
-                    { !props.imagePreview && <p className={'text-error '}> *Please Complete</p> }
+                    { !props.imagePreview && <p className={ 'text-error ' }> *Please Complete</p> }
 
                 </h2>
                 <div className="w-48 h-auto">

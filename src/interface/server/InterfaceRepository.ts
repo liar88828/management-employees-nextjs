@@ -5,7 +5,7 @@ export interface InterfaceRepository<T> {
 
 	findAll(params:ParamsApi<object>): Promise<any>;
 
-    findById(id: string | number): Promise<any>;
+    findById(id: any): Promise<any>;
 
 	createOne(data: T,): Promise<any>;
 

@@ -1,21 +1,20 @@
 'use server'
-
 import { prisma } from "@/config/prisma";
 import { redirect } from "next/navigation";
-import { LatterEmployee, LatterForm } from "@/assets/latter";
+import { LetterEmployee, LetterForm } from "@/assets/letter";
 import { getDateCalender, toDateClock, toDateDayName } from "@/utils/toDate";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { LatterFormSchema, LatterFormState } from "@/validation/send.valid";
-import { Latters } from "@prisma/client";
+import { LetterFormSchema, LetterFormState } from "@/validation/send.valid";
+import { Letters } from "@prisma/client";
 
-export async function getLatterOnlyAll(): Promise<Latters[]> {
-    return prisma.latters.findMany()
+export async function getLetterOnlyAll(): Promise<Letters[]> {
+    return prisma.letters.findMany()
 }
 
-export async function getLatterAll(): Promise<LatterEmployee[]> {
-    return prisma.latters.findMany({
+export async function getLetterAll(): Promise<LetterEmployee[]> {
+    return prisma.letters.findMany({
         include: {
-            LatterEmployees: {
+            LetterEmployees: {
                 include: {
                     Employees: true
                 }
@@ -23,17 +22,17 @@ export async function getLatterAll(): Promise<LatterEmployee[]> {
         }
     })
     .then((data) => {
-        return data.map(({ LatterEmployees, ...latter }) => ({
-            ...latter,
-            Employees: LatterEmployees.map(item => item.Employees),
-            interviewDate: getDateCalender(latter.interviewDate),
-            interviewDay: toDateDayName(latter.interviewDate),
-            interviewTime: toDateClock(latter.interviewDate),
+        return data.map(({ LetterEmployees, ...letter }) => ({
+            ...letter,
+            Employees: LetterEmployees.map(item => item.Employees),
+            interviewDate: getDateCalender(letter.interviewDate),
+            interviewDay: toDateDayName(letter.interviewDate),
+            interviewTime: toDateClock(letter.interviewDate),
         }))
     })
 }
 
-export const getLatterMyId = async (id: string) => {
+export const getLetterMyId = async (id: string) => {
 
     return prisma.$transaction(async (tx) => {
         const company = await tx.companys.findFirst()
@@ -45,17 +44,17 @@ export const getLatterMyId = async (id: string) => {
         })
 
         // ----------
-        const latter = await tx.latters.findUnique({
+        const letter = await tx.letters.findUnique({
             where: { id },
-            include: { LatterEmployees: true }
+            include: { LetterEmployees: true }
         })
-        .then((data): LatterForm => {
+        .then((data): LetterForm => {
             if (!data) {
                 redirect('/admin/send')
             }
             return {
                 ...data,
-                LatterEmployees: data.LatterEmployees,
+                LetterEmployees: data.LetterEmployees,
                 interviewDate: getDateCalender(data.interviewDate),
                 interviewDay: toDateDayName(data.interviewDate),
                 interviewTime: toDateClock(data.interviewDate),
@@ -66,7 +65,7 @@ export const getLatterMyId = async (id: string) => {
         const employees = await tx.employees.findMany({
             where: {
                 id: {
-                    in: latter.LatterEmployees.map(item => item.employeesId)
+                    in: letter.LetterEmployees.map(item => item.employeesId)
                 }
             }
         }).then(data => {
@@ -76,12 +75,12 @@ export const getLatterMyId = async (id: string) => {
             return data;
         })
 
-        return { employees, latter, company }
+        return { employees, letter, company }
     })
 
 }
 
-export async function latterEmployeeAction(state: LatterFormState, formData: FormData): Promise<LatterFormState> {
+export async function letterEmployeeAction(state: LetterFormState, formData: FormData): Promise<LetterFormState> {
 
     const formValue = Object.fromEntries(formData);
     // console.log(formValue);
@@ -98,7 +97,7 @@ export async function latterEmployeeAction(state: LatterFormState, formData: For
     });
 
     try {
-        const validatedFields = LatterFormSchema.safeParse(formObject)
+        const validatedFields = LetterFormSchema.safeParse(formObject)
         if (!validatedFields.success) {
             return {
                 value: formValue,
@@ -109,12 +108,11 @@ export async function latterEmployeeAction(state: LatterFormState, formData: For
 
         await prisma.$transaction(async (tx) => {
             const { employeesId, ...data } = validatedFields.data
+            const letterDB = await tx.letters.create({ data })
 
-            const latterDB = await tx.latters.create({ data })
-
-            await tx.latterEmployees.createMany({
+            await tx.letterEmployees.createMany({
                 data: employeesId.map(item => ({
-                    lattersId: latterDB.id,
+                    lettersId: letterDB.id,
                     employeesId: item
                 }))
             })

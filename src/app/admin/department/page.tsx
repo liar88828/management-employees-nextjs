@@ -1,6 +1,10 @@
 import React from 'react';
 import { prisma } from "@/config/prisma";
-import { ModalCreateDepartment, ModalDeleteDepartment } from "@/app/admin/department/modalCreateDepartment";
+import {
+    DepartmentModalCreate,
+    DepartmentModalDelete,
+    DepartmentModalUpdate
+} from "@/app/admin/department/DepartmentModal";
 
 async function Page() {
     const departments = await prisma.departements.findMany()
@@ -8,7 +12,7 @@ async function Page() {
         <div>
             <div className="flex justify-between ">
                 <h1 className={ 'text-xl font-bold ' }>Employee Position</h1>
-                <ModalCreateDepartment/>
+                <DepartmentModalCreate/>
             </div>
             <div className="overflow-x-auto mt-3">
                 <table className="table bg-base-200 table-auto">
@@ -28,13 +32,13 @@ async function Page() {
                             <td>{ item.id }</td>
                             <td>{ item.position }</td>
                             <td>
-                                <div>
-                                    <ModalDeleteDepartment department={ item }/>
+                                <div className="flex gap-2">
+                                    <DepartmentModalDelete department={ item }/>
+                                    <DepartmentModalUpdate department={ item }/>
                                 </div>
                             </td>
                         </tr>
                     )) }
-
                     </tbody>
                     <tfoot><tr><th></th></tr></tfoot>
                 </table>

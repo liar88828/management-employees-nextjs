@@ -7,15 +7,14 @@ import { employeeRepository } from "@/server/controller";
 import { EmptyData } from "@/app/components/PageErrorData";
 
 export default async function Page(context: TContext) {
-    const idEmployee = await getId(context);
-    const employee = await employeeRepository.findById(idEmployee)
+    const employeeId = await getId(context);
+    const employee = await employeeRepository.findById({ employeeId })
     if (!employee) {
-        return <EmptyData page={ `Employee Detail ${ idEmployee }` }/>
+        return <EmptyData page={ `Employee Detail ${ employeeId }` }/>
     }
-
     return (
             <Suspense fallback={ <PageLoadingSpin /> }>
-                <EmployeeDetailServerAdmin idEmployee={ idEmployee } />
+                <EmployeeDetailServerAdmin employeeId={ employeeId }/>
             </Suspense>
     )
 }

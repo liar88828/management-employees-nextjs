@@ -1,8 +1,8 @@
 'use client'
 import { FormProvider, useFieldArray, useForm, useFormContext } from "react-hook-form";
-import { BookUser, Minus, Plus } from "lucide-react";
-import React, { Fragment, useState } from "react";
-import { EmployeeCVProps, TEmployeeDB } from "@/interface/entity/employee.model";
+import { BookUser, Minus, Plus, Printer } from "lucide-react";
+import React, { Fragment, ReactNode, useState } from "react";
+import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { Departements } from ".prisma/client";
 import { useFormImage } from "@/hook/useFormImage";
 import { employeeCreateClient, EmployeeCreateZodClient } from "@/validation/employee.valid";
@@ -11,7 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { onUpsertDataAdmin } from "@/server/action/employee.admin";
 import { usePrint } from "@/hook/usePrint";
-import { EmployeeCVPageAdmin, EmployeePhotoPageAdmin } from "@/app/components/employee/employee.page";
+import { EmployeePhotoPageAdmin } from "@/app/components/employee/employee.page";
 import { TypeFile, uploadFile } from "@/server/action/upload";
 import { useEmployeeStore } from "@/store/employee";
 import Form from "next/form";
@@ -219,7 +219,6 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
 
                         { errors.department
                             && <p className="text-error text-sm mt-1">{ errors.department.message }</p> }
-
                     </div>
 
                     <div className="form-control">
@@ -329,18 +328,19 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                         { errors.notes && <p className="text-error text-sm mt-1">{ errors.notes.message }</p> }
                     </div>
 
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Education</span>
-                        </label>
-                        <input
-                            { ...register('education') }
-                            className="input input-bordered"
-                            placeholder="Additional notes"
-                        />
-                        { errors.education && <p className="text-error text-sm mt-1">{ errors.education.message }</p> }
-                    </div>
+                    {/*<div className="form-control">*/ }
+                    {/*    <label className="label">*/ }
+                    {/*        <span className="label-text">Education</span>*/ }
+                    {/*    </label>*/ }
+                    {/*    <input*/ }
+                    {/*        { ...register('education') }*/ }
+                    {/*        className="input input-bordered"*/ }
+                    {/*        placeholder="Additional notes"*/ }
+                    {/*    />*/ }
+                    {/*    { errors.education && <p className="text-error text-sm mt-1">{ errors.education.message }</p> }*/ }
+                    {/*</div>*/ }
 
+                    <EmployeeFormContextClientAdmin keys={ 'educations' } label={ 'Educations' }/>
                     <EmployeeFormContextClientAdmin keys={ 'skills' } label={ 'Skills' }/>
                     <EmployeeFormContextClientAdmin keys={ 'languages' } label={ 'Languages' }/>
                     {/*<EmployeeFormContextClientAdmin keys={ 'certifications' } label={ 'Certifications' }/>*/ }
@@ -399,16 +399,26 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
     );
 }
 
-export function EmployeeCVClientAdmin({ employee }: EmployeeCVProps) {
+export function PrintComponent({ children, href }: { href: string, children: ReactNode }) {
     const { isPrinting, handlePrint, contentRef } = usePrint()
     return (
         <div ref={ contentRef }>
-            <EmployeeCVPageAdmin employee={ employee } isPrinting={ isPrinting } onPrintAction={ handlePrint }/>
+            <div className=" print:hidden gap-2 mb-2 flex  items-center">
+                <Link href={ href } className={ 'btn btn-outline' }>Edit</Link>
+                <button
+                    onClick={ handlePrint }
+                    disabled={ isPrinting }
+                    className={ 'btn btn-info ' }
+                >
+                    { isPrinting ? 'Printing...' : <>Print PDF<Printer/></> }
+                </button>
+            </div>
+            { children }
         </div>
     );
 }
 
-export function EmployeePhotosUploadClientAdmin({ employee, type }: EmployeeCVProps & { type: TypeFile }) {
+export function EmployeePhotosUploadClientAdmin({ employee, type }: { employee: TEmployeeDB, type: TypeFile }) {
     const [ imagePreview, setImagePreview ] = useState<string | null>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

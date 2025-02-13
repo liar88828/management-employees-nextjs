@@ -53,7 +53,7 @@ model Employees {
   img             String
   //
   country         String
-  education       String
+  educations      Educations[]
   skills          Skills[] // Stored as an array of strings
   languages       Languages[] // Stored as an array of strings
   //
@@ -62,18 +62,24 @@ model Employees {
   photoIjasah     String?
   User            Users?            @relation(fields: [userId], references: [id])
   userId          String?           @unique
-  // Latters        Latters[]
-  LatterEmployees LatterEmployees[]
+  // Letters        Letters[]
+  LetterEmployees LetterEmployees[]
 
   //
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Skills {
-  id   Int    @id @default(autoincrement())
-  text String
+model Educations {
+  id          Int       @id @default(autoincrement())
+  text        String
+  Employees   Employees @relation(fields: [employeesId], references: [id])
+  employeesId String
+}
 
+model Skills {
+  id          Int       @id @default(autoincrement())
+  text        String
   Employees   Employees @relation(fields: [employeesId], references: [id])
   employeesId String
 }
@@ -98,25 +104,26 @@ model Departements {
   position String @unique
 }
 
-model LatterEmployees {
+model LetterEmployees {
   id          String    @id @default(uuid())
   Employees   Employees @relation(fields: [employeesId], references: [id])
   employeesId String
-  Latters     Latters   @relation(fields: [lattersId], references: [id])
-  lattersId   String
+  Letters     Letters   @relation(fields: [lettersId], references: [id])
+  lettersId   String
 }
 
-model Latters {
+model Letters {
   id                String            @id @default(uuid())
   interviewDate     DateTime
   interviewLocation String
   dressCode         String
   signerName        String
+  option            String
   // Employees         Employees        @relation(fields: [employeesId], references: [id])
   // employeesId       String
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
-  LatterEmployees   LatterEmployees[]
+  LetterEmployees   LetterEmployees[]
 }
 
 model Companys {

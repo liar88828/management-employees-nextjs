@@ -1,4 +1,4 @@
-import { Employees, LatterEmployees } from "@prisma/client";
+import { Employees, LetterEmployees } from "@prisma/client";
 
 export const exampleData = {
     company: {
@@ -21,7 +21,7 @@ export const exampleData = {
     },
 };
 
-export type LatterForm = {
+export type LetterForm = {
     id: string;
     // employeesId: string;
     interviewDate: string
@@ -31,7 +31,7 @@ export type LatterForm = {
     dressCode: string
     signerName: string
     createdAt: Date
-    LatterEmployees: LatterEmployees[]
+    LetterEmployees: LetterEmployees[]
 }
 
-export type LatterEmployee = Omit<LatterForm, 'LatterEmployees'> & { Employees: Employees[] };
+export type LetterEmployee = Omit<LetterForm, 'LetterEmployees'> & { Employees: Employees[] };

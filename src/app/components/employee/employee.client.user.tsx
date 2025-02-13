@@ -9,15 +9,17 @@ import toast from "react-hot-toast";
 import { UserDB } from "@/interface/entity/user.model";
 import { useRouter } from "next/navigation";
 import { formDate } from "@/utils/toDate";
-import { onUpsertDataUser } from "@/server/action/employee.client";
 import { useFormImage } from "@/hook/useFormImage";
 
 import { EmployeeFormContextClientAdmin } from "@/app/components/employee/employee.client.admin";
+import { Departements } from ".prisma/client";
+import { onUpsertDataUser } from "@/server/action/employee.client";
 
-export function EmployeeFormClientUser({employee, method, user}: {
+export function EmployeeFormClientUser({ employee, method, user, departments }: {
     user: UserDB
     employee?: TEmployeeDB,
-    method: "POST" | 'PUT'
+    departments: Departements[]
+    method: "POST" | 'PUT',
 }) {
     const router = useRouter();
     const { previewImage, handleImageChange } = useFormImage(employee?.img)
@@ -37,14 +39,14 @@ export function EmployeeFormClientUser({employee, method, user}: {
     });
 
     const {register, handleSubmit, formState: {errors}} = methods
-    console.log(errors)
+    // console.log(errors)
     const {isPending, mutate} = useMutation({
         onMutate: () => {
             return {idToast: toast.loading('Loading...')}
         },
         onSuccess: () => {
             toast.success("Employee created");
-            router.replace('/home');
+            // router.replace('/home');
         },
         onError: (error) => {
             toast.error(error.message);
@@ -53,26 +55,32 @@ export function EmployeeFormClientUser({employee, method, user}: {
             toast.dismiss(context?.idToast)
         },
         mutationFn: async (data: EmployeeCreateZodClient) => {
+            // console.log(data)
             return onUpsertDataUser(method, data, employee?.id)
         }
     })
-    const onSubmit = async (data: EmployeeCreateZodClient) => {
-        data.userId = user.id
-        mutate(data)
-    };
 
     return (
         <div className="container mx-auto p-4 pb-20">
             <FormProvider {...methods}>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    <input
-                        type="hidden"
-                        {...register('status',
-                            {
-                                value: 'Pending'
-                            }
-                        )}
-                    />
+                <form onSubmit={ handleSubmit((data) => mutate(data)) } className="space-y-4">
+                    <input type="hidden" { ...register('userId', {
+                        value: user.id
+                    }) }/>
+                    <input type="hidden"{ ...register('status', {
+                        value: employee?.status ?? 'Pending'
+                    }) }/>
+                    {/*// defaultValue={ new Date().toISOString().split('T')[0] }*/ }
+                    {/*        // .toISOString().split('T')[0],*/ }
+                    <input type="hidden"{ ...register('hireDate', {
+                        value: employee?.hireDate ?? new Date(),
+                        valueAsDate: true
+                    }) }/>
+                    <input type="hidden"{ ...register('salary', {
+                        valueAsNumber: true,
+                        value: employee?.salary ?? 0
+                    }) }/>
+
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text">Name</span>
@@ -80,14 +88,14 @@ export function EmployeeFormClientUser({employee, method, user}: {
                         <input
 
                             type="text"
-                            {...register('name', {
+                            { ...register('name', {
                                 value: user.name,
                                 disabled: true
-                            })}
-                            className={`input input-bordered ${errors.name ? 'input-error' : ''}`}
+                            }) }
+                            className={ `input input-bordered ${ errors.name ? 'input-error' : '' }` }
                             placeholder="Employee Name"
                         />
-                        {errors.name && <p className="text-error text-sm mt-1">{errors.name.message}</p>}
+                        { errors.name && <p className="text-error text-sm mt-1">{ errors.name.message }</p> }
                     </div>
 
                     <div className="form-control">
@@ -96,14 +104,14 @@ export function EmployeeFormClientUser({employee, method, user}: {
                         </label>
                         <input
                             type="email"
-                            {...register('email', {
+                            { ...register('email', {
                                     disabled: true
                                 }
-                            )}
-                            className={`input input-bordered ${errors.email ? 'input-error' : ''}`}
+                            ) }
+                            className={ `input input-bordered ${ errors.email ? 'input-error' : '' }` }
                             placeholder="employee@company.com"
                         />
-                        {errors.email && <p className="text-error text-sm mt-1">{errors.email.message}</p>}
+                        { errors.email && <p className="text-error text-sm mt-1">{ errors.email.message }</p> }
                     </div>
 
                     <div className="form-control">
@@ -112,14 +120,14 @@ export function EmployeeFormClientUser({employee, method, user}: {
                         </label>
                         <input
                             type="tel"
-                            {...register('phone', {
+                            { ...register('phone', {
                                     disabled: true
                                 }
-                            )}
+                            ) }
                             className="input input-bordered"
                             placeholder="Phone Number"
                         />
-                        {errors.phone && <p className="text-error text-sm mt-1">{errors.phone.message}</p>}
+                        { errors.phone && <p className="text-error text-sm mt-1">{ errors.phone.message }</p> }
                     </div>
 
                     <div className="form-control">
@@ -128,46 +136,46 @@ export function EmployeeFormClientUser({employee, method, user}: {
                         </label>
 
                         <select
-                            {...register('gender')}
-                            className={`select select-bordered ${errors.gender ? 'select-error' : ''}`}
+                            { ...register('gender') }
+                            className={ `select select-bordered ${ errors.gender ? 'select-error' : '' }` }
                         >
                             <option value="">Select Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
-                        {errors.gender && <p className="text-error text-sm mt-1">{errors.gender.message}</p>}
+                        { errors.gender && <p className="text-error text-sm mt-1">{ errors.gender.message }</p> }
                     </div>
 
-                    {/*// console.log(employee.dateOfBirth)*/}
-                    {/*// Wed Aug 31 1988 07:00:00 GMT+0700 (Indochina Time)*/}
+                    {/*// console.log(employee.dateOfBirth)*/ }
+                    {/*// Wed Aug 31 1988 07:00:00 GMT+0700 (Indochina Time)*/ }
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text">Date of Birth</span>
                         </label>
                         <input
                             type="date"
-                            {...register('dateOfBirth',
-                            )}
+                            { ...register('dateOfBirth',
+                            ) }
                             className="input input-bordered"
-                            defaultValue={employee ? new Date(employee.dateOfBirth).toISOString().split('T')[0] : ''}
+                            defaultValue={ employee ? new Date(employee.dateOfBirth).toISOString().split('T')[0] : '' }
                         />
-                        {errors.dateOfBirth &&
-                            <p className="text-error text-sm mt-1">{errors.dateOfBirth.message}</p>}
+                        { errors.dateOfBirth &&
+													<p className="text-error text-sm mt-1">{ errors.dateOfBirth.message }</p> }
 
                     </div>
 
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Hire Date</span>
-                        </label>
-                        <input
-                            type="date"
-                            {...register('hireDate')}
-                            className="input input-bordered"
-                        />
-                        {errors.hireDate && <p className="text-error text-sm mt-1">{errors.hireDate.message}</p>}
 
-                    </div>
+                    {/*<div className="form-control">*/ }
+                    {/*    <label className="label">*/ }
+                    {/*        <span className="label-text">Hire Date</span>*/ }
+                    {/*    </label>*/ }
+                    {/*    <input*/ }
+                    {/*        type="date"*/ }
+                    {/*        {...register('hireDate')}*/ }
+                    {/*        className="input input-bordered"*/ }
+                    {/*    />*/ }
+                    {/*    {errors.hireDate && <p className="text-error text-sm mt-1">{errors.hireDate.message}</p>}*/ }
+                    {/*</div>*/ }
 
                     <div className="form-control">
                         <label className="label">
@@ -175,40 +183,44 @@ export function EmployeeFormClientUser({employee, method, user}: {
                         </label>
                         <input
                             type="text"
-                            {...register('jobTitle')}
-                            className={`input input-bordered ${errors.jobTitle ? 'input-error' : ''}`}
+                            { ...register('jobTitle') }
+                            className={ `input input-bordered ${ errors.jobTitle ? 'input-error' : '' }` }
                             placeholder="Job Title"
                         />
-                        {errors.jobTitle && <p className="text-error text-sm mt-1">{errors.jobTitle.message}</p>}
+                        { errors.jobTitle && <p className="text-error text-sm mt-1">{ errors.jobTitle.message }</p> }
                     </div>
 
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text">Department</span>
                         </label>
-                        <input
-                            type="text"
-                            {...register('department')}
-                            className="input input-bordered"
-                            placeholder="Department"
-                        />
-                        {errors.department &&
-                            <p className="text-error text-sm mt-1">{errors.department.message}</p>}
 
+                        <select
+                            { ...register('department') }
+                            className={ `select select-bordered ${ errors.gender ? 'select-error' : '' }` }
+                        >
+                            <option value="">Select Department</option>
+                            { departments.map(item => (
+                                <option key={ item.id } value={ item.position }>{ item.position }</option>
+                            )) }
+                        </select>
+                        { errors.department
+                            && <p className="text-error text-sm mt-1">{ errors.department.message }</p>
+                        }
                     </div>
 
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Salary</span>
-                        </label>
-                        <input
-                            type="number"
-                            {...register('salary', {valueAsNumber: true})}
-                            className={`input input-bordered ${errors.salary ? 'input-error' : ''}`}
-                            placeholder="Salary"
-                        />
-                        {errors.salary && <p className="text-error text-sm mt-1">{errors.salary.message}</p>}
-                    </div>
+                    {/*<div className="form-control">*/ }
+                    {/*    <label className="label">*/ }
+                    {/*        <span className="label-text">Salary</span>*/ }
+                    {/*    </label>*/ }
+                    {/*    <input*/ }
+                    {/*        type="number"*/ }
+                    {/*        { ...register('salary', { valueAsNumber: true }) }*/ }
+                    {/*        className={ `input input-bordered ${ errors.salary ? 'input-error' : '' }` }*/ }
+                    {/*        placeholder="Salary"*/ }
+                    {/*    />*/ }
+                    {/*    { errors.salary && <p className="text-error text-sm mt-1">{ errors.salary.message }</p> }*/ }
+                    {/*</div>*/ }
 
                     <div className="form-control">
                         <label className="label">
@@ -216,12 +228,12 @@ export function EmployeeFormClientUser({employee, method, user}: {
                         </label>
                         <input
                             type="text"
-                            {...register('address',
-                            )}
+                            { ...register('address',
+                            ) }
                             className="input input-bordered"
                             placeholder="Street Address"
                         />
-                        {errors.address && <p className="text-error text-sm mt-1">{errors.address.message}</p>}
+                        { errors.address && <p className="text-error text-sm mt-1">{ errors.address.message }</p> }
 
                     </div>
 
@@ -231,11 +243,11 @@ export function EmployeeFormClientUser({employee, method, user}: {
                         </label>
                         <input
                             type="text"
-                            {...register('city')}
+                            { ...register('city') }
                             className="input input-bordered"
                             placeholder="City"
                         />
-                        {errors.city && <p className="text-error text-sm mt-1">{errors.city.message}</p>}
+                        { errors.city && <p className="text-error text-sm mt-1">{ errors.city.message }</p> }
 
                     </div>
 
@@ -245,12 +257,12 @@ export function EmployeeFormClientUser({employee, method, user}: {
                         </label>
                         <input
                             type="text"
-                            {...register('postalCode')}
+                            { ...register('postalCode') }
                             className="input input-bordered"
                             placeholder="Postal Code"
                         />
-                        {errors.postalCode &&
-                            <p className="text-error text-sm mt-1">{errors.postalCode.message}</p>}
+                        { errors.postalCode &&
+													<p className="text-error text-sm mt-1">{ errors.postalCode.message }</p> }
                     </div>
 
                     <div className="form-control">
@@ -258,24 +270,24 @@ export function EmployeeFormClientUser({employee, method, user}: {
                             <span className="label-text">Country</span>
                         </label>
                         <input
-                            {...register('country')}
+                            { ...register('country') }
                             className="input input-bordered"
                             placeholder="Additional notes"
                         />
-                        {errors.country && <p className="text-error text-sm mt-1">{errors.country.message}</p>}
+                        { errors.country && <p className="text-error text-sm mt-1">{ errors.country.message }</p> }
                     </div>
 
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text">Employment Type</span>
                         </label>
-                        <select {...register("employmentType")} className="select select-bordered">
+                        <select { ...register("employmentType") } className="select select-bordered">
                             <option value="">Select Type</option>
                             <option value="Full-Time">Full-Time</option>
                             <option value="Part-Time">Part-Time</option>
                         </select>
-                        {errors.employmentType &&
-                            <p className="text-error text-sm mt-1">{errors.employmentType.message}</p>}
+                        { errors.employmentType &&
+													<p className="text-error text-sm mt-1">{ errors.employmentType.message }</p> }
                     </div>
 
                     <div className="form-control">
@@ -283,29 +295,18 @@ export function EmployeeFormClientUser({employee, method, user}: {
                             <span className="label-text">Notes</span>
                         </label>
                         <textarea
-                            {...register('notes')}
+                            { ...register('notes') }
                             className="textarea textarea-bordered"
                             placeholder="Additional notes"
                         ></textarea>
-                        {errors.notes && <p className="text-error text-sm mt-1">{errors.notes.message}</p>}
+                        { errors.notes && <p className="text-error text-sm mt-1">{ errors.notes.message }</p> }
                     </div>
 
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Education</span>
-                        </label>
-                        <input
-                            {...register('education')}
-                            className="input input-bordered"
-                            placeholder="Additional notes"
-                        />
-                        {errors.education && <p className="text-error text-sm mt-1">{errors.education.message}</p>}
-                    </div>
-
-                    <EmployeeFormContextClientAdmin keys={'skills'} label={'Skills'}/>
-                    <EmployeeFormContextClientAdmin keys={'languages'} label={'Languages'}/>
-                    {/*<EmployeeFormContextClientAdmin keys={ 'certifications' } label={ 'Certifications' }/>*/}
-                    {/*<EmployeeFormContextClientAdmin keys={ 'projects' } label={ 'Projects' }/>*/}
+                    <EmployeeFormContextClientAdmin keys={ 'educations' } label={ 'Education' }/>
+                    <EmployeeFormContextClientAdmin keys={ 'skills' } label={ 'Skills' }/>
+                    <EmployeeFormContextClientAdmin keys={ 'languages' } label={ 'Languages' }/>
+                    {/*<EmployeeFormContextClientAdmin keys={ 'certifications' } label={ 'Certifications' }/>*/ }
+                    {/*<EmployeeFormContextClientAdmin keys={ 'projects' } label={ 'Projects' }/>*/ }
 
                     <div className="form-control">
                         <label className="label">
@@ -316,12 +317,12 @@ export function EmployeeFormClientUser({employee, method, user}: {
                             {
                                 // @ts-ignore
                                 ...register('img') }
-                            onChange={handleImageChange} // Handle image preview
+                            onChange={ handleImageChange } // Handle image preview
                             className="file-input file-input-bordered w-full"
                         />
                         {/* @ts-ignore */
-                            errors.img && <p className="text-error text-sm mt-1">{errors.img.message}</p>}
-                        <img src={previewImage}
+                            errors.img && <p className="text-error text-sm mt-1">{ errors.img.message }</p> }
+                        <img src={ previewImage }
                              alt="Image Employee"
                              className="size-40 mt-2 rounded-lg border"
                         />
@@ -331,7 +332,7 @@ export function EmployeeFormClientUser({employee, method, user}: {
                         <button
                             type="submit"
                             className="btn btn-primary"
-                            disabled={isPending}
+                            disabled={ isPending }
                         >
                             Submit Employee
                         </button>

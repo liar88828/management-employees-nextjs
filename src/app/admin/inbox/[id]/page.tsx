@@ -9,9 +9,7 @@ import { EmployeeCVPageAdmin } from "@/app/admin/inbox/inbox.client";
 
 export default async function Page(context: TContext) {
     const employeeId = await getContextParam(context, 'id')
-
-    const employee = await employeeRepository.findById(employeeId)
-
+    const employee = await employeeRepository.findById({ employeeId })
     if (!employee) {
         return <EmptyData page={ `Employee Detail ${ employeeId }` }/>
     }
@@ -25,9 +23,7 @@ export default async function Page(context: TContext) {
                         <option key={ item } value={ item }>{ item }</option>
                     )) }
                 </select>
-
                 <button className={ 'btn btn-info' }>Apply</button>
-
             </Form>
             <EmployeeCVPageAdmin employee={ employee }/>
         </div>

@@ -1,16 +1,19 @@
 import React from 'react';
-import { validSession } from "@/server/lib/db";
+import JobApplication from "@/app/components/Letter/JobApplication";
 import { getEmployeeByUserIdRedirect } from "@/server/action/employee.client";
+import { validSession } from "@/server/lib/db";
+import { findCompanyForUser } from "@/server/action/company";
 import { PrintComponent } from "@/app/components/employee/employee.client.admin";
-import { EmployeeCV } from "@/app/components/employee/employee.page";
 
 async function Page() {
-    const {userId} = await validSession()
+    const { userId } = await validSession()
     const employee = await getEmployeeByUserIdRedirect(userId);
+    const company = await findCompanyForUser()
+
     return (
-        <div className="pb-20 space-y-5">
+        <div>
             <PrintComponent href={ `/${ userId }/edit` }>
-                <EmployeeCV employee={ employee }/>
+                <JobApplication employee={ employee } company={ company }/>
             </PrintComponent>
         </div>
     );

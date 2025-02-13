@@ -1,11 +1,11 @@
 import { employeeCreateServer, EmployeeCreateZodServer } from "@/validation/employee.valid";
 
 export function employeeSanitize(
-    formData: FormData, imagePath: string, userId?: string, withImage: boolean = true): EmployeeCreateZodServer {
+    formData: FormData, imagePath?: string, userId?: string): EmployeeCreateZodServer {
     const form = formData.get('data')?.toString() ?? ''
     const json = JSON.parse(form);
-    if (withImage) {
-        json.img = imagePath
+    if (imagePath) {
+        json.img = imagePath ?? 'image/png';
     }
     if (userId) {
         json.userId = userId

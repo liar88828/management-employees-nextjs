@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useScrollVisibility } from "@/hook/UseScrollVisibility";
 import { BackButton } from "@/app/components/backButton";
 import { LogOut, Menu } from "lucide-react";
-import { logout } from "@/server/lib/state";
+import { logout } from "@/server/lib/cookies";
 import { linkAdmin, } from "@/assets/MenuList";
 import Link from "next/link";
 import { LinkListLayoutAdmin } from "@/app/components/Layout/admin.client";

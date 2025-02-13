@@ -1,5 +1,5 @@
 import React from 'react';
-import { updateSession } from "@/server/lib/state";
+import { updateSession } from "@/server/lib/cookies";
 
 async function Page() {
     const action = async (form: FormData) => {

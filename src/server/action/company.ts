@@ -3,6 +3,7 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { CompanyFormSchema, CompanyFormState } from "@/validation/company.valid";
 import { saveImage, updateImage } from "@/server/repository/image.repo";
 import { prisma } from "@/config/prisma";
+import { redirect } from "next/navigation";
 
 export async function createCompanyAction(state: CompanyFormState, formData: FormData): Promise<CompanyFormState> {
 
@@ -70,8 +71,14 @@ export async function createCompanyAction(state: CompanyFormState, formData: For
             success: false,
             message: 'Something Error',
             // prev: { email, password }
-
         }
     }
+}
 
+export async function findCompanyForUser() {
+    const company = await prisma.companys.findFirst()
+    if (!company) {
+        redirect('/home')
+    }
+    return company
 }

@@ -1,14 +1,19 @@
 'use client'
-import React, { useActionState } from "react";
-import { departmentCreate, departmentDelete } from "@/server/action/department";
+import React, { useActionState, useState } from "react";
+import {
+    departmentCreate,
+    departmentDelete,
+    departmentUpdate,
+    DepartmentUpdateActionType
+} from "@/server/action/department";
 import { Departements } from ".prisma/client";
-import { Plus, Trash } from "lucide-react";
+import { Pen, Plus, Trash } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { LoadingAction } from "@/app/components/LoadingData";
 import { FormError } from "@/app/components/form";
 
-export function ModalCreateDepartment() {
+export function DepartmentModalCreate() {
     const [ state, action, pending ] = useActionState(departmentCreate, undefined);
     return (
         <div>
@@ -63,41 +68,9 @@ export function ModalCreateDepartment() {
 
         </div>
     )
-        ;
 }
 
-export function ModalDeleteDepartment({ department }: { department: Departements }) {
-    const [ state, action, pending ] = useActionState(departmentCreate, undefined);
-    return (
-        <div>
-            {/* Open the modal using document.getElementById('ID').showModal() method */ }
-            <button className="btn btn-error btn-sm btn-square" onClick={ () => {
-                // @ts-ignore
-                document.getElementById(`ModalDeleteDepartment_${ department.id }`).showModal()
-            } }>
-                <Trash/>
-            </button>
-            <dialog id={`ModalDeleteDepartment_${ department.id }`} className="modal">
-                <div className="modal-box space-y-5">
-                    <h2 className="card-title">Delete ID { department.id } - Position { department.position }</h2>
-                    <p>Are You Sure want Delete this data ???</p>
-                    <div className="modal-action">
-                        <DepartmentDeleteButton department={ department }/>
-                        <form method="dialog">
-                            {/* if there is a button in form, it will close the modal */ }
-                            <button className="btn">Close</button>
-                        </form>
-                    </div>
-                </div>
-            </dialog>
-
-        </div>
-    )
-        ;
-}
-
-export function DepartmentDeleteButton({ department }: { department: Departements }) {
-
+export function DepartmentModalDelete({ department }: { department: Departements }) {
     const { mutate, isPending } = useMutation({
             onSuccess: (data) => toast.success(data.message),
             onError: (error) => toast.error(error.message),
@@ -106,11 +79,76 @@ export function DepartmentDeleteButton({ department }: { department: Departement
     )
 
     return (
-        <button className={ `btn btn-error  btn-square ${ isPending && 'btn-disabled' }` }
-                onClick={ () => mutate() }>
-            <Trash/>
-        </button>
+        <div>
+            {/* Open the modal using document.getElementById('ID').showModal() method */ }
+            <button className="btn btn-error btn-sm btn-square" onClick={ () => {
+                // @ts-ignore
+                document.getElementById(`DepartmentModalDelete_${ department.id }`).showModal()
+            } }>
+                <Trash/>
+            </button>
+            <dialog id={ `DepartmentModalDelete_${ department.id }` } className="modal">
+                <div className="modal-box space-y-5">
+                    <h2 className="card-title">Delete ID { department.id } - Position { department.position }</h2>
+                    <p>Are You Sure want Delete this data ???</p>
+                    <div className="modal-action">
+                        <button className={ `btn btn-error  btn-square ${ isPending && 'btn-disabled' }` }
+                                onClick={ () => mutate() }>
+                            <Trash/>
+                        </button>
 
-    );
+                        <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */ }
+                            <button className="btn">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
+        </div>
+    )
 }
+
+export function DepartmentModalUpdate({ department }: { department: Departements }) {
+    const [ position, setPosition ] = useState(department.position)
+
+    const { mutate, isPending } = useMutation({
+            onSuccess: (data) => toast.success(data.message),
+            onError: (error) => toast.error(error.message),
+        mutationFn: (data: DepartmentUpdateActionType) => departmentUpdate(data)
+        }
+    )
+
+    return (
+        <div>
+            {/* Open the modal using document.getElementById('ID').showModal() method */ }
+            <button className="btn btn-info btn-sm btn-square" onClick={ () => {
+                // @ts-ignore
+                document.getElementById(`DepartmentModalUpdate_${ department.id }`).showModal()
+            } }>
+                <Pen/>
+            </button>
+            <dialog id={ `DepartmentModalUpdate_${ department.id }` } className="modal">
+                <div className="modal-box space-y-5">
+                    <h2 className="card-title">Update ID { department.id } - Position { department.position }</h2>
+                    <p>Are You Sure want Update this data ???</p>
+                    <input type="text" onChange={ e => setPosition(e.target.value) }
+                           className="input input-bordered w-full"
+                    />
+                    <div className="modal-action">
+                        <button className={ `btn btn-info  btn-square ${ isPending && 'btn-disabled' }` }
+                                onClick={ () => mutate({ departmentId: department.id, position }) }>
+                            <Pen/>
+                        </button>
+
+                        <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */ }
+                            <button className="btn">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
+        </div>
+    )
+}
+
 

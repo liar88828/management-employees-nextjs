@@ -2,7 +2,7 @@
 import { prisma } from "@/config/prisma";
 import bcrypt from 'bcrypt'
 import { redirect } from "next/navigation";
-import { createSession } from "@/server/lib/state";
+import { createSession } from "@/server/lib/cookies";
 import {
     ForgetFormSchema,
     FormFail,

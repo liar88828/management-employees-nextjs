@@ -2,22 +2,24 @@
 import { redirect } from "next/navigation";
 import { employeeRepository } from "@/server/controller";
 import { EmployeeCreateZodClient } from "@/validation/employee.valid";
-import { pathImage, updateImage } from "@/server/repository/image.repo";
+import { pathImage, saveImage, updateImage } from "@/server/repository/image.repo";
 import { employeeSanitize } from "@/sanitize/employe.sanitize";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
-import { getEmployeeByUserId } from "@/server/controller/employee.controller";
 import { checkDepartmentPosition } from "@/server/action/department";
+import { getEmployeeById } from "@/server/controller/employee.controller";
 
 export const employeeCreateUser = async ({ img, ...data }: EmployeeCreateZodClient) => {
     try {
+        const isImage = typeof img === 'object'
+        // console.log('isImage', isImage)
         const formData = new FormData();
         formData.append('file', img[0]);
         formData.append('data', JSON.stringify(data));
         const filePath = await pathImage(formData)    // Save the image path to the database
-        const employeeData = employeeSanitize(formData, filePath, data?.userId)
+        const employeeData = employeeSanitize(formData, isImage ? filePath : undefined, data?.userId)
         const response = await employeeRepository.createUserRepo(employeeData)
-        if (response) {
-            await updateImage(formData, filePath)
+        if (response && isImage) {
+            await saveImage(formData, filePath)
         }
         return response
     } catch (error) {
@@ -29,14 +31,16 @@ export const employeeCreateUser = async ({ img, ...data }: EmployeeCreateZodClie
 
 export async function employeeUpdateUser({ img, ...data }: EmployeeCreateZodClient, employeeId: string) {
     try {
-        const typeImage = typeof img === 'object';
+        const isImage = typeof img === 'object';
+        // console.log(isImage, 'typeImage')
         const formData = new FormData();
         formData.append('file', img[0]);
         formData.append('data', JSON.stringify(data));
         const filePath = await pathImage(formData, false)    // Save the image path to the database
-        const employeeData = employeeSanitize(formData, filePath, data?.userId, typeImage)
+        const employeeData = employeeSanitize(formData, isImage ? filePath : undefined, data?.userId)
         const response = await employeeRepository.updateUserRepo(employeeData, employeeId)
-        if (response && typeImage) {
+        console.log(isImage, response)
+        if (response && isImage) {
             await updateImage(formData, filePath)
         }
         return response
@@ -53,9 +57,6 @@ export async function onUpsertDataUser(
     id?: string) {
     await checkDepartmentPosition(data.department);
     if (method === "POST") {
-        data.userId
-        // data.employmentType = 'Full-Time'
-        data.status = 'Pending'
         return employeeCreateUser(data)
     } else if (method === "PUT" && id) {
         return employeeUpdateUser(data, id)
@@ -64,8 +65,10 @@ export async function onUpsertDataUser(
 }
 
 export async function getEmployeeByUserIdRedirect(userId: string): Promise<TEmployeeDB> {
-    return getEmployeeByUserId(userId).then(data => {
+    return getEmployeeById({ userId }).then(data => {
         if (!data) redirect('/home')
         return data
     })
 }
+
+

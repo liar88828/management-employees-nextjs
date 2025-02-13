@@ -27,7 +27,7 @@ export const Countdown = () => {
         return () => clearInterval(interval);
     }, [ isMounted, setData, targetTime ]);
 
-    // If there's no target time or it's null, show a message
+    // If there's no target time, or it's null, show a message
     if (!targetTime) return (<>Is button to add 1 min</>);
 
     // If countdown has finished

@@ -20,7 +20,9 @@ export const employeeClientExample: EmployeeCreateZodClient = {
     notes: "Great team player with excellent problem-solving skills.",
     img: "https://example.com/images/johndoe.jpg",
     country: "USA",
-    education: "Bachelor's Degree in Computer Science",
+    educations: [
+        { text: "Bachelor's Degree in Computer Science", },
+    ],
     skills: [
         { text: "JavaScript" },
         { text: "TypeScript" },
@@ -51,7 +53,9 @@ export const employeeServerExample: EmployeeCreateZodServer = {
     notes: "Detail-oriented and highly skilled in software development.",
     img: "https://example.com/images/janedoe.jpg",
     country: "USA",
-    education: "Master's Degree in Software Engineering",
+    educations: [
+        { text: "Master's Degree in Software Engineering", },
+    ],
     skills: [
         { text: "Python" },
         { text: "Machine Learning" },

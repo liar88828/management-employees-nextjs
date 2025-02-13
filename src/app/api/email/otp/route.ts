@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer'
 import { OTPValid, ResponseValidOTP } from "@/interface/server/param";
 import { validGenerateOtp, validOtp } from "@/validation/validGenerateOtp";
 import { NextResponse } from "next/server";
-import { createSession } from "@/server/lib/state";
+import { createSession } from "@/server/lib/cookies";
 import { prisma } from "@/config/prisma";
 import { toOtp } from "@/utils/toOtp";
 import Zod from "zod";

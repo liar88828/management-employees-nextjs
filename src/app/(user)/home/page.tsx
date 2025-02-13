@@ -1,13 +1,11 @@
 import React from 'react';
-import { getEmployeeByUserId } from "@/server/controller/employee.controller";
+import { getEmployeeById } from "@/server/controller/employee.controller";
 import { validSession } from "@/server/lib/db";
 import { toDateIndo } from "@/utils/toDate";
 
 async function Page() {
     const {userId} = await validSession()
-
-    const employee = await getEmployeeByUserId(userId)
-
+    const employee = await getEmployeeById({ userId })
     return (
         <div className="">
             <h1 className={'text-xl font-bold'}>Welcome to employee-management</h1>

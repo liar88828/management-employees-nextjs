@@ -40,9 +40,10 @@ export const deleteImage = async (imagePath: string) => {
         // Delete the file
         fs.unlinkSync(filePath);
         console.log(`File ${ imagePath } deleted successfully.`);
-    } else {
-        throw new Error(`File ${ imagePath } not found.`);
     }
+    // else {
+    //     throw new Error(`File ${ imagePath } not found.`);
+    // }
 };
 
 export const updateImage = async (formData: FormData, imagePath: string, key: string = "file") => {
@@ -90,6 +91,8 @@ export const pathImage = async (formData: FormData, isThrow?: boolean) => {// Ge
     }
 
     // Save the image file locally (You can also upload it to a cloud storage service like AWS S3, Cloudinary, etc.)
+    // console.log(imagePath)
+    // `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.name }`
     return `/uploads/${imgFile.name}`
 
 }
