@@ -1,10 +1,9 @@
 import React from 'react';
-import { updateSession } from "@/server/lib/cookies";
+import { updateSession } from "@/secure/cookies";
 
 async function Page() {
     const action = async (form: FormData) => {
         'use server'
-        // console.log(form);
         await updateSession()
     }
     return (

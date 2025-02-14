@@ -1,7 +1,7 @@
 import { AuthLayoutAdmin } from "@/app/components/Layout/admin.client";
 import { Metadata } from "next";
 import { ReactNode } from "react";
-import { getSession } from "@/server/lib/db";
+import { getSession } from "@/secure/db";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {

@@ -1,4 +1,4 @@
-import { UserZodType } from "@/validation/user.valid";
+import { UserZodType } from "@/schema/user.valid";
 
 export const userExample: UserZodType = {
     email: "john.doe@example.com", // Example email

@@ -1,4 +1,4 @@
-import { EmployeeCreateZodClient, EmployeeCreateZodServer } from "@/validation/employee.valid";
+import { EmployeeCreateZodClient, EmployeeCreateZodServer } from "@/schema/employee.valid";
 
 export const employeeClientExample: EmployeeCreateZodClient = {
     userId:"",

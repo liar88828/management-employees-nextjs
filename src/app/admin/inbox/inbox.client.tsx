@@ -1,18 +1,13 @@
-import { TEmployeeDB } from "@/interface/entity/employee.model";
+'use client'
 import { toDateIndo } from "@/utils/toDate";
-import React from "react";
+import React, { useActionState, useEffect } from "react";
 import Link from "next/link";
 import { Employees } from "@prisma/client";
-import { EmployeeCV, EmployeePhotos } from "@/app/components/employee/employee.page";
-
-export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
-    return (
-        <div className={ 'space-y-10' }>
-            <EmployeeCV employee={ employee }/>
-            <EmployeePhotos employee={ employee }/>
-        </div>
-    );
-}
+import Form from "next/form";
+import { MyInput, MyInputNum } from "@/app/components/form";
+import { employeeListStatus } from "@/interface/enum";
+import { inboxUpdate } from "@/server/action/inbox";
+import toast from "react-hot-toast";
 
 export function Pagination({ totalPages, search, status, page }: {
     totalPages: number,
@@ -120,4 +115,47 @@ export function InboxModalAction({ employees }: { employees: Employees }) {
     )
 }
 
+export function FormInbox({ employee }: { employee: Employees }) {
+    const [ state, action, pending ] = useActionState(inboxUpdate, undefined)
+    useEffect(() => {
+        if (state) {
+            if (state.success) {
+                toast.success(state.message)
+            } else {
+                toast.error(state.message)
+            }
+        }
+    }, [ employee.status, state ]);
 
+    return (
+        <Form action={ action } className={ 'card card-body max-w-4xl' }>
+            <input type="hidden" value={ employee.id } name={ 'id' }/>
+            <h1>Form Inbox</h1>
+            <MyInput
+                title={ "jobTitle" }
+                error={ state?.errors?.jobTitle }
+                defaultValue={ state?.value.jobTitle ?? employee.jobTitle }
+            />
+            <MyInputNum
+                title={ 'salary' }
+                error={ state?.errors?.salary }
+                defaultValue={ state?.value.salary ?? employee.salary }
+            />
+            <select
+                className="select select-bordered join-item"
+                name="status"
+                key={ state?.value.status || employee.status }
+                defaultValue={ state?.value.status || employee.status }
+            >
+                <option disabled value="">Select Status</option>
+                { employeeListStatus.map((item) => (
+                    <option key={ item }>{ item }</option>
+                )) }
+            </select>
+            <button
+                disabled={ pending }
+                className={ 'btn btn-info' }>Apply
+            </button>
+        </Form>
+    )
+}

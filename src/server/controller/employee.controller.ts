@@ -5,9 +5,8 @@ import { getId, getParams } from "@/utils/requestHelper"
 import EmployeeRepository from "@/server/repository/employee.repo";
 import { pathImage, saveImage } from "@/server/repository/image.repo";
 import { employeeSanitize } from "@/sanitize/employe.sanitize";
-import { employeeCreateServer } from "@/validation/employee.valid";
-import { authApi } from "@/server/lib/api";
-import { zodUUID } from "@/validation/zod.valid";
+import { employeeCreateServer } from "@/schema/employee.valid";
+import { zodUUID } from "@/schema/zod.valid";
 import { prisma } from "@/config/prisma";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 
@@ -32,21 +31,20 @@ export default class EmployeeController
     }
 
     async testimonialById(request: NextRequest, context: TContext) {
-        await authApi(request, true)
+
         const id = await getId(context)
         return this.employeeRepository.findById({ employeeId: zodUUID.parse(id) })
     }
 
 
     async findPhotoById(request: NextRequest, context: TContext) {
-        await authApi(request, true)
+
         const id = await getId(context)
         return this.employeeRepository.findById({ employeeId: zodUUID.parse(id) })
     }
 
 
     async testimonialCreate(request: NextRequest, __: TContext) {
-        await authApi(request, true)
 
         // Parse the incoming form data
         const formData = await request.formData();
@@ -66,7 +64,7 @@ export default class EmployeeController
 
 
     async testimonialUpdate(request: NextRequest, context: TContext) {
-        await authApi(request, true)
+
         // const json = await getJson(request)
         // const id = await getId(context)
         // return this.employeeRepository.updateOne(
@@ -76,7 +74,7 @@ export default class EmployeeController
     }
 
     async testimonialDelete(request: NextRequest, context: TContext) {
-        await authApi(request, true)
+
         const id = await getId(context)
         // if (res) {
         // 	await fileSystem(res.img)
@@ -86,7 +84,6 @@ export default class EmployeeController
 
     // --- user
     async findByUserId(request: NextRequest, context: TContext) {
-        await authApi(request)
         const userId = await getId(context)
         return this.employeeRepository.findById({ userId: zodUUID.parse(userId) })
     }

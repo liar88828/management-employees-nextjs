@@ -2,18 +2,17 @@
 import React from "react";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { FormProvider, useForm } from "react-hook-form";
-import { employeeCreateClient, EmployeeCreateZodClient } from "@/validation/employee.valid";
+import { employeeCreateClient, EmployeeCreateZodClient } from "@/schema/employee.valid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import { UserDB } from "@/interface/entity/user.model";
 import { useRouter } from "next/navigation";
 import { formDate } from "@/utils/toDate";
 import { useFormImage } from "@/hook/useFormImage";
-
 import { EmployeeFormContextClientAdmin } from "@/app/components/employee/employee.client.admin";
 import { Departements } from ".prisma/client";
 import { onUpsertDataUser } from "@/server/action/employee.client";
+import { useFormStatus } from "react-dom";
+import { onAction } from "@/server/action/OnAction";
 
 export function EmployeeFormClientUser({ employee, method, user, departments }: {
     user: UserDB
@@ -22,6 +21,7 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
     method: "POST" | 'PUT',
 }) {
     const router = useRouter();
+    const { pending } = useFormStatus()
     const { previewImage, handleImageChange } = useFormImage(employee?.img)
     const methods = useForm<EmployeeCreateZodClient>({
         resolver: zodResolver(employeeCreateClient),
@@ -39,31 +39,18 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
     });
 
     const {register, handleSubmit, formState: {errors}} = methods
-    // console.log(errors)
-    const {isPending, mutate} = useMutation({
-        onMutate: () => {
-            return {idToast: toast.loading('Loading...')}
-        },
-        onSuccess: () => {
-            toast.success("Employee created");
-            // router.replace('/home');
-        },
-        onError: (error) => {
-            toast.error(error.message);
-        },
-        onSettled: (_data, __error, ___variables, context) => {
-            toast.dismiss(context?.idToast)
-        },
-        mutationFn: async (data: EmployeeCreateZodClient) => {
-            // console.log(data)
-            return onUpsertDataUser(method, data, employee?.id)
-        }
-    })
 
+    const onSubmit = async (data: EmployeeCreateZodClient) => {
+        await onAction(() => {
+                onUpsertDataUser(method, data, employee?.id)
+            },
+            'Success Create Data Employee')
+        router.replace('/home');
+    }
     return (
         <div className="container mx-auto p-4 pb-20">
             <FormProvider {...methods}>
-                <form onSubmit={ handleSubmit((data) => mutate(data)) } className="space-y-4">
+                <form onSubmit={ handleSubmit(onSubmit) } className="space-y-4">
                     <input type="hidden" { ...register('userId', {
                         value: user.id
                     }) }/>
@@ -332,7 +319,7 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
                         <button
                             type="submit"
                             className="btn btn-primary"
-                            disabled={ isPending }
+                            disabled={ pending }
                         >
                             Submit Employee
                         </button>

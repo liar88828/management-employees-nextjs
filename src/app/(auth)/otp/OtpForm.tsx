@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
-import useOtpInput from "@/hook/useOtpInput";
 import Link from "next/link";
+import useOtpInput from "@/hook/useOtpInput";
 
 export function OtpForm() {
     const { otp, error, handleChange, handleSubmit } = useOtpInput();

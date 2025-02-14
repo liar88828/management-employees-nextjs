@@ -37,6 +37,29 @@ export function MyInput({ title, error, defaultValue }: { defaultValue?: string 
     );
 }
 
+export function MyInputNum({ title, error, defaultValue }: {
+    defaultValue?: string | number,
+    title: string,
+    error: any
+}) {
+    return (
+        <div className="form-control w-full">
+            <label htmlFor={ `${ title }` } className="label">
+                <span className="label-text capitalize">{ title }</span>
+            </label>
+            <input
+                type="number"
+                defaultValue={ defaultValue }
+                id={ `${ title }` }
+                name={ `${ title }` }
+                placeholder={ `Enter your ${ title }` }
+                className="input input-bordered w-full"
+            />
+            <FormError errors={ error } title="must add:"/>
+        </div>
+    );
+}
+
 export function MyInputEmail({ title, error, defaultValue }: {
     defaultValue?: string | number,
     title: string,

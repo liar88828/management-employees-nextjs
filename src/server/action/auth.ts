@@ -2,7 +2,7 @@
 import { prisma } from "@/config/prisma";
 import bcrypt from 'bcrypt'
 import { redirect } from "next/navigation";
-import { createSession } from "@/server/lib/cookies";
+import { createSession } from "@/secure/cookies";
 import {
     ForgetFormSchema,
     FormFail,
@@ -11,13 +11,13 @@ import {
     ResetFormSchema,
     SignInFormSchema,
     SignupFormSchema
-} from "@/validation/auth.valid";
+} from "@/schema/auth.valid";
 import { userRepository } from "@/server/controller";
-import { ROLE, USER_STATUS } from "@/interface/Utils";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { sendOtp } from "@/server/network/otp";
-import { checkPassword } from "../lib/password";
+import { checkPassword } from "@/secure/password";
 import { PropertyMap } from "@/interface/types";
+import { ROLE, USER_STATUS } from "@/interface/enum";
 
 export async function signUp(state: FormStateRegister, formData: FormData): Promise<FormStateRegister> {
     // Validate form fields
@@ -153,7 +153,6 @@ export async function signIn(state: FormStateAuth, formData: FormData): Promise<
         return {
             message: 'An error occurred while creating your account.',
             // prev: { email, password }
-
         }
     }
 

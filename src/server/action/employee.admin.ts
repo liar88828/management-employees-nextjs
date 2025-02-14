@@ -1,68 +1,15 @@
 'use server'
-import { EmployeeCreateZodClient } from "@/validation/employee.valid";
+import { EmployeeCreateZodClient } from "@/schema/employee.valid";
 import { pathImage, saveImage, updateImage } from "@/server/repository/image.repo";
 import { employeeSanitize } from "@/sanitize/employe.sanitize";
-import { employeeRepository, testimonialRepository } from "@/server/controller";
-import { TestimonialFormState } from "@/validation/testimonial.valid";
-import { sanitizedTestimonialID, testimonialSanitize } from "@/sanitize/testimonial.sanitize";
-import { redirect } from "next/navigation";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { employeeRepository } from "@/server/controller";
 import { ZodError } from "zod";
-import { revalidatePath } from "next/cache";
 import { prisma } from "@/config/prisma";
 import { checkDepartmentPosition } from "@/server/action/department";
-
-export async function createEmployeeActionAdmin(_prev: TestimonialFormState, formData: FormData): Promise<TestimonialFormState> {
-    const formRaw = testimonialSanitize(formData);
-    try {
-        if (formRaw.method === 'POST') {
-            await testimonialRepository.createOne(formRaw)
-        } else if (formRaw.method === 'PUT' && formRaw.id) {
-            await testimonialRepository.updateOne(formRaw, formRaw.id)
-        }
-        redirect(`/admin/testimonial`)
-    } catch (error) {
-        if (isRedirectError(error)) {
-            throw error;
-        }
-        if (error instanceof ZodError) {
-            return {
-                message: 'Validation failed',
-                prev: formRaw,
-                errors: error.flatten().fieldErrors
-            }
-        }
-
-        if (error instanceof Error) {
-            return {
-                message: 'Something Error failed',
-                prev: formRaw,
-            }
-        }
-
-    }
-}
-
-export async function updateEmployeeActionAdmin(_prev: TestimonialFormState, formData: FormData): Promise<any> {
-    const { id } = sanitizedTestimonialID(formData);
-    try {
-        await testimonialRepository.deleteOne(id)
-        revalidatePath('/')
-        redirect(`/admin/testimonial`)
-    } catch (error) {
-        if (isRedirectError(error)) {
-            throw error;
-        }
-        if (error instanceof Error) {
-            return {
-                message: 'Something Error failed',
-            }
-        }
-    }
-}
+import { EMPLOYEE_STATUS } from "@/interface/enum";
 
 export const employeeCreateAdmin = async ({ img, ...data }: EmployeeCreateZodClient) => {
-    console.log('employeeCreateAdmin', data);
+    // console.log('employeeCreateAdmin', data);
     const formData = new FormData();
     formData.append('file', img[0]);
     formData.append('data', JSON.stringify(data));
@@ -104,7 +51,7 @@ export async function onUpsertDataAdmin(
     try {
         await checkDepartmentPosition(data.department);
         if (method === "POST") {
-            data.status = "Pending"
+            data.status = EMPLOYEE_STATUS.Pending
             return employeeCreateAdmin(data)
         } else if (method === "PUT" && id) {
             return employeeUpdateAdmin(data, id)

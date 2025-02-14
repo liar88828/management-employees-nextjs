@@ -1,4 +1,4 @@
-import { TestimonialInput } from "@/validation/testimonial.valid";
+import { TestimonialInput } from "@/schema/testimonial.valid";
 
 export const testimonialExample: TestimonialInput = {
     name: "John Doe", // Name of the person

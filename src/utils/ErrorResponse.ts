@@ -21,14 +21,6 @@ export class ErrorOTP extends Error {
     }
 }
 
-export class ErrorXXX extends Error {
-    constructor(public msg: string, public code: number) {
-        super(msg);
-        Object.setPrototypeOf(this, ErrorXXX.prototype);
-    }
-
-}
-
 export class ErrorFetch extends Error {
     constructor(public msg: string) {
         super(msg);
@@ -42,8 +34,6 @@ export class ErrorPrisma extends Error {
         Object.setPrototypeOf(this, ErrorPrisma.prototype);
     }
 }
-
-
 
 export class ErrorAction extends Error {
     constructor(public msg: string) {

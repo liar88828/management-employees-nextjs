@@ -1,12 +1,12 @@
 'use client'
 import React, { ReactNode, useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useScrollVisibility } from "@/hook/UseScrollVisibility";
 import { BackButton } from "@/app/components/backButton";
 import { LogOut, Menu } from "lucide-react";
-import { logout } from "@/server/lib/cookies";
+import { logout } from "@/secure/cookies";
 import { linkAdmin, } from "@/assets/MenuList";
-import Link from "next/link";
 import { LinkListLayoutAdmin } from "@/app/components/Layout/admin.client";
 
 export function BaseLayoutAdmin({children, isLogin}: {

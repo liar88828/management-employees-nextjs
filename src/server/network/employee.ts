@@ -1,8 +1,7 @@
-
 import { toFetch } from "@/hook/toFetch";
 import { ResponseAll } from "@/interface/server/param";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
-import { EmployeeCreateZodClient } from "@/validation/employee.valid";
+import { EmployeeCreateZodClient } from "@/schema/employee.valid";
 import { toUrl } from "@/utils/toUrl";
 import { EmployeeParams } from "@/server/repository/employee.repo";
 import { ErrorFetch } from "@/utils/ErrorResponse";

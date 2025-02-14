@@ -1,6 +1,6 @@
 import React from 'react';
 import { getEmployeeById } from "@/server/controller/employee.controller";
-import { validSession } from "@/server/lib/db";
+import { validSession } from "@/secure/db";
 import { toDateIndo } from "@/utils/toDate";
 
 async function Page() {

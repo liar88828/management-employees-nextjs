@@ -1,5 +1,5 @@
 import { PropertyMap } from "@/interface/types";
-import { TestimonialInput } from "@/validation/testimonial.valid";
+import { TestimonialInput } from "@/schema/testimonial.valid";
 
 export function testimonialSanitize(formData: FormData): PropertyMap<TestimonialInput> & {
     method: | "POST" | "PUT" | string,

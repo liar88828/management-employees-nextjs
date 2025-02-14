@@ -1,6 +1,6 @@
 'use server'
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { CompanyFormSchema, CompanyFormState } from "@/validation/company.valid";
+import { CompanyFormSchema, CompanyFormState } from "@/schema/company.valid";
 import { saveImage, updateImage } from "@/server/repository/image.repo";
 import { prisma } from "@/config/prisma";
 import { redirect } from "next/navigation";

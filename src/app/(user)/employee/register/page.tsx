@@ -1,6 +1,6 @@
 import React from 'react';
 import { EmployeeFormClientUser } from "@/app/components/employee/employee.client.user";
-import { getUser } from "@/server/lib/db";
+import { getUser } from "@/secure/db";
 import { redirect } from "next/navigation";
 import { prisma } from "@/config/prisma";
 import { Departements } from ".prisma/client";

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { SessionPayload } from "@/server/lib/jwt";
+import { SessionPayload } from "@/secure/jwt";
 
 export function Header(
     { isLogin }:

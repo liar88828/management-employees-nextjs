@@ -4,10 +4,11 @@ import { toDateIndo } from "@/utils/toDate";
 import Image from "next/image";
 
 export const EmployeeIDCard = ({ employee, company }: { company: Companys, employee: Employees }) => (
-    <div className="justify-center flex items-center gap-2">
+    <div className="flex justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div className="">
             <h1>Depan</h1>
-            <div className="card  card-compact bg-white h-[10.2cm] w-[6.5cm] shadow-lg">
+            <div className="card card-compact bg-white h-[10.2cm] w-[6.5cm] shadow-lg print:shadow-none">
                 <div className="card-body ">
                     <div className="flex gap-6 items-center">
                         <Image
@@ -72,7 +73,7 @@ export const EmployeeIDCard = ({ employee, company }: { company: Companys, emplo
 
         <div className="">
             <h1>Belakang</h1>
-            <div className="card  card-compact bg-white h-[10.2cm] w-[6.5cm] shadow-lg">
+            <div className="card card-compact bg-white h-[10.2cm] w-[6.5cm] print:shadow-none">
                 <div className="card-body ">
                     <h2 className="text-lg font-bold text-center text-blue-600 ">Visi & Misi PT. Maju Bangsa</h2>
                     <div className=" text-[9px] text-gray-600 space-y-2">
@@ -103,7 +104,7 @@ export const EmployeeIDCard = ({ employee, company }: { company: Companys, emplo
         </div>
 
 
+        </div>
     </div>
-
 );
 

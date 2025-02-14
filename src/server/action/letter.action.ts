@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { LetterEmployee, LetterForm } from "@/assets/letter";
 import { getDateCalender, toDateClock, toDateDayName } from "@/utils/toDate";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { LetterFormSchema, LetterFormState } from "@/validation/send.valid";
+import { LetterFormSchema, LetterFormState } from "@/schema/send.valid";
 import { Letters } from "@prisma/client";
 
 export async function getLetterOnlyAll(): Promise<Letters[]> {

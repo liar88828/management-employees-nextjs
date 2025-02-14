@@ -1,6 +1,6 @@
-import {NextRequest} from "next/server";
-import {ResponseJson} from "@/utils/requestHelper";
-import {fromRequest} from "@/server/lib/api";
+import { NextRequest } from "next/server";
+import { ResponseJson } from "@/utils/requestHelper";
+import { fromRequest } from "@/secure/api";
 
 export async function GET(request: NextRequest,) {
     return ResponseJson(

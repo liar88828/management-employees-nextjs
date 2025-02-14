@@ -16,6 +16,7 @@ export type ToModel =
     | 'ceremony'
     | 'test'
     | "auth"
+    | 'otp'
 
 
 export type TMethod = "PUT" | "POST" | "GET" | "DELETE" | "PATCH";
@@ -26,17 +27,6 @@ export type STATUS_EMPLOYEE = 'Fail' | 'Complete' | 'Pending' | 'Active' | 'Disa
 //   return to;
 // };
 // data<'table'>( 'table' )
-
-export enum ROLE {
-    USER = "USER",
-    ADMIN = "ADMIN"
-}
-
-export enum USER_STATUS {
-    OTP = 'OTP',
-    RESET = 'RESET',
-    COMPLETED = 'COMPLETED',
-}
 
 export type SearchParams = { searchParams: { page?: string, take?: string, id?: string } };
 

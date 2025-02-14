@@ -2,20 +2,6 @@ import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { Companys } from "@prisma/client";
 import { toDateIndo } from "@/utils/toDate";
 
-interface JobApplicationData {
-    city: string;
-    date: string;
-    companyName: string;
-    companyAddress: string;
-    position: string;
-    name: string;
-    birthPlaceDate: string;
-    phone: string;
-    address: string;
-    experience: string;
-    previousPosition: string;
-}
-
 export default function JobApplication({ employee, company }: { employee: TEmployeeDB, company: Companys }) {
     return (
         <div className=" bg-white text-black shadow-lg card w-[210mm] h-[297mm] ">
@@ -23,11 +9,13 @@ export default function JobApplication({ employee, company }: { employee: TEmplo
                 <h2 className="text-center text-3xl font-bold mb-6">Surat Lamaran Kerja</h2>
                 <p className="text-right">{ employee.city }, { toDateIndo(new Date()) }</p>
                 <p className="mt-4 font-semibold">Hal: Lamaran Kerja</p>
-                <p className="mt-2">Kepada Yth,</p>
-                <p>Manager Personalia</p>
-                <p>PT { company.name }</p>
-                <p>{ company.address }</p>
-                <br/>
+                <div className="">
+                    <p className="mt-2">Kepada Yth,</p>
+                    <p>Manager Personalia</p>
+                    <p>PT { company.name }</p>
+                    <p>{ company.address }</p>
+                    <br/>
+                </div>
                 <p>Dengan hormat,</p>
                 <p className="mt-4">
                     Sesuai dengan iklan lowongan pekerjaan dari PT { company.name },

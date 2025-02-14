@@ -3,8 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import Zod from "zod"
 import { Prisma } from ".prisma/client"
 import type { TMethod, ToModel } from "@/interface/Utils"
-import { ErrorPrisma, ErrorResponse } from "@/utils/ErrorResponse";
-import { ErrorResponseCode, ErrorResponseName } from "@/utils/errorHandler";
+import { ErrorPrisma } from "@/utils/ErrorResponse";
 
 export async function getId({params}: TContext) {
     const param = await params
@@ -23,13 +22,22 @@ export async function getIdNum({params}: TContext): Promise<number> {
 }
 
 export async function getContextParam({ params }: TContext, key: keyof Awaited<TContext['params']>) {
-
     const param = await params
     if (param && key in param) {
         return param[key]
     }
     return ''
 }
+
+export async function getContextParamNum({ params }: TContext, key: keyof Awaited<TContext['params']>) {
+
+    const param = await params
+    if (param && key in param) {
+        return Number(param[key])
+    }
+    return 0
+}
+
 
 export async function getContextQuery({ searchParams }: TContext, text: keyof Awaited<TContext['searchParams']>) {
     const searchParam = await searchParams
@@ -38,6 +46,15 @@ export async function getContextQuery({ searchParams }: TContext, text: keyof Aw
     }
     return ''
 }
+
+export async function getContextQueryNum({ searchParams }: TContext, text: keyof Awaited<TContext['searchParams']>) {
+    const searchParam = await searchParams
+    if (searchParam && text in searchParam) {
+        return Number(searchParam[text])
+    }
+    return 1
+}
+
 
 export async function getSearchNameNum({searchParams}: TContext, text: keyof Awaited<TContext['searchParams']>): Promise<number> {
     const searchParam = await searchParams
@@ -101,44 +118,38 @@ export function getParamsThrow(request: NextRequest, text: string) {
 }
 
 export async function ResponseJson(
-    fun: any,
+    fun: () => any,
     method: TMethod,
     _from: ToModel = "not implement",
     code: number = 200
-) {
+): Promise<NextResponse<{ message: string, data: any, success: boolean }>> {
     // console.info(`method : ${method} from : ${_from}`)
 
     try {
 
-        const controls: any = await fun()
-        const response = {
-            msg: `${method} ${_from} success`,
-            data: controls,
-            code: code,
-        }
-        return NextResponse.json(response, {status: code})
+        return NextResponse.json({
+            message: `${ method } ${ _from } success`,
+            data: await fun(),
+            success: true
+        }, { status: code })
     } catch (err: unknown) {
-
-
-
         if (err instanceof Zod.ZodError) {
             return NextResponse.json(
                 {
-                    msg: `Error on ${method} ZodError`,
-                    error: err.issues,
-                    data: []
+                    message: `Error on ${ method } ZodError`,
+                    data: err.issues,
+                    success: false,
                 },
                 {status: 400}
             )
         }
 
-
         if (err instanceof Prisma.PrismaClientValidationError) {
             return NextResponse.json(
                 {
-                    msg: `Error on ${method} PrismaClientValidationError`,
-                    error: err,
-                    data: []
+                    message: `Error on ${ method } PrismaClientValidationError`,
+                    data: err,
+                    success: false,
 
                 },
                 {status: 400}
@@ -148,9 +159,9 @@ export async function ResponseJson(
         if (err instanceof Prisma.PrismaClientUnknownRequestError) {
             return NextResponse.json(
                 {
-                    msg: `Error on ${method} PrismaClientUnknownRequestError`,
-                    error: err,
-                    data: []
+                    message: `Error on ${ method } PrismaClientUnknownRequestError`,
+                    data: err,
+                    success: false,
                 },
                 {
                     status: 404
@@ -162,68 +173,44 @@ export async function ResponseJson(
             if (err.code === 'P2003') {
                 return NextResponse.json(
                     {
-                        msg: `Error on ${method} : PrismaClientKnownRequestError 'The is has relational with other Data, we recommendation to edit than delete the data'`,
-                        error: err,
-                        data: []
+                        message: `Error on ${ method } : PrismaClientKnownRequestError 'The is has relational with other Data, we recommendation to edit than delete the data'`,
+                        data: err,
+                        success: false,
                     },
                     {status: 400}
                 )
             }
         }
-        if (err instanceof ErrorResponse) {
 
+        if (err instanceof ErrorPrisma) {
             return NextResponse.json(
                 {
-                    msg: `Error on ${method} ErrorResponse`,
-                    error: err.msg,
-                    code: err.code,
+                    message: `Error on ${ method } ErrorPrisma`,
+                    data: err.msg,
+                    success: false
                 },
-                {status: err.code}
+                { status: err.code }
             )
         }
-        if (err instanceof ErrorResponseName) {
-            return NextResponse.json(
-                {
-                    msg: `Error on ${method}, ${err.message} ErrorResponseName`,
-                    error: err.name,
-                    code: err.code,
-                },
-                {status: err.code}
-            )
-        }
-
-        if (err instanceof ErrorResponseCode) {
-            return NextResponse.json(
-                {
-                    msg: `Error on ${method}, ${err.message} ErrorResponseCode`,
-                    error: err.name,
-                    code: err.code,
-                },
-                {status: err.code}
-            )
-        }
-
-       if (err instanceof ErrorPrisma) {
-            return NextResponse.json(
-                {
-                    msg: err.msg,
-                    error: `Error on ${method} ErrorPrisma`,
-                    code: err.code,
-                },
-                {status: err.code}
-            )
-        }
-
 
         if (err instanceof Error) {
             return NextResponse.json(
                 {
-                    msg: `Error on ${method} Error`,
-                    error: err.message,
-                    code: 500,
+                    message: `Error on ${ method } Error`,
+                    data: err.message,
+                    success: false
                 },
-                {status: 500}
+                { status: 500 }
             )
         }
+
+        return NextResponse.json(
+            {
+                message: `Something went wrong`,
+                data: {},
+                success: false
+            },
+            { status: 500 }
+        )
     }
 }

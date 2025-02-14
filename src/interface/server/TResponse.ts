@@ -4,3 +4,9 @@ export type TResponse<T> = {
   data: any | T,
   code: number
 };
+
+export interface ResponseData<T = any> {
+    success: boolean
+    data: T
+    message: string
+}

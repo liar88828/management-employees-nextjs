@@ -1,7 +1,7 @@
-import {NextRequest, NextResponse} from 'next/server'
-import {cookies} from 'next/headers'
-import {decrypt} from "@/server/lib/jwt";
-import {updateSession} from "@/server/lib/db";
+import { NextRequest, NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
+import { decrypt } from "@/secure/jwt";
+import { updateSession } from "@/secure/db";
 
 // 1. Specify protected and public routes
 const protectedRoutes = ['/dashboard', '/admin', '/trolley', '/invoice', '/checkout']

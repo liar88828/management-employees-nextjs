@@ -44,7 +44,7 @@ model Employees {
   department      String // Department where the employee works
   salary          Int // Employee's salary
   // managerId      Int? // Foreign key referencing the manager
-  status          String            @default("Active") // Employment status
+  status          String            @default("Pending") // Employment status
   address         String
   city            String // City where the employee lives
   postalCode      String // Postal/ZIP code
@@ -133,4 +133,20 @@ model Companys {
   phone   String
   email   String
   img     String
+  Misi    Misi[]
+  Visi    Visi[]
+}
+
+model Visi {
+  id         Int      @id @default(autoincrement())
+  text       String
+  Companys   Companys @relation(fields: [companysId], references: [id])
+  companysId Int
+}
+
+model Misi {
+  id         Int      @id @default(autoincrement())
+  text       String
+  Companys   Companys @relation(fields: [companysId], references: [id])
+  companysId Int
 }

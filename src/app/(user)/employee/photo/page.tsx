@@ -1,7 +1,7 @@
 import React from 'react';
 import { EmployeePhotoAdmin } from "@/app/components/employee/employee.page";
 import { getEmployeeByUserIdRedirect } from "@/server/action/employee.client";
-import { validSession } from "@/server/lib/db";
+import { validSession } from "@/secure/db";
 
 async function Page() {
     const { userId } = await validSession()

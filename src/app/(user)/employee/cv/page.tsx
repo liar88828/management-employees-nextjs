@@ -1,5 +1,5 @@
 import React from 'react';
-import { validSession } from "@/server/lib/db";
+import { validSession } from "@/secure/db";
 import { getEmployeeByUserIdRedirect } from "@/server/action/employee.client";
 import { PrintComponent } from "@/app/components/employee/employee.client.admin";
 import { EmployeeCV } from "@/app/components/employee/employee.page";

@@ -3,25 +3,21 @@ import { FormProvider, useFieldArray, useForm, useFormContext } from "react-hook
 import { BookUser, Minus, Plus, Printer } from "lucide-react";
 import React, { Fragment, ReactNode, useState } from "react";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
-import { Departements } from ".prisma/client";
 import { useFormImage } from "@/hook/useFormImage";
-import { employeeCreateClient, EmployeeCreateZodClient } from "@/validation/employee.valid";
+import { employeeCreateClient, EmployeeCreateZodClient } from "@/schema/employee.valid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { onUpsertDataAdmin } from "@/server/action/employee.admin";
 import { usePrint } from "@/hook/usePrint";
 import { EmployeePhotoPageAdmin } from "@/app/components/employee/employee.page";
 import { TypeFile, uploadFile } from "@/server/action/upload";
-import { useEmployeeStore } from "@/store/employee";
 import Form from "next/form";
 import Link from "next/link";
-import { useEmployee } from "@/hook/useEmployee";
-import { useDebounce } from "@/hook/useDebounce";
-import { PageLoadingSpin } from "@/app/components/LoadingData";
-import { EmptyData, PageEmptyData } from "@/app/components/PageErrorData";
 import { toRupiah } from "@/utils/toRupiah";
-import { useInfinityScroll } from "@/hook/useInfinityScroll";
+import { useFormStatus } from "react-dom";
+import { Departements } from ".prisma/client";
+import { Employees } from "@prisma/client";
+import { employeeListStatus } from "@/interface/enum";
 
 export function EmployeeFormContextClientAdmin({ label, keys }: { label: string, keys: string }) {
     const { register, control } = useFormContext()
@@ -71,6 +67,7 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
     method: "POST" | 'PUT',
     departments: Departements[]
 }) {
+    const status = useFormStatus()
     const { previewImage, handleImageChange } = useFormImage(employee?.img)
     const methods = useForm<EmployeeCreateZodClient>({
         resolver: zodResolver(employeeCreateClient),
@@ -79,27 +76,27 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
             userId: undefined,
         })
     });
-
     const { register, handleSubmit, formState: { errors } } = methods
-    const { isPending, mutate, } = useMutation({
-        onSuccess: (data) => {
-            console.log(data)
+
+    const onSubmit = async (data: EmployeeCreateZodClient) => {
+        const toastId = toast.loading('Loading...');
+        try {
+            await onUpsertDataAdmin(method, data, employee?.id)
             toast.success("Success Create Employee");
-        },
-        onError: (error) => {
-            console.log(error.message)
-            toast.error(error.message)
-        },
-        mutationFn: async (data: EmployeeCreateZodClient) => {
-            console.log(data)
-            return onUpsertDataAdmin(method, data, employee?.id)
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                toast.error(e.message)
+            }
+            console.log(e)
+        } finally {
+            toast.dismiss(toastId)
         }
-    })
+    }
 
     return (
         <div className="container mx-auto p-4 pb-20">
             <FormProvider { ...methods }>
-                <form onSubmit={ handleSubmit((data) => mutate(data)) } className="space-y-4">
+                <form onSubmit={ handleSubmit(onSubmit) } className="space-y-4">
                     <input
                         type="hidden"
                         { ...register('status',
@@ -388,7 +385,7 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                         <button
                             type="submit"
                             className="btn btn-primary"
-                            disabled={ isPending }
+                            disabled={ status.pending }
                         >
                             Submit Employee
                         </button>
@@ -399,12 +396,12 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
     );
 }
 
-export function PrintComponent({ children, href }: { href: string, children: ReactNode }) {
+export function PrintComponent({ children, href }: { href?: string, children: ReactNode }) {
     const { isPrinting, handlePrint, contentRef } = usePrint()
     return (
         <div ref={ contentRef }>
             <div className=" print:hidden gap-2 mb-2 flex  items-center">
-                <Link href={ href } className={ 'btn btn-outline' }>Edit</Link>
+                { href && <Link href={ href } className={ 'btn btn-outline' }>Edit</Link> }
                 <button
                     onClick={ handlePrint }
                     disabled={ isPrinting }
@@ -445,64 +442,38 @@ export function EmployeePhotosUploadClientAdmin({ employee, type }: { employee: 
     )
 }
 
-export function EmployeeSearchClientAdmin({ children }: { children: React.ReactNode }) {
-    const { setFilter, filter } = useEmployeeStore();
-
+export function EmployeeSearchClientAdmin({ search, status }: {
+    search: string,
+    status: string,
+}) {
     return (
-        <>
-            <div className="flex justify-between gap-2">
-                <Form action={ '/admin/employee' } className="join w-full">
-                    <input
-                        onChange={ e => setFilter({ name: e.target.value }) }
-                        type="text"
-                        className={ 'input input-bordered join-item w-full' }
-                        name={ 'search' }
-                        value={ filter.name }
-                    />
-                    <select className="select select-bordered join-item w-fit"
-                            defaultValue={ '' }
-                            onChange={ e => setFilter({ status: e.target.value }) }
-                            name={ 'status' }
-                    >
-                        <option disabled value={ '' }>Filter</option>
-                        {/*<option value={ '' }>All</option>*/ }
-                        <option>Pending</option>
-                        <option>Fail</option>
-                        <option>Complete</option>
-                        <option>Active</option>
-                        <option>Disabled</option>
-                    </select>
-                </Form>
-                <Link href={ '/admin/employee/create' } className={ 'btn btn-square' }>
-                    <Plus/>
-                </Link>
-            </div>
-            { children }
-        </>
+        <div className="flex justify-between gap-2">
+            <Form action={ '/admin/employee' } className="join w-full">
+                <input
+                    type="text"
+                    className={ 'input input-bordered join-item w-full' }
+                    name={ 'search' }
+                    defaultValue={ search }
+                />
+                <select className="select select-bordered join-item w-fit"
+                        defaultValue={ status }
+                        name={ 'status' }
+                >
+                    <option disabled value={ '' }>Filter</option>
+                    {/*<option value={ '' }>All</option>*/ }
+                    { employeeListStatus.map(item => (
+                        <option key={ item }>{ item }</option>
+                    )) }
+                </select>
+            </Form>
+            <Link href={ '/admin/employee/create' } className={ 'btn btn-square' }>
+                <Plus/>
+            </Link>
+        </div>
     );
 }
 
-export function EmployeeTableClientAdmin() {
-    const { filter } = useEmployeeStore();
-    const { useEmployeeInfiniteQuery } = useEmployee()
-    const searchDebounced = useDebounce({ value: filter.name }); // 1000ms delay
-    const statusDebounced = useDebounce({ value: filter.status }); // 1000ms delay
-
-    const {
-        data,
-        error,
-        isError,
-        status,
-        targetTrigger,
-    } = useEmployeeInfiniteQuery({
-            name: searchDebounced,
-            status: statusDebounced
-        },
-        filter)
-
-    if (status === 'pending' || !data) return <PageLoadingSpin/>
-    if (status === 'error' || isError || error) return <PageEmptyData page={ 'Employee User' }/>
-
+export function EmployeeTableClientAdmin({ employees }: { employees: Employees[] }) {
     return (
         <div>
             <div className="overflow-x-auto w-full">
@@ -530,13 +501,11 @@ export function EmployeeTableClientAdmin() {
 
                     {/* Table Body */ }
                     <tbody className={ 'overflow-y-auto ' }>
-                    { data.pages.map((page) => (
-                        <Fragment key={ page.nextCursor }>
-                            { page.data.map((employee) => (
-                                <tr key={ employee.id }>
-                                    {/*<td>{ employee.id }</td>*/ }
-                                    <td>
-                                        <div className="flex">
+                    { employees.map((employee) => (
+                        <tr key={ employee.id }>
+                            {/*<td>{ employee.id }</td>*/ }
+                            <td>
+                                <div className="flex">
                                             { employee.name }
                                         </div>
                                     </td>
@@ -564,8 +533,6 @@ export function EmployeeTableClientAdmin() {
                                     </td>
                                 </tr>
                             )) }
-                        </Fragment>
-                    )) }
                     </tbody>
                     <tfoot>
                     <tr>
@@ -574,100 +541,6 @@ export function EmployeeTableClientAdmin() {
                     </tfoot>
                 </table>
             </div>
-            { targetTrigger }
-        </div>
-    )
-}
-
-export function EmployeeTableClientAdminXXX() {
-    const { filter } = useEmployeeStore();
-    const { getAll } = useEmployee()
-    const searchDebounced = useDebounce({ value: filter.name }); // 1000ms delay
-    const statusDebounced = useDebounce({ value: filter.status }); // 1000ms delay
-
-    const queryResult = getAll({
-        search: searchDebounced,
-        status: statusDebounced
-    })
-
-    const { targetTrigger } = useInfinityScroll({
-        queryResult,
-    });
-
-    const { data: employees, isLoading, isError } = queryResult;
-    if (isLoading || !employees) return <PageLoadingSpin/>
-    if (isError) return <EmptyData page={ 'Employees' }/>
-
-    return (
-        <div>
-            <div className="overflow-x-auto w-full">
-                <table
-                    data-theme={ 'light' }
-                    className="table table-zebra w-full table-sm"
-                >
-                    {/* Table Head */ }
-                    <thead>
-                    <tr>
-                        {/*<th>ID</th>*/ }
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th className={ 'text-nowrap' }>Phone</th>
-                        <th>Gender</th>
-                        <th>Hire Date</th>
-                        <th>Job Title</th>
-                        <th>Department</th>
-                        <th>Salary</th>
-                        <th>Employment Type</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-
-                    {/* Table Body */ }
-                    <tbody>
-                    { employees.pages.map(({ data }, i) => (
-                        <Fragment key={ i }>
-                            { data.data.map((employee) => (
-                                <tr key={ employee.id }>
-                                    {/*<td>{ employee.id }</td>*/ }
-                                    <td>
-                                        <div className="flex">
-                                            { employee.name }
-                                        </div>
-                                    </td>
-                                    <td>{ employee.email }</td>
-                                    <td className={ 'text-nowrap' }>{ employee.phone || "-" }</td>
-                                    <td>{ employee.gender || "-" }</td>
-                                    <td>{ new Date(employee.hireDate).toLocaleDateString() }</td>
-                                    <td>{ employee.jobTitle }</td>
-                                    <td>{ employee.department || "-" }</td>
-                                    <td>{ toRupiah(employee.salary) }</td>
-                                    <td>{ employee.employmentType }</td>
-                                    <td><p className={ `badge ${
-                                        employee.status === "Active" ? "badge-success" : "badge-error"
-                                    }` }
-                                    >
-                                        { employee.status }
-                                    </p></td>
-                                    <td>
-                                        <Link
-                                            href={ `/admin/employee/${ employee.id }` }
-                                            className={ 'btn btn-sm btn-info btn-square' }
-                                        >
-                                            <BookUser/>
-                                        </Link>
-                                    </td>
-
-                                </tr>
-                            )) }
-                        </Fragment>
-                    )) }
-                    </tbody>
-                </table>
-
-            </div>
-
-            { targetTrigger }
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { employeeCreateServer, EmployeeCreateZodServer } from "@/validation/employee.valid";
+import { employeeCreateServer, EmployeeCreateZodServer } from "@/schema/employee.valid";
 
 export function employeeSanitize(
     formData: FormData, imagePath?: string, userId?: string): EmployeeCreateZodServer {

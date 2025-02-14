@@ -65,8 +65,6 @@ export type TMenuList = {
     add?: string | number
 }
 
-export const listStatusEmployee = [ 'Pending', "Interview", "Complete", "Active", "Disabled", ];
-
 export const linkAdmin: TMenuList[] = [
     {
         href: '/admin/dashboard',

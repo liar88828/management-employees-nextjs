@@ -8,10 +8,10 @@ import {
 } from "@/server/action/department";
 import { Departements } from ".prisma/client";
 import { Pen, Plus, Trash } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import { LoadingAction } from "@/app/components/LoadingData";
 import { FormError } from "@/app/components/form";
+import { useFormStatus } from "react-dom";
+import { onAction } from "@/server/action/OnAction";
 
 export function DepartmentModalCreate() {
     const [ state, action, pending ] = useActionState(departmentCreate, undefined);
@@ -71,12 +71,12 @@ export function DepartmentModalCreate() {
 }
 
 export function DepartmentModalDelete({ department }: { department: Departements }) {
-    const { mutate, isPending } = useMutation({
-            onSuccess: (data) => toast.success(data.message),
-            onError: (error) => toast.error(error.message),
-            mutationFn: () => departmentDelete(department.id)
-        }
-    )
+    const { pending } = useFormStatus()
+    const onDelete = async () => {
+        await onAction(async () => await departmentDelete(department.id),
+            `Success Delete Data Department By ID ${ department.id }`)
+    }
+
 
     return (
         <div>
@@ -92,8 +92,8 @@ export function DepartmentModalDelete({ department }: { department: Departements
                     <h2 className="card-title">Delete ID { department.id } - Position { department.position }</h2>
                     <p>Are You Sure want Delete this data ???</p>
                     <div className="modal-action">
-                        <button className={ `btn btn-error  btn-square ${ isPending && 'btn-disabled' }` }
-                                onClick={ () => mutate() }>
+                        <button className={ `btn btn-error  btn-square ${ pending && 'btn-disabled' }` }
+                                onClick={ onDelete }>
                             <Trash/>
                         </button>
 
@@ -110,13 +110,10 @@ export function DepartmentModalDelete({ department }: { department: Departements
 
 export function DepartmentModalUpdate({ department }: { department: Departements }) {
     const [ position, setPosition ] = useState(department.position)
-
-    const { mutate, isPending } = useMutation({
-            onSuccess: (data) => toast.success(data.message),
-            onError: (error) => toast.error(error.message),
-        mutationFn: (data: DepartmentUpdateActionType) => departmentUpdate(data)
-        }
-    )
+    const { pending } = useFormStatus()
+    const onUpdate = async (data: DepartmentUpdateActionType) => {
+        await onAction(() => departmentUpdate(data), `Success Delete Data Department By ID ${ department.id }`)
+    }
 
     return (
         <div>
@@ -135,8 +132,8 @@ export function DepartmentModalUpdate({ department }: { department: Departements
                            className="input input-bordered w-full"
                     />
                     <div className="modal-action">
-                        <button className={ `btn btn-info  btn-square ${ isPending && 'btn-disabled' }` }
-                                onClick={ () => mutate({ departmentId: department.id, position }) }>
+                        <button className={ `btn btn-info  btn-square ${ pending && 'btn-disabled' }` }
+                                onClick={ () => onUpdate({ departmentId: department.id, position }) }>
                             <Pen/>
                         </button>
 

@@ -1,29 +1,22 @@
 import Link from 'next/link';
-import { Pen, Plus } from "lucide-react";
+import { DeleteTestimonial, TestimonialSearch } from "@/app/admin/testimonial/deleteTestimonial";
+import { Pen } from "lucide-react";
 import { TContext } from "@/interface/server/param";
 import { getContextQuery, getSearchNameNum } from "@/utils/requestHelper";
 import { Pagination } from "@/app/components/pagination";
-import TestimonialSearch, { DeleteTestimonial } from "@/app/admin/testimonial/deleteTestimonial";
 import { ceremonyFindAll } from "@/server/action/testimonial";
 
 export default async function Home(context: TContext) {
-    const page = await getSearchNameNum(context, 'page') || 1
+    const page = await getSearchNameNum(context, 'page')
+    const query = await getContextQuery(context, 'query')
     const { profiles, totalPages } = await ceremonyFindAll({
-        query: await getContextQuery(context, 'query'),
+        query,
         page
     })
 
     return (
         <div>
-            <div className="flex justify-between">
-                <h1 className="text-2xl font-bold mb-4">Profiles</h1>
-                <div className="flex justify-center gap-2">
-                    <TestimonialSearch/>
-                    <Link href="/admin/testimonial/create" className="btn btn-primary mb-4 btn-square join-item">
-                        <Plus/>
-                    </Link>
-                </div>
-            </div>
+            <TestimonialSearch query={ query }/>
             <table className="table w-full">
                 <thead>
                 <tr>

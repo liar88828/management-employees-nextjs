@@ -61,7 +61,8 @@ export function EmployeeDetail({ employee }: {
 export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
     return (
         <div
-            className=" bg-white text-black print:shadow-none shadow-lg card w-[210mm] h-[297mm] print:h-screen print:w-screen">
+            // w-[210mm]
+            className=" bg-white text-black print:shadow-none shadow-lg card h-[297mm]  max-w-4xl print:h-screen print:w-screen">
             <div className="card-body">
                 <div className="flex justify-between items-center">
                     <div className="flex items-center space-x-4">
@@ -164,8 +165,9 @@ export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
 
 export function EmployeePhotos({ employee }: { employee: TEmployeeDB }) {
     return (
-        <div className="card card-body  bg-white">
-            <div className="grid grid-cols-2 ">
+        <div className="card card-body  bg-white items-center sm:items-start max-w-4xl">
+            <div className="grid sm:grid-cols-2 grid-cols-1 gap-5">
+
 
                 <section>
                     <h3 className="font-semibold mb-2">Ktp</h3>

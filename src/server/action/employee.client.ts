@@ -1,12 +1,14 @@
 'use server'
 import { redirect } from "next/navigation";
 import { employeeRepository } from "@/server/controller";
-import { EmployeeCreateZodClient } from "@/validation/employee.valid";
+import { EmployeeCreateZodClient } from "@/schema/employee.valid";
 import { pathImage, saveImage, updateImage } from "@/server/repository/image.repo";
 import { employeeSanitize } from "@/sanitize/employe.sanitize";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { checkDepartmentPosition } from "@/server/action/department";
 import { getEmployeeById } from "@/server/controller/employee.controller";
+import { prisma } from "@/config/prisma";
+import { EMPLOYEE_STATUS } from "@/interface/enum";
 
 export const employeeCreateUser = async ({ img, ...data }: EmployeeCreateZodClient) => {
     try {
@@ -57,6 +59,7 @@ export async function onUpsertDataUser(
     id?: string) {
     await checkDepartmentPosition(data.department);
     if (method === "POST") {
+        data.status = EMPLOYEE_STATUS.Pending
         return employeeCreateUser(data)
     } else if (method === "PUT" && id) {
         return employeeUpdateUser(data, id)
@@ -70,5 +73,18 @@ export async function getEmployeeByUserIdRedirect(userId: string): Promise<TEmpl
         return data
     })
 }
+
+export async function getEmployeeByUserIdForIDCard(userId: string) {
+    return prisma.employees.findUnique({
+        where: { userId, status: EMPLOYEE_STATUS.Active },
+        include: {
+            languages: true,
+            skills: true,
+            educations: true
+        },
+    })
+
+}
+
 
 

@@ -1,6 +1,7 @@
 import type React from "react"
 import { Companys, Employees } from "@prisma/client";
 import { LetterForm } from "@/assets/letter";
+import { toDateIndo } from "@/utils/toDate";
 
 const SuratPanggilanDiterimaKerja: React.FC<{
 
@@ -9,12 +10,6 @@ const SuratPanggilanDiterimaKerja: React.FC<{
     form: LetterForm
 
 }> = ({ company, employee, form }) => {
-    const currentDate = new Date().toLocaleDateString("id-ID", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-    });
-
     return (
         <div className=" bg-white text-black shadow-lg card w-[210mm] h-[297mm] ">
             <div className="card-body">
@@ -27,7 +22,7 @@ const SuratPanggilanDiterimaKerja: React.FC<{
                 </div>
 
                 <div className="mb-6">
-                    <p className="text-right">{ currentDate }</p>
+                    <p className="text-right">{ toDateIndo(new Date()) }</p>
                 </div>
 
                 <div className="mb-6">

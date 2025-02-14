@@ -1,8 +1,7 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import { useOtpStore } from "@/store/otp";
 import { useEmail } from "@/hook/useEmail";
-
+import { useOtpStore } from "@/hook/otp";
 // const targetTime = new Date(Date.now() + 60 * 1000).getTime();
 
 export const Countdown = () => {
@@ -48,13 +47,13 @@ export const Countdown = () => {
 
 export function CountdownButton() {
     const { store, setData } = useOtpStore()
-    const { generateOTP } = useEmail()
+    const { onGenerate } = useEmail()
 
-    const addOneMinute = () => {
+    const addOneMinute = async () => {
         // let myTime = store.time ?? 0
         let moreTime = Date.now() + 62 * 1000
         setData({ time: moreTime })
-        generateOTP.mutate({
+        await onGenerate({
             email: store.email,
             time: new Date(moreTime),
             reason: store.reason

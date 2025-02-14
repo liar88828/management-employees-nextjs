@@ -1,10 +1,8 @@
 'use client';
-
+import Link from "next/link";
 import { signIn } from "@/server/action/auth";
 import { useActionState } from "react";
-import Link from "next/link";
-import { useOtpStore } from "@/store/otp";
-
+import { useOtpStore } from "@/hook/otp";
 import { FormError } from "@/app/components/form";
 
 export default function LoginForm() {

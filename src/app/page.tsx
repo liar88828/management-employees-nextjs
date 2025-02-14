@@ -1,5 +1,5 @@
 import { About, ContactUs, Footer, Header, Hero, } from "@/app/components/landing/landing.page";
-import { getSession } from "@/server/lib/db";
+import { getSession } from "@/secure/db";
 import { Ceremony, OurProducts } from "@/app/components/landing/landing.server";
 
 export default async function HomePage() {

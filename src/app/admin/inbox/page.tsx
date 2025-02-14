@@ -5,8 +5,8 @@ import Form from "next/form";
 import { TContext } from "@/interface/server/param";
 import { getContextQuery } from "@/utils/requestHelper";
 import Link from "next/link";
-import { listStatusEmployee } from "@/assets/MenuList";
 import { Pagination, TableEmployees } from "@/app/admin/inbox/inbox.client";
+import { employeeListStatus } from "@/interface/enum";
 
 async function Page(context: TContext) {
     const search = await getContextQuery(context, 'search')
@@ -33,7 +33,7 @@ async function Page(context: TContext) {
     const totalPages = Math.ceil(totalEmployees / pageSize);
     // console.log(employees);
     return (
-        <div>
+        <>
             <h1 className={ 'text-xl font-bold' }>Hello Inbox</h1>
             <Form
                 action={ `/admin/inbox` }
@@ -56,7 +56,7 @@ async function Page(context: TContext) {
                     <li>
                         <Link href={ `/admin/inbox?search=${ search }&status=` }>Select All</Link>
                     </li>
-                    { listStatusEmployee.map((item) => (
+                    { employeeListStatus.map((item) => (
                         <li key={ item }>
                             <Link href={ `/admin/inbox?search=${ search }&status=${ item }` }>{ item }</Link>
                         </li>
@@ -65,7 +65,7 @@ async function Page(context: TContext) {
             </details>
             <TableEmployees employees={ employees }/>
             <Pagination page={ page } totalPages={ totalPages } search={ search } status={ status }/>
-        </div>
+        </>
     );
 }
 

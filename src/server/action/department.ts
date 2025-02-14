@@ -1,8 +1,8 @@
 'use server'
-import { FormStateAuth } from "@/validation/auth.valid";
+import { FormStateAuth } from "@/schema/auth.valid";
 import { prisma } from "@/config/prisma";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { DepartmentFormSchema, DepartmentFormState } from "@/validation/departement.valid";
+import { DepartmentFormSchema, DepartmentFormState } from "@/schema/departement.valid";
 import { ErrorAction } from "@/utils/ErrorResponse";
 import { redirect } from "next/navigation";
 

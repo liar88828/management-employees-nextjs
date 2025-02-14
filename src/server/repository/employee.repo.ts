@@ -1,5 +1,5 @@
 import { prisma } from "@/config/prisma";
-import { EmployeeCreateZodClient } from "@/validation/employee.valid";
+import { EmployeeCreateZodClient } from "@/schema/employee.valid";
 import { EmployeeCreate, TEmployeeDB, TEmployeeSearch } from "@/interface/entity/employee.model";
 import { ResponseAll, } from "@/interface/server/param";
 import { InterfaceRepository, ParamsApi } from "@/interface/server/InterfaceRepository";

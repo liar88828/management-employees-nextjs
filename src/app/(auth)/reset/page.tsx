@@ -2,7 +2,7 @@
 
 import { reset } from "@/server/action/auth";
 import { useActionState } from "react";
-import { useOtpStore } from "@/store/otp";
+import { useOtpStore } from "@/hook/otp";
 
 export default function SignupForm() {
     const { store } = useOtpStore()

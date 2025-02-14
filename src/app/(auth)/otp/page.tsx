@@ -1,6 +1,6 @@
 'use client'
 import React from "react";
-import { useOtpStore } from "@/store/otp";
+import { useOtpStore } from "@/hook/otp";
 import { CountdownButton } from "@/app/(auth)/otp/countdown";
 import { OtpForm } from "@/app/(auth)/otp/OtpForm";
 

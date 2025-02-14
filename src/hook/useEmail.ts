@@ -1,68 +1,36 @@
 'use client'
-import toast from "react-hot-toast";
-import { OTPGenerate, OTPValid, ResponseValidOTP } from "@/interface/server/param";
-import { toFetch } from "@/hook/toFetch";
-import { useMutation } from "@tanstack/react-query";
+import { OTPGenerate, OTPValid } from "@/interface/server/param";
 import { useRouter } from "next/navigation";
-import { USER_STATUS } from "@/interface/Utils";
+import { otpGenerate, otpValidate } from "@/server/controller/otpController";
+import { onAction } from "@/server/action/OnAction";
+import { USER_STATUS } from "@/interface/enum";
 
 export const useEmail = () => {
     const route = useRouter()
 
-    const generateOTP = useMutation({
-        onMutate: () => ({
-            toast: toast.loading('Is loading')
-        }),
-        onSettled: (_, __, ___, context) => {
-            if (context) {
-                toast.dismiss(context.toast)
-            }
-        },
-        onSuccess: (data) => {
-            toast.success("Success Validate Otp")
-            // route.push('/home')
-            console.log(data)
-        },
-        onError: (error) => {
-            toast.error("Error Validate Otp")
-        },
-        mutationFn: (data: OTPGenerate) => {
-            return toFetch<OTPValid>('POST', { url: 'email/otp', data })
-        }
-    })
+    const onGenerate = async (data: OTPGenerate) => {
+        return onAction(() => otpGenerate(data),
+            'Success Generate Otp Please Check the Your Email Address')
+    }
 
-    const validOTP = useMutation({
-        onMutate: () => ({
-            toast: toast.loading('Is loading')
-        }),
-        onSettled: (_, __, ___, context) => {
-            if (context) {
-                toast.dismiss(context.toast)
-            }
-        },
-        onSuccess: ({ data }, variables) => {
-            toast.success("Success Validate Otp")
-            // console.log(data === 'RESET')
-            if (data === USER_STATUS.OTP) {
-                console.log('otp')
-                route.push('/home')
-            }
-            if (data === USER_STATUS.RESET) {
-                console.log('reset')
-                route.push('/reset')
-            }
-        },
-        onError: (error) => {
-            toast.error("Error Validate Otp")
-        },
-        mutationFn: (data: OTPValid) => {
-            // console.log(data)
-            return toFetch<ResponseValidOTP['data']>('PUT', { url: 'email/otp', data })
-        }
-    })
+    const onValidate = async (data: OTPValid) => {
+        return onAction(async () => {
+                const response = await otpValidate(data)
+                if (response.data === USER_STATUS.OTP) {
+                    console.log('otp')
+                    route.push('/home')
+                }
+                if (response.data === USER_STATUS.RESET) {
+                    console.log('reset')
+                    route.push('/reset')
+                }
+                return response
+            },
+            'Success Generate Otp Please Check the Your Email Address')
+    }
 
     return {
-        generateOTP,
-        validOTP
+        onGenerate,
+        onValidate
     }
 }

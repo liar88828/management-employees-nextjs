@@ -4,8 +4,8 @@ import { useReactToPrint } from "react-to-print";
 export function usePrint() {
 	const [ isPrinting, setIsPrinting ] = useState(false)
 	const contentRef = useRef<HTMLDivElement>(null);
-	const reactToPrintFn = useReactToPrint({
-		// @ts-expect-error
+    const reactToPrintFn = useReactToPrint({
+        // @ts-ignore
 		contentRef,
 	});
 	const handlePrint = () => {

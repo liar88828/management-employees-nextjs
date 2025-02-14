@@ -6,7 +6,57 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { ZodError } from "zod";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/config/prisma";
-import { TestimonialFormState } from "@/validation/testimonial.valid";
+import { TestimonialFormState } from "@/schema/testimonial.valid";
+
+export async function createEmployeeActionAdmin(_prev: TestimonialFormState, formData: FormData): Promise<TestimonialFormState> {
+    const formRaw = testimonialSanitize(formData);
+    try {
+        if (formRaw.method === 'POST') {
+            await testimonialRepository.createOne(formRaw)
+        } else if (formRaw.method === 'PUT' && formRaw.id) {
+            await testimonialRepository.updateOne(formRaw, formRaw.id)
+        }
+        redirect(`/admin/testimonial`)
+    } catch (error) {
+        if (isRedirectError(error)) {
+            throw error;
+        }
+        if (error instanceof ZodError) {
+            return {
+                message: 'Validation failed',
+                prev: formRaw,
+                errors: error.flatten().fieldErrors
+            }
+        }
+
+        if (error instanceof Error) {
+            return {
+                message: 'Something Error failed',
+                prev: formRaw,
+            }
+        }
+
+    }
+}
+
+export async function updateEmployeeActionAdmin(_prev: TestimonialFormState, formData: FormData): Promise<any> {
+    const { id } = sanitizedTestimonialID(formData);
+    try {
+        await testimonialRepository.deleteOne(id)
+        revalidatePath('/')
+        redirect(`/admin/testimonial`)
+    } catch (error) {
+        if (isRedirectError(error)) {
+            throw error;
+        }
+        if (error instanceof Error) {
+            return {
+                message: 'Something Error failed',
+            }
+        }
+    }
+}
+
 
 export async function testimonialUpsertAction(_prev: TestimonialFormState, formData: FormData): Promise<TestimonialFormState> {
     const formRaw = testimonialSanitize(formData);

@@ -3,7 +3,7 @@ import {
     ResetFormSchemaType,
     SignInFormSchemaType,
     SignUpFormSchemaType
-} from "@/validation/auth.valid";
+} from "@/schema/auth.valid";
 
 export const signUpExample: SignUpFormSchemaType = {
     id: "677a4c56-4bb8-8013-9ecf-f55b8dd2414c", // Optional

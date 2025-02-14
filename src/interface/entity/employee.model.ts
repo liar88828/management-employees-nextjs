@@ -31,6 +31,3 @@ export const ktp = 'https://dummyimage.com/400x300/000/ffffff.jpg';
 export const i3x4 = 'https://dummyimage.com/300x400/000/ffffff.jpg';
 export const ijazah = 'https://dummyimage.com/297x210/000/ffffff.jpg';
 
-export enum EMPLOYEE {
-    KEY = "employee_query",
-}
