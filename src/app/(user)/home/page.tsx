@@ -22,7 +22,7 @@ async function Page() {
                             Register At {employee ? toDateIndo(employee.createdAt) : 'Empty'}
                         </p>
                         <p>
-                            Status : Active
+                            Status : {employee ? employee.status : ''}
                         </p>
                         <div className="">
                             <p className={'font-bold'}>Note : </p>

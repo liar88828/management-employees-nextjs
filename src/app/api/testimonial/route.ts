@@ -6,7 +6,7 @@ import { ceremonyController } from "@/server/controller";
 export async function GET(request: NextRequest, context: TContext) {
 
     return await ResponseJson(
-        async () => ceremonyController.getTestimonialAll(request, context),
+        async () => ceremonyController.employeeGetAll(request, context),
         "GET",
         "ceremony"
     )
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest, context: TContext) {
 
 export async function POST(request: NextRequest, context: TContext) {
     return await ResponseJson(
-        async () => ceremonyController.testimonialCreate(request, context),
+        async () => ceremonyController.employeeCreate(request, context),
         "POST",
         "ceremony"
     )

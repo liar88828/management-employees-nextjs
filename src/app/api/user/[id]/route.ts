@@ -5,7 +5,7 @@ import { userController } from "@/server/controller";
 
 export async function GET(request: NextRequest, context: TContext) {
 	return await ResponseJson(
-		async () => userController.testimonialById(request, context),
+		async () => userController.employeeById(request, context),
 		"GET",
 		"user",
 		201
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest, context: TContext) {
 
 export async function DELETE(request: NextRequest, context: TContext) {
 	return await ResponseJson(
-		async () => userController.testimonialDelete(request, context),
+		async () => userController.employeeDelete(request, context),
 		"DELETE",
 		"user"
 	)
@@ -22,7 +22,7 @@ export async function DELETE(request: NextRequest, context: TContext) {
 
 export async function PUT(request: NextRequest, context: TContext) {
 	return await ResponseJson(
-		async () => userController.testimonialUpdate(request, context),
+		async () => userController.employeeUpdate(request, context),
 		"PUT",
 		"user"
 	)

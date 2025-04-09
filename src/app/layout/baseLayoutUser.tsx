@@ -42,9 +42,7 @@ export function BaseLayoutUser({children, isLogin}: {
                     {isLogin && (
                         <button
                             className="btn btn-square btn-ghost"
-                            onClick={async () => {
-                                await logout()
-                            }}
+                            onClick={async () => await logout()}
                         >
                             <LogOut/>
                         </button>

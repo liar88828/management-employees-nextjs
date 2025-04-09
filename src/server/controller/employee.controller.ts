@@ -17,7 +17,7 @@ export default class EmployeeController
 
     }
 
-    async getTestimonialAll(request: NextRequest, __: TContext): Promise<any> {
+    async employeeGetAll(request: NextRequest, __: TContext): Promise<any> {
         await authApi(request, true)
         return this.employeeRepository.findAll({
                 filter: {
@@ -32,21 +32,22 @@ export default class EmployeeController
         )
     }
 
-    async testimonialById(request: NextRequest, context: TContext) {
+    async employeeById(request: NextRequest, context: TContext) {
         await authApi(request, true)
         const id = await getId(context)
         return this.employeeRepository.findById(zodUUID.parse(id))
     }
 
 
-    async findPhotoById(request: NextRequest, context: TContext) {
+    async employeeFindPhotoById(request: NextRequest, context: TContext) {
         await authApi(request, true)
         const id = await getId(context)
         return this.employeeRepository.findById(zodUUID.parse(id))
     }
 
 
-    async testimonialCreate(request: NextRequest, __: TContext) {
+    async employeeCreate(request: NextRequest, __: TContext) {
+        console.log('test')
         await authApi(request, true)
 
         // Parse the incoming form data
@@ -65,8 +66,7 @@ export default class EmployeeController
         return response
     }
 
-
-    async testimonialUpdate(request: NextRequest, context: TContext) {
+    async employeeUpdate(request: NextRequest, context: TContext) {
         await authApi(request, true)
         // const json = await getJson(request)
         // const id = await getId(context)
@@ -76,7 +76,7 @@ export default class EmployeeController
         // )
     }
 
-    async testimonialDelete(request: NextRequest, context: TContext) {
+    async employeeDelete(request: NextRequest, context: TContext) {
         await authApi(request, true)
         const id = await getId(context)
         // if (res) {

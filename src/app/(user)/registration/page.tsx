@@ -1,8 +1,8 @@
 import React from 'react';
-import {EmployeeFormClientUser} from "@/app/components/employee/employee.client";
 import {getEmployeeByUserId} from "@/server/controller/employee.controller";
 import {getUser} from "@/server/lib/db";
 import {redirect} from "next/navigation";
+import {EmployeeFormClientUser} from "@/app/components/registration/registration.client";
 
 async function Page() {
     const user = await getUser()

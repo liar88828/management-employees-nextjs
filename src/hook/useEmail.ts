@@ -24,7 +24,7 @@ export const useEmail = () => {
             console.log(data)
         },
         onError: (error) => {
-            toast.error("Error Validate Otp")
+            toast.error(`Error Validate Otp : ${error.message}`)
         },
         mutationFn: (data: OTPGenerate) => {
             return toFetch<OTPValid>('POST', { url: 'email/otp', data })

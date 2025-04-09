@@ -67,7 +67,6 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
     }
 
     async createOne({skills, languages, ...employees}: EmployeeCreate) {
-        console.log(employees);
         return prisma.$transaction(async (tx) => {
             const foundEmployee = await tx.employees.findUnique(
                 {

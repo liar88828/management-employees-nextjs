@@ -15,7 +15,7 @@ export const employeeCreateClient: z.ZodType<EmployeeCreate> = z.object({
     jobTitle: z.string().min(2, "Job Title must be at least 2 characters"),
     department: z.string(),
     salary: z.number().min(0, "Salary must be a positive number"),
-    managerId: z.number().optional(),
+    // managerId: z.number().optional(),
     // status: z.enum([ "Active", "Inactive" ]),
     status: z.string().min(2, "Status must be a positive number"),
     address: zodAddress,
