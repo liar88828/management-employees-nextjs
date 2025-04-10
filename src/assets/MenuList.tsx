@@ -2,7 +2,7 @@ import {
     Apple,
     BookA,
     CakeSlice,
-    Car,
+    Car, Clipboard, ClipboardCheck,
     CreditCard,
     GlassWater,
     GraduationCap,
@@ -82,14 +82,25 @@ export const linkUser: TMenuList[] = [
 
 
     {
-        href: '/employee/register',
+        href: '/registration',
         icon: <User className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
-        label: 'Register',
+        label: 'Registration',
     },
 
+    {
+        href: '/interview',
+        icon: <Clipboard className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
+        label: 'Interview',
+    },
 
     {
-        href: '/employee/print',
+        href: '/accept',
+        icon: <ClipboardCheck className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
+        label: 'Accept',
+    },
+
+    {
+        href: '/print',
         icon: <Printer className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
         label: 'Print',
     },

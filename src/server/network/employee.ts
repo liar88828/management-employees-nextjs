@@ -87,11 +87,12 @@ export const employeeCreateUser = async ({img, ...data}: EmployeeCreateZodClient
     formData.append('file', img[0]);
     formData.append('data', JSON.stringify(data));
 
-    const response = await fetch(`/api/employee/user/${data.userId}`, {
+    const response = await fetch(`/api/user/registration/${data.userId}`, {
         method: 'POST',
         body: formData, // Send as FormData
     });
 
+    console.log('employeeCreateUser', response.json());
     if (!response.ok) {
         const data = await response.json();
         console.error(data)
@@ -99,8 +100,6 @@ export const employeeCreateUser = async ({img, ...data}: EmployeeCreateZodClient
         throw new ErrorFetch(errorData.msg || 'Failed to create employee');
     }
 
-    // Optionally redirect or show success message
-    // router.push('/employees'); // Redirect to employees list
     return response.json();
 }
 

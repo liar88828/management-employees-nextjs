@@ -6,7 +6,7 @@ import { ceremonyController } from "@/server/controller";
 export async function GET(request: NextRequest, context: TContext) {
 
     return await ResponseJson(
-        async () => ceremonyController.testimonialById(request, context),
+        async () => ceremonyController.employeeById(request, context),
         "GET",
         "ceremony"
     )
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest, context: TContext) {
 
 export async function PUT(request: NextRequest, context: TContext) {
     return await ResponseJson(
-        async () => ceremonyController.testimonialUpdate(request, context),
+        async () => ceremonyController.employeeUpdate(request, context),
         "PUT",
         "ceremony"
     )
@@ -23,7 +23,7 @@ export async function PUT(request: NextRequest, context: TContext) {
 export async function DELETE(request: NextRequest, context: TContext) {
 
     return await ResponseJson(
-        async () => ceremonyController.testimonialDelete(request, context),
+        async () => ceremonyController.employeeDelete(request, context),
         "DELETE",
         "ceremony"
     )

@@ -7,7 +7,7 @@ import fs from "node:fs/promises";
 
 export async function GET(request: NextRequest, context: TContext) {
 	return ResponseJson(
-		async () => employeeController.testimonialById(request, context),
+		async () => employeeController.employeeById(request, context),
 		"GET",
 		"employee",
 		201
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest, context: TContext) {
 
 export async function PUT(request: NextRequest, context: TContext) {
 	return await ResponseJson(
-		async () => employeeController.testimonialUpdate(request, context),
+		async () => employeeController.employeeUpdate(request, context),
 		"PUT",
 		"employee"
 	)
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest, _: TContext) {
 
 export async function DELETE(request: NextRequest, context: TContext) {
 	return ResponseJson(
-		async () => employeeController.testimonialDelete(request, context),
+		async () => employeeController.employeeDelete(request, context),
 		"DELETE",
 		"employee"
 	)

@@ -1,9 +1,11 @@
 import React from "react";
-import {EmployeeCVClientAdmin, EmployeeFormClientAdmin} from "@/app/components/employee/employee.client";
+import {EmployeeFormClientAdmin} from "@/app/components/employee/employee.client";
 import {EmployeePhotoAdmin} from "@/app/components/employee/employee.page";
 import {employeeFindByUserId, employeeId} from "@/server/network/employee";
 import {EmptyData} from "@/app/components/PageErrorData";
 import {getEmployeeByUserId} from "@/server/controller/employee.controller";
+import {validSession} from "@/server/lib/db";
+import {EmployeeCV} from "@/app/components/employee/cv";
 
 export async function EmployeeDetailServerAdmin({idEmployee}: { idEmployee: string }) {
     const employee = await employeeFindByUserId(idEmployee)
@@ -14,13 +16,15 @@ export async function EmployeeDetailServerAdmin({idEmployee}: { idEmployee: stri
 
     return (
         <div className="pb-20 space-y-5">
-            <EmployeeCVClientAdmin employee={employee.data}/>
+            <EmployeeCV employee={employee.data}/>
             <EmployeePhotoAdmin employee={employee.data}/>
         </div>
     );
 }
 
-export async function EmployeeDetailServerClient({userId}: { userId: string }) {
+export async function EmployeeDetailServerClient() {
+    const {userId} = await validSession()
+
     const employee = await getEmployeeByUserId(userId);
 
     if (!employee) {
@@ -28,7 +32,7 @@ export async function EmployeeDetailServerClient({userId}: { userId: string }) {
     }
     return (
         <div className="pb-20 space-y-5">
-            <EmployeeCVClientAdmin employee={employee}/>
+            <EmployeeCV employee={employee}/>
             <EmployeePhotoAdmin employee={employee}/>
         </div>
     );

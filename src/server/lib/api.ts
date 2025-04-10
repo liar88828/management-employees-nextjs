@@ -36,3 +36,13 @@ export async function authApi(request: NextRequest, isAdmin: boolean = false) {
     }
     return session
 }
+
+export async function getSessionValid() {
+    let session = await getSession()
+
+    if (session) {
+        throw new ErrorResponse('is Secure Only', 401)
+    }
+
+    return session
+}

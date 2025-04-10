@@ -12,7 +12,7 @@ export default class UserController
 	constructor(private userRepository: UserRepository) {
 	}
 
-	async getTestimonialAll(request: NextRequest, __: TContext): Promise<any> {
+	async employeeGetAll(request: NextRequest, __: TContext): Promise<any> {
         await authApi(request, true)
 		return this.userRepository.findAll({
 			filter: {
@@ -25,7 +25,7 @@ export default class UserController
         })
 	}
 
-    async testimonialById(request: NextRequest, context: TContext): Promise<any> {
+    async employeeById(request: NextRequest, context: TContext): Promise<any> {
         await authApi(request)
 		const id = await getId(context)
 		return this.userRepository.findById(
@@ -34,14 +34,14 @@ export default class UserController
 		)
 	}
 
-	async testimonialCreate(request: NextRequest, context: TContext): Promise<any> {
+	async employeeCreate(request: NextRequest, context: TContext): Promise<any> {
         await authApi(request, true)
 		const json = await getJson(request)
         // console.log(`test :${ json }`)
 		return this.userRepository.createOne(UserCreate.parse(json))
 	}
 
-	async testimonialUpdate(request: NextRequest, context: TContext): Promise<any> {
+	async employeeUpdate(request: NextRequest, context: TContext): Promise<any> {
         await authApi(request, true)
 		const id = await getId(context)
 		const json = await getJson(request)
@@ -51,7 +51,7 @@ export default class UserController
 		)
 	}
 
-	async testimonialDelete(request: NextRequest, context: TContext) {
+	async employeeDelete(request: NextRequest, context: TContext) {
         await authApi(request, true)
 		const id = await getId(context)
         // if (res) {
