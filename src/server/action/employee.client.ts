@@ -2,8 +2,8 @@
 import { redirect } from "next/navigation";
 import { employeeRepository } from "@/server/controller";
 import { EmployeeCreateZodClient } from "@/schema/employee.valid";
-import { pathImage, saveImage, updateImage } from "@/server/repository/image.repo";
-import { employeeSanitize } from "@/sanitize/employe.sanitize";
+import { pathImage, saveImage, setPathImage, updateImage } from "@/server/repository/image.repo";
+import { employeeSanitize, employeeSanitizeFormData } from "@/sanitize/employe.sanitize";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { checkDepartmentPosition } from "@/server/action/department";
 import { getEmployeeById } from "@/server/controller/employee.controller";
@@ -13,15 +13,15 @@ import { EMPLOYEE_STATUS } from "@/interface/enum";
 export const employeeCreateUser = async ({ img, ...data }: EmployeeCreateZodClient) => {
     try {
         const isImage = typeof img === 'object'
-        // console.log('isImage', isImage)
-        const formData = new FormData();
-        formData.append('file', img[0]);
-        formData.append('data', JSON.stringify(data));
-        const filePath = await pathImage(formData)    // Save the image path to the database
-        const employeeData = employeeSanitize(formData, isImage ? filePath : undefined, data?.userId)
+        const imageFile = img[0]
+        const filePath = await setPathImage(imageFile)    // Save the image path to the database
+        // console.log("filePath", filePath)
+        const employeeData = employeeSanitize(data, isImage ? filePath : undefined, data?.userId)
         const response = await employeeRepository.createUserRepo(employeeData)
+        console.log('response : ', response)
         if (response && isImage) {
-            await saveImage(formData, filePath)
+            const pathImage = await saveImage(imageFile, filePath)
+            console.log('saveImage : ', pathImage)
         }
         return response
     } catch (error) {
@@ -39,7 +39,7 @@ export async function employeeUpdateUser({ img, ...data }: EmployeeCreateZodClie
         formData.append('file', img[0]);
         formData.append('data', JSON.stringify(data));
         const filePath = await pathImage(formData, false)    // Save the image path to the database
-        const employeeData = employeeSanitize(formData, isImage ? filePath : undefined, data?.userId)
+        const employeeData = employeeSanitizeFormData(formData, isImage ? filePath : undefined, data?.userId)
         const response = await employeeRepository.updateUserRepo(employeeData, employeeId)
         console.log(isImage, response)
         if (response && isImage) {

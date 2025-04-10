@@ -2,8 +2,8 @@ import { InterfaceController } from "@/interface/server/InterfaceController"
 import { NextRequest } from "next/server"
 import { TContext } from "@/interface/server/param"
 import { getId, getParams } from "@/utils/requestHelper"
-import { pathImage, saveImage } from "@/server/repository/image.repo";
-import { employeeSanitize } from "@/sanitize/employe.sanitize";
+import { pathImage, saveImageFormData } from "@/server/repository/image.repo";
+import { employeeSanitizeFormData } from "@/sanitize/employe.sanitize";
 import { authApi } from "@/server/lib/api";
 import { prisma } from "@/config/prisma";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
@@ -54,12 +54,12 @@ export default class EmployeeController
         // Save the image path to the database
         const filePath = await pathImage(formData, true)
         // console.log(filePath)
-        const data = employeeSanitize(formData, filePath, '')
+        const data = employeeSanitizeFormData(formData, filePath, '')
         const response = await this.employeeRepository.createOne(
             employeeCreateServer.parse(data)
         )
         if (response) {
-            await saveImage(formData, filePath)
+            await saveImageFormData(formData, filePath)
         }
         return response
     }
@@ -93,10 +93,10 @@ export default class EmployeeController
         const userId = await getId(context)
         const formData = await request.formData();          // Parse the incoming form data
         const filePath = await pathImage(formData, true)    // Save the image path to the database
-        const data = employeeSanitize(formData, filePath, userId)
+        const data = employeeSanitizeFormData(formData, filePath, userId)
         const response = await this.employeeRepository.createOne(data)
         if (response) {
-            await saveImage(formData, filePath)
+            await saveImageFormData(formData, filePath)
         }
         return response
     }

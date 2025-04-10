@@ -4,17 +4,13 @@ import Link from "next/link";
 import { EmployeeCV } from "@/app/components/employee/cv";
 import { validSession } from "@/secure/db";
 import { getEmployeeByUserIdForIDCard } from "@/server/action/employee.client";
+import { RegistrationFirst } from "@/app/components/error/registrationFirst";
 
 async function Page() {
     const { userId } = await validSession()
-
     const employee = await getEmployeeByUserIdForIDCard(userId)
     if (!employee) {
-        return <div>
-            <h1>
-                please Registration First
-            </h1>
-        </div>
+        return <RegistrationFirst/>
     }
 
     return (

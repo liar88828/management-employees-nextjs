@@ -1,7 +1,7 @@
 'use server'
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { CompanyFormSchema, CompanyFormState } from "@/schema/company.valid";
-import { saveImage, updateImage } from "@/server/repository/image.repo";
+import { saveImageFormData, updateImage } from "@/server/repository/image.repo";
 import { prisma } from "@/config/prisma";
 import { redirect } from "next/navigation";
 
@@ -32,7 +32,7 @@ export async function createCompanyAction(state: CompanyFormState, formData: For
                     }
                 })
             } else {
-                await saveImage(formData, '/company/logo.png', 'img')
+                await saveImageFormData(formData, '/company/logo.png', 'img')
                 await tx.companys.create({
                     data: {
                         ...data,

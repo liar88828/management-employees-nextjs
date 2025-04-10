@@ -1,7 +1,7 @@
 'use server'
 import { EmployeeCreateZodClient } from "@/schema/employee.valid";
-import { pathImage, saveImage, updateImage } from "@/server/repository/image.repo";
-import { employeeSanitize } from "@/sanitize/employe.sanitize";
+import { pathImage, saveImageFormData, updateImage } from "@/server/repository/image.repo";
+import { employeeSanitizeFormData } from "@/sanitize/employe.sanitize";
 import { employeeRepository } from "@/server/controller";
 import { ZodError } from "zod";
 import { prisma } from "@/config/prisma";
@@ -15,10 +15,10 @@ export const employeeCreateAdmin = async ({ img, ...data }: EmployeeCreateZodCli
     formData.append('data', JSON.stringify(data));
 
     const filePath = await pathImage(formData)    // Save the image path to the database
-    const employeeData = employeeSanitize(formData, filePath)
+    const employeeData = employeeSanitizeFormData(formData, filePath)
     const response = await employeeRepository.createUserRepo(employeeData)
     if (response) {
-        await saveImage(formData, filePath)
+        await saveImageFormData(formData, filePath)
     }
     return response
 
@@ -31,7 +31,7 @@ export async function employeeUpdateAdmin({ img, ...data }: EmployeeCreateZodCli
         formData.append('file', img[0]);
         formData.append('data', JSON.stringify(data));
         const filePath = await pathImage(formData, false)    // Save the image path to the database
-        const employeeData = employeeSanitize(formData, filePath, data.userId)
+        const employeeData = employeeSanitizeFormData(formData, filePath, data.userId)
         const response = await employeeRepository.updateUserRepo(employeeData, employeeId)
         if (response && typeImage) {
             await updateImage(formData, filePath)

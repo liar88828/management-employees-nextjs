@@ -1,6 +1,6 @@
 import { employeeCreateServer, EmployeeCreateZodServer } from "@/schema/employee.valid";
 
-export function employeeSanitize(
+export function employeeSanitizeFormData(
     formData: FormData, imagePath?: string, userId?: string): EmployeeCreateZodServer {
     const form = formData.get('data')?.toString() ?? ''
     const json = JSON.parse(form);
@@ -12,6 +12,22 @@ export function employeeSanitize(
     }
     return employeeCreateServer.parse(json)
 }
+
+export function employeeSanitize(
+    data: any,
+    imagePath?: string,
+    userId?: string): EmployeeCreateZodServer {
+    if (imagePath) {
+        data.img = imagePath ?? 'image/png';
+    }
+    if (userId) {
+        data.userId = userId
+    }
+    // console.log(data)
+    return employeeCreateServer.parse(data)
+}
+
+
 
 // export function employeeSanitizeAction(
 //     data: EmployeeCreateZodClient,

@@ -16,10 +16,10 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
     user: UserDB,
     employee?: TEmployeeDB,
     method: "POST" | 'PUT',
-    departments?: Departements[]
+    departments: Departements[]
 }) {
     const router = useRouter();
-    const [ previewImage, setPreviewImage ] = useState<string>(employee?.img ? `/${ employee.img }` : "https://dummyimage.com/400x400/000/fff.jpg");
+    const [ previewImage, setPreviewImage ] = useState<string>(employee?.img ? `${ employee.img }` : "https://dummyimage.com/400x400/000/fff.jpg");
     const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -52,11 +52,15 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
         data.userId = user.id
         const idToast = toast.loading('Loading...')
         try {
+            // console.log("data : ",data)
             await onUpsertDataUser(method, data)
             toast.success('Successfully created');
-            router.push("/home")
+            // router.push("/home")
         } catch (e) {
-            if (e instanceof Error) toast.error(e.message);
+            console.log(e)
+            if (e instanceof Error) {
+                toast.error(e.message);
+            }
         } finally {
             toast.dismiss(idToast)
         }
@@ -98,7 +102,7 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
                         <input
                             type="email"
                             { ...register('email', {
-                                    disabled: true
+                                // disabled: true
                                 }
                             ) }
                             className={ `input input-bordered ${ errors.email ? 'input-error' : '' }` }
@@ -114,7 +118,7 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
                         <input
                             type="tel"
                             { ...register('phone', {
-                                    disabled: true
+                                // disabled: true
                                 }
                             ) }
                             className="input input-bordered"
@@ -187,15 +191,19 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
                         <label className="label">
                             <span className="label-text">Department</span>
                         </label>
-                        <input
-                            type="text"
-                            { ...register('department') }
-                            className="input input-bordered"
-                            placeholder="Department"
-                        />
-                        { errors.department &&
-													<p className="text-error text-sm mt-1">{ errors.department.message }</p> }
 
+                        <select
+                            { ...register('department') }
+                            className={ `select select-bordered ${ errors.gender ? 'select-error' : '' }` }
+                        >
+                            <option value="">Select Department</option>
+                            { departments.map(item => (
+                                <option key={ item.id } value={ item.position }>{ item.position }</option>
+                            )) }
+                        </select>
+                        { errors.department
+                            && <p className="text-error text-sm mt-1">{ errors.department.message }</p>
+                        }
                     </div>
 
                     <div className="form-control">
@@ -294,19 +302,19 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
                         { errors.notes && <p className="text-error text-sm mt-1">{ errors.notes.message }</p> }
                     </div>
 
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Education</span>
-                        </label>
-                        <input
-                            { ...register('educations') }
-                            className="input input-bordered"
-                            placeholder="Additional notes"
-                        />
-                        { errors.educations &&
-													<p className="text-error text-sm mt-1">{ errors.educations.message }</p> }
-                    </div>
+                    {/*<div className="form-control">*/ }
+                    {/*    <label className="label">*/ }
+                    {/*        <span className="label-text">Education</span>*/ }
+                    {/*    </label>*/ }
+                    {/*    <input*/ }
+                    {/*        { ...register('educations') }*/ }
+                    {/*        className="input input-bordered"*/ }
+                    {/*        placeholder="Additional notes"*/ }
+                    {/*    />*/ }
+                    {/*    { errors.educations && <p className="text-error text-sm mt-1">{ errors.educations.message }</p> }*/ }
+                    {/*</div>*/ }
 
+                    <EmployeeFormContextClientAdmin keys={ 'educations' } label={ 'Educations' }/>
                     <EmployeeFormContextClientAdmin keys={ 'skills' } label={ 'Skills' }/>
                     <EmployeeFormContextClientAdmin keys={ 'languages' } label={ 'Languages' }/>
                     {/*<EmployeeFormContextClientAdmin keys={ 'certifications' } label={ 'Certifications' }/>*/ }
@@ -318,7 +326,6 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
                         </label>
                         <input
                             type="file"
-
                             {
                                 // @ts-ignore
                                 ...register('img',) }
