@@ -1,7 +1,7 @@
 import React from 'react';
-import { getEmployeeById } from "@/server/controller/employee.controller";
-import { validSession } from "@/secure/db";
+import { getEmployeeById, } from "@/server/controller/employee.controller";
 import { toDateIndo } from "@/utils/toDate";
+import { validSession } from "@/secure/db";
 
 async function Page() {
     const {userId} = await validSession()
@@ -13,14 +13,14 @@ async function Page() {
 
                 <div className="card">
                     <div className="card-body">
-                        <h1 className={ `card-title` }>
+                        <h1 className={ 'card-title' }>
                             Register ID # {employee ? employee.id : 'Empty'}
                         </h1>
                         <p>
                             Register At {employee ? toDateIndo(employee.createdAt) : 'Empty'}
                         </p>
                         <p>
-                            Status : { employee ? employee.status : 'Not Available' }
+                            Status : { employee ? employee.status : '' }
                         </p>
                         <div className="">
                             <p className={'font-bold'}>Note : </p>

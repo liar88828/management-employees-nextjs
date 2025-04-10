@@ -1,10 +1,10 @@
 import React from 'react';
-import { EmployeeFormClientUser } from "@/app/components/employee/employee.client.user";
-import { getUser } from "@/secure/db";
 import { redirect } from "next/navigation";
+import { getEmployeeById } from "@/server/controller/employee.controller";
 import { prisma } from "@/config/prisma";
 import { Departements } from ".prisma/client";
-import { getEmployeeById } from "@/server/controller/employee.controller";
+import { EmployeeFormClientUser } from "@/app/components/registration/registration.client";
+import { getUser } from "@/secure/db";
 
 async function Page() {
     const user = await getUser()

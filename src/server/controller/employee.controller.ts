@@ -2,13 +2,14 @@ import { InterfaceController } from "@/interface/server/InterfaceController"
 import { NextRequest } from "next/server"
 import { TContext } from "@/interface/server/param"
 import { getId, getParams } from "@/utils/requestHelper"
-import EmployeeRepository from "@/server/repository/employee.repo";
 import { pathImage, saveImage } from "@/server/repository/image.repo";
 import { employeeSanitize } from "@/sanitize/employe.sanitize";
-import { employeeCreateServer } from "@/schema/employee.valid";
-import { zodUUID } from "@/schema/zod.valid";
+import { authApi } from "@/server/lib/api";
 import { prisma } from "@/config/prisma";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
+import EmployeeRepository from "@/server/repository/employee.repo";
+import { zodUUID } from "@/schema/zod.valid";
+import { employeeCreateServer } from "@/schema/employee.valid";
 
 export default class EmployeeController
     implements InterfaceController {
@@ -16,7 +17,8 @@ export default class EmployeeController
 
     }
 
-    async getTestimonialAll(request: NextRequest, __: TContext): Promise<any> {
+    async employeeGetAll(request: NextRequest, __: TContext): Promise<any> {
+        await authApi(request, true)
         return this.employeeRepository.findAll({
                 filter: {
                     name: getParams(request, "name") ?? '',
@@ -30,21 +32,21 @@ export default class EmployeeController
         )
     }
 
-    async testimonialById(request: NextRequest, context: TContext) {
-
+    async employeeById(request: NextRequest, context: TContext) {
+        await authApi(request, true)
         const id = await getId(context)
         return this.employeeRepository.findById({ employeeId: zodUUID.parse(id) })
     }
 
-
-    async findPhotoById(request: NextRequest, context: TContext) {
-
+    async employeeFindPhotoById(request: NextRequest, context: TContext) {
+        await authApi(request, true)
         const id = await getId(context)
         return this.employeeRepository.findById({ employeeId: zodUUID.parse(id) })
     }
 
-
-    async testimonialCreate(request: NextRequest, __: TContext) {
+    async employeeCreate(request: NextRequest, __: TContext) {
+        console.log('test')
+        await authApi(request, true)
 
         // Parse the incoming form data
         const formData = await request.formData();
@@ -62,9 +64,8 @@ export default class EmployeeController
         return response
     }
 
-
-    async testimonialUpdate(request: NextRequest, context: TContext) {
-
+    async employeeUpdate(request: NextRequest, context: TContext) {
+        await authApi(request, true)
         // const json = await getJson(request)
         // const id = await getId(context)
         // return this.employeeRepository.updateOne(
@@ -73,8 +74,8 @@ export default class EmployeeController
         // )
     }
 
-    async testimonialDelete(request: NextRequest, context: TContext) {
-
+    async employeeDelete(request: NextRequest, context: TContext) {
+        await authApi(request, true)
         const id = await getId(context)
         // if (res) {
         // 	await fileSystem(res.img)
@@ -99,7 +100,6 @@ export default class EmployeeController
         }
         return response
     }
-
 }
 
 export async function getEmployeeById({ userId, employeeId }: {
@@ -118,6 +118,4 @@ export async function getEmployeeById({ userId, employeeId }: {
         if (!data) return undefined;
         return data
     })
-
 }
-

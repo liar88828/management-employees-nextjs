@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { Users } from "@prisma/client";
 
 export type TUserDB = Users

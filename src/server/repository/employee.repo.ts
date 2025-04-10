@@ -1,9 +1,9 @@
 import { prisma } from "@/config/prisma";
-import { EmployeeCreateZodClient } from "@/schema/employee.valid";
 import { EmployeeCreate, TEmployeeDB, TEmployeeSearch } from "@/interface/entity/employee.model";
 import { ResponseAll, } from "@/interface/server/param";
 import { InterfaceRepository, ParamsApi } from "@/interface/server/InterfaceRepository";
 import { ErrorPrisma } from "@/utils/ErrorResponse";
+import { EmployeeCreateZodClient } from "@/schema/employee.valid";
 
 export type EmployeeParams = ParamsApi<TEmployeeSearch>
 
@@ -160,6 +160,7 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
             const employeeExist = await tx.employees.findUnique({where: {id}, select: {id: true}});
             if (!employeeExist) {
                 throw new Error(`Employee by id ${id} is not exist `)
+
             }
             const employeeDB = await tx.employees.delete({where: {id}});
             const skillDB = await tx.skills.deleteMany({where: {employeesId: employeeDB.id}})

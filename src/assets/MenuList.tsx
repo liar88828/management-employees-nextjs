@@ -2,17 +2,17 @@ import {
     Apple,
     Building2,
     CakeSlice,
+    Clipboard,
+    ClipboardCheck,
     Factory,
     GlassWater,
     GraduationCap,
     HomeIcon,
-    IdCard,
     Inbox,
     LucidePackageSearch,
-    MailOpen,
-    NotepadText,
     PcCase,
     PersonStanding,
+    Printer,
     SendHorizontal,
     User,
     UserIcon,
@@ -122,28 +122,27 @@ export const linkUser: TMenuList[] = [
 
 
     {
-        href: '/employee/register',
+        href: '/registration',
         icon: <User className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
-        label: 'Register',
-    },
-
-
-    {
-        href: '/employee/cv',
-        icon: <NotepadText className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
-        label: 'CV',
+        label: 'Registration',
     },
 
     {
-        href: '/employee/card',
-        icon: <IdCard className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
-        label: 'ID-Card',
+        href: '/interview',
+        icon: <Clipboard className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'Interview',
     },
 
     {
-        href: '/employee/letter',
-        icon: <MailOpen className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
-        label: 'Letter',
+        href: '/accept',
+        icon: <ClipboardCheck className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'Accept',
+    },
+
+    {
+        href: '/print',
+        icon: <Printer className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'Print',
     },
 
 ]

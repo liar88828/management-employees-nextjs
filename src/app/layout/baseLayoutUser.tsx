@@ -41,15 +41,12 @@ export function BaseLayoutUser({children, isLogin}: {
                     {isLogin && (
                         <button
                             className="btn btn-square btn-ghost"
-                            onClick={ async () => {
-                                await logout()
-                            } }>
+                            onClick={ async () => await logout() }>
                             <LogOut/>
                         </button>
                     )}
                 </div>
                 {/*--------------*/}
-
             </div>
 
             <div className=" container max-w-full px-2 ">
@@ -123,7 +120,6 @@ export function BaseLayoutUser({children, isLogin}: {
                                 <span className="btm-nav-label text-xs">{item.label}</span>
                             </Link>
                         ))}
-
                     </div>
                 )
             }

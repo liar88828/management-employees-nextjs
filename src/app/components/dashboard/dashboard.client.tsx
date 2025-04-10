@@ -12,7 +12,6 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
 import useWindowResizeThreshold from "@/hook/useWindowResizeThreshold";
 
 ChartJS.register(
@@ -69,7 +68,6 @@ export function EarningClient({ year_new, year_old }: { year_new: ResponseMonthD
         ],
     };
     const options: ChartOptions<'line'> = {
-
         responsive: true,
         resizeDelay: 1000,
         aspectRatio: isMobileSize ? ( 100 / 80 ) : ( 100 / 60 ),
@@ -102,7 +100,7 @@ export function EarningClient({ year_new, year_old }: { year_new: ResponseMonthD
         <div className="card card-compact md:card-normal bg-base-200/30    ">
             <div className="card-body ">
                 <h2 className="card-title">Earning</h2>
-                <Line data={ data } options={ options } />
+                {/*<Line data={ data } options={ options } />*/ }
             </div>
         </div>
     );

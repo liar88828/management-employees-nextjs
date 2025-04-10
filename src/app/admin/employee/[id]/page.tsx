@@ -14,7 +14,7 @@ export default async function Page(context: TContext) {
     }
     return (
             <Suspense fallback={ <PageLoadingSpin /> }>
-                <EmployeeDetailServerAdmin employeeId={ employeeId }/>
+                <EmployeeDetailServerAdmin idEmployee={ employeeId }/>
             </Suspense>
     )
 }

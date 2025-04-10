@@ -13,6 +13,6 @@ export const DepartmentFormSchema = z.object({
 export type FormStateReturn<T> = {
     value: FlagsRequired<T, any> | { [p: string]: FormDataEntryValue }
     errors?: FlagsOptionals<T & { id?: string }, string[]>
-    message?: string
+    message: string
     success: boolean
 } | undefined

@@ -1,14 +1,14 @@
 import React from "react";
 import { i3x4, ijazah, ktp, TEmployeeDB } from "@/interface/entity/employee.model";
+import { EmployeePhotosUploadClientAdmin } from "@/app/components/employee/employee.client";
 import { Employees } from "@prisma/client";
 import { toDate } from "@/utils/toDate";
 import { TypeFile } from "@/server/action/upload";
-import { EmployeePhotosUploadClientAdmin } from "@/app/components/employee/employee.client.admin";
 import Image from "next/image";
 
 export function EmployeePhotoAdmin({ employee }: { employee: TEmployeeDB }) {
     return (
-        <div className="grid grid-cols-2 gap-2  ">
+        <div className="grid grid-cols-2 gap-2">
             <EmployeePhotosUploadClientAdmin employee={ employee } type={ 'KTP' } />
             <EmployeePhotosUploadClientAdmin employee={ employee } type={ "3x4" } />
         </div>
@@ -212,14 +212,13 @@ export function EmployeePhotoPageAdmin(props: {
     imagePreview: string | null,
     employee: TEmployeeDB,
     action: (formData: FormData) => Promise<void>,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }) {
     return (
         <div className="card card-bordered " data-theme={ "light" }>
             <div className="card-body">
                 <h2 className="card-title">Add { props.type }
                     { !props.imagePreview && <p className={ 'text-error ' }> *Please Complete</p> }
-
                 </h2>
                 <div className="w-48 h-auto">
                     { props.imagePreview

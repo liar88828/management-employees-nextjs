@@ -2,17 +2,18 @@ import { InterfaceController } from "@/interface/server/InterfaceController"
 import { TContext } from "@/interface/server/param"
 import { NextRequest } from "next/server"
 import { getId, getJson, getParams } from "@/utils/requestHelper"
+import { authApi } from "@/server/lib/api";
 import UserRepository from "@/server/repository/user.repo";
-import { UserCreate } from "@/schema/user.valid";
 import { zodUUID } from "@/schema/zod.valid";
+import { UserCreate } from "@/schema/user.valid";
 
 export default class UserController
 	implements InterfaceController {
 	constructor(private userRepository: UserRepository) {
 	}
 
-	async getTestimonialAll(request: NextRequest, __: TContext): Promise<any> {
-
+    async employeeGetAll(request: NextRequest, __: TContext): Promise<any> {
+        await authApi(request, true)
         return this.userRepository.findAll({
 			filter: {
 				name: getParams(request, "name") ?? '',
@@ -24,7 +25,8 @@ export default class UserController
         })
 	}
 
-    async testimonialById(request: NextRequest, context: TContext): Promise<any> {
+    async employeeById(request: NextRequest, context: TContext): Promise<any> {
+        await authApi(request)
 		const id = await getId(context)
 		return this.userRepository.findById(
 			// id
@@ -32,15 +34,15 @@ export default class UserController
 		)
 	}
 
-	async testimonialCreate(request: NextRequest, context: TContext): Promise<any> {
-
+    async employeeCreate(request: NextRequest, context: TContext): Promise<any> {
+        await authApi(request, true)
         const json = await getJson(request)
         // console.log(`test :${ json }`)
 		return this.userRepository.createOne(UserCreate.parse(json))
 	}
 
-	async testimonialUpdate(request: NextRequest, context: TContext): Promise<any> {
-
+    async employeeUpdate(request: NextRequest, context: TContext): Promise<any> {
+        await authApi(request, true)
         const id = await getId(context)
 		const json = await getJson(request)
 		return this.userRepository.updateOne(
@@ -49,8 +51,8 @@ export default class UserController
 		)
 	}
 
-	async testimonialDelete(request: NextRequest, context: TContext) {
-
+    async employeeDelete(request: NextRequest, context: TContext) {
+        await authApi(request, true)
         const id = await getId(context)
         // if (res) {
 		// await fileSystem( res.img )

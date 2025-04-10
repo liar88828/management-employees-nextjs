@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { useEffect, useState } from "react";
 
 export function useDebounce<T>({ fun, value, delay = 1000 }: {

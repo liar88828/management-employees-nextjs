@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { UserZodType } from "@/schema/user.valid";
 
 export const userExample: UserZodType = {
