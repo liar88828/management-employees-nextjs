@@ -59,7 +59,7 @@ export async function onUpsertDataUser(
     id?: string) {
     await checkDepartmentPosition(data.department);
     if (method === "POST") {
-        data.status = EMPLOYEE_STATUS.Pending
+        data.status = EMPLOYEE_STATUS.Registration
         return employeeCreateUser(data)
     } else if (method === "PUT" && id) {
         return employeeUpdateUser(data, id)

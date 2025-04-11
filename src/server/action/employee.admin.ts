@@ -51,7 +51,7 @@ export async function onUpsertDataAdmin(
     try {
         await checkDepartmentPosition(data.department);
         if (method === "POST") {
-            data.status = EMPLOYEE_STATUS.Pending
+            data.status = EMPLOYEE_STATUS.Registration
             return employeeCreateAdmin(data)
         } else if (method === "PUT" && id) {
             return employeeUpdateAdmin(data, id)

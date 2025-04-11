@@ -13,6 +13,7 @@ export function OtpForm() {
                         value={ otp }
                         onChange={ handleChange }
                         className="input input-bordered w-full"
+                        placeholder="Enter otp number ex: 123456"
                     />
             </div>
             { error && <p className="text-error text-sm mb-4">{ error }</p> }

@@ -3,7 +3,7 @@ import { EmployeeFormClientAdmin } from "@/app/components/employee/employee.clie
 import { EmployeePhotoAdmin } from "@/app/components/employee/employee.page";
 import { employeeFindByUserId, employeeId } from "@/server/network/employee";
 import { EmptyData } from "@/app/components/PageErrorData";
-import { EmployeeCV } from "@/app/components/employee/cv";
+import { EmployeeCV } from "@/app/components/employee/client/cv";
 import { validSession } from "@/secure/db";
 import { getEmployeeByUserIdForIDCard } from "@/server/action/employee.client";
 import { departmentGetAllPage } from "@/server/action/department";

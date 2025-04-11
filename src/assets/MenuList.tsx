@@ -14,9 +14,9 @@ import {
     PersonStanding,
     Printer,
     SendHorizontal,
+    Speech,
     User,
     UserIcon,
-    Waypoints,
 } from "lucide-react";
 import React from "react";
 
@@ -79,6 +79,16 @@ export const linkAdmin: TMenuList[] = [
     },
 
     {
+        href: '/admin/registration',
+        icon: <Inbox className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'Registration',
+    },
+    {
+        href: '/admin/interview',
+        icon: <Speech className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        label: 'Interview',
+    },
+    {
         href: '/admin/position',
         icon: <Factory className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
         label: 'Position',
@@ -89,22 +99,18 @@ export const linkAdmin: TMenuList[] = [
         icon: <PersonStanding className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
         label: 'Account',
     },
-    {
-        href: '/admin/inbox',
-        icon: <Inbox className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
-        label: 'Inbox',
-    },
+
     {
         href: '/admin/send',
         icon: <SendHorizontal className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
         label: 'Send Email',
     },
 
-    {
-        href: '/admin/department',
-        icon: <Waypoints className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
-        label: 'Department',
-    },
+    // {
+    //     href: '/admin/department',
+    //     icon: <Waypoints className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+    //     label: 'Department',
+    // },
     {
         href: '/admin/company',
         icon: <Building2 className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,

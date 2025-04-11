@@ -10,13 +10,21 @@ export enum USER_STATUS {
 }
 
 export enum EMPLOYEE_STATUS {
-    Pending = 'Pending',
+    Registration = 'Registration',
     Interview = 'Interview',
-    Complete = 'Complete',
-    Fail = 'Fail',
+    Accept = 'Accept',
+    Reject = 'Reject',
     Active = 'Active',
     Disabled = 'Disabled',
+    Resign = 'Resign',
 }
 
 // export const employeeList = [ 'Pending', 'Fail', 'Complete', 'Active', 'Disabled' ]
-export const employeeListStatus = [ 'Pending', "Interview", "Complete", "Active", "Disabled", ];
+export const employeeListStatus = [
+    'Registration',
+    'Interview',
+    'Accept',
+    'Reject',
+    'Active',
+    'Disabled',
+    'Resign', ];

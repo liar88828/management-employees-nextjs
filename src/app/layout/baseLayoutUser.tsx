@@ -38,15 +38,17 @@ export function BaseLayoutUser({children, isLogin}: {
                 </div>
                 {/*--------------*/}
                 <div className="flex-none ">
-                    {isLogin && (
-                        <button
-                            className="btn btn-square btn-ghost"
-                            onClick={ async () => await logout() }>
-                            <LogOut/>
-                        </button>
-                    )}
+                    <div className="tooltip tooltip-bottom tooltip-secondary" data-tip="Logout">
+                        { isLogin && (
+                            <button
+                                className="btn btn-square btn-ghost"
+                                onClick={ async () => await logout() }>
+                                <LogOut/>
+                            </button>
+                        ) }
+                    </div>
                 </div>
-                {/*--------------*/}
+                {/*--------------*/ }
             </div>
 
             <div className=" container max-w-full px-2 ">

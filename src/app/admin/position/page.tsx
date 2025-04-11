@@ -6,6 +6,7 @@ import { TContext } from "@/interface/server/param";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getContextQuery } from "@/utils/requestHelper";
+import { PlusIcon } from "lucide-react";
 
 async function Page(context: TContext) {
     const positionQuery = await getContextQuery(context, 'query')
@@ -20,45 +21,44 @@ async function Page(context: TContext) {
 
     return (
         <div className="space-y-5">
-            <Form action={ onSearch } className={ 'join' }>
-                <input name="search"
-                       defaultValue={ search }
-                       className={ 'input input-bordered join-item' }
-                />
-                <button
-                    className={ 'btn join-item' }
-                    type="submit">Submit
-                </button>
-            </Form>
-            <details className="dropdown">
-                <summary className="btn m-1">Select Position</summary>
-                <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                    <li>
-                        <Link
-                            href={ `?search=${ search }&query=` }>All Position</Link>
-                    </li>
-                    { departments.map((item) => (
-                        <li key={ item.department }>
-                            <Link
-                                href={ `?search=${ search }&query=${ item.department }` }>{ item.department }</Link>
-                        </li>
-                    )) }
-                </ul>
-            </details>
-            <div className="space-y-5">
-                { departments
-                .filter((item) => {
-                    if (positionQuery === '') return true;
-                    return item.department === positionQuery
+            <div className="flex justify-between gap-4">
+                <div className="flex gap-4">
+                    <Form action={ onSearch } className={ 'join ' }>
+                        <input name="search"
+                               defaultValue={ search }
+                               className={ 'input input-bordered join-item' }
+                        />
+                        <button
+                            className={ 'btn join-item' }
+                            type="submit">Submit
+                        </button>
+                    </Form>
 
-                })
-                .map((item) => (
-                    <PositionEmployeeTable
-                        key={ item.department }
-                        position={ item.department }
-                        name={ search }
-                    />
-                )) }
+                    <details className="dropdown">
+                        <summary className="btn ">Select Position</summary>
+                        <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                            <li>
+                                <Link
+                                    href={ `?search=${ search }&query=` }>All Position</Link>
+                            </li>
+                            { departments.map((item) => (
+                                <li key={ item.department }>
+                                    <Link
+                                        href={ `?search=${ search }&query=${ item.department }` }>{ item.department }</Link>
+                                </li>
+                            )) }
+                        </ul>
+                    </details>
+
+                </div>
+
+                <Link href={ '/admin/position/create' } className={ 'btn btn-info ' }>
+                    Add Position <PlusIcon/>
+                </Link>
+            </div>
+
+            <div className="space-y-5">
+                <PositionEmployeeTable position={ positionQuery } name={ search }/>
             </div>
         </div>
     );
@@ -99,14 +99,12 @@ async function PositionEmployee({ position, name }: { position: string, name?: s
 async function PositionEmployeeTable({ position, name }: { position: string, name?: string }) {
     const employees = await prisma.employees.findMany({
         where: {
-            ...(name && { name: { contains: name } }),
-            department: position
+            name: { contains: name },
+            department: { contains: position }
         }
     })
     return (
         <section>
-            <h1 className="text-xl font-bold">{ position }</h1>
-
             { employees.length === 0 ? (
                 <h1 className="card-title">Empty Data</h1>
             ) : (
@@ -118,6 +116,7 @@ async function PositionEmployeeTable({ position, name }: { position: string, nam
                             <th className="">Email</th>
                             <th className="">Phone</th>
                             <th className="">Hire Date</th>
+                            <th className="">Position</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -125,8 +124,9 @@ async function PositionEmployeeTable({ position, name }: { position: string, nam
                             <tr key={ employee.id } className="hover:bg-gray-100/20">
                                 <td className="">{ employee.name }</td>
                                 <td className="">{ employee.email }</td>
-                                <td className="">{ employee.phone }</td>
+                                <td className="text-nowrap">{ employee.phone }</td>
                                 <td className="">{ toDateIndo(employee.hireDate) }</td>
+                                <td className="">{ employee.department }</td>
                             </tr>
                         )) }
                         </tbody>

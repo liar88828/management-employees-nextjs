@@ -28,6 +28,7 @@ export async function inboxUpdate(state: FormStateReturn<InboxValidateType>, pay
         where: { id: validateData.data.id },
         data: {
             status: validateData.data.status,
+            notes: validateData.data.notes,
             jobTitle: validateData.data.jobTitle,
             salary: Number(validateData.data.salary),
         }

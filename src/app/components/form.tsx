@@ -37,6 +37,28 @@ export function MyInput({ title, error, defaultValue }: { defaultValue?: string 
     );
 }
 
+export function MyInputTextArea({ title, error, defaultValue }: {
+    defaultValue?: string | number,
+    title: string,
+    error: any
+}) {
+    return (
+        <div className="form-control w-full">
+            <label htmlFor={ `${ title }` } className="label">
+                <span className="label-text capitalize">{ title }</span>
+            </label>
+            <textarea
+                defaultValue={ defaultValue }
+                id={ `${ title }` }
+                name={ `${ title }` }
+                placeholder={ `Enter your ${ title }` }
+                className="textarea textarea-bordered w-full"
+            ></textarea>
+            <FormError errors={ error } title="must add:"/>
+        </div>
+    );
+}
+
 export function MyInputNum({ title, error, defaultValue }: {
     defaultValue?: string | number,
     title: string,

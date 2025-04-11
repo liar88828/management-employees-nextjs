@@ -1,7 +1,7 @@
 import React from 'react';
-import EmployeeIDCardInterview from "@/app/components/employee/IDCard";
+import EmployeeIDCardInterview from "@/app/components/employee/client/IDCard";
 import Link from "next/link";
-import { EmployeeCV } from "@/app/components/employee/cv";
+import { EmployeeCV } from "@/app/components/employee/client/cv";
 import { validSession } from "@/secure/db";
 import { getEmployeeByUserIdForIDCard } from "@/server/action/employee.client";
 import { RegistrationFirst } from "@/app/components/error/registrationFirst";

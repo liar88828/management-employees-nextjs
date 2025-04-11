@@ -63,6 +63,7 @@ export async function otpGenerate(json: OTPGenerate): Promise<ResponseData> {
             pass: process.env.NODEMAILER_PASS,
         },
     });
+
     const mailOptions = {
         from: process.env.NODEMAILER_EMAIL,
         to: email,
@@ -148,3 +149,19 @@ export async function otpValidate(json: OTPValid): Promise<ResponseData> {
         success: true
     };
 }
+
+//
+// export const sendOtp = async ({ email, reason }: Omit<OTPGenerate, 'time'>) => {
+//
+//     const sendEmail: OTPGenerate = {
+//         email: email,
+//         reason,
+//         time: new Date(Date.now() + 2 * 60 * 1000),
+//     };
+//
+//     return fetch('http://localhost:3000/api/email/otp', {
+//         method: 'POST',
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(sendEmail)
+//     })
+// }

@@ -14,10 +14,10 @@ import {
 } from "@/schema/auth.valid";
 import { userRepository } from "@/server/controller";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { sendOtp } from "@/server/network/otp";
 import { checkPassword } from "@/secure/password";
 import { PropertyMap } from "@/interface/types";
 import { ROLE, USER_STATUS } from "@/interface/enum";
+import { otpGenerate } from "@/server/controller/otpController";
 
 export async function signUp(state: FormStateRegister, formData: FormData): Promise<FormStateRegister> {
     // Validate form fields
@@ -77,7 +77,8 @@ export async function signUp(state: FormStateRegister, formData: FormData): Prom
 
     // 4. Create user session
     // await createSession(user.id)
-    await sendOtp({
+    await otpGenerate({
+        time: new Date(Date.now() + 60 * 60 * 1000),
         email: user.email,
         reason: 'OTP'
     })
@@ -185,7 +186,8 @@ export async function forget(state: FormStateAuth, formData: FormData) {
             throw new Error('User not exists!')
         }
 
-        await sendOtp({
+        await otpGenerate({
+            time: new Date(Date.now() + 60 * 60 * 1000),
             email: user.email,
             reason: 'RESET'
         })

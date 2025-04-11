@@ -3,7 +3,7 @@ import { TContext } from "@/interface/server/param";
 import { EmployeeSearchClientAdmin, EmployeeTableClientAdmin } from "@/app/components/employee/employee.client.admin";
 import { prisma } from "@/config/prisma";
 import { getContextQuery, getContextQueryNum } from "@/utils/requestHelper";
-import { Pagination } from "@/app/admin/inbox/inbox.client";
+import { Pagination } from "@/app/admin/registration/registration.client";
 
 export default async function page(context: TContext,) {
     const search = await getContextQuery(context, 'search')

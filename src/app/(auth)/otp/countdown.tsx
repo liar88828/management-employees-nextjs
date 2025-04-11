@@ -27,7 +27,7 @@ export const Countdown = () => {
     }, [ isMounted, setData, targetTime ]);
 
     // If there's no target time, or it's null, show a message
-    if (!targetTime) return (<>Is button to add 1 min</>);
+    if (!targetTime) return (<>Is button will add 1 min</>);
 
     // If countdown has finished
     if (remainingTime <= 0) return (<>Time&#39;s up!</>);
@@ -67,7 +67,7 @@ export function CountdownButton() {
             </div>
             <button
                 disabled={ store.remainingTime > 0 }
-                className="btn btn-sm"
+                className="btn btn-sm btn-primary"
                 onClick={ addOneMinute }
             >
                 Send email : { store.email }
