@@ -6,7 +6,8 @@ export type TContext = {
         query: string,
         page: string,
         limit: string,
-
+        error: string,
+        type: string
     }>,
     params: Promise<{ id: string, search: string, route: string }>
 }

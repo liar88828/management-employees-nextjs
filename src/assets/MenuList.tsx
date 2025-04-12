@@ -11,9 +11,7 @@ import {
     Inbox,
     LucidePackageSearch,
     PcCase,
-    PersonStanding,
     Printer,
-    SendHorizontal,
     Speech,
     User,
     UserIcon,
@@ -94,17 +92,17 @@ export const linkAdmin: TMenuList[] = [
         label: 'Position',
     },
 
-    {
-        href: '/admin/account',
-        icon: <PersonStanding className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
-        label: 'Account',
-    },
+    // {
+    //     href: '/admin/account',
+    //     icon: <PersonStanding className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+    //     label: 'Account',
+    // },
 
-    {
-        href: '/admin/send',
-        icon: <SendHorizontal className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
-        label: 'Send Email',
-    },
+    // {
+    //     href: '/admin/send',
+    //     icon: <SendHorizontal className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+    //     label: 'Send Email',
+    // },
 
     // {
     //     href: '/admin/department',

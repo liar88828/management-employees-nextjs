@@ -5,8 +5,9 @@ import { Employees } from "@prisma/client";
 import Form from "next/form";
 import { MyInput, MyInputTextArea } from "@/app/components/form";
 import { employeeListStatus } from "@/interface/enum";
-import { inboxUpdate } from "@/server/action/inbox";
+import { registerUpdate } from "@/server/action/inbox";
 import toast from "react-hot-toast";
+import { toDateIndo } from "@/utils/toDate";
 
 export function Pagination({ totalPages, search, status, page }: {
     totalPages: number,
@@ -42,9 +43,9 @@ export function TableEmployees({ employees }: {
                     <th className="">Phone</th>
                     {/*<th className="">Gender</th>*/ }
                     {/*<th className="">Job Title</th>*/ }
-                    <th className="">Department</th>
+                    {/*<th className="">Department</th>*/ }
                     {/*<th className="">Employment Type</th>*/ }
-                    {/*<th className="">Hire Date</th>*/ }
+                    <th className="">Hire Date</th>
                     {/*<th className="">Salary</th>*/ }
                     {/*<th className="">Status</th>*/ }
                     <th className="">Action</th>
@@ -59,9 +60,9 @@ export function TableEmployees({ employees }: {
                         <td className="text-nowrap">{ employee.phone }</td>
                         {/*<td className="">{ employee.gender }</td>*/ }
                         {/*<td className="">{ employee.jobTitle }</td>*/ }
-                        <td className="">{ employee.department }</td>
+                        {/*<td className="">{ employee.department }</td>*/ }
                         {/*<td className="">{ employee.employmentType }</td>*/ }
-                        {/*<td className="">{ toDateIndo(employee.hireDate) }</td>*/ }
+                        <td className="">{ toDateIndo(employee.hireDate) }</td>
                         {/*<td className="">{ employee.salary }</td>*/ }
                         {/*<td className="">{ employee.status }</td>*/ }
                         <td className="">
@@ -111,7 +112,7 @@ export function InboxModalAction({ employees }: { employees: Employees }) {
 }
 
 export function FormRegistration({ employee }: { employee: Employees }) {
-    const [ state, action, pending ] = useActionState(inboxUpdate, undefined)
+    const [ state, action, pending ] = useActionState(registerUpdate, undefined)
     useEffect(() => {
         if (state) {
             if (state.success) {
@@ -126,6 +127,8 @@ export function FormRegistration({ employee }: { employee: Employees }) {
         <Form action={ action } className={ 'card card-body max-w-4xl bg-base-200' }>
 
             <input type="hidden" value={ employee.id } name={ 'id' }/>
+            <input type={ "hidden" } value={ 0 } name={ 'salary' }/>
+
             <h1>Form Inbox</h1>
             <MyInput
                 title={ "jobTitle" }

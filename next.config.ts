@@ -45,11 +45,11 @@ const nextConfig: NextConfig = {
     // // Enable the React DevTools profiler
     // profiler: true,
     // reactStrictMode: true,
-    modularizeImports: {
-        'react-icons': {
-            transform: 'react-icons/{{member}}',
-        },
-    },
+    // modularizeImports: {
+    //     'react-icons': {
+    //         transform: 'react-icons/{{member}}',
+    //     },
+    // },
     bundlePagesRouterDependencies: true,
     transpilePackages: [ 'lucide-react' ],// add this
     images: {

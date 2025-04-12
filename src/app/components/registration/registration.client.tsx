@@ -4,13 +4,13 @@ import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EmployeeFormContextClientAdmin } from "@/app/components/employee/employee.client";
 import { employeeCreateClient, EmployeeCreateZodClient } from "@/schema/employee.valid";
 import { Departements } from ".prisma/client";
 import { onUpsertDataUser } from "@/server/action/employee.client";
 import React, { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 import useFormPersist from "react-hook-form-persist";
+import { EmployeeFormContextClientAdmin } from "@/app/components/form";
 
 export function EmployeeFormClientUser({ employee, method, user, departments }: {
     user: UserDB,
@@ -44,20 +44,29 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
                 phone: user.phone,
             }
     });
-
-    const { register, handleSubmit, formState: { errors }, watch, setValue } = methods
-    useFormPersist("form-registration", { watch, setValue });
+    const { register, handleSubmit, formState: { errors }, watch, setValue, reset } = methods
+    const { clear } = useFormPersist("form-registration", { watch, setValue });
 
     const onSubmit = async (data: any) => {
-        data.userId = user.id
         const idToast = toast.loading('Loading...')
         try {
             // console.log("data : ",data)
-            await onUpsertDataUser(method, data)
+            data.userId = user.id
+            data.registration = employee?.registration
+            await onUpsertDataUser(method, data, employee?.id);
+            clear()
             toast.success('Successfully created');
+            console.log('is successfully');
             // router.push("/home")
         } catch (e) {
-            console.log(e)
+            // console.log('is error')
+            // // console.log(e.message)
+            // if (e instanceof ErrorValidation) {
+            //     // console.log('is ErrorValidation')
+            //     // console.log('---------')
+            //     // console.log(e,'ErrorValidation')
+            //     // console.log('---------')
+            // }
             if (e instanceof Error) {
                 toast.error(e.message);
             }
@@ -67,7 +76,6 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
     };
 
     return (
-        <div className="container mx-auto p-4 pb-20">
             <FormProvider { ...methods }>
                 <form onSubmit={ handleSubmit(onSubmit) } className="space-y-4">
                     <input
@@ -334,6 +342,8 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
                         />
                         {/* @ts-ignore */
                             errors.img && <p className="text-error text-sm mt-1">{ errors.img.message }</p> }
+
+                        {/* eslint-disable-next-line @next/next/no-img-element */ }
                         <img src={ previewImage }
                              alt="Image Employee"
                              className="size-40 mt-2 rounded-lg border"
@@ -346,11 +356,10 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
                             className="btn btn-primary"
                             // disabled={ isPending }
                         >
-                            Submit Employee
+                            { method === 'POST' ? 'Create' : 'Update' } Employee
                         </button>
                     </div>
                 </form>
             </FormProvider>
-        </div>
     );
 }

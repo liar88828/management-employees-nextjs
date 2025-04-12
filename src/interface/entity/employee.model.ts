@@ -26,7 +26,7 @@ export type EmployeeCreate =
     educations: Pick<Languages, 'text'>[];
 }
 
-
+export const imageDefault = 'https://dummyimage.com/300x300/000/ffffff.jpg';
 export const ktp = 'https://dummyimage.com/400x300/000/ffffff.jpg';
 export const i3x4 = 'https://dummyimage.com/300x400/000/ffffff.jpg';
 export const ijazah = 'https://dummyimage.com/297x210/000/ffffff.jpg';

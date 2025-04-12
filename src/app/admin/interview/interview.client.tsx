@@ -5,11 +5,13 @@ import { Employees } from "@prisma/client";
 import Form from "next/form";
 import { MyInput, MyInputNum, MyInputTextArea } from "@/app/components/form";
 import { employeeListStatus } from "@/interface/enum";
-import { inboxUpdate } from "@/server/action/inbox";
+import { interviewUpdate } from "@/server/action/inbox";
 import toast from "react-hot-toast";
-import { EmployeeCV, EmployeePhotos } from "@/app/components/employee/employee.page";
+import { EmployeeCV } from "@/app/components/employee/employee.page";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { XIcon } from "lucide-react";
+import { toDateIndo } from "@/utils/toDate";
+import { EmployeePhotos } from "@/app/components/employee/employeePhotos";
 
 export function Pagination({ totalPages, search, status, page, title }: {
     totalPages: number,
@@ -46,9 +48,9 @@ export function TableEmployees({ employees }: {
                     <th className="">Phone</th>
                     {/*<th className="">Gender</th>*/ }
                     {/*<th className="">Job Title</th>*/ }
-                    <th className="">Department</th>
+                    {/*<th className="">Department</th>*/ }
                     {/*<th className="">Employment Type</th>*/ }
-                    {/*<th className="">Hire Date</th>*/ }
+                    <th className="">Hire Date</th>
                     {/*<th className="">Salary</th>*/ }
                     {/*<th className="">Status</th>*/ }
                     <th className="">Action</th>
@@ -63,9 +65,9 @@ export function TableEmployees({ employees }: {
                         <td className="text-nowrap">{ employee.phone }</td>
                         {/*<td className="">{ employee.gender }</td>*/ }
                         {/*<td className="">{ employee.jobTitle }</td>*/ }
-                        <td className="">{ employee.department }</td>
+                        {/*<td className="">{ employee.department }</td>*/ }
                         {/*<td className="">{ employee.employmentType }</td>*/ }
-                        {/*<td className="">{ toDateIndo(employee.hireDate) }</td>*/ }
+                        <td className="">{ toDateIndo(employee.hireDate) }</td>
                         {/*<td className="">{ employee.salary }</td>*/ }
                         {/*<td className="">{ employee.status }</td>*/ }
                         <td className="">
@@ -115,7 +117,7 @@ export function InboxModalAction({ employees }: { employees: Employees }) {
 }
 
 export function FormInterview({ employee }: { employee: Employees }) {
-    const [ state, action, pending ] = useActionState(inboxUpdate, undefined)
+    const [ state, action, pending ] = useActionState(interviewUpdate, undefined)
     useEffect(() => {
         if (state) {
             if (state.success) {
@@ -202,7 +204,7 @@ export function InterviewShowCV({ employee }: { employee: TEmployeeDB }) {
 
 export function InterviewShowDocument({ employee }: { employee: TEmployeeDB }) {
     return (
-        < >
+        <>
             <button className="btn" onClick={ () => {
                 const modal = document.getElementById('my_modal_document')
                 if (modal instanceof HTMLDialogElement) {
@@ -226,7 +228,7 @@ export function InterviewShowDocument({ employee }: { employee: TEmployeeDB }) {
                     <button>close</button>
                 </form>
             </dialog>
-        </ >
+        </>
     );
 }
 

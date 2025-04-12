@@ -2,25 +2,25 @@
 import { redirect } from "next/navigation";
 import { employeeRepository } from "@/server/controller";
 import { EmployeeCreateZodClient } from "@/schema/employee.valid";
-import { pathImage, saveImage, setPathImage, updateImage } from "@/server/repository/image.repo";
-import { employeeSanitize, employeeSanitizeFormData } from "@/sanitize/employe.sanitize";
+import { saveImage, setPathImage, updateImage } from "@/server/repository/image.repo";
+import { employeeSanitize, employeeSanitizeUpdate } from "@/sanitize/employe.sanitize";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { checkDepartmentPosition } from "@/server/action/department";
 import { getEmployeeById } from "@/server/controller/employee.controller";
 import { prisma } from "@/config/prisma";
 import { EMPLOYEE_STATUS } from "@/interface/enum";
+import { ZodError } from "zod";
 
 export const employeeCreateUser = async ({ img, ...data }: EmployeeCreateZodClient) => {
     try {
         const isImage = typeof img === 'object'
         const imageFile = img[0]
-        const filePath = await setPathImage(imageFile)    // Save the image path to the database
-        // console.log("filePath", filePath)
-        const employeeData = employeeSanitize(data, isImage ? filePath : undefined, data?.userId)
+        const imagePath = await setPathImage(imageFile)    // Save the image path to the database
+        const employeeData = employeeSanitize(data, imagePath, data?.userId)
         const response = await employeeRepository.createUserRepo(employeeData)
         console.log('response : ', response)
-        if (response && isImage) {
-            const pathImage = await saveImage(imageFile, filePath)
+        if (response && isImage && imagePath) {
+            const pathImage = await saveImage(imageFile, imagePath)
             console.log('saveImage : ', pathImage)
         }
         return response
@@ -31,24 +31,37 @@ export const employeeCreateUser = async ({ img, ...data }: EmployeeCreateZodClie
     }
 }
 
-export async function employeeUpdateUser({ img, ...data }: EmployeeCreateZodClient, employeeId: string) {
+export async function employeeUpdateUser(
+    { img, ...data }: EmployeeCreateZodClient,
+    employeeId: string) {
     try {
         const isImage = typeof img === 'object';
-        // console.log(isImage, 'typeImage')
-        const formData = new FormData();
-        formData.append('file', img[0]);
-        formData.append('data', JSON.stringify(data));
-        const filePath = await pathImage(formData, false)    // Save the image path to the database
-        const employeeData = employeeSanitizeFormData(formData, isImage ? filePath : undefined, data?.userId)
+        const imageFile = img[0]
+        const imagePath = await setPathImage(imageFile)    // Save the image path to the database
+        // console.log('imageFile',imageFile)
+        const employeeData = employeeSanitizeUpdate(data, imagePath, data?.userId)
         const response = await employeeRepository.updateUserRepo(employeeData, employeeId)
-        console.log(isImage, response)
-        if (response && isImage) {
-            await updateImage(formData, filePath)
+        // console.log('isImage, response',isImage, response)
+        if (response && isImage && imagePath) {
+            await updateImage(imageFile, imagePath)
         }
         return response
     } catch (error) {
+
+        if (error instanceof ZodError) {
+            // console.log(error.flatten().fieldErrors);
+            // console.log('----');
+            // console.log(error.flatten().fieldErrors);
+            // error.flatten().fieldErrors.toString()
+            // throw {
+            //     error: error.flatten().fieldErrors,
+            //     from: "VALIDATION",
+            // }
+            throw JSON.stringify(error.flatten().fieldErrors)
+        }
         if (error instanceof Error) {
-            console.log(error.message);
+            // console.log(error.message);
+            throw error.message;
         }
     }
 }
@@ -56,13 +69,16 @@ export async function employeeUpdateUser({ img, ...data }: EmployeeCreateZodClie
 export async function onUpsertDataUser(
     method: "POST" | "PUT",
     data: EmployeeCreateZodClient,
-    id?: string) {
+    idEmployee?: string
+) {
     await checkDepartmentPosition(data.department);
+    console.log(method, idEmployee)
     if (method === "POST") {
         data.status = EMPLOYEE_STATUS.Registration
         return employeeCreateUser(data)
-    } else if (method === "PUT" && id) {
-        return employeeUpdateUser(data, id)
+    } else if (method === "PUT" && idEmployee) {
+        // console.log('Execute ')
+        return employeeUpdateUser(data, idEmployee)
     }
     throw new Error('Invalid data');
 }

@@ -32,16 +32,19 @@ export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
 
 export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
     return (
-        <div className="card w-full max-w-3xl mx-auto bg-white card-bordered">
+        <div className="card w-full max-w-3xl  bg-white card-bordered">
+            {/*mx-auto*/ }
+
             <div className="card-body">
-                <div className="flex justify-between items-center">
+                {/*justify-between items-center*/ }
+                <div className="flex ">
                     <div className="flex items-center space-x-4">
                         <div className="w-20 h-20 avatar">
                             {/* eslint-disable-next-line @next/next/no-img-element */ }
                             <img
                                 className="rounded-full"
                                 // src={ `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.name }` }
-                                src={ `/${ employee.img }` }
+                                src={ employee.img }
                                 alt={ employee.name }
                             />
                             {/*<p>{ employee.name.split(' ').map(n => n[0]).join('') }</p>*/ }

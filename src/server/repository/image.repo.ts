@@ -1,7 +1,7 @@
 'use server'
 import path from "path";
 import fs from "fs";
-import { ErrorResponse } from "@/utils/ErrorResponse";
+import { ErrorResponse } from "@/utils/ErrorClass";
 
 export const saveImageFormData = async (
     formData: FormData,
@@ -35,10 +35,10 @@ export const saveImageFormData = async (
 }
 
 export const saveImage = async (
-    imgFile: File,
+    imageFile: File,
     pathImage: string,
 ) => {// Get the image file from the form data
-    if (!imgFile) {
+    if (!imageFile) {
         throw new Error('Image is required')
     }
 
@@ -51,7 +51,7 @@ export const saveImage = async (
     }
 
     // Save the image file to the local filesystem
-    const buffer = Buffer.from(await imgFile.arrayBuffer());
+    const buffer = Buffer.from(await imageFile.arrayBuffer());
     fs.writeFileSync(filePath, buffer);
     return pathImage
 }
@@ -71,13 +71,17 @@ export const deleteImage = async (imagePath: string) => {
     // }
 };
 
-export const updateImage = async (formData: FormData, imagePath: string, key: string = "file") => {
+export const updateImage = async (imageFile: File, imagePath: string, oldImagePath?: string) => {
+    if (oldImagePath) {
+        await deleteImage(oldImagePath)
+    }
+    return saveImage(imageFile, imagePath);
+}
+
+export const updateImageFormData = async (formData: FormData, imagePath: string, key: string = "file") => {
     await deleteImage(imagePath)
     return saveImageFormData(formData, imagePath, key);
 }
-
-
-
 
 export const saveImageAction = async (imgFile: File, pathImage: string) => {// Get the image file from the form data
 
@@ -127,6 +131,9 @@ export const setPathImage = async (imgFile: File) => {// Get the image file from
     }
 
     // Save the image file locally (You can also upload it to a cloud storage service like AWS S3, Cloudinary, etc.)
+    if (!imgFile.name) {
+        return undefined;
+    }
     return `/uploads/${imgFile.name}`
 
 }

@@ -1,152 +1,153 @@
 generator client {
-  provider = "prisma-client-js"
-  // output   = "data"
+    provider = "prisma-client-js"
+    // output   = "data"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
 }
 
 model Users {
-  id            String     @id @default(uuid())
-  name          String
-  phone         String
-  email         String     @unique
-  password      String
-  role          String
-  otp           String?
-  otpCount      Int        @default(0)
-  otpRegenerate DateTime   @default(now())
-  otpExpired    DateTime   @default(now())
-  status        String     @default("OTP")
-  Session       Sessions?
-  Employees     Employees?
+    id            String     @id @default(uuid())
+    name          String
+    phone         String
+    email         String     @unique
+    password      String
+    role          String
+    otp           String?
+    otpCount      Int        @default(0)
+    otpRegenerate DateTime   @default(now())
+    otpExpired    DateTime   @default(now())
+    status        String     @default("OTP")
+    Session       Sessions?
+    Employees     Employees?
 }
 
 model Sessions {
-  id        String   @id @default(uuid())
-  usersId   String   @unique
-  expiresAt DateTime
-  role      String
-  Users     Users    @relation(fields: [usersId], references: [id])
+    id        String   @id @default(uuid())
+    usersId   String   @unique
+    expiresAt DateTime
+    role      String
+    Users     Users    @relation(fields: [usersId], references: [id])
 }
 
 model Employees {
-  id              String            @id @default(uuid()) // Primary key with auto-increment
-  name            String
-  email           String            @unique
-  phone           String
-  gender          String // Gender (e.g., "Male", "Female", "Other")
-  dateOfBirth     DateTime
-  hireDate        DateTime
-  jobTitle        String // Employee's job position
-  department      String // Department where the employee works
-  salary          Int // Employee's salary
-  // managerId      Int? // Foreign key referencing the manager
-  status          String            @default("Pending") // Employment status
-  address         String
-  city            String // City where the employee lives
-  postalCode      String // Postal/ZIP code
-  employmentType  String // Employment type (e.g., "Full-Time", "Part-Time")
-  notes           String // Additional notes about the employee
-  img             String
-  //
-  country         String
-  educations      Educations[]
-  skills          Skills[] // Stored as an array of strings
-  languages       Languages[] // Stored as an array of strings
-  //
-  photoKtp        String?
-  photo3x4        String?
-  photoIjasah     String?
-  User            Users?            @relation(fields: [userId], references: [id])
-  userId          String?           @unique
-  // Letters        Letters[]
-  LetterEmployees LetterEmployees[]
+    id              String            @id @default(uuid()) // Primary key with auto-increment
+    name            String
+    email           String            @unique
+    phone           String
+    gender          String // Gender (e.g., "Male", "Female", "Other")
+    dateOfBirth     DateTime
+    hireDate        DateTime
+    jobTitle        String // Employee's job position
+    department      String // Department where the employee works
+    salary          Int // Employee's salary
+    // managerId      Int? // Foreign key referencing the manager
+    status          String            @default("Create") // Employment status
+    registration    Boolean           @default(false) // Employment status
+    address         String
+    city            String // City where the employee lives
+    postalCode      String // Postal/ZIP code
+    employmentType  String // Employment type (e.g., "Full-Time", "Part-Time")
+    notes           String // Additional notes about the employee
+    img             String
+    //
+    country         String
+    educations      Educations[]
+    skills          Skills[] // Stored as an array of strings
+    languages       Languages[] // Stored as an array of strings
+    //
+    photoKtp        String?
+    photo3x4        String?
+    photoIjasah     String?
+    User            Users?            @relation(fields: [userId], references: [id])
+    userId          String?           @unique
+    // Letters        Letters[]
+    LetterEmployees LetterEmployees[]
 
-  //
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    //
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Educations {
-  id          Int       @id @default(autoincrement())
-  text        String
-  Employees   Employees @relation(fields: [employeesId], references: [id])
-  employeesId String
+    id          Int       @id @default(autoincrement())
+    text        String
+    Employees   Employees @relation(fields: [employeesId], references: [id])
+    employeesId String
 }
 
 model Skills {
-  id          Int       @id @default(autoincrement())
-  text        String
-  Employees   Employees @relation(fields: [employeesId], references: [id])
-  employeesId String
+    id          Int       @id @default(autoincrement())
+    text        String
+    Employees   Employees @relation(fields: [employeesId], references: [id])
+    employeesId String
 }
 
 model Languages {
-  id          Int       @id @default(autoincrement())
-  text        String
-  Employees   Employees @relation(fields: [employeesId], references: [id])
-  employeesId String
+    id          Int       @id @default(autoincrement())
+    text        String
+    Employees   Employees @relation(fields: [employeesId], references: [id])
+    employeesId String
 }
 
 model Testimonials {
-  id     Int    @id @default(autoincrement())
-  name   String
-  desc   String
-  social String
-  jobs   String
+    id     Int    @id @default(autoincrement())
+    name   String
+    desc   String
+    social String
+    jobs   String
 }
 
 model Departements {
-  id       Int    @id @default(autoincrement())
-  position String @unique
+    id       Int    @id @default(autoincrement())
+    position String @unique
 }
 
 model LetterEmployees {
-  id          String    @id @default(uuid())
-  Employees   Employees @relation(fields: [employeesId], references: [id])
-  employeesId String
-  Letters     Letters   @relation(fields: [lettersId], references: [id])
-  lettersId   String
+    id          String    @id @default(uuid())
+    Employees   Employees @relation(fields: [employeesId], references: [id])
+    employeesId String
+    Letters     Letters   @relation(fields: [lettersId], references: [id])
+    lettersId   String
 }
 
 model Letters {
-  id                String            @id @default(uuid())
-  interviewDate     DateTime
-  interviewLocation String
-  dressCode         String
-  signerName        String
-  option            String
-  // Employees         Employees        @relation(fields: [employeesId], references: [id])
-  // employeesId       String
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  LetterEmployees   LetterEmployees[]
+    id                String            @id @default(uuid())
+    interviewDate     DateTime
+    interviewLocation String
+    dressCode         String
+    signerName        String
+    option            String
+    // Employees         Employees        @relation(fields: [employeesId], references: [id])
+    // employeesId       String
+    createdAt         DateTime          @default(now())
+    updatedAt         DateTime          @updatedAt
+    LetterEmployees   LetterEmployees[]
 }
 
 model Companys {
-  id      Int    @id @default(autoincrement())
-  name    String
-  address String
-  phone   String
-  email   String
-  img     String
-  Misi    Misi[]
-  Visi    Visi[]
+    id      Int     @id @default(autoincrement())
+    name    String
+    address String
+    phone   String
+    email   String
+    img     String?
+    Misi    Misi[]
+    Visi    Visi[]
 }
 
 model Visi {
-  id         Int      @id @default(autoincrement())
-  text       String
-  Companys   Companys @relation(fields: [companysId], references: [id])
-  companysId Int
+    id         Int      @id @default(autoincrement())
+    text       String
+    Companys   Companys @relation(fields: [companysId], references: [id])
+    companysId Int
 }
 
 model Misi {
-  id         Int      @id @default(autoincrement())
-  text       String
-  Companys   Companys @relation(fields: [companysId], references: [id])
-  companysId Int
+    id         Int      @id @default(autoincrement())
+    text       String
+    Companys   Companys @relation(fields: [companysId], references: [id])
+    companysId Int
 }

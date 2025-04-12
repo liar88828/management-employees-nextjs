@@ -34,7 +34,7 @@ export const employeeClientExample: EmployeeCreateZodClient = {
     ],
 };
 
-export const employeeServerExample: EmployeeCreateZodServer = {
+export const employeeServerExample: EmployeeCreateZodServer & { status: 'Create' } = {
     userId:"",
     name: "Jane Doe",
     email: "janedoe@example.com",
@@ -45,7 +45,7 @@ export const employeeServerExample: EmployeeCreateZodServer = {
     jobTitle: "Senior Developer",
     department: "Engineering",
     salary: 95000,
-    status: "Active", // Must be one of: 'Fail', 'Complete', 'Pending', 'Active', 'Disabled'
+    status: "Create", // Must be one of: 'Fail', 'Complete', 'Pending', 'Active', 'Disabled'
     address: "456 Oak Avenue",
     city: "Metropolis",
     postalCode: "54321",
@@ -53,6 +53,7 @@ export const employeeServerExample: EmployeeCreateZodServer = {
     notes: "Detail-oriented and highly skilled in software development.",
     img: "https://example.com/images/janedoe.jpg",
     country: "USA",
+    registration: false,
     educations: [
         { text: "Master's Degree in Software Engineering", },
     ],

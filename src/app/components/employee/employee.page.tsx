@@ -1,10 +1,8 @@
 import React from "react";
-import { i3x4, ijazah, ktp, TEmployeeDB } from "@/interface/entity/employee.model";
+import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { EmployeePhotosUploadClientAdmin } from "@/app/components/employee/employee.client";
 import { Employees } from "@prisma/client";
 import { toDate } from "@/utils/toDate";
-import { TypeFile } from "@/server/action/upload";
-import Image from "next/image";
 
 export function EmployeePhotoAdmin({ employee }: { employee: TEmployeeDB }) {
     return (
@@ -158,113 +156,6 @@ export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
                         </ul>
                     </section>
                 </div>
-            </div>
-        </div>
-    );
-}
-
-export function EmployeePhotos({ employee }: { employee: TEmployeeDB }) {
-    return (
-        <div className="card card-body  bg-white items-center sm:items-start max-w-4xl">
-            <div className="grid sm:grid-cols-2 grid-cols-1 gap-5">
-
-
-                <section>
-                    <h3 className="font-semibold mb-2">Ktp</h3>
-                    <Image src={ employee?.photoKtp ?? ktp }
-                           alt="image ktp"
-                           width={ 300 }
-                           height={ 400 }
-                           className={ "aspect-[4/3] " }
-                    />
-                </section>
-
-                <section>
-                    <h3 className="font-semibold mb-2">Photo 4x6</h3>
-                    <Image src={ employee.photoKtp ?? i3x4 }
-                           alt=""
-                           width={ 300 }
-                           height={ 600 }
-                           className={ "aspect-[4/6] " }
-                    />
-                </section>
-
-                <section>
-                    <h3 className="font-semibold mb-2">Ijazah</h3>
-                    <Image
-                        src={ employee?.photoIjasah ?? ijazah }
-                        alt="image ktp"
-                        width={ 300 }
-                        height={ 400 }
-                        className={
-                            // "w-[21cm] h-[33cm]"
-                            'aspect-[3/4]'
-                        }
-                    />
-                </section>
-            </div>
-        </div>
-    );
-}
-
-export function EmployeePhotoPageAdmin(props: {
-    type: TypeFile,
-    imagePreview: string | null,
-    employee: TEmployeeDB,
-    action: (formData: FormData) => Promise<void>,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-}) {
-    return (
-        <div className="card card-bordered " data-theme={ "light" }>
-            <div className="card-body">
-                <h2 className="card-title">Add { props.type }
-                    { !props.imagePreview && <p className={ 'text-error ' }> *Please Complete</p> }
-                </h2>
-                <div className="w-48 h-auto">
-                    { props.imagePreview
-                        ? (
-                            <div className="mt-4">
-                                <p>Image Preview:</p>
-                                {/* eslint-disable-next-line @next/next/no-img-element */ }
-                                <img src={ props.imagePreview } alt="Selected file"
-                                     className="w-40 h-40 object-cover rounded-md border"
-                                />
-                            </div>
-                        ) : props.type === "KTP"
-                            // eslint-disable-next-line @next/next/no-img-element
-                            ? <img src={ props.employee.photoKtp ?? ktp }
-                                   alt="image ktp"
-                                   className={ "aspect-[4/3] " }
-                            /> :
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img src={ props.employee.photo3x4 ?? i3x4 }
-                                 alt="image 4x3"
-                                 className={ "aspect-[3/4] " }
-                            />
-
-                    }
-                </div>
-
-                <form action={ props.action } className="form-control">
-                    <label className="label">
-                        <span className="label-text">Upload a file</span>
-                        {/*<input type="hidden"/>*/ }
-                    </label>
-
-                        <input
-                            className="file-input file-input-bordered w-full"
-                            type="file"
-                            name="file"
-                            accept="image/*"
-                            onChange={ props.onChange }
-                        />
-                    <button
-                        className={ "btn btn-info" }
-                        type="submit"
-                    >
-                        Submit
-                    </button>
-                </form>
             </div>
         </div>
     );

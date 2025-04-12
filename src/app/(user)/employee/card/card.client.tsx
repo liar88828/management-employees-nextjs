@@ -2,6 +2,7 @@ import React from "react";
 import { Companys, Employees } from "@prisma/client";
 import { toDateIndo } from "@/utils/toDate";
 import Image from "next/image";
+import { ktp } from "@/interface/entity/employee.model";
 
 export const EmployeeIDCard = ({ employee, company }: { company: Companys, employee: Employees }) => (
     <div className="flex justify-center">
@@ -12,7 +13,7 @@ export const EmployeeIDCard = ({ employee, company }: { company: Companys, emplo
                 <div className="card-body ">
                     <div className="flex gap-6 items-center">
                         <Image
-                            src={ company.img }
+                            src={ company.img ?? ktp }
                             width={ 80 }
                             height={ 80 }
                             alt="logo"

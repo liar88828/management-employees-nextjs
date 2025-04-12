@@ -98,7 +98,7 @@ export function BaseLayoutUser({children, isLogin}: {
                 </aside>
 
                 <div
-                    className={`${sideMenuIsExpand ? 'sm:ml-52' : 'ml-0'}  transition-transform  sm:px-2   pt-20 `}
+                    className={ `${ sideMenuIsExpand ? 'sm:ml-52' : 'ml-0' }  transition-transform  sm:px-2   py-20 ` }
                 >
                     {children}
                 </div>

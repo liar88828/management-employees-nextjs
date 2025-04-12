@@ -3,7 +3,7 @@ import { FormStateAuth } from "@/schema/auth.valid";
 import { prisma } from "@/config/prisma";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { DepartmentFormSchema, DepartmentFormState } from "@/schema/departement.valid";
-import { ErrorAction } from "@/utils/ErrorResponse";
+import { ErrorAction } from "@/utils/ErrorClass";
 import { redirect } from "next/navigation";
 
 export async function departmentGetAllPage() {

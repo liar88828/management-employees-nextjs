@@ -59,10 +59,11 @@ export const employeeCreateServer= z.object({
     gender: z.string().min(2).max(100),
     dateOfBirth: z.coerce.date(),
     hireDate: z.coerce.date(),
+    registration: z.boolean(),
     jobTitle: z.string().min(2, "Job Title must be at least 2 characters"),
     department: z.string().min(2).max(100),
     salary: z.number().min(0, "Salary must be a positive number"),
-    status: z.enum(['Fail', 'Complete', 'Pending', 'Active', 'Disabled']),
+    status: z.string(),//z.enum(['Fail', 'Complete', 'Pending', 'Active', 'Disabled']),
     address: zodAddress,
     city: z.string().min(2).max(100),
     postalCode: z.string().min(2).max(100),
@@ -82,5 +83,37 @@ export const employeeCreateServer= z.object({
     })),
 })
 
+export const employeeUpdateServer = z.object({
+    userId: z.string().optional(),
+    name: z.string().min(2).max(100),
+    email: z.string().email("Invalid email address"),
+    phone: zodPhone,
+    gender: z.string().min(2).max(100),
+    dateOfBirth: z.coerce.date(),
+    hireDate: z.coerce.date(),
+    registration: z.boolean(),
+    jobTitle: z.string().min(2, "Job Title must be at least 2 characters"),
+    department: z.string().min(2).max(100),
+    salary: z.number().min(0, "Salary must be a positive number"),
+    // status: z.enum(['Fail', 'Complete', 'Pending', 'Active', 'Disabled']),
+    address: zodAddress,
+    city: z.string().min(2).max(100),
+    postalCode: z.string().min(2).max(100),
+    employmentType: z.string().min(2),//[ "Full-Time", "Part-Time" ]
+    notes: z.string().min(2).max(100),
+    img: z.string().min(2).optional(),
+    country: z.string().min(2).max(100),
+    // education: z.string().min(2).max(100),
+    skills: z.array(z.object({
+        text: z.string().min(2).max(100),
+    })),
+    languages: z.array(z.object({
+        text: z.string().min(2).max(100),
+    })),
+    educations: z.array(z.object({
+        text: z.string().min(2).max(100),
+    })),
+})
 export type EmployeeCreateZodClient = z.infer<typeof employeeCreateClient>;
 export type EmployeeCreateZodServer = z.infer<typeof employeeCreateServer>;
+export type EmployeeUpdateZodServer = z.infer<typeof employeeUpdateServer>;

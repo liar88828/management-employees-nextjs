@@ -10,6 +10,7 @@ export enum USER_STATUS {
 }
 
 export enum EMPLOYEE_STATUS {
+    Create = 'Create',
     Registration = 'Registration',
     Interview = 'Interview',
     Accept = 'Accept',

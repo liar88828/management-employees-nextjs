@@ -23,14 +23,14 @@ export type CompanyFormState = {
 } | undefined
 
 export type CompanyDB = Omit<Companys, 'id' | 'img'>
-
-export const CompanyFormSchema: z.ZodType<CompanyDB & { id?: string, img?: any }> = z.object({
-    id: z.string().optional(),
+// : z.ZodType<CompanyDB & { id?: string, img?: any }>
+export const CompanyFormSchema = z.object({
+    id: z.number().optional(),
     name: z.string().min(2),
     address: z.string().min(2),
     phone: z.string().min(2),
     email: zodEmail,
-    img: zodImage(),
+    img: zodImage(true),
     visi: z.array(z.object({
         text: z.string().min(2,),
     })),

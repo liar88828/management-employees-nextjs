@@ -4,7 +4,7 @@ import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { EmployeeCreateZodClient } from "@/schema/employee.valid";
 import { toUrl } from "@/utils/toUrl";
 import { EmployeeParams } from "@/server/repository/employee.repo";
-import { ErrorFetch } from "@/utils/ErrorResponse";
+import { ErrorFetch } from "@/utils/ErrorClass";
 
 export const employeeAll = async ({filter, pagination}: EmployeeParams) => {
     const url = toUrl('employee', {...filter, ...pagination})

@@ -34,7 +34,6 @@ async function Page(context: TContext) {
     return (
         <div className="space-y-2">
             <div className="flex gap-2 items-center">
-
                 <Form
                     action={ `/admin/registration` }
                     className="join">

@@ -41,3 +41,15 @@ export class ErrorAction extends Error {
         Object.setPrototypeOf(this, ErrorAction.prototype);
     }
 }
+
+export class ErrorValidation extends Error {
+    constructor(public msg: string) {
+        super(msg);
+        Object.setPrototypeOf(this, ErrorValidation.prototype);
+    }
+}
+
+export type ThrowErrorType = {
+    error: any,
+    from: string,
+}

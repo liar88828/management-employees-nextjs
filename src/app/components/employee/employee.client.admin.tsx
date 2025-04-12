@@ -9,7 +9,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { onUpsertDataAdmin } from "@/server/action/employee.admin";
 import { usePrint } from "@/hook/usePrint";
-import { EmployeePhotoPageAdmin } from "@/app/components/employee/employee.page";
 import { TypeFile, uploadFile } from "@/server/action/upload";
 import Form from "next/form";
 import Link from "next/link";
@@ -18,6 +17,7 @@ import { useFormStatus } from "react-dom";
 import { Departements } from ".prisma/client";
 import { Employees } from "@prisma/client";
 import { employeeListStatus } from "@/interface/enum";
+import { EmployeePhotoPageAdmin } from "@/app/components/employee/employeePhotoPageAdmin";
 
 export function EmployeeFormContextClientAdmin({ label, keys }: { label: string, keys: string }) {
     const { register, control } = useFormContext()

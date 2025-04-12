@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import Zod from "zod"
 import { Prisma } from ".prisma/client"
 import type { TMethod, ToModel } from "@/interface/Utils"
-import { ErrorPrisma } from "@/utils/ErrorResponse";
+import { ErrorPrisma } from "@/utils/ErrorClass";
 
 export async function getId({params}: TContext) {
     const param = await params

@@ -4,12 +4,14 @@ import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { toDateIndo } from "@/utils/toDate";
 import { usePrint } from "@/hook/usePrint";
 import React from "react";
+import { Companys } from "@prisma/client";
 
 interface IDCardProps {
     employee: TEmployeeDB
+    company: Companys
 }
 
-export default function EmployeeIDCardInterview({ employee }: IDCardProps) {
+export default function EmployeeIDCardInterview({ employee, company }: IDCardProps) {
     const { isPrinting, handlePrint, contentRef } = usePrint()
     return (
         <div>
@@ -20,7 +22,7 @@ export default function EmployeeIDCardInterview({ employee }: IDCardProps) {
                     className="h-[12cm] w-[9.5cm] bg-white rounded-lg shadow-lg overflow-hidden">
                     {/* Card Header */ }
                     <div className="bg-blue-600 p-4 text-center">
-                        <h1 className="text-white text-2xl font-bold">COMPANY NAME</h1>
+                        <h1 className="text-white text-2xl font-bold">{ company.name }</h1>
                         <p className="text-blue-100">Employee Interview</p>
                     </div>
 
@@ -31,7 +33,7 @@ export default function EmployeeIDCardInterview({ employee }: IDCardProps) {
                             <div className="relative">
                                 { employee.phone ? (
                                     <img
-                                        src={ employee.phone }
+                                        src={ employee.img }
                                         alt="Profile"
                                         className="w-32 h-32 rounded-lg object-cover border-2 border-gray-300"
                                     />

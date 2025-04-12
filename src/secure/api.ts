@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { ErrorResponse } from "@/utils/ErrorResponse";
+import { ErrorResponse } from "@/utils/ErrorClass";
 import { decrypt } from "@/secure/jwt";
 
 export async function fromRequest(request: NextRequest,) {

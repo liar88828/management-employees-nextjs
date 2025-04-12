@@ -1,6 +1,6 @@
 'use server'
 import { EmployeeCreateZodClient } from "@/schema/employee.valid";
-import { pathImage, saveImageFormData, updateImage } from "@/server/repository/image.repo";
+import { pathImage, saveImageFormData, updateImageFormData } from "@/server/repository/image.repo";
 import { employeeSanitizeFormData } from "@/sanitize/employe.sanitize";
 import { employeeRepository } from "@/server/controller";
 import { ZodError } from "zod";
@@ -34,7 +34,7 @@ export async function employeeUpdateAdmin({ img, ...data }: EmployeeCreateZodCli
         const employeeData = employeeSanitizeFormData(formData, filePath, data.userId)
         const response = await employeeRepository.updateUserRepo(employeeData, employeeId)
         if (response && typeImage) {
-            await updateImage(formData, filePath)
+            await updateImageFormData(formData, filePath)
         }
         return response
     } catch (error) {

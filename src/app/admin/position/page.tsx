@@ -7,6 +7,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getContextQuery } from "@/utils/requestHelper";
 import { PlusIcon } from "lucide-react";
+import { EMPLOYEE_STATUS } from "@/interface/enum";
 
 async function Page(context: TContext) {
     const positionQuery = await getContextQuery(context, 'query')
@@ -100,7 +101,14 @@ async function PositionEmployeeTable({ position, name }: { position: string, nam
     const employees = await prisma.employees.findMany({
         where: {
             name: { contains: name },
-            department: { contains: position }
+            department: { contains: position },
+            status: {
+                notIn: [
+                    EMPLOYEE_STATUS.Interview,
+                    EMPLOYEE_STATUS.Create,
+                    EMPLOYEE_STATUS.Registration
+                ]
+            }
         }
     })
     return (

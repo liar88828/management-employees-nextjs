@@ -1,4 +1,9 @@
-import { employeeCreateServer, EmployeeCreateZodServer } from "@/schema/employee.valid";
+import {
+    employeeCreateServer,
+    EmployeeCreateZodServer,
+    employeeUpdateServer,
+    EmployeeUpdateZodServer
+} from "@/schema/employee.valid";
 
 export function employeeSanitizeFormData(
     formData: FormData, imagePath?: string, userId?: string): EmployeeCreateZodServer {
@@ -23,9 +28,26 @@ export function employeeSanitize(
     if (userId) {
         data.userId = userId
     }
+    // data.registration = false
     // console.log(data)
     return employeeCreateServer.parse(data)
 }
+
+export function employeeSanitizeUpdate(
+    data: any,
+    imagePath?: string,
+    userId?: string): EmployeeUpdateZodServer {
+    if (imagePath) {
+        data.img = imagePath ?? 'image/png';
+    }
+    if (userId) {
+        data.userId = userId
+    }
+    // data.registration = false
+    // console.log(data)
+    return employeeUpdateServer.parse(data)
+}
+
 
 
 

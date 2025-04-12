@@ -2,8 +2,8 @@ import { prisma } from "@/config/prisma";
 import { EmployeeCreate, TEmployeeDB, TEmployeeSearch } from "@/interface/entity/employee.model";
 import { ResponseAll, } from "@/interface/server/param";
 import { InterfaceRepository, ParamsApi } from "@/interface/server/InterfaceRepository";
-import { ErrorPrisma } from "@/utils/ErrorResponse";
-import { EmployeeCreateZodClient } from "@/schema/employee.valid";
+import { ErrorPrisma } from "@/utils/ErrorClass";
+import { EmployeeCreateZodClient, EmployeeCreateZodServer, EmployeeUpdateZodServer } from "@/schema/employee.valid";
 
 export type EmployeeParams = ParamsApi<TEmployeeSearch>
 
@@ -196,7 +196,7 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
         return { data: employees, page, limit };
     }
 
-    async createUserRepo({ skills, languages, educations, ...employees }: EmployeeCreate) {
+    async createUserRepo({ skills, languages, educations, ...employees }: EmployeeCreateZodServer) {
         return prisma.$transaction(async (tx) => {
             const foundEmployee = await tx.employees.findUnique(
                 {
@@ -230,7 +230,7 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
         })
     }
 
-    async updateUserRepo({ skills, languages, educations, ...employees }: EmployeeCreate, id: string) {
+    async updateUserRepo({ skills, languages, educations, ...employees }: EmployeeUpdateZodServer, id: string) {
         return prisma.$transaction(async (tx) => {
 
             const foundEmployee = await tx.employees.findFirst({

@@ -3,6 +3,7 @@ import { Companys, Employees } from "@prisma/client";
 import { LetterForm } from "@/assets/letter";
 import Image from "next/image";
 import { toDateIndo } from "@/utils/toDate";
+import { imageDefault } from "@/interface/entity/employee.model";
 
 export function LetterInterview({ company, employee, form }: {
     company: Companys,
@@ -18,7 +19,7 @@ export function LetterInterview({ company, employee, form }: {
                             <Image
                                 width={ 100 }
                                 height={ 100 }
-                                src={ company.img } alt="logo"
+                                src={ company.img ?? imageDefault } alt="logo"
                                 className={ ' m-2' }
                             />
                             <div>
