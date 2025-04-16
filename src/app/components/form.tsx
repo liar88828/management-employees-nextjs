@@ -179,7 +179,8 @@ export function InputText({ keys, label }: { keys: string, label: string }) {
     const { register, formState: { errors } } = useFormContext()
 
     // @ts-ignore
-    const errorMessage = errors[keys].message as string
+    // const errorMessage = errors[keys].message as string
+
     return (
         <div className="form-control">
             <label className="label">
@@ -190,12 +191,12 @@ export function InputText({ keys, label }: { keys: string, label: string }) {
                 className="input input-bordered"
                 placeholder="Additional notes"
             />
-            { errors[keys] && <p className="text-error text-sm mt-1">{ errorMessage }</p> }
+            { errors[keys] && <p className="text-error text-sm mt-1">{ errors[keys].message as string }</p> }
         </div>
     );
 }
 
-export function EmployeeFormContextClientAdmin({ label, keys }: { label: string, keys: string }) {
+export function InputTextDynamic({ label, keys }: { label: string, keys: string }) {
     const { register, control } = useFormContext()
     const { fields, append, remove } = useFieldArray({
         control,

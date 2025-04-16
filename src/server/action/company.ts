@@ -110,16 +110,48 @@ export async function createCompanyAction(companyData: CompanyFormSchemaType) {
                         ...(hasValidImage && { img: `/company/${ imageFile.name }` })
                     }
                 })
+
+                await tx.visi.deleteMany({ where: { companysId: found.id } })
+                await tx.visi.createMany({
+                    data: visi.map(item => ({
+                        text: item.text,
+                        companysId: found.id
+                    })),
+                })
+
+                await tx.misi.deleteMany({ where: { companysId: found.id } })
+                await tx.misi.createMany({
+                    data: misi.map(item => ({
+                        text: item.text,
+                        companysId: found.id
+                    })),
+                })
+
                 if (hasValidImage) {
                     await updateImage(imageFile, `/company/${ imageFile.name }`, companyDB?.img ?? undefined)
                 }
             } else {
 
-                await tx.companys.create({
+                const companyDB = await tx.companys.create({
                     data: {
                         ...data,
                         ...(hasValidImage && { img: `/company/${ imageFile.name }` })
-                    }
+                    },
+                    select: { id: true }
+                })
+
+                await tx.visi.createMany({
+                    data: visi.map(item => ({
+                        text: item.text,
+                        companysId: companyDB.id
+                    })),
+                })
+
+                await tx.misi.createMany({
+                    data: misi.map(item => ({
+                        text: item.text,
+                        companysId: companyDB.id
+                    })),
                 })
                 if (hasValidImage) {
                     await saveImage(imageFile, `/company/${ imageFile.name }`)

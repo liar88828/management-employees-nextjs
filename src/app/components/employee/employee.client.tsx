@@ -12,7 +12,12 @@ import { employeeCreateClient, EmployeeCreateZodClient } from "@/schema/employee
 import { onUpsertDataUser } from "@/server/action/employee.client";
 import toast from "react-hot-toast";
 import { EmployeePhotoPageAdmin } from "@/app/components/employee/employeePhotoPageAdmin";
-import { EmployeeFormContextClientAdmin } from "@/app/components/form";
+import { InputTextDynamic } from "@/app/components/form";
+
+export interface EmployeeCVProps {
+    employee: TEmployeeDB,
+    type: string,
+}
 
 export function EmployeeFormClientAdmin({ employee, method, userId, departments }: {
     userId: string,
@@ -281,8 +286,8 @@ export function EmployeeFormClientAdmin({ employee, method, userId, departments 
 													<p className="text-error text-sm mt-1">{ errors.educations.message }</p> }
                     </div>
 
-                    <EmployeeFormContextClientAdmin keys={ 'skills' } label={ 'Skills' }/>
-                    <EmployeeFormContextClientAdmin keys={ 'languages' } label={ 'Languages' }/>
+                    <InputTextDynamic keys={ 'skills' } label={ 'Skills' }/>
+                    <InputTextDynamic keys={ 'languages' } label={ 'Languages' }/>
                     {/*<EmployeeFormContextClientAdmin keys={ 'certifications' } label={ 'Certifications' }/>*/ }
                     {/*<EmployeeFormContextClientAdmin keys={ 'projects' } label={ 'Projects' }/>*/ }
 
@@ -315,11 +320,6 @@ export function EmployeeFormClientAdmin({ employee, method, userId, departments 
             </FormProvider>
         </div>
     );
-}
-
-interface EmployeeCVProps {
-    employee: TEmployeeDB,
-    type: string,
 }
 
 export function EmployeePhotosUploadClientAdmin({ employee, type }: EmployeeCVProps & { type: TypeFile }) {

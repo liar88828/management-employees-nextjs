@@ -10,7 +10,7 @@ import { onUpsertDataUser } from "@/server/action/employee.client";
 import React, { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 import useFormPersist from "react-hook-form-persist";
-import { EmployeeFormContextClientAdmin } from "@/app/components/form";
+import { InputTextDynamic } from "@/app/components/form";
 
 export function EmployeeFormClientUser({ employee, method, user, departments }: {
     user: UserDB,
@@ -322,9 +322,9 @@ export function EmployeeFormClientUser({ employee, method, user, departments }: 
                     {/*    { errors.educations && <p className="text-error text-sm mt-1">{ errors.educations.message }</p> }*/ }
                     {/*</div>*/ }
 
-                    <EmployeeFormContextClientAdmin keys={ 'educations' } label={ 'Educations' }/>
-                    <EmployeeFormContextClientAdmin keys={ 'skills' } label={ 'Skills' }/>
-                    <EmployeeFormContextClientAdmin keys={ 'languages' } label={ 'Languages' }/>
+                    <InputTextDynamic keys={ 'educations' } label={ 'Educations' }/>
+                    <InputTextDynamic keys={ 'skills' } label={ 'Skills' }/>
+                    <InputTextDynamic keys={ 'languages' } label={ 'Languages' }/>
                     {/*<EmployeeFormContextClientAdmin keys={ 'certifications' } label={ 'Certifications' }/>*/ }
                     {/*<EmployeeFormContextClientAdmin keys={ 'projects' } label={ 'Projects' }/>*/ }
 

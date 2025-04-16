@@ -24,5 +24,6 @@ export default async function Page() {
         }
         return data
     });
+    console.log('CompanyClient : company', company)
     return <CompanyClient company={ company }/>
 }

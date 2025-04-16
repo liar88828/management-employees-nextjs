@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useActionState } from "react";
-import { EmployeeFormContextClientAdmin, InputImage, InputText, MyInput, MyInputImage } from "@/app/components/form";
+import { InputImage, InputText, InputTextDynamic, MyInput, MyInputImage } from "@/app/components/form";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useFormPersist from "react-hook-form-persist";
@@ -18,7 +18,7 @@ export default function CompanyClient({ company }: { company?: CompanyFormSchema
 
     });
     const { handleSubmit, watch, setValue, formState: { isLoading } } = methods
-    const { clear } = useFormPersist("form-registration", { watch, setValue });
+    const { clear } = useFormPersist("form-company", { watch, setValue });
     const onSubmit = async (data: CompanyFormSchemaType) => {
         const idToast = toast.loading('Loading...')
         try {
@@ -47,8 +47,8 @@ export default function CompanyClient({ company }: { company?: CompanyFormSchema
                 <InputText keys={ 'address' } label={ 'Address' }/>
                 <InputText keys={ 'phone' } label={ 'Phone' }/>
                 <InputText keys={ 'email' } label={ 'Email' }/>
-                <EmployeeFormContextClientAdmin keys={ 'visi' } label={ 'Visi' }/>
-                <EmployeeFormContextClientAdmin keys={ 'misi' } label={ 'Misi' }/>
+                <InputTextDynamic keys={ 'visi' } label={ 'Visi' }/>
+                <InputTextDynamic keys={ 'misi' } label={ 'Misi' }/>
                 <InputImage img={ company?.img } label={ 'Image Company' }/>
                 {/*<MyInputImage defaultValue={ company?.img }*/ }
                 {/*              title={ 'Company' }*/ }
