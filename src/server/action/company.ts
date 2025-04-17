@@ -82,7 +82,8 @@ export async function createCompanyActionFormData(state: CompanyFormState, formD
 
 export async function createCompanyAction(companyData: CompanyFormSchemaType) {
     try {
-        const { id, img, visi, misi, ...data } = companyData
+        console.log(companyData)
+        const { img, visi, misi, ...data } = companyData
 
         const imageFile = img?.[0]
         const hasValidImage = imageFile instanceof File && imageFile.size > 0
@@ -97,29 +98,56 @@ export async function createCompanyAction(companyData: CompanyFormSchemaType) {
         // // }
 
         await prisma.$transaction(async (tx) => {
-            const found = await tx.companys.findUnique({
-                where: { id: Number(id) }
-            })
-
+            const found = await tx.companys.findFirst()
             if (found) {
-                const companyDB = await tx.companys.findUnique({ where: { id: found.id }, select: { img: true } })
                 await tx.companys.update({
                     where: { id: found.id },
                     data: {
                         ...data,
-                        ...(hasValidImage && { img: `/company/${ imageFile.name }` })
+                        ...( hasValidImage && { img: `/company/${ imageFile.name }` } )
                     }
                 })
+
+                await tx.visi.deleteMany({ where: { companysId: found.id } })
+                await tx.visi.createMany({
+                    data: visi.map(item => ( {
+                        text: item.text,
+                        companysId: found.id
+                    } )),
+                })
+
+                await tx.misi.deleteMany({ where: { companysId: found.id } })
+                await tx.misi.createMany({
+                    data: misi.map(item => ( {
+                        text: item.text,
+                        companysId: found.id
+                    } )),
+                })
                 if (hasValidImage) {
-                    await updateImage(imageFile, `/company/${ imageFile.name }`, companyDB?.img ?? undefined)
+                    await updateImage(imageFile, `/company/${ imageFile.name }`, found.img)
                 }
             } else {
 
-                await tx.companys.create({
+                const companyDB = await tx.companys.create({
                     data: {
                         ...data,
-                        ...(hasValidImage && { img: `/company/${ imageFile.name }` })
-                    }
+                        ...( hasValidImage && { img: `/company/${ imageFile.name }` } )
+                    },
+                    select: { id: true }
+                })
+
+                await tx.visi.createMany({
+                    data: visi.map(item => ( {
+                        text: item.text,
+                        companysId: companyDB.id
+                    } )),
+                })
+
+                await tx.misi.createMany({
+                    data: misi.map(item => ( {
+                        text: item.text,
+                        companysId: companyDB.id
+                    } )),
                 })
                 if (hasValidImage) {
                     await saveImage(imageFile, `/company/${ imageFile.name }`)
@@ -138,12 +166,14 @@ export async function createCompanyAction(companyData: CompanyFormSchemaType) {
     }
 }
 
-
-
 export async function findCompanyForUser() {
     const company = await prisma.companys.findFirst()
     if (!company) {
         redirect('/home')
     }
     return company
+}
+
+export async function companyFirst() {
+    return prisma.companys.findFirst()
 }

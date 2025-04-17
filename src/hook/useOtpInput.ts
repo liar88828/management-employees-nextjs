@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { useEmail } from "@/hook/useEmail";
-import { useOtpStore } from "@/hook/otp";
+import { useOtpStore } from "@/store/otp";
 
 const useOtpInput = () => {
     const { onValidate } = useEmail()

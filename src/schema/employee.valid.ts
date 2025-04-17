@@ -5,9 +5,9 @@ import { zodAddress, zodEmail, zodPhone } from "@/schema/zod.valid";
 // : z.ZodType<EmployeeCreate>
 export const employeeCreateClient= z.object({
     userId: z.string().optional(),
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    email: zodEmail,
-    phone: zodPhone,
+    // name: z.string().min(2, "Name must be at least 2 characters"),
+    // email: zodEmail,
+    // phone: zodPhone,
     // gender: z.enum([ "Male", "Female" ]),
     gender: z.string().min(2),
     dateOfBirth: z.coerce.date(),
@@ -52,10 +52,10 @@ export const employeeCreateClient= z.object({
 
 // : z.ZodType<EmployeeCreate>
 export const employeeCreateServer= z.object({
-    userId: z.string().optional(),
-    name: z.string().min(2).max(100),
-    email: z.string().email("Invalid email address"),
-    phone: zodPhone,
+    userId: z.string(),
+    // name: z.string().min(2).max(100),
+    // email: z.string().email("Invalid email address"),
+    // phone: zodPhone,
     gender: z.string().min(2).max(100),
     dateOfBirth: z.coerce.date(),
     hireDate: z.coerce.date(),
@@ -84,10 +84,10 @@ export const employeeCreateServer= z.object({
 })
 
 export const employeeUpdateServer = z.object({
-    userId: z.string().optional(),
-    name: z.string().min(2).max(100),
-    email: z.string().email("Invalid email address"),
-    phone: zodPhone,
+    userId: z.string(),
+    // name: z.string().min(2).max(100),
+    // email: z.string().email("Invalid email address"),
+    // phone: zodPhone,
     gender: z.string().min(2).max(100),
     dateOfBirth: z.coerce.date(),
     hireDate: z.coerce.date(),

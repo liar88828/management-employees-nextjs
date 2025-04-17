@@ -31,7 +31,8 @@ async function Page(context: TContext) {
                         />
                         <button
                             className={ 'btn join-item' }
-                            type="submit">Submit
+                            type="submit"
+                        >Submit
                         </button>
                     </Form>
 
@@ -40,12 +41,14 @@ async function Page(context: TContext) {
                         <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                             <li>
                                 <Link
-                                    href={ `?search=${ search }&query=` }>All Position</Link>
+                                    href={ `?search=${ search }&query=` }
+                                >All Position</Link>
                             </li>
                             { departments.map((item) => (
                                 <li key={ item.department }>
                                     <Link
-                                        href={ `?search=${ search }&query=${ item.department }` }>{ item.department }</Link>
+                                        href={ `?search=${ search }&query=${ item.department }` }
+                                    >{ item.department }</Link>
                                 </li>
                             )) }
                         </ul>
@@ -54,12 +57,12 @@ async function Page(context: TContext) {
                 </div>
 
                 <Link href={ '/admin/position/create' } className={ 'btn btn-info ' }>
-                    Add Position <PlusIcon/>
+                    Add Position <PlusIcon />
                 </Link>
             </div>
 
             <div className="space-y-5">
-                <PositionEmployeeTable position={ positionQuery } name={ search }/>
+                <PositionEmployeeTable position={ positionQuery } name={ search } />
             </div>
         </div>
     );
@@ -70,8 +73,15 @@ export default Page;
 async function PositionEmployee({ position, name }: { position: string, name?: string }) {
     const employees = await prisma.employees.findMany({
         where: {
-            ...(name && { name: { contains: name } }),
+            ...( name && { name: { contains: name } } ),
             department: position
+        },
+        include: {
+            User: {
+                omit: {
+                    password: true, otp: true, otpExpired: true
+                }
+            }
         }
     })
     return (
@@ -85,10 +95,10 @@ async function PositionEmployee({ position, name }: { position: string, name?: s
                         { employees.map((employee) => (
                             <div className="card bg-base-200 " key={ employee.id }>
                                 <div className="card-body">
-                                    <PositionEmployeeList title={ 'Name' } desc={ employee.name }/>
-                                    <PositionEmployeeList title={ 'email' } desc={ employee.email }/>
-                                    <PositionEmployeeList title={ 'Phone' } desc={ employee.phone }/>
-                                    <PositionEmployeeList title={ 'Hire' } desc={ toDateIndo(employee.hireDate) }/>
+                                    <PositionEmployeeList title={ 'Name' } desc={ employee?.User?.name ?? '' } />
+                                    <PositionEmployeeList title={ 'email' } desc={ employee.User?.email ?? '' } />
+                                    <PositionEmployeeList title={ 'Phone' } desc={ employee.User?.phone ?? '' } />
+                                    <PositionEmployeeList title={ 'Hire' } desc={ toDateIndo(employee.hireDate) } />
                                 </div>
                             </div>
                         )) }
@@ -100,7 +110,8 @@ async function PositionEmployee({ position, name }: { position: string, name?: s
 async function PositionEmployeeTable({ position, name }: { position: string, name?: string }) {
     const employees = await prisma.employees.findMany({
         where: {
-            name: { contains: name },
+            // name: { contains: name },
+            User: { name: { contains: name }, },
             department: { contains: position },
             status: {
                 notIn: [
@@ -108,6 +119,13 @@ async function PositionEmployeeTable({ position, name }: { position: string, nam
                     EMPLOYEE_STATUS.Create,
                     EMPLOYEE_STATUS.Registration
                 ]
+            }
+        },
+        include: {
+            User: {
+                omit: {
+                    password: true, otp: true, otpExpired: true
+                }
             }
         }
     })
@@ -130,18 +148,18 @@ async function PositionEmployeeTable({ position, name }: { position: string, nam
                         <tbody>
                         { employees.map((employee) => (
                             <tr key={ employee.id } className="hover:bg-gray-100/20">
-                                <td className="">{ employee.name }</td>
-                                <td className="">{ employee.email }</td>
-                                <td className="text-nowrap">{ employee.phone }</td>
+                                <td className="">{ employee.User?.name }</td>
+                                <td className="">{ employee.User?.email }</td>
+                                <td className="text-nowrap">{ employee.User?.phone }</td>
                                 <td className="">{ toDateIndo(employee.hireDate) }</td>
                                 <td className="">{ employee.department }</td>
                             </tr>
                         )) }
                         </tbody>
                         <tfoot>
-                            <tr>
-                                <td ></td>
-                            </tr>
+                        <tr>
+                            <td></td>
+                        </tr>
                         </tfoot>
                     </table>
                 </div>
@@ -161,4 +179,3 @@ function PositionEmployeeList({ title, desc }: {
         </div>
     );
 }
-

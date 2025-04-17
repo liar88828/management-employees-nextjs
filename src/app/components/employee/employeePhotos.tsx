@@ -30,7 +30,7 @@ export function EmployeePhotos({ employee }: { employee: TEmployeeDB }) {
                 <section>
                     <h3 className="font-semibold mb-2">Ijazah</h3>
                     <Image
-                        src={ employee?.photoIjasah ?? ijazah }
+                        src={ employee?.photoIjazah ?? ijazah }
                         alt="image ktp"
                         width={ 3000 }
                         height={ 4000 }

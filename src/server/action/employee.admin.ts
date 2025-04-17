@@ -6,9 +6,12 @@ import { employeeRepository } from "@/server/controller";
 import { ZodError } from "zod";
 import { prisma } from "@/config/prisma";
 import { checkDepartmentPosition } from "@/server/action/department";
-import { EMPLOYEE_STATUS } from "@/interface/enum";
+import { EMPLOYEE_STATUS, EmployeeCompletePhotoType } from "@/interface/enum";
+import { EmployeeUserClient } from "@/interface/entity/employee.model";
+import { Users } from ".prisma/client";
 
-export const employeeCreateAdmin = async ({ img, ...data }: EmployeeCreateZodClient) => {
+export const employeeCreateAdmin = async ({ img, ...data }: EmployeeCreateZodClient,
+) => {
     // console.log('employeeCreateAdmin', data);
     const formData = new FormData();
     formData.append('file', img[0]);
@@ -16,7 +19,7 @@ export const employeeCreateAdmin = async ({ img, ...data }: EmployeeCreateZodCli
 
     const filePath = await pathImage(formData)    // Save the image path to the database
     const employeeData = employeeSanitizeFormData(formData, filePath)
-    const response = await employeeRepository.createUserRepo(employeeData)
+    const response = await employeeRepository.createUserRepo(employeeData,)
     if (response) {
         await saveImageFormData(formData, filePath)
     }
@@ -32,7 +35,7 @@ export async function employeeUpdateAdmin({ img, ...data }: EmployeeCreateZodCli
         formData.append('data', JSON.stringify(data));
         const filePath = await pathImage(formData, false)    // Save the image path to the database
         const employeeData = employeeSanitizeFormData(formData, filePath, data.userId)
-        const response = await employeeRepository.updateUserRepo(employeeData, employeeId)
+        const response = await employeeRepository.updateUserRepo(employeeData, employeeId,)
         if (response && typeImage) {
             await updateImageFormData(formData, filePath)
         }
@@ -44,7 +47,7 @@ export async function employeeUpdateAdmin({ img, ...data }: EmployeeCreateZodCli
     }
 }
 
-export async function onUpsertDataAdmin(
+export async function employeeOnUpsertAdmin(
     method: "POST" | "PUT",
     data: EmployeeCreateZodClient,
     id?: string) {
@@ -68,7 +71,7 @@ export async function onUpsertDataAdmin(
     }
 }
 
-export async function onConnectUserEmployee(userId: string, employeeId: string) {
+export async function employeeOnConnectUser(userId: string, employeeId: string) {
 
     return prisma.$transaction(async (tx) => {
         // null last value
@@ -77,11 +80,11 @@ export async function onConnectUserEmployee(userId: string, employeeId: string) 
             select: { userId: true }
         })
         if (found) {
-            await tx.employees.update({
-                    data: { userId: null },
-                    where: { userId }
-                }
-            )
+            // await tx.employees.update({
+            //         data: { userId: null },
+            //         where: { userId }
+            //     }
+            // )
         }
         // fill new Value
         await tx.employees.update({
@@ -92,11 +95,167 @@ export async function onConnectUserEmployee(userId: string, employeeId: string) 
     })
 }
 
-export const removeUserEmployee = async (employeeId: string,) => {
-    await prisma.employees.update({
-        where: { id: employeeId },
-        data: { userId: null }
+// export const removeUserEmployee = async (employeeId: string) => {
+//     await prisma.employees.update({
+//         where: { id: employeeId },
+//         data: { userId: null }
+//     })
+// }
+
+export const userFindAvailable = async (employeesValid: ( EmployeeUserClient | null )[]): Promise<Users[]> => {
+
+    const employeeValid = employeesValid
+    // .filter(item => item !== null)
+    .map(item => {
+        if (!item) return null
+        return item.userId
     })
+    .filter(item => item !== null)
+
+    return prisma.users.findMany({
+        where: {
+            id: { notIn: employeeValid },
+            role: "USER",
+            // Employees: {
+            //     userId: null
+            // },
+        },
+
+    })
+
 }
 
+export const employeesFindNull = async () => await prisma.employees.findMany({
+    where: {
+        // userId: null,
+        // User: { role: "USER" }
+    },
+    include: {
+        User: {
+            omit: {
+                password: true,
+                otp: true,
+                otpExpired: true,
+            }
+        }
+    }
+})
+.then(item => {
+    return item.filter(item => item !== null)
 
+})
+
+// : Promise<TEmployeeDB[]>
+export const employeesFindValid = async () => await prisma.employees.findMany({
+    where: {
+        // userId: { not: null },
+        User: { role: "USER" },
+    },
+    include: {
+        User: {
+            omit: {
+                password: true,
+                otp: true,
+                otpExpired: true,
+            }
+        }
+    }
+}).then(item => {
+    return item.filter(item => item !== null)
+})
+
+export const employeePagination = async (search: string, status: string, page: number) => {
+    const pageSize = 3; // You can adjust the page size
+
+    const totalEmployees = await prisma.employees.count({
+        where: {
+            // name: { contains: search },
+            status: status,
+            User: { name: { contains: search } }
+        }
+    });
+
+    const employees = await prisma.employees.findMany({
+        where: {
+            status: status,
+            User: { name: { contains: search } },
+        },
+        skip: ( page - 1 ) * pageSize,
+        take: pageSize,
+        include: {
+            User: {
+                omit: {
+                    password: true,
+                    otp: true,
+                    otpExpired: true,
+                }
+            }
+        }
+    }).then((item): EmployeeUserClient[] => {
+        return item
+        .map((i) => {
+            if (i && i.User) return { ...i, User: i.User }
+            return null
+        })
+        .filter((i) => i !== null)
+    })
+
+    const totalPages = Math.ceil(totalEmployees / pageSize);
+
+    return { totalPages, employees }
+}
+
+export const employeeRegistrationPagination = async (
+    search: string,
+    status: string,
+    page: number,
+    complete: EmployeeCompletePhotoType,
+) => {
+    console.log(search, status, page, complete)
+    const pageSize = 3; // You can adjust the page size
+    const totalEmployees = await prisma.employees.count({
+        where: {
+            // name: { contains: search },
+            status: status,
+            User: { name: { contains: search } },
+
+            photoKtp: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : null,
+            photo3x4: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : null,
+            photoIjazah: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : null,
+        }
+    });
+
+    const employees = await prisma.employees.findMany({
+        where: {
+            status: status,
+            User: { name: { contains: search } },
+            photoKtp: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : null,
+            photo3x4: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : null,
+            photoIjazah: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : null,
+
+        },
+        skip: ( page - 1 ) * pageSize,
+        take: pageSize,
+        include: {
+            User: {
+                omit: {
+                    password: true,
+                    otp: true,
+                    otpExpired: true,
+                }
+            }
+        }
+    })
+    .then((item): EmployeeUserClient[] => {
+        return item
+        // .map((i) => {
+        //     if (i && i.User) return { ...i, User: i.User }
+        //     return null
+        // })
+        // .filter((i) => i !== null)
+    })
+
+    const totalPages = Math.ceil(totalEmployees / pageSize);
+
+    return { totalPages, employees }
+}

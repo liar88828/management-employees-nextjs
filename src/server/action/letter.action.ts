@@ -4,8 +4,9 @@ import { redirect } from "next/navigation";
 import { LetterEmployee, LetterForm } from "@/assets/letter";
 import { getDateCalender, toDateClock, toDateDayName } from "@/utils/toDate";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { LetterFormSchema, LetterFormState } from "@/schema/send.valid";
+import { LetterFormSchema, LetterFormSchemaType, LetterFormState } from "@/schema/send.valid";
 import { Letters } from "@prisma/client";
+import { EmployeeUserClient } from "@/interface/entity/employee.model";
 
 export async function getLetterOnlyAll(): Promise<Letters[]> {
     return prisma.letters.findMany()
@@ -22,13 +23,13 @@ export async function getLetterAll(): Promise<LetterEmployee[]> {
         }
     })
     .then((data) => {
-        return data.map(({ LetterEmployees, ...letter }) => ({
+        return data.map(({ LetterEmployees, ...letter }) => ( {
             ...letter,
             Employees: LetterEmployees.map(item => item.Employees),
             interviewDate: getDateCalender(letter.interviewDate),
             interviewDay: toDateDayName(letter.interviewDate),
             interviewTime: toDateClock(letter.interviewDate),
-        }))
+        } ))
     })
 }
 
@@ -63,12 +64,29 @@ export const getLetterMyId = async (id: string) => {
 
         // ----------
         const employees = await tx.employees.findMany({
+            include: {
+                User: {
+                    omit: {
+                        password: true,
+                        otp: true,
+                        otpExpired: true
+                    }
+                }
+            },
             where: {
                 id: {
                     in: letter.LetterEmployees.map(item => item.employeesId)
                 }
             }
-        }).then(data => {
+        })
+        .then(item => {
+            return item.map((i): EmployeeUserClient | null => {
+                if (!i) return null
+                if (!i.User) return null;
+                return { ...i, User: i.User }
+            }).filter(i => i !== null)
+        })
+        .then(data => {
             if (!data) {
                 redirect('/admin/send')
             }
@@ -80,7 +98,7 @@ export const getLetterMyId = async (id: string) => {
 
 }
 
-export async function letterEmployeeAction(state: LetterFormState, formData: FormData): Promise<LetterFormState> {
+export async function letterEmployeeActionFormData(state: LetterFormState, formData: FormData): Promise<LetterFormState> {
 
     const formValue = Object.fromEntries(formData);
     // console.log(formValue);
@@ -107,15 +125,15 @@ export async function letterEmployeeAction(state: LetterFormState, formData: For
         }
 
         await prisma.$transaction(async (tx) => {
-            const { employeesId, ...data } = validatedFields.data
-            const letterDB = await tx.letters.create({ data })
+            // const { employeesId, ...data } = validatedFields.data
+            // const letterDB = await tx.letters.create({ data })
 
-            await tx.letterEmployees.createMany({
-                data: employeesId.map(item => ({
-                    lettersId: letterDB.id,
-                    employeesId: item
-                }))
-            })
+            // await tx.letterEmployees.createMany({
+            //     data: employeesId.map(item => ( {
+            //         lettersId: letterDB.id,
+            //         employeesId: item
+            //     } ))
+            // })
 
         })
 
@@ -145,6 +163,36 @@ export async function letterEmployeeAction(state: LetterFormState, formData: For
             // prev: { email, password }
 
         }
+    }
+
+}
+
+export async function letterEmployeeActionState(
+    latter: LetterFormSchemaType,
+    idEmployees: string[]
+) {
+
+    try {
+        await prisma.$transaction(async (tx) => {
+            const letterDB = await tx.letters.create({
+                data: {
+                    interviewDate: latter.interviewDate,
+                    dressCode: latter.dressCode,
+                    signerName: latter.signerName,
+                    interviewLocation: latter.interviewLocation,
+                }
+            })
+
+            await tx.letterEmployees.createMany({
+                data: idEmployees.map(item => ( {
+                    lettersId: letterDB.id,
+                    employeesId: item
+                } ))
+            })
+        })
+        return true
+    } catch (e) {
+        return false
     }
 
 }

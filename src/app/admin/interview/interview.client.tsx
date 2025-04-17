@@ -3,15 +3,15 @@ import React, { useActionState, useEffect } from "react";
 import Link from "next/link";
 import { Employees } from "@prisma/client";
 import Form from "next/form";
-import { MyInput, MyInputNum, MyInputTextArea } from "@/app/components/form";
 import { employeeListStatus } from "@/interface/enum";
 import { interviewUpdate } from "@/server/action/inbox";
 import toast from "react-hot-toast";
 import { EmployeeCV } from "@/app/components/employee/employee.page";
-import { TEmployeeDB } from "@/interface/entity/employee.model";
+import { EmployeeUserClient, TEmployeeDB } from "@/interface/entity/employee.model";
 import { XIcon } from "lucide-react";
 import { toDateIndo } from "@/utils/toDate";
 import { EmployeePhotos } from "@/app/components/employee/employeePhotos";
+import { MyInput, MyInputNum, MyInputTextArea } from "@/app/components/form/action";
 
 export function Pagination({ totalPages, search, status, page, title }: {
     totalPages: number,
@@ -24,7 +24,8 @@ export function Pagination({ totalPages, search, status, page, title }: {
         <div className="flex justify-center mt-4 space-x-2">
             { Array.from({ length: totalPages }, (_, i) => (
                 <Link key={ i + 1 } href={ `/admin/${ title }?search=${ search }&status=${ status }&page=${ i + 1 }` }
-                      className={ `btn ${ page === i + 1 ? 'btn-primary' : 'btn-outline' }` }>
+                      className={ `btn ${ page === i + 1 ? 'btn-primary' : 'btn-outline' }` }
+                >
                     { i + 1 }
                 </Link>
             )) }
@@ -32,8 +33,8 @@ export function Pagination({ totalPages, search, status, page, title }: {
     );
 }
 
-export function TableEmployees({ employees }: {
-    employees: Employees[],
+export function EmployeesTable({ employees }: {
+    employees: EmployeeUserClient[],
     // title: string,
     // valid?: boolean
 }) {
@@ -60,9 +61,9 @@ export function TableEmployees({ employees }: {
                 { employees.map((employee, index) => (
                     <tr key={ employee.id } className="hover:bg-gray-100/20">
                         <td className="">{ index + 1 }</td>
-                        <td className="">{ employee.name }</td>
-                        <td className="">{ employee.email }</td>
-                        <td className="text-nowrap">{ employee.phone }</td>
+                        <td className="">{ employee.User.name }</td>
+                        <td className="">{ employee.User.email }</td>
+                        <td className="text-nowrap">{ employee.User.phone }</td>
                         {/*<td className="">{ employee.gender }</td>*/ }
                         {/*<td className="">{ employee.jobTitle }</td>*/ }
                         {/*<td className="">{ employee.department }</td>*/ }
@@ -74,7 +75,8 @@ export function TableEmployees({ employees }: {
                             <div className="">
                                 <Link
                                     className={ 'btn btn-info' }
-                                    href={ `/admin/interview/${ employee.id }` }>
+                                    href={ `/admin/interview/${ employee.id }` }
+                                >
                                     Detail
                                 </Link>
                             </div>
@@ -92,17 +94,18 @@ export function TableEmployees({ employees }: {
     );
 }
 
-export function InboxModalAction({ employees }: { employees: Employees }) {
-    return (<>
+export function InboxModalAction({ employees }: { employees: EmployeeUserClient }) {
+    return ( <>
             <button className="btn" onClick={ () => {
                 // @ts-ignore
                 document.getElementById(`InboxModalAction${ employees.id }`).showModal()
-            } }>open modal
+            } }
+            >open modal
             </button>
             <dialog id={ `InboxModalAction${ employees.id }` } className="modal">
                 <div className="modal-box">
                     <h3 className="font-bold text-lg">Hello!</h3>
-                    { employees.name }
+                    { employees.User.name }
                     <div className="modal-action">
                         <form method="dialog">
                             {/* if there is a button in form, it will close the modal */ }
@@ -130,8 +133,8 @@ export function FormInterview({ employee }: { employee: Employees }) {
 
     return (
         <Form action={ action } className={ 'card card-body max-w-4xl bg-base-200' }>
-            <input type="hidden" value={ employee.id } name={ 'id' }/>
-            <h1>Form Inbox</h1>
+            <input type="hidden" value={ employee.id } name={ 'id' } />
+            <h1>Form Interview</h1>
             <MyInput
                 title={ "jobTitle" }
                 error={ state?.errors?.jobTitle }
@@ -167,7 +170,8 @@ export function FormInterview({ employee }: { employee: Employees }) {
 
             <button
                 disabled={ pending }
-                className={ 'btn btn-info' }>Apply
+                className={ 'btn btn-info' }
+            >Apply
             </button>
         </Form>
     )
@@ -181,17 +185,18 @@ export function InterviewShowCV({ employee }: { employee: TEmployeeDB }) {
                 if (modal instanceof HTMLDialogElement) {
                     modal.showModal();
                 }
-            } }>Show CV
+            } }
+            >Show CV
             </button>
             <dialog id="my_modal_cv" className="modal">
                 <div className="modal-box w-11/12 max-w-4xl">
                     <div className="flex justify-between mb-4">
                         <h1></h1>
                         <form method="dialog">
-                            <button className="btn btn-sm btn-circle btn-ghost "><XIcon/></button>
+                            <button className="btn btn-sm btn-circle btn-ghost "><XIcon /></button>
                         </form>
                     </div>
-                    <EmployeeCV employee={ employee }/>
+                    <EmployeeCV employee={ employee } />
 
                 </div>
                 <form method="dialog" className="modal-backdrop">
@@ -210,7 +215,8 @@ export function InterviewShowDocument({ employee }: { employee: TEmployeeDB }) {
                 if (modal instanceof HTMLDialogElement) {
                     modal.showModal();
                 }
-            } }>Show
+            } }
+            >Show
                 Document
             </button>
             <dialog id="my_modal_document" className="modal">
@@ -218,10 +224,10 @@ export function InterviewShowDocument({ employee }: { employee: TEmployeeDB }) {
                     <div className="flex justify-between mb-4">
                         <h1></h1>
                         <form method="dialog">
-                            <button className="btn btn-sm btn-circle btn-ghost "><XIcon/></button>
+                            <button className="btn btn-sm btn-circle btn-ghost "><XIcon /></button>
                         </form>
                     </div>
-                    <EmployeePhotos employee={ employee }/>
+                    <EmployeePhotos employee={ employee } />
 
                 </div>
                 <form method="dialog" className="modal-backdrop">
@@ -231,4 +237,3 @@ export function InterviewShowDocument({ employee }: { employee: TEmployeeDB }) {
         </>
     );
 }
-

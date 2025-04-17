@@ -1,12 +1,11 @@
 'use client'
 import React, { useState } from "react";
 import { Users } from ".prisma/client";
-import { Employees } from "@prisma/client";
 import { toDateIndo } from "@/utils/toDate";
 import { Plus } from "lucide-react";
-import { onConnectUserEmployee, removeUserEmployee } from "@/server/action/employee.admin";
+import { EmployeeUserClient } from "@/interface/entity/employee.model";
 
-export function AccountModal({ user, employees }: { user: Users, employees: Employees[] }) {
+export function AccountModal({ user, employees }: { user: Users, employees: EmployeeUserClient[] }) {
     const [ search, setSearch ] = useState('')
     return (<>
             <button className="btn btn-info" onClick={ () => {
@@ -42,13 +41,13 @@ export function AccountModal({ user, employees }: { user: Users, employees: Empl
                                 </thead>
                                 <tbody>
                                 { employees
-                                .filter(employee => employee.name.toLowerCase().includes(search.toLowerCase()))
+                                .filter(employee => employee.User.name.toLowerCase().includes(search.toLowerCase()))
                                 .map((employee) => (
                                     <tr key={ employee.id } className="hover:bg-gray-100/20">
                                         <td className="">{ employee.id }</td>
-                                        <td className="">{ employee.name }</td>
-                                        <td className="">{ employee.email }</td>
-                                        <td className="">{ employee.phone }</td>
+                                        <td className="">{ employee.User.name }</td>
+                                        <td className="">{ employee.User.email }</td>
+                                        <td className="">{ employee.User.phone }</td>
                                         {/*<td className="">{ employee.gender }</td>*/ }
                                         {/*<td className="">{ employee.jobTitle }</td>*/ }
                                         <td className="">{ employee.department }</td>
@@ -60,7 +59,8 @@ export function AccountModal({ user, employees }: { user: Users, employees: Empl
                                             <div>
                                                 <button
                                                     className={ 'btn btn-success btn-square' }
-                                                    onClick={ () => onConnectUserEmployee(user.id, employee.id) }>
+                                                    // onClick={ () => employeeOnConnectUser(user.id, employee.id) }
+                                                >
                                                     <Plus/>
                                                 </button>
                                             </div>
@@ -91,13 +91,15 @@ export function AccountModal({ user, employees }: { user: Users, employees: Empl
 
 export function RemoveUserEmployeeButton({ employeeId }: { employeeId: string }) {
     return (
-        <button className={ 'btn btn-error' } onClick={ async () => removeUserEmployee(employeeId) }>
+        <button className={ 'btn btn-error' }
+            // onClick={ async () => removeUserEmployee(employeeId) }
+        >
             Remove User
         </button>
     );
 }
 
-export function UserAvailable({ users, employees }: { users: Users[], employees: Employees[] }) {
+export function UserAvailable({ users, employees }: { users: Users[], employees: EmployeeUserClient[] }) {
     return (
         <section>
             <h1 className="">User Available List</h1>
@@ -153,8 +155,8 @@ export function UserAvailable({ users, employees }: { users: Users[], employees:
 }
 
 export function TableEmployees({ employees, title, valid }: {
+    employees: EmployeeUserClient[],
     title: string,
-    employees: Employees[],
     valid?: boolean
 }) {
     return (
@@ -182,9 +184,9 @@ export function TableEmployees({ employees, title, valid }: {
                     { employees.map((employee) => (
                         <tr key={ employee.id } className="hover:bg-gray-100/20">
                             <td className="">{ employee.id }</td>
-                            <td className="">{ employee.name }</td>
-                            <td className="">{ employee.email }</td>
-                            <td className="">{ employee.phone }</td>
+                            <td className="">{ employee.User.name }</td>
+                            <td className="">{ employee.User.email }</td>
+                            <td className="">{ employee.User.phone }</td>
                             {/*<td className="">{ employee.gender }</td>*/ }
                             {/*<td className="">{ employee.jobTitle }</td>*/ }
                             <td className="">{ employee.department }</td>

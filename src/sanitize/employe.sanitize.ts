@@ -4,6 +4,7 @@ import {
     employeeUpdateServer,
     EmployeeUpdateZodServer
 } from "@/schema/employee.valid";
+import { EmployeeCreate } from "@/interface/entity/employee.model";
 
 export function employeeSanitizeFormData(
     formData: FormData, imagePath?: string, userId?: string): EmployeeCreateZodServer {

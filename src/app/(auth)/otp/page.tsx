@@ -1,6 +1,6 @@
 'use client'
 import React from "react";
-import { useOtpStore } from "@/hook/otp";
+import { useOtpStore } from "@/store/otp";
 import { CountdownButton } from "@/app/(auth)/otp/countdown";
 import { OtpForm } from "@/app/(auth)/otp/OtpForm";
 
@@ -24,4 +24,3 @@ export default function Page() {
         </div>
     );
 };
-

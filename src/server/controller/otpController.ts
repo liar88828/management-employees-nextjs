@@ -9,7 +9,7 @@ import { ResponseData } from "@/interface/server/TResponse";
 import { USER_STATUS } from "@/interface/enum";
 
 export async function otpGenerate(json: OTPGenerate): Promise<ResponseData> {
-    const { time, email, reason } = validGenerateOtp.parse(json)
+    const { time: otpExpired, email, reason } = validGenerateOtp.parse(json)
     const user = await prisma.users.findFirst({ where: { email } })
 
     if (!user) {
@@ -20,7 +20,7 @@ export async function otpGenerate(json: OTPGenerate): Promise<ResponseData> {
     // console.log(user.otpDate)
     // console.log(user.otpDate < new Date())
 
-    if (user.otpRegenerate > new Date()) {
+    if (user.otpExpired > new Date()) {
         throw new Error("Please Wait until OTP date is end ")
     }
 
@@ -34,8 +34,8 @@ export async function otpGenerate(json: OTPGenerate): Promise<ResponseData> {
             where: { id: user.id },
             data: {
                 otp,
-                otpRegenerate: time,
-                otpCount: { increment: 1 },
+                otpExpired,
+                // otpCount: { increment: 1 },
                 status: USER_STATUS.OTP,
             }
         })
@@ -46,8 +46,8 @@ export async function otpGenerate(json: OTPGenerate): Promise<ResponseData> {
             where: { id: user.id },
             data: {
                 otp,
-                otpRegenerate: time,
-                otpCount: { increment: 1 },
+                otpExpired,
+                // otpCount: { increment: 1 },
                 status: USER_STATUS.RESET
             }
         })

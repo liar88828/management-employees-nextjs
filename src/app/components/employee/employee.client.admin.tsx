@@ -2,12 +2,12 @@
 import { FormProvider, useFieldArray, useForm, useFormContext } from "react-hook-form";
 import { BookUser, Minus, Plus, Printer } from "lucide-react";
 import React, { Fragment, ReactNode, useState } from "react";
-import { TEmployeeDB } from "@/interface/entity/employee.model";
+import { EmployeeUserClient, TEmployeeDB } from "@/interface/entity/employee.model";
 import { useFormImage } from "@/hook/useFormImage";
 import { employeeCreateClient, EmployeeCreateZodClient } from "@/schema/employee.valid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
-import { onUpsertDataAdmin } from "@/server/action/employee.admin";
+import { employeeOnUpsertAdmin } from "@/server/action/employee.admin";
 import { usePrint } from "@/hook/usePrint";
 import { TypeFile, uploadFile } from "@/server/action/upload";
 import Form from "next/form";
@@ -15,11 +15,10 @@ import Link from "next/link";
 import { toRupiah } from "@/utils/toRupiah";
 import { useFormStatus } from "react-dom";
 import { Departements } from ".prisma/client";
-import { Employees } from "@prisma/client";
 import { employeeListStatus } from "@/interface/enum";
 import { EmployeePhotoPageAdmin } from "@/app/components/employee/employeePhotoPageAdmin";
 
-export function EmployeeFormContextClientAdmin({ label, keys }: { label: string, keys: string }) {
+export function EmployeeFormContextClientAdmin({ title, keys }: { title: string, keys: string }) {
     const { register, control } = useFormContext()
     const { fields, append, remove } = useFieldArray({
         control,
@@ -30,7 +29,7 @@ export function EmployeeFormContextClientAdmin({ label, keys }: { label: string,
         <div className="form-control ">
             <div className="flex justify-between mb-1">
                 <label className="label items-end ">
-                    <span className="label-text">{ label }</span>
+                    <span className="label-text">{ title }</span>
 
                 </label>
                 <button
@@ -38,7 +37,7 @@ export function EmployeeFormContextClientAdmin({ label, keys }: { label: string,
                     type="button"
                     onClick={ () => append({ text: "" }) }
                 >
-                    <Plus/>
+                    <Plus />
                 </button>
             </div>
             <div className="space-y-2">
@@ -52,7 +51,7 @@ export function EmployeeFormContextClientAdmin({ label, keys }: { label: string,
                             type="button"
                             onClick={ () => remove(index) }
                         >
-                            <Minus/>
+                            <Minus />
                         </button>
                     </div>
                 )) }
@@ -71,17 +70,17 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
     const { previewImage, handleImageChange } = useFormImage(employee?.img)
     const methods = useForm<EmployeeCreateZodClient>({
         resolver: zodResolver(employeeCreateClient),
-        defaultValues: ({
+        defaultValues: ( {
             ...employee,
             userId: undefined,
-        })
+        } )
     });
     const { register, handleSubmit, formState: { errors } } = methods
 
     const onSubmit = async (data: EmployeeCreateZodClient) => {
         const toastId = toast.loading('Loading...');
         try {
-            await onUpsertDataAdmin(method, data, employee?.id)
+            await employeeOnUpsertAdmin(method, data, employee?.id)
             toast.success("Success Create Employee");
         } catch (e: unknown) {
             if (e instanceof Error) {
@@ -105,44 +104,44 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                             }
                         ) }
                     />
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Name</span>
-                        </label>
-                        <input
-                            type="text"
-                            { ...register('name') }
-                            className={ `input input-bordered ${ errors.name ? 'input-error' : '' }` }
-                            placeholder="Employee Name"
-                        />
-                        { errors.name && <p className="text-error text-sm mt-1">{ errors.name.message }</p> }
-                    </div>
+                    {/*<div className="form-control">*/ }
+                    {/*    <label className="label">*/ }
+                    {/*        <span className="label-text">Name</span>*/ }
+                    {/*    </label>*/ }
+                    {/*    <input*/ }
+                    {/*        type="text"*/ }
+                    {/*        { ...register('name') }*/ }
+                    {/*        className={ `input input-bordered ${ errors.name ? 'input-error' : '' }` }*/ }
+                    {/*        placeholder="Employee Name"*/ }
+                    {/*    />*/ }
+                    {/*    { errors.name && <p className="text-error text-sm mt-1">{ errors.name.message }</p> }*/ }
+                    {/*</div>*/ }
 
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Email</span>
-                        </label>
-                        <input
-                            type="email"
-                            { ...register('email') }
-                            className={ `input input-bordered ${ errors.email ? 'input-error' : '' }` }
-                            placeholder="employee@company.com"
-                        />
-                        { errors.email && <p className="text-error text-sm mt-1">{ errors.email.message }</p> }
-                    </div>
+                    {/*<div className="form-control">*/ }
+                    {/*    <label className="label">*/ }
+                    {/*        <span className="label-text">Email</span>*/ }
+                    {/*    </label>*/ }
+                    {/*    <input*/ }
+                    {/*        type="email"*/ }
+                    {/*        { ...register('email') }*/ }
+                    {/*        className={ `input input-bordered ${ errors.email ? 'input-error' : '' }` }*/ }
+                    {/*        placeholder="employee@company.com"*/ }
+                    {/*    />*/ }
+                    {/*    { errors.email && <p className="text-error text-sm mt-1">{ errors.email.message }</p> }*/ }
+                    {/*</div>*/ }
 
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Phone</span>
-                        </label>
-                        <input
-                            type="tel"
-                            { ...register('phone') }
-                            className="input input-bordered"
-                            placeholder="Phone Number"
-                        />
-                        { errors.phone && <p className="text-error text-sm mt-1">{ errors.phone.message }</p> }
-                    </div>
+                    {/*<div className="form-control">*/ }
+                    {/*    <label className="label">*/ }
+                    {/*        <span className="label-text">Phone</span>*/ }
+                    {/*    </label>*/ }
+                    {/*    <input*/ }
+                    {/*        type="tel"*/ }
+                    {/*        { ...register('phone') }*/ }
+                    {/*        className="input input-bordered"*/ }
+                    {/*        placeholder="Phone Number"*/ }
+                    {/*    />*/ }
+                    {/*    { errors.phone && <p className="text-error text-sm mt-1">{ errors.phone.message }</p> }*/ }
+                    {/*</div>*/ }
 
                     <div className="form-control">
                         <label className="label">
@@ -232,9 +231,9 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                     </div>
 
                     {/*<div className="form-control">*/ }
-                    {/*	<label className="label">*/ }
-                    {/*		<span className="label-text">Manager ID (Optional)</span>*/ }
-                    {/*	</label>*/ }
+                    {/*	<title className="title">*/ }
+                    {/*		<span className="title-text">Manager ID (Optional)</span>*/ }
+                    {/*	</title>*/ }
                     {/*	<input*/ }
                     {/*		type="number"*/ }
                     {/*		{...register('managerId', { valueAsNumber: true })}*/ }
@@ -284,7 +283,7 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                             placeholder="Postal Code"
                         />
                         { errors.postalCode &&
-													<p className="text-error text-sm mt-1">{ errors.postalCode.message }</p> }
+                            <p className="text-error text-sm mt-1">{ errors.postalCode.message }</p> }
                     </div>
 
                     <div className="form-control">
@@ -326,9 +325,9 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                     </div>
 
                     {/*<div className="form-control">*/ }
-                    {/*    <label className="label">*/ }
-                    {/*        <span className="label-text">Education</span>*/ }
-                    {/*    </label>*/ }
+                    {/*    <title className="title">*/ }
+                    {/*        <span className="title-text">Education</span>*/ }
+                    {/*    </title>*/ }
                     {/*    <input*/ }
                     {/*        { ...register('education') }*/ }
                     {/*        className="input input-bordered"*/ }
@@ -337,16 +336,16 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                     {/*    { errors.education && <p className="text-error text-sm mt-1">{ errors.education.message }</p> }*/ }
                     {/*</div>*/ }
 
-                    <EmployeeFormContextClientAdmin keys={ 'educations' } label={ 'Educations' }/>
-                    <EmployeeFormContextClientAdmin keys={ 'skills' } label={ 'Skills' }/>
-                    <EmployeeFormContextClientAdmin keys={ 'languages' } label={ 'Languages' }/>
-                    {/*<EmployeeFormContextClientAdmin keys={ 'certifications' } label={ 'Certifications' }/>*/ }
-                    {/*<EmployeeFormContextClientAdmin keys={ 'projects' } label={ 'Projects' }/>*/ }
+                    <EmployeeFormContextClientAdmin keys={ 'educations' } title={ 'Educations' } />
+                    <EmployeeFormContextClientAdmin keys={ 'skills' } title={ 'Skills' } />
+                    <EmployeeFormContextClientAdmin keys={ 'languages' } title={ 'Languages' } />
+                    {/*<EmployeeFormContextClientAdmin keys={ 'certifications' } title={ 'Certifications' }/>*/ }
+                    {/*<EmployeeFormContextClientAdmin keys={ 'projects' } title={ 'Projects' }/>*/ }
 
                     {/*<div className="form-control">*/ }
-                    {/*    <label className="label">*/ }
-                    {/*        <span className="label-text">Employee Image</span>*/ }
-                    {/*    </label>*/ }
+                    {/*    <title className="title">*/ }
+                    {/*        <span className="title-text">Employee Image</span>*/ }
+                    {/*    </title>*/ }
                     {/*    <input*/ }
                     {/*        type="file"*/ }
                     {/*        {*/ }
@@ -374,12 +373,12 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                         />{
                         // @ts-ignore
                         errors.img && <p className="text-error text-sm mt-1">{ errors.img.message }</p> }
+                        {/*@next/next/no-img-element*/ }
                         <img src={ previewImage }
                              alt="Image Employee"
                              className="size-40 mt-2 rounded-lg border"
                         />
                     </div>
-
 
                     <div className="form-control mt-6">
                         <button
@@ -407,7 +406,7 @@ export function PrintComponent({ children, href }: { href?: string, children: Re
                     disabled={ isPrinting }
                     className={ 'btn btn-info ' }
                 >
-                    { isPrinting ? 'Printing...' : <>Print PDF<Printer/></> }
+                    { isPrinting ? 'Printing...' : <>Print PDF<Printer /></> }
                 </button>
             </div>
             { children }
@@ -467,13 +466,13 @@ export function EmployeeSearchClientAdmin({ search, status }: {
                 </select>
             </Form>
             <Link href={ '/admin/employee/create' } className={ 'btn btn-square' }>
-                <Plus/>
+                <Plus />
             </Link>
         </div>
     );
 }
 
-export function EmployeeTableClientAdmin({ employees }: { employees: Employees[] }) {
+export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUserClient[] }) {
     return (
         <div>
             <div className="overflow-x-auto w-full">
@@ -504,35 +503,31 @@ export function EmployeeTableClientAdmin({ employees }: { employees: Employees[]
                     { employees.map((employee) => (
                         <tr key={ employee.id }>
                             {/*<td>{ employee.id }</td>*/ }
+                            <td>{ employee.User.name }</td>
+                            <td>{ employee.User.email }</td>
+                            <td className={ 'text-nowrap' }>{ employee.User.phone || "-" }</td>
+                            <td>{ employee.gender || "-" }</td>
+                            <td>{ new Date(employee.hireDate).toLocaleDateString() }</td>
+                            <td>{ employee.jobTitle }</td>
+                            <td>{ employee.department || "-" }</td>
+                            <td>{ toRupiah(employee.salary) }</td>
+                            <td>{ employee.employmentType }</td>
+                            <td><p className={ `badge ${
+                                employee.status === "Active" ? "badge-success" : "badge-error"
+                            }` }
+                            >
+                                { employee.status }
+                            </p></td>
                             <td>
-                                <div className="flex">
-                                            { employee.name }
-                                        </div>
-                                    </td>
-                                    <td>{ employee.email }</td>
-                                    <td className={ 'text-nowrap' }>{ employee.phone || "-" }</td>
-                                    <td>{ employee.gender || "-" }</td>
-                                    <td>{ new Date(employee.hireDate).toLocaleDateString() }</td>
-                                    <td>{ employee.jobTitle }</td>
-                                    <td>{ employee.department || "-" }</td>
-                                    <td>{ toRupiah(employee.salary) }</td>
-                                    <td>{ employee.employmentType }</td>
-                                    <td><p className={ `badge ${
-                                        employee.status === "Active" ? "badge-success" : "badge-error"
-                                    }` }
-                                    >
-                                        { employee.status }
-                                    </p></td>
-                                    <td>
-                                        <Link
-                                            href={ `/admin/employee/${ employee.id }` }
-                                            className={ 'btn btn-sm btn-info btn-square' }
-                                        >
-                                            <BookUser/>
-                                        </Link>
-                                    </td>
-                                </tr>
-                            )) }
+                                <Link
+                                    href={ `/admin/employee/${ employee.id }` }
+                                    className={ 'btn btn-sm btn-info btn-square' }
+                                >
+                                    <BookUser />
+                                </Link>
+                            </td>
+                        </tr>
+                    )) }
                     </tbody>
                     <tfoot>
                     <tr>

@@ -2,7 +2,7 @@
 import { Testimonials } from '@prisma/client';
 import { useActionState } from "react";
 import { testimonialUpsertAction } from "@/server/action/testimonial";
-import { FormError } from "@/app/components/form";
+import { FormError } from "@/app/components/form/action";
 
 export function TestimonialForm(
     {

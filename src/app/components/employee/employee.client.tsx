@@ -12,7 +12,12 @@ import { employeeCreateClient, EmployeeCreateZodClient } from "@/schema/employee
 import { onUpsertDataUser } from "@/server/action/employee.client";
 import toast from "react-hot-toast";
 import { EmployeePhotoPageAdmin } from "@/app/components/employee/employeePhotoPageAdmin";
-import { EmployeeFormContextClientAdmin } from "@/app/components/form";
+import { InputTextDynamic } from "@/app/components/form/state";
+
+export interface EmployeeCVProps {
+    employee: TEmployeeDB,
+    type: string,
+}
 
 export function EmployeeFormClientAdmin({ employee, method, userId, departments }: {
     userId: string,
@@ -52,44 +57,44 @@ export function EmployeeFormClientAdmin({ employee, method, userId, departments 
                             }
                         ) }
                     />
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Name</span>
-                        </label>
-                        <input
-                            type="text"
-                            { ...register('name') }
-                            className={ `input input-bordered ${ errors.name ? 'input-error' : '' }` }
-                            placeholder="Employee Name"
-                        />
-                        { errors.name && <p className="text-error text-sm mt-1">{ errors.name.message }</p> }
-                    </div>
+                    {/*<div className="form-control">*/ }
+                    {/*    <label className="label">*/ }
+                    {/*        <span className="label-text">Name</span>*/ }
+                    {/*    </label>*/ }
+                    {/*    <input*/ }
+                    {/*        type="text"*/ }
+                    {/*        { ...register('name') }*/ }
+                    {/*        className={ `input input-bordered ${ errors.name ? 'input-error' : '' }` }*/ }
+                    {/*        placeholder="Employee Name"*/ }
+                    {/*    />*/ }
+                    {/*    { errors.name && <p className="text-error text-sm mt-1">{ errors.name.message }</p> }*/ }
+                    {/*</div>*/ }
 
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Email</span>
-                        </label>
-                        <input
-                            type="email"
-                            { ...register('email') }
-                            className={ `input input-bordered ${ errors.email ? 'input-error' : '' }` }
-                            placeholder="employee@company.com"
-                        />
-                        { errors.email && <p className="text-error text-sm mt-1">{ errors.email.message }</p> }
-                    </div>
+                    {/*<div className="form-control">*/ }
+                    {/*    <label className="label">*/ }
+                    {/*        <span className="label-text">Email</span>*/ }
+                    {/*    </label>*/ }
+                    {/*    <input*/ }
+                    {/*        type="email"*/ }
+                    {/*        { ...register('email') }*/ }
+                    {/*        className={ `input input-bordered ${ errors.email ? 'input-error' : '' }` }*/ }
+                    {/*        placeholder="employee@company.com"*/ }
+                    {/*    />*/ }
+                    {/*    { errors.email && <p className="text-error text-sm mt-1">{ errors.email.message }</p> }*/ }
+                    {/*</div>*/ }
 
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Phone</span>
-                        </label>
-                        <input
-                            type="tel"
-                            { ...register('phone') }
-                            className="input input-bordered"
-                            placeholder="Phone Number"
-                        />
-                        { errors.phone && <p className="text-error text-sm mt-1">{ errors.phone.message }</p> }
-                    </div>
+                    {/*<div className="form-control">*/ }
+                    {/*    <label className="label">*/ }
+                    {/*        <span className="label-text">Phone</span>*/ }
+                    {/*    </label>*/ }
+                    {/*    <input*/ }
+                    {/*        type="tel"*/ }
+                    {/*        { ...register('phone') }*/ }
+                    {/*        className="input input-bordered"*/ }
+                    {/*        placeholder="Phone Number"*/ }
+                    {/*    />*/ }
+                    {/*    { errors.phone && <p className="text-error text-sm mt-1">{ errors.phone.message }</p> }*/ }
+                    {/*</div>*/ }
 
                     <div className="form-control">
                         <label className="label">
@@ -176,9 +181,9 @@ export function EmployeeFormClientAdmin({ employee, method, userId, departments 
                     </div>
 
                     {/*<div className="form-control">*/ }
-                    {/*	<label className="label">*/ }
-                    {/*		<span className="label-text">Manager ID (Optional)</span>*/ }
-                    {/*	</label>*/ }
+                    {/*	<title className="title">*/ }
+                    {/*		<span className="title-text">Manager ID (Optional)</span>*/ }
+                    {/*	</title>*/ }
                     {/*	<input*/ }
                     {/*		type="number"*/ }
                     {/*		{...register('managerId', { valueAsNumber: true })}*/ }
@@ -281,10 +286,10 @@ export function EmployeeFormClientAdmin({ employee, method, userId, departments 
 													<p className="text-error text-sm mt-1">{ errors.educations.message }</p> }
                     </div>
 
-                    <EmployeeFormContextClientAdmin keys={ 'skills' } label={ 'Skills' }/>
-                    <EmployeeFormContextClientAdmin keys={ 'languages' } label={ 'Languages' }/>
-                    {/*<EmployeeFormContextClientAdmin keys={ 'certifications' } label={ 'Certifications' }/>*/ }
-                    {/*<EmployeeFormContextClientAdmin keys={ 'projects' } label={ 'Projects' }/>*/ }
+                    <InputTextDynamic keys={ 'skills' } title={ 'Skills' } />
+                    <InputTextDynamic keys={ 'languages' } title={ 'Languages' } />
+                    {/*<EmployeeFormContextClientAdmin keys={ 'certifications' } title={ 'Certifications' }/>*/ }
+                    {/*<EmployeeFormContextClientAdmin keys={ 'projects' } title={ 'Projects' }/>*/ }
 
                     <div className="form-control">
                         <label className="label">
@@ -315,11 +320,6 @@ export function EmployeeFormClientAdmin({ employee, method, userId, departments 
             </FormProvider>
         </div>
     );
-}
-
-interface EmployeeCVProps {
-    employee: TEmployeeDB,
-    type: string,
 }
 
 export function EmployeePhotosUploadClientAdmin({ employee, type }: EmployeeCVProps & { type: TypeFile }) {
@@ -389,4 +389,3 @@ export function EmployeeSearchClientAdmin({ children }: { children: React.ReactN
 function useEmployeeStore(): { setFilter: any; filter: any; } {
     throw new Error("Function not implemented.");
 }
-

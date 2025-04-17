@@ -9,9 +9,9 @@ import {
 import { Departements } from ".prisma/client";
 import { Pen, Plus, Trash } from "lucide-react";
 import { LoadingAction } from "@/app/components/LoadingData";
-import { FormError } from "@/app/components/form";
 import { useFormStatus } from "react-dom";
 import { onAction } from "@/server/action/OnAction";
+import { FormError } from "@/app/components/form/action";
 
 export function DepartmentModalCreate() {
     const [ state, action, pending ] = useActionState(departmentCreate, undefined);
@@ -147,5 +147,3 @@ export function DepartmentModalUpdate({ department }: { department: Departements
         </div>
     )
 }
-
-

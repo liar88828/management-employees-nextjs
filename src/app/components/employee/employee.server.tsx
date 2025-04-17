@@ -33,8 +33,8 @@ export async function EmployeeDetailServerClient() {
     }
     return (
         <div className="pb-20 space-y-5">
-            <EmployeeCV employee={ employee }/>
-            <EmployeePhotoAdmin employee={ employee }/>
+            {/*<EmployeeCV employee={ employee }/>*/ }
+            {/*<EmployeePhotoAdmin employee={ employee }/>*/ }
         </div>
     );
 }

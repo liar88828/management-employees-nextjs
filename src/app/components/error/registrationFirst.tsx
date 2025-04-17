@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-export function RegistrationFirst() {
+export function EmployeeNotFound() {
     return <div className="card card-body card-bordered bg-base-200 max-w-lg">
         <h1 className={ "card-title" }>
             Please Registration First

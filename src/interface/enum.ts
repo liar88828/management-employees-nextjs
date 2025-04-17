@@ -29,3 +29,11 @@ export const employeeListStatus = [
     'Active',
     'Disabled',
     'Resign', ];
+
+export const EmployeeCompletePhoto =
+    {
+        SelectAll: 'Select All',
+        Complete: 'Complete',
+        NotCompleted: 'Not Completed',
+    }
+export type EmployeeCompletePhotoType = keyof typeof EmployeeCompletePhoto

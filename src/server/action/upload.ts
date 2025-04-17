@@ -39,7 +39,7 @@ export async function uploadFile(
                 await prisma.employees.update({ where: { id }, data: { photo3x4: data.full_path } })
             }
             if (typeFile === 'ijazah') {
-                await prisma.employees.update({ where: { id }, data: { photoIjasah: data.full_path } })
+                await prisma.employees.update({ where: { id }, data: { photoIjazah: data.full_path } })
             }
         }
         revalidatePath("/");

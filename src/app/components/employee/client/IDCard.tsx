@@ -6,20 +6,20 @@ import { usePrint } from "@/hook/usePrint";
 import React from "react";
 import { Companys } from "@prisma/client";
 
-interface IDCardProps {
-    employee: TEmployeeDB
-    company: Companys
-}
-
-export default function EmployeeIDCardInterview({ employee, company }: IDCardProps) {
+export default function EmployeeIDCardInterview(
+    { employee, company }:
+    { employee: TEmployeeDB, company: Companys }
+) {
     const { isPrinting, handlePrint, contentRef } = usePrint()
     return (
         <div>
             <p>12cm x 9.5cm</p>
             <div ref={ contentRef }
-                 className="p-2 space-y-2">
+                 className="p-2 space-y-2"
+            >
                 <div
-                    className="h-[12cm] w-[9.5cm] bg-white rounded-lg shadow-lg overflow-hidden">
+                    className="h-[12cm] w-[9.5cm] bg-white rounded-lg shadow-lg overflow-hidden"
+                >
                     {/* Card Header */ }
                     <div className="bg-blue-600 p-4 text-center">
                         <h1 className="text-white text-2xl font-bold">{ company.name }</h1>
@@ -31,7 +31,7 @@ export default function EmployeeIDCardInterview({ employee, company }: IDCardPro
                         {/* Photo and Edit Button */ }
                         <div className="flex justify-between items-start mb-6">
                             <div className="relative">
-                                { employee.phone ? (
+                                { employee.img ? (
                                     <img
                                         src={ employee.img }
                                         alt="Profile"
@@ -39,16 +39,16 @@ export default function EmployeeIDCardInterview({ employee, company }: IDCardPro
                                     />
                                 ) : (
                                     <div
-                                        className="w-32 h-32 rounded-lg bg-gray-200 flex items-center justify-center border-2 border-gray-300">
-                                        <Camera size={ 48 } className="text-gray-400"/>
+                                        className="w-32 h-32 rounded-lg bg-gray-200 flex items-center justify-center border-2 border-gray-300"
+                                    >
+                                        <Camera size={ 48 } className="text-gray-400" />
                                     </div>
                                 ) }
                             </div>
                         </div>
 
-
                         <div className="space-y-4">
-                            <div className="text-4xl font-bold">{ employee.name }</div>
+                            <div className="text-4xl font-bold">{ employee.User.name }</div>
                             {/*<div className="text-gray-600">{employee.role}</div>*/ }
                             <div className="border-t border-b border-gray-200 py-3 space-y-2">
                                 {/*<div className="flex justify-between">*/ }
@@ -81,7 +81,7 @@ export default function EmployeeIDCardInterview({ employee, company }: IDCardPro
                     disabled={ isPrinting }
                     className={ 'btn btn-info' }
                 >
-                    { isPrinting ? 'Printing...' : <Printer/> }
+                    { isPrinting ? 'Printing...' : <Printer /> }
                 </button>
             </div>
         </div>

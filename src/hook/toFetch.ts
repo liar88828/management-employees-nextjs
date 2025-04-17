@@ -1,5 +1,5 @@
-import {TMethod} from "@/interface/Utils"
-import {FetchResponse} from "@/interface/server/param";
+import { TMethod } from "@/interface/Utils"
+import { FetchResponse } from "@/interface/server/param";
 
 const isTest = false
 

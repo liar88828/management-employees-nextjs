@@ -12,14 +12,15 @@ export type LetterFormState = {
     success: boolean
 } | undefined
 
-export const LetterFormSchema: z.ZodType<LetterDB & { employeesId: string[] }> = z.object({
+// : z.ZodType<Omit<LetterDB, 'id'>>
+export const LetterFormSchema = z.object({
     id: z.string().optional(),
-    option: z.string().min(2),
+    // option: z.string().min(2),
+    // employeesId: z.array(z.string()),
     interviewDate: zodDate,
     interviewLocation: z.string().min(2),
     dressCode: z.string().min(2),
     signerName: z.string().min(2),
-    employeesId: z.array(z.string()),
 })
 
 export type LetterFormSchemaType = z.infer<typeof LetterFormSchema>

@@ -45,7 +45,6 @@ export default class EmployeeController
     }
 
     async employeeCreate(request: NextRequest, __: TContext) {
-        console.log('test')
         await authApi(request, true)
 
         // Parse the incoming form data
@@ -102,20 +101,26 @@ export default class EmployeeController
     }
 }
 
-export async function getEmployeeById({ userId, employeeId }: {
+export async function employeeFindById({ userId, employeeId }: {
     userId?: string,
     employeeId?: string
 }): Promise<TEmployeeDB | undefined> {
     return prisma.employees.findUnique({
         where: { userId, id: employeeId },
         include: {
+            User: {
+                omit: {
+                    password: true,
+                    otp: true,
+                    otpExpired: true,
+                }
+            },
             languages: true,
             skills: true,
             educations: true
-        },
-    })
-    .then(data => {
-        if (!data) return undefined;
-        return data
+        }
+    }).then(item => {
+        if (!item) return undefined
+        return item
     })
 }

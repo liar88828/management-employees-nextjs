@@ -1,34 +1,16 @@
-import { prisma } from "@/config/prisma";
 import { Search } from "lucide-react";
 import Form from "next/form";
 import { TContext } from "@/interface/server/param";
 import { getContextQuery } from "@/utils/requestHelper";
 import { EMPLOYEE_STATUS } from "@/interface/enum";
-import { Pagination, TableEmployees } from "@/app/admin/interview/interview.client";
+import { EmployeesTable, Pagination } from "@/app/admin/interview/interview.client";
+import { employeePagination } from "@/server/action/employee.admin";
 
 async function Page(context: TContext) {
     const search = await getContextQuery(context, 'search')
     const status = await getContextQuery(context, 'status')
     const page = Number(await getContextQuery(context, 'page')) || 1;
-    const pageSize = 3; // You can adjust the page size
-
-    const totalEmployees = await prisma.employees.count({
-        where: {
-            name: { contains: search },
-            status: EMPLOYEE_STATUS.Interview
-        }
-    });
-
-    const employees = await prisma.employees.findMany({
-        where: {
-            name: { contains: search },
-            status: EMPLOYEE_STATUS.Interview
-        },
-        skip: (page - 1) * pageSize,
-        take: pageSize
-    });
-
-    const totalPages = Math.ceil(totalEmployees / pageSize);
+    const { totalPages, employees } = await employeePagination(search, EMPLOYEE_STATUS.Interview, page)
     // console.log(employees);
     return (
         <div className="space-y-2">
@@ -36,7 +18,8 @@ async function Page(context: TContext) {
 
                 <Form
                     action={ `/admin/interview` }
-                    className="join">
+                    className="join"
+                >
                     <input type="search"
                            className={ 'input input-bordered join-item ' }
                            defaultValue={ search }
@@ -46,7 +29,7 @@ async function Page(context: TContext) {
                            defaultValue={ status }
                            name={ 'status' }
                     />
-                    <button className={ 'btn join-item ' }><Search/></button>
+                    <button className={ 'btn join-item ' }><Search /></button>
                 </Form>
 
                 {/*<details className="dropdown">*/ }
@@ -64,7 +47,7 @@ async function Page(context: TContext) {
                 {/*</details>*/ }
             </div>
 
-            <TableEmployees employees={ employees }/>
+            <EmployeesTable employees={ employees } />
             <Pagination
                 page={ page }
                 totalPages={ totalPages }

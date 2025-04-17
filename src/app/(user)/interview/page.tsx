@@ -2,21 +2,21 @@ import React from 'react';
 import EmployeeIDCardInterview from "@/app/components/employee/client/IDCard";
 import { EmployeeCV } from "@/app/components/employee/client/cv";
 import { validSession } from "@/secure/db";
-import { RegistrationFirst } from "@/app/components/error/registrationFirst";
-import { getEmployeeById } from "@/server/controller/employee.controller";
+import { EmployeeNotFound } from "@/app/components/error/registrationFirst";
+import { employeeFindById } from "@/server/controller/employee.controller";
 import { EMPLOYEE_STATUS } from "@/interface/enum";
 import { redirect } from "next/navigation";
-import { prisma } from "@/config/prisma";
+import { companyFirst } from '@/server/action/company';
 
 async function Page() {
     const { userId } = await validSession()
-    const employee = await getEmployeeById({ userId })
-    const company = await prisma.companys.findFirst()
+    const employee = await employeeFindById({ userId })
+    const company = await companyFirst()
     if (!employee) {
-        return <RegistrationFirst/>
+        return <EmployeeNotFound />
     }
     if (!company) {
-        return <h1>Error</h1>
+        return <h1>Admin Error</h1>
     }
     if (employee.status !== EMPLOYEE_STATUS.Interview) {
         redirect('/home')

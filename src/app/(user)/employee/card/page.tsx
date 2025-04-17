@@ -2,45 +2,28 @@ import React from 'react';
 import { EmployeeIDCard } from "@/app/(user)/employee/card/card.client";
 import { validSession } from "@/secure/db";
 import { getEmployeeByUserIdForIDCard } from "@/server/action/employee.client";
-import { exampleCompany } from "@/assets/company";
 import { findCompanyForUser } from "@/server/action/company";
-import Link from "next/link";
 import { PrintComponent } from "@/app/components/employee/employee.client.admin";
+import { userByID } from "@/server/action/user.action";
+import { ErrorComponent } from "@/app/components/error/ErrorComponent";
 
 async function Page() {
     const { userId } = await validSession()
+    const user = await userByID(userId)
     const employee = await getEmployeeByUserIdForIDCard(userId)
     const company = await findCompanyForUser()
-    console.log(employee)
 
-    if (!employee) {
-        return (
-            <div className="card card-body bg-base-200">
-                <h1 className={ 'card-title' }>Status is Pending
-                </h1>
-                <p>Please What Your Status Is Pending You Must be Interview First</p>
-                <p className={ 'text-xs text-base-content/50' }>UserId : { userId }</p>
-                <div className="card-actions">
-                    <Link className={ 'btn btn-info' } href={ '/home' }>Back </Link>
-                </div>
-            </div>)
-    }
+    if (!employee) return <ErrorComponent title={ 'Employee is Not Found' } description={ 'Please Login First' } />
+    if (!user) return <ErrorComponent title={ 'User is Not Found' } description={ 'Please Login First' } />
+    if (!company) return <ErrorComponent title={ 'Company is Not Found' } description={ 'Something went wrong' } />
 
     return (
         <div>
-
-
-            { !company && (
-                <div className="card card-body">
-                    <h1 className={ 'card-title' }>System Busy</h1>
-                </div>
-            ) }
             <PrintComponent>
-                <EmployeeIDCard employee={ employee } company={ company ?? exampleCompany }/>
+                <EmployeeIDCard employee={ employee } user={ user } company={ company } />
             </PrintComponent>
         </div>
     );
 }
 
 export default Page;
-

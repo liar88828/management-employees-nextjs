@@ -2,9 +2,9 @@ import { EmployeeCreateZodClient, EmployeeCreateZodServer } from "@/schema/emplo
 
 export const employeeClientExample: EmployeeCreateZodClient = {
     userId:"",
-    name: "John Doe",
-    email: "johndoe@example.com",
-    phone: "+1-123-456-7890",
+    // name: "John Doe",
+    // email: "johndoe@example.com",
+    // phone: "+1-123-456-7890",
     gender: "Male",
     dateOfBirth: new Date("1990-01-15"),
     hireDate: new Date("2022-06-01"),
@@ -36,9 +36,9 @@ export const employeeClientExample: EmployeeCreateZodClient = {
 
 export const employeeServerExample: EmployeeCreateZodServer & { status: 'Create' } = {
     userId:"",
-    name: "Jane Doe",
-    email: "janedoe@example.com",
-    phone: "082-987-654-3210",
+    // name: "Jane Doe",
+    // email: "janedoe@example.com",
+    // phone: "082-987-654-3210",
     gender: "Female", // Example gender value
     dateOfBirth: new Date("1988-03-25"),
     hireDate: new Date("2023-01-15"),

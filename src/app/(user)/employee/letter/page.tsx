@@ -12,7 +12,7 @@ async function Page() {
 
     return (
         <PrintComponent>
-                <JobApplication employee={ employee } company={ company }/>
+            <JobApplication employee={ employee } company={ company } />
         </PrintComponent>
     );
 }

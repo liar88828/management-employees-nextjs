@@ -25,7 +25,7 @@ export const saveImageFormData = async (
 
     // Ensure the 'uploads' directory exists
     if (!fs.existsSync(path.dirname(filePath))) {
-        fs.mkdirSync(path.dirname(filePath), {recursive: true});
+        fs.mkdirSync(path.dirname(filePath), { recursive: true });
     }
 
     // Save the image file to the local filesystem
@@ -71,7 +71,7 @@ export const deleteImage = async (imagePath: string) => {
     // }
 };
 
-export const updateImage = async (imageFile: File, imagePath: string, oldImagePath?: string) => {
+export const updateImage = async (imageFile: File, imagePath: string, oldImagePath?: string | null) => {
     if (oldImagePath) {
         await deleteImage(oldImagePath)
     }
@@ -89,20 +89,20 @@ export const saveImageAction = async (imgFile: File, pathImage: string) => {// G
         throw new Error('Image is required',);
     }
 
-    const relativeUploadDir = `/uploads/${new Date(Date.now())
-        .toLocaleDateString("id-ID", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-        })
-        .replace(/\//g, "-")}`;
+    const relativeUploadDir = `/uploads/${ new Date(Date.now())
+    .toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+    })
+    .replace(/\//g, "-") }`;
 
     // Save the image file locally (You can also upload it to a cloud storage service like AWS S3, Cloudinary, etc.)
     const filePath = path.join(process.cwd(), 'public', pathImage);
 
     // Ensure the 'uploads' directory exists
     if (!fs.existsSync(path.dirname(filePath))) {
-        fs.mkdirSync(path.dirname(filePath), {recursive: true});
+        fs.mkdirSync(path.dirname(filePath), { recursive: true });
     }
 
     // Save the image file to the local filesystem
@@ -122,7 +122,7 @@ export const pathImage = async (formData: FormData, isThrow?: boolean) => {// Ge
     // Save the image file locally (You can also upload it to a cloud storage service like AWS S3, Cloudinary, etc.)
     // console.log(imagePath)
     // `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.name }`
-    return `/uploads/${imgFile.name}`
+    return `/uploads/${ imgFile.name }`
 }
 
 export const setPathImage = async (imgFile: File) => {// Get the image file from the form data
@@ -134,6 +134,6 @@ export const setPathImage = async (imgFile: File) => {// Get the image file from
     if (!imgFile.name) {
         return undefined;
     }
-    return `/uploads/${imgFile.name}`
+    return `/uploads/${ imgFile.name }`
 
 }

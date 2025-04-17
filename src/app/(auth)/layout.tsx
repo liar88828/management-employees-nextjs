@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     description: 'Authenticated create next ',
 }
 
-export default async function Layout({ children, }: { children: ReactNode }) {
+export default async function Layout({ children }: { children: ReactNode }) {
     const session = await getSession()
 
     if (session) {

@@ -3,7 +3,7 @@
 import { signUp } from "@/server/action/auth";
 import { useActionState } from "react";
 import Link from "next/link";
-import { useOtpStore } from "@/hook/otp";
+import { useOtpStore } from "@/store/otp";
 
 export default function SignupForm() {
 	const [ state, action, pending ] = useActionState(signUp, undefined);

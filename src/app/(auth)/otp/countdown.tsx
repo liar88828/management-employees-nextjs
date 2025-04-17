@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import { useEmail } from "@/hook/useEmail";
-import { useOtpStore } from "@/hook/otp";
+import { useOtpStore } from "@/store/otp";
 // const targetTime = new Date(Date.now() + 60 * 1000).getTime();
 
 export const Countdown = () => {

@@ -1,15 +1,15 @@
 import React from 'react';
 import { redirect } from "next/navigation";
-import { getEmployeeById } from "@/server/controller/employee.controller";
+import { employeeFindById } from "@/server/controller/employee.controller";
 import { prisma } from "@/config/prisma";
 import { Departements } from ".prisma/client";
-import { EmployeeFormClientUser } from "@/app/components/registration/registration.client";
+import { EmployeeFormClientUser } from "@/app/(user)/registration/registration.client";
 import { getUser } from "@/secure/db";
-import { UploadDocument } from "@/app/components/employee/client/upload-document";
 import { revalidatePath } from "next/cache";
 import { getContextQuery } from "@/utils/requestHelper";
 import { TContext } from "@/interface/server/param";
 import { RegistrationError } from "@/app/components/error/registrationFirst";
+import { EmployeeImageForm } from "@/app/(user)/registration/employeeImageForm";
 
 async function Page(context: TContext) {
     const error = await getContextQuery(context, 'error')
@@ -19,7 +19,7 @@ async function Page(context: TContext) {
         redirect('/login');
     }
 
-    const employee = await getEmployeeById({ userId: user.id })
+    const employee = await employeeFindById({ userId: user.id })
     // console.log(employee)
     if (employee && employee.registration === true) {
         redirect('/home');
@@ -33,7 +33,7 @@ async function Page(context: TContext) {
             where: { userId },
             select: {
                 photoKtp: true,
-                photoIjasah: true,
+                photoIjazah: true,
                 photo3x4: true,
             }
         })
@@ -43,7 +43,7 @@ async function Page(context: TContext) {
         if (!employeeDB.photoKtp) {
             redirect('/registration?error=Please complete the photo Ktp&type=ktp')
         }
-        if (!employeeDB.photoIjasah) {
+        if (!employeeDB.photoIjazah) {
             redirect('/registration?error=Please complete the photo Ijazah&type=ijazah')
         }
         if (!employeeDB.photo3x4) {
@@ -60,41 +60,21 @@ async function Page(context: TContext) {
     const actionRegistrationFinished = registrationFinished.bind(null, { userId: user.id })
     return (
         <div className="flex flex-col gap-5">
-            { error && type === 'form' && <RegistrationError error={ error }/> }
-        <EmployeeFormClientUser
-            user={user}
-            employee={employee}
-            departments={ departments }
-            method={ employee ? "PUT" : 'POST' }
-        />
-            { employee && (
-                <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
-                    <div className="">
-                        { error && type === 'ktp' && <RegistrationError error={ error }/> }
-                        <UploadDocument
-                            employee={ employee }
-                            type={ 'KTP' }
-                        />
-                    </div>
-                    <div className="">
-                        { error && type === '3x4' && <RegistrationError error={ error }/> }
-                        <UploadDocument
-                            employee={ employee }
-                            type={ '3x4' }
-                        />
-                    </div>
-                    <div className="">
-                        { error && type === 'ijazah' && <RegistrationError error={ error }/> }
-                        <UploadDocument
-                            employee={ employee }
-                            type={ 'ijazah' }
-                        />
-                    </div>
-                </div>
-            ) }
+            { error && type === 'form' && <RegistrationError error={ error } /> }
+            <EmployeeFormClientUser
+                employee={ employee }
+                departments={ departments }
+                method={ employee ? "PUT" : 'POST' }
+                user={ user }
+            />
+            <EmployeeImageForm
+                employee={ employee }
+                error={ error }
+                type={ type }
+            />
             <form action={ actionRegistrationFinished }>
-                <button
-                    className={ 'btn btn-success btn-block' }>Finish
+                <button className={ 'btn btn-success btn-block' }>
+                    Finish
                 </button>
             </form>
         </div>

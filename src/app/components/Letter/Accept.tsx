@@ -1,12 +1,13 @@
 import type React from "react"
-import { Companys, Employees } from "@prisma/client";
+import { Companys } from "@prisma/client";
 import { LetterForm } from "@/assets/letter";
 import { toDateIndo } from "@/utils/toDate";
+import { EmployeeUserClient } from "@/interface/entity/employee.model";
 
 const SuratPanggilanDiterimaKerja: React.FC<{
 
     company: Companys,
-    employee: Employees,
+    employee: EmployeeUserClient,
     form: LetterForm
 
 }> = ({ company, employee, form }) => {
@@ -27,7 +28,7 @@ const SuratPanggilanDiterimaKerja: React.FC<{
 
                 <div className="mb-6">
                     <p>Kepada Yth,</p>
-                    <p>Sdr/i. { employee.name }</p>
+                    <p>Sdr/i. { employee.User.name }</p>
                     <p>Di Tempat</p>
                 </div>
 

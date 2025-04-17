@@ -1,8 +1,8 @@
 'use client'
 import Link from "next/link";
-import {ChevronLeftIcon,} from 'lucide-react';
+import { ChevronLeftIcon, } from 'lucide-react';
 import React from "react";
-import {TMenuList} from "@/assets/MenuList";
+import { TMenuList } from "@/assets/MenuList";
 
 export function LinkListLayoutAdmin({ item, path }: {
     item: TMenuList,

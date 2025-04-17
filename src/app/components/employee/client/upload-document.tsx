@@ -87,7 +87,7 @@ export function ShowImage({ imagePreview, type, employee }: {
         return (
             <>
                 {/* eslint-disable-next-line @next/next/no-img-element */ }
-                <img src={ employee.photoIjasah ?? ktp }
+                <img src={ employee.photoIjazah ?? ktp }
                      alt="image ktp"
                      className={ "aspect-[4/3] " }
                 />

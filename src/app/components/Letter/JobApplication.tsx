@@ -19,13 +19,13 @@ export default function JobApplication({ employee, company }: { employee: TEmplo
                 <p>Dengan hormat,</p>
                 <p className="mt-4">
                     Sesuai dengan iklan lowongan pekerjaan dari PT { company.name },
-                    saya mengajukan diri untuk bergabung sebagai { employee.jobTitle } di PT { employee.name }.
+                    saya mengajukan diri untuk bergabung sebagai { employee.jobTitle } di PT { employee.User.name }.
                 </p>
                 <p className="mt-4">Adapun data diri saya sebagai berikut:</p>
                 <ul className="list-disc ml-6 mt-2">
-                    <li>Nama: { employee.name }</li>
+                    <li>Nama: { employee.User.name }</li>
                     <li>Tempat/Tanggal Lahir: { toDateIndo(employee.dateOfBirth) }</li>
-                    <li>Nomor Telepon (HP): { employee.phone }</li>
+                    <li>Nomor Telepon (HP): { employee.User.phone }</li>
                     <li>Alamat: { employee.address }</li>
                 </ul>
                 <p className="mt-4">
@@ -46,7 +46,7 @@ export default function JobApplication({ employee, company }: { employee: TEmplo
                     sehingga saya dapat menjelaskan lebih lanjut tentang potensi saya.
                 </p>
                 <p className="mt-6">Hormat saya,</p>
-                <p className="mt-2">{ employee.name }</p>
+                <p className="mt-2">{ employee.User.name }</p>
             </div>
         </div>
     );

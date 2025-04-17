@@ -4,20 +4,23 @@ import { employeeRepository } from "@/server/controller";
 import { EmployeeCreateZodClient } from "@/schema/employee.valid";
 import { saveImage, setPathImage, updateImage } from "@/server/repository/image.repo";
 import { employeeSanitize, employeeSanitizeUpdate } from "@/sanitize/employe.sanitize";
-import { TEmployeeDB } from "@/interface/entity/employee.model";
+import { EmployeeUserClient, TEmployeeDB } from "@/interface/entity/employee.model";
 import { checkDepartmentPosition } from "@/server/action/department";
-import { getEmployeeById } from "@/server/controller/employee.controller";
+import { employeeFindById } from "@/server/controller/employee.controller";
 import { prisma } from "@/config/prisma";
-import { EMPLOYEE_STATUS } from "@/interface/enum";
+import { EMPLOYEE_STATUS, EmployeeCompletePhotoType } from "@/interface/enum";
 import { ZodError } from "zod";
+import { UserClient } from "@/interface/entity/user.model";
 
-export const employeeCreateUser = async ({ img, ...data }: EmployeeCreateZodClient) => {
+export const employeeCreateUser = async (
+    { img, ...data }: EmployeeCreateZodClient,
+) => {
     try {
         const isImage = typeof img === 'object'
         const imageFile = img[0]
         const imagePath = await setPathImage(imageFile)    // Save the image path to the database
         const employeeData = employeeSanitize(data, imagePath, data?.userId)
-        const response = await employeeRepository.createUserRepo(employeeData)
+        const response = await employeeRepository.createUserRepo(employeeData,)
         console.log('response : ', response)
         if (response && isImage && imagePath) {
             const pathImage = await saveImage(imageFile, imagePath)
@@ -33,14 +36,15 @@ export const employeeCreateUser = async ({ img, ...data }: EmployeeCreateZodClie
 
 export async function employeeUpdateUser(
     { img, ...data }: EmployeeCreateZodClient,
-    employeeId: string) {
+    employeeId: string,
+) {
     try {
         const isImage = typeof img === 'object';
         const imageFile = img[0]
         const imagePath = await setPathImage(imageFile)    // Save the image path to the database
         // console.log('imageFile',imageFile)
         const employeeData = employeeSanitizeUpdate(data, imagePath, data?.userId)
-        const response = await employeeRepository.updateUserRepo(employeeData, employeeId)
+        const response = await employeeRepository.updateUserRepo(employeeData, employeeId,)
         // console.log('isImage, response',isImage, response)
         if (response && isImage && imagePath) {
             await updateImage(imageFile, imagePath)
@@ -69,22 +73,22 @@ export async function employeeUpdateUser(
 export async function onUpsertDataUser(
     method: "POST" | "PUT",
     data: EmployeeCreateZodClient,
-    idEmployee?: string
+    idEmployee?: string,
 ) {
     await checkDepartmentPosition(data.department);
     console.log(method, idEmployee)
+    data.status = EMPLOYEE_STATUS.Registration
     if (method === "POST") {
-        data.status = EMPLOYEE_STATUS.Registration
-        return employeeCreateUser(data)
+        return employeeCreateUser(data,)
     } else if (method === "PUT" && idEmployee) {
         // console.log('Execute ')
-        return employeeUpdateUser(data, idEmployee)
+        return employeeUpdateUser(data, idEmployee,)
     }
     throw new Error('Invalid data');
 }
 
 export async function getEmployeeByUserIdRedirect(userId: string): Promise<TEmployeeDB> {
-    return getEmployeeById({ userId }).then(data => {
+    return employeeFindById({ userId }).then(data => {
         if (!data) redirect('/home')
         return data
     })
@@ -102,5 +106,30 @@ export async function getEmployeeByUserIdForIDCard(userId: string) {
 
 }
 
+export const employeeFindLatter = async (
+    name: string, department: string, complete: EmployeeCompletePhotoType
+) => await prisma.employees.findMany({
+    where: {
+        User: { name: { contains: name } },
+        department: { contains: department },
 
-
+        photoKtp: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : null,
+        photo3x4: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : null,
+        photoIjazah: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : null,
+    },
+    include: {
+        User: {
+            omit: {
+                password: true,
+                otp: true,
+                otpExpired: true
+            }
+        }
+    },
+})
+.then(item => {
+    return item.map((i): EmployeeUserClient | null => {
+        if (!i) return null
+        return { ...i, User: i.User }
+    }).filter(i => i !== null)
+})

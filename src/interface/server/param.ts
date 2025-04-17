@@ -7,7 +7,10 @@ export type TContext = {
         page: string,
         limit: string,
         error: string,
-        type: string
+        type: string,
+        complete: string,
+        name: string
+        department: string
     }>,
     params: Promise<{ id: string, search: string, route: string }>
 }
@@ -31,4 +34,3 @@ export type OTPValid = {
     otp: string,
     // reason: 'RESET' | 'OTP'
 }
-

@@ -10,7 +10,7 @@ export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
     const { isPrinting, handlePrint, contentRef } = usePrint()
     return (
         <div ref={ contentRef }>
-            <EmployeeCVPageAdmin employee={ employee }/>
+            <EmployeeCVPageAdmin employee={ employee } />
             <div className=" print:hidden gap-2 mt-2 flex items-center">
                 <Link href={ +employee.id + '/edit' }
                       className={ 'btn btn-success' }
@@ -23,7 +23,7 @@ export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
                     disabled={ isPrinting }
                     className={ 'btn btn-info' }
                 >
-                    { isPrinting ? 'Printing...' : <Printer/> }
+                    { isPrinting ? 'Printing...' : <Printer /> }
                 </button>
             </div>
         </div>
@@ -45,12 +45,12 @@ export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
                                 className="rounded-full"
                                 // src={ `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.name }` }
                                 src={ employee.img }
-                                alt={ employee.name }
+                                alt={ employee.User.name }
                             />
                             {/*<p>{ employee.name.split(' ').map(n => n[0]).join('') }</p>*/ }
                         </div>
                         <div>
-                            <div className="card-title text-2xl">{ employee.name }</div>
+                            <div className="card-title text-2xl">{ employee.User.name }</div>
                             <p className="text-sm text-muted-foreground">{ employee.jobTitle }</p>
                         </div>
                     </div>
@@ -62,8 +62,8 @@ export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
                     <section>
                         <h3 className="font-semibold mb-2">Contact Information</h3>
                         <div className="grid grid-cols-2 gap-2 text-sm">
-                            <p><strong>Email:</strong> { employee.email }</p>
-                            <p><strong>Phone:</strong> { employee.phone }</p>
+                            <p><strong>Email:</strong> { employee.User.email }</p>
+                            <p><strong>Phone:</strong> { employee.User.phone }</p>
                             <p><strong>Birth Date:</strong> { toDate(employee.dateOfBirth) }</p>
 
                             <p><strong>Address:</strong> { employee.address }</p>
@@ -96,14 +96,18 @@ export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
 
                     <section>
                         <h3 className="font-semibold mb-2">Education</h3>
-                        <p className="text-sm">{ employee.educations[0].text }</p>
+                        <ul className="list-disc list-inside text-sm">
+                            { employee.educations && employee.educations.map(({ text }, index) => (
+                                <li key={ index }>{ text }</li>
+                            )) }
+                        </ul>
                     </section>
 
                     <section>
                         <h3 className="font-semibold mb-2">Languages</h3>
                         <ul className="list-disc list-inside text-sm">
-                            { employee.languages && employee.languages.map(({ text: language }, index) => (
-                                <li key={ index }>{ language }</li>
+                            { employee.languages && employee.languages.map(({ text }, index) => (
+                                <li key={ index }>{ text }</li>
                             )) }
                         </ul>
                     </section>

@@ -3,7 +3,7 @@
 import { forget } from "@/server/action/auth";
 import { useActionState } from "react";
 import Link from "next/link";
-import { useOtpStore } from "@/hook/otp";
+import { useOtpStore } from "@/store/otp";
 
 export default function Forget() {
     const { store, setData } = useOtpStore()
@@ -60,5 +60,3 @@ export default function Forget() {
         </div>
     );
 }
-
-

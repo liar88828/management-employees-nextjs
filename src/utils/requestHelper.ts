@@ -5,7 +5,7 @@ import { Prisma } from ".prisma/client"
 import type { TMethod, ToModel } from "@/interface/Utils"
 import { ErrorPrisma } from "@/utils/ErrorClass";
 
-export async function getId({params}: TContext) {
+export async function getId({ params }: TContext) {
     const param = await params
     if (param) {
         return param.id
@@ -13,7 +13,7 @@ export async function getId({params}: TContext) {
     throw new Error("please add id")
 }
 
-export async function getIdNum({params}: TContext): Promise<number> {
+export async function getIdNum({ params }: TContext): Promise<number> {
     const param = await params
     if (param) {
         return Number(param.id)
@@ -38,16 +38,22 @@ export async function getContextParamNum({ params }: TContext, key: keyof Awaite
     return 0
 }
 
-
-export async function getContextQuery({ searchParams }: TContext, text: keyof Awaited<TContext['searchParams']>) {
+export async function getContextQuery({ searchParams }: TContext, text: keyof Awaited<TContext['searchParams']>): Promise<string> {
     const searchParam = await searchParams
     if (searchParam && text in searchParam) {
         return searchParam[text]
     }
     return ''
 }
+export async function getContextQueryBol({ searchParams }: TContext, text: keyof Awaited<TContext['searchParams']>): Promise<boolean> {
+    const searchParam = await searchParams
+    if (searchParam && text in searchParam) {
+        return Boolean(searchParam[text])
+    }
+    return false
+}
 
-export async function getContextQueryNum({ searchParams }: TContext, text: keyof Awaited<TContext['searchParams']>) {
+export async function getContextQueryNum({ searchParams }: TContext, text: keyof Awaited<TContext['searchParams']>): Promise<number> {
     const searchParam = await searchParams
     if (searchParam && text in searchParam) {
         return Number(searchParam[text])
@@ -55,15 +61,13 @@ export async function getContextQueryNum({ searchParams }: TContext, text: keyof
     return 1
 }
 
-
-export async function getSearchNameNum({searchParams}: TContext, text: keyof Awaited<TContext['searchParams']>): Promise<number> {
+export async function getSearchNameNum({ searchParams }: TContext, text: keyof Awaited<TContext['searchParams']>): Promise<number> {
     const searchParam = await searchParams
     if (searchParam && text in searchParam) {
         return Number(searchParam[text])
     }
     return 1
 }
-
 
 export async function getJson(request: NextRequest) {
     return request.json()
@@ -81,7 +85,6 @@ export function getParamsNum(request: NextRequest, text: string): number {
     const data = searchParams.get(text)
     return data ? Number(data) : 1
 }
-
 
 export function getParamsBool(request: NextRequest, text: string) {
     const url = new URL(request.url)
@@ -112,7 +115,7 @@ export function getParamsThrow(request: NextRequest, text: string) {
     const searchParams = new URLSearchParams(url.search)
     const value = searchParams.get(text)
     if (!value) {
-        throw new Error(`please add a params : ${text}`)
+        throw new Error(`please add a params : ${ text }`)
     }
     return value
 }
@@ -140,7 +143,7 @@ export async function ResponseJson(
                     data: err.issues,
                     success: false,
                 },
-                {status: 400}
+                { status: 400 }
             )
         }
 
@@ -152,7 +155,7 @@ export async function ResponseJson(
                     success: false,
 
                 },
-                {status: 400}
+                { status: 400 }
             )
         }
 
@@ -177,7 +180,7 @@ export async function ResponseJson(
                         data: err,
                         success: false,
                     },
-                    {status: 400}
+                    { status: 400 }
                 )
             }
         }

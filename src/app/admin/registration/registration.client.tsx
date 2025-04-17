@@ -3,11 +3,12 @@ import React, { useActionState, useEffect } from "react";
 import Link from "next/link";
 import { Employees } from "@prisma/client";
 import Form from "next/form";
-import { MyInput, MyInputTextArea } from "@/app/components/form";
+import { MyInput, MyInputTextArea } from "@/app/components/form/action";
 import { employeeListStatus } from "@/interface/enum";
 import { registerUpdate } from "@/server/action/inbox";
 import toast from "react-hot-toast";
 import { toDateIndo } from "@/utils/toDate";
+import { EmployeeUserClient } from "@/interface/entity/employee.model";
 
 export function Pagination({ totalPages, search, status, page }: {
     totalPages: number,
@@ -19,7 +20,8 @@ export function Pagination({ totalPages, search, status, page }: {
         <div className="flex justify-center mt-4 space-x-2">
             { Array.from({ length: totalPages }, (_, i) => (
                 <Link key={ i + 1 } href={ `/admin/inbox?search=${ search }&status=${ status }&page=${ i + 1 }` }
-                      className={ `btn ${ page === i + 1 ? 'btn-primary' : 'btn-outline' }` }>
+                      className={ `btn ${ page === i + 1 ? 'btn-primary' : 'btn-outline' }` }
+                >
                     { i + 1 }
                 </Link>
             )) }
@@ -27,8 +29,8 @@ export function Pagination({ totalPages, search, status, page }: {
     );
 }
 
-export function TableEmployees({ employees }: {
-    employees: Employees[],
+export function EmployeesRegistrationTable({ employees }: {
+    employees: EmployeeUserClient[],
     // title: string,
     // valid?: boolean
 }) {
@@ -37,39 +39,46 @@ export function TableEmployees({ employees }: {
             <table className="table bg-base-200 ">
                 <thead>
                 <tr className="text-left">
-                    <th className="">No</th>
-                    <th className="">Name</th>
-                    <th className="">Email</th>
-                    <th className="">Phone</th>
-                    {/*<th className="">Gender</th>*/ }
-                    {/*<th className="">Job Title</th>*/ }
-                    {/*<th className="">Department</th>*/ }
-                    {/*<th className="">Employment Type</th>*/ }
-                    <th className="">Hire Date</th>
-                    {/*<th className="">Salary</th>*/ }
-                    {/*<th className="">Status</th>*/ }
-                    <th className="">Action</th>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    {/*<th >Gender</th>*/ }
+                    {/*<th >Job Title</th>*/ }
+                    {/*<th >Department</th>*/ }
+                    {/*<th >Employment Type</th>*/ }
+                    <th>Hire Date</th>
+                    <th>Complete</th>
+                    {/*<th >Salary</th>*/ }
+                    {/*<th >Status</th>*/ }
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 { employees.map((employee, index) => (
                     <tr key={ employee.id } className="hover:bg-gray-100/20">
-                        <td className="">{ index + 1 }</td>
-                        <td className="">{ employee.name }</td>
-                        <td className="">{ employee.email }</td>
-                        <td className="text-nowrap">{ employee.phone }</td>
-                        {/*<td className="">{ employee.gender }</td>*/ }
-                        {/*<td className="">{ employee.jobTitle }</td>*/ }
-                        {/*<td className="">{ employee.department }</td>*/ }
-                        {/*<td className="">{ employee.employmentType }</td>*/ }
-                        <td className="">{ toDateIndo(employee.hireDate) }</td>
-                        {/*<td className="">{ employee.salary }</td>*/ }
-                        {/*<td className="">{ employee.status }</td>*/ }
-                        <td className="">
-                            <div className="">
+                        <td>{ index + 1 }</td>
+                        <td>{ employee.User.name }</td>
+                        <td>{ employee.User.email }</td>
+                        <td className="text-nowrap">{ employee.User.phone }</td>
+                        {/*<td >{ employee.gender }</td>*/ }
+                        {/*<td >{ employee.jobTitle }</td>*/ }
+                        {/*<td >{ employee.department }</td>*/ }
+                        {/*<td >{ employee.employmentType }</td>*/ }
+                        <td>{ toDateIndo(employee.hireDate) }</td>
+                        <td>{
+                            employee.photo3x4 === null ||
+                            employee.photoKtp === null ||
+                            employee.photoIjazah === null ? 'Not Complete' : 'Complete'
+                        }</td>
+                        {/*<td >{ employee.salary }</td>*/ }
+                        {/*<td >{ employee.status }</td>*/ }
+                        <td>
+                            <div>
                                 <Link
                                     className={ 'btn btn-info' }
-                                    href={ `/admin/registration/${ employee.id }` }>
+                                    href={ `/admin/registration/${ employee.id }` }
+                                >
                                     Detail
                                 </Link>
                             </div>
@@ -87,17 +96,17 @@ export function TableEmployees({ employees }: {
     );
 }
 
-export function InboxModalAction({ employees }: { employees: Employees }) {
-    return (<>
+export function InboxModalAction({ employees }: { employees: EmployeeUserClient }) {
+    return ( <>
             <button className="btn" onClick={ () => {
                 // @ts-ignore
                 document.getElementById(`InboxModalAction${ employees.id }`).showModal()
-            } }>open modal
+            } }
+            >open modal
             </button>
             <dialog id={ `InboxModalAction${ employees.id }` } className="modal">
                 <div className="modal-box">
-                    <h3 className="font-bold text-lg">Hello!</h3>
-                    { employees.name }
+                    <h3 className="font-bold text-lg">{ employees.User.name }</h3>
                     <div className="modal-action">
                         <form method="dialog">
                             {/* if there is a button in form, it will close the modal */ }
@@ -126,10 +135,10 @@ export function FormRegistration({ employee }: { employee: Employees }) {
     return (
         <Form action={ action } className={ 'card card-body max-w-4xl bg-base-200' }>
 
-            <input type="hidden" value={ employee.id } name={ 'id' }/>
-            <input type={ "hidden" } value={ 0 } name={ 'salary' }/>
+            <input type="hidden" value={ employee.id } name={ 'id' } />
+            <input type={ "hidden" } value={ 0 } name={ 'salary' } />
 
-            <h1>Form Inbox</h1>
+            <h1>Form Registration</h1>
             <MyInput
                 title={ "jobTitle" }
                 error={ state?.errors?.jobTitle }
@@ -165,8 +174,18 @@ export function FormRegistration({ employee }: { employee: Employees }) {
             />
             <button
                 disabled={ pending }
-                className={ 'btn btn-info' }>Send Email
+                className={ 'btn btn-info' }
+            >
+                Send
             </button>
+            {/*<button*/ }
+            {/*    onClick={ () => {*/ }
+            {/*    } }*/ }
+            {/*    type={ 'button' }*/ }
+            {/*    className={ 'btn btn-success' }*/ }
+            {/*>*/ }
+            {/*    Send Email*/ }
+            {/*</button>*/ }
         </Form>
     )
 }

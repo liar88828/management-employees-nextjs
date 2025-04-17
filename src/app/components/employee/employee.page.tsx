@@ -1,7 +1,6 @@
 import React from "react";
-import { TEmployeeDB } from "@/interface/entity/employee.model";
+import { EmployeeUserClient, TEmployeeDB } from "@/interface/entity/employee.model";
 import { EmployeePhotosUploadClientAdmin } from "@/app/components/employee/employee.client";
-import { Employees } from "@prisma/client";
 import { toDate } from "@/utils/toDate";
 
 export function EmployeePhotoAdmin({ employee }: { employee: TEmployeeDB }) {
@@ -14,7 +13,7 @@ export function EmployeePhotoAdmin({ employee }: { employee: TEmployeeDB }) {
 }
 
 export function EmployeeDetail({ employee }: {
-    employee?: Employees
+    employee?: EmployeeUserClient
 }) {
 
     if (!employee) {
@@ -23,19 +22,19 @@ export function EmployeeDetail({ employee }: {
 
     return (
         <div className="p-6">
-            <h2 className="text-3xl font-bold mb-4">{ employee.name }</h2>
+            <h2 className="text-3xl font-bold mb-4">{ employee.User.name }</h2>
             { employee.img && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                     src={ employee.img }
-                    alt={ `${ employee.name }'s photo` }
+                    alt={ `${ employee.User.name }'s photo` }
                     className="w-48 h-48 object-cover rounded mb-4"
                 />
             ) }
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <p><strong>Email:</strong> { employee.email }</p>
-                    <p><strong>Phone:</strong> { employee.phone || "N/A" }</p>
+                    <p><strong>Email:</strong> { employee.User.email }</p>
+                    <p><strong>Phone:</strong> { employee.User.phone || "N/A" }</p>
                     <p><strong>Gender:</strong> { employee.gender || "N/A" }</p>
                     <p><strong>Date of Birth:</strong> { toDate(employee.dateOfBirth ?? 0) || "N/A" }</p>
                     <p><strong>Hire Date:</strong> { toDate(employee.hireDate) }</p>
@@ -60,7 +59,8 @@ export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
     return (
         <div
             // w-[210mm]
-            className=" bg-white text-black print:shadow-none shadow-lg card h-[297mm]  max-w-4xl print:h-screen print:w-screen">
+            className=" bg-white text-black print:shadow-none shadow-lg card h-[297mm]  max-w-4xl print:h-screen print:w-screen"
+        >
             <div className="card-body">
                 <div className="flex justify-between items-center">
                     <div className="flex items-center space-x-4">
@@ -70,12 +70,12 @@ export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
                                 className="rounded-full"
                                 // src={ `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.name }` }
                                 src={ employee.img }
-                                alt={ employee.name }
+                                alt={ employee.User.name }
                             />
                             {/*<p>{ employee.name.split(' ').map(n => n[0]).join('') }</p>*/ }
                         </div>
                         <div>
-                            <div className="card-title text-2xl">{ employee.name }</div>
+                            <div className="card-title text-2xl">{ employee.User.name }</div>
                             <p className="text-sm text-muted-foreground">{ employee.jobTitle }</p>
                         </div>
                     </div>
@@ -87,8 +87,8 @@ export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
                     <section>
                         <h3 className="font-semibold mb-2">Contact Information</h3>
                         <div className="grid grid-cols-2 gap-2 text-sm">
-                            <p><strong>Email:</strong> { employee.email }</p>
-                            <p><strong>Phone:</strong> { employee.phone }</p>
+                            <p><strong>Email:</strong> { employee.User.email }</p>
+                            <p><strong>Phone:</strong> { employee.User.phone }</p>
                             <p><strong>Birth Date:</strong> { toDate(employee.dateOfBirth) }</p>
 
                             <p><strong>Address:</strong> { employee.address }</p>
@@ -146,7 +146,6 @@ export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
                         </ul>
                     </section>
 
-
                     <section>
                         <h3 className="font-semibold mb-2">Languages</h3>
                         <ul className="list-disc list-inside text-sm">
@@ -161,80 +160,83 @@ export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
     );
 }
 
-
 export function TimeLineEmployee() {
     return (
         <ul className="timeline">
-            <TimeLineStart isActive={false} title={"Register"}/>
-            <TimeLineMiddle title={'Register'} isActive={false}/>
-            <TimeLineEnd title={'Register'} isActive={false}/>
+            <TimeLineStart isActive={ false } title={ "Register" } />
+            <TimeLineMiddle title={ 'Register' } isActive={ false } />
+            <TimeLineEnd title={ 'Register' } isActive={ false } />
         </ul>
     );
 }
 
-
-function TimeLineStart({title, isActive}: { title: string, isActive: boolean }) {
+function TimeLineStart({ title, isActive }: { title: string, isActive: boolean }) {
     return (
         <li>
-            <div className="timeline-start timeline-box">{title}</div>
+            <div className="timeline-start timeline-box">{ title }</div>
             <div className="timeline-middle">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
-                    className={`${isActive && 'text-primary'} h-5 w-5`}>
+                    className={ `${ isActive && 'text-primary' } h-5 w-5` }
+                >
                     <path
                         fillRule="evenodd"
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                        clipRule="evenodd"/>
+                        clipRule="evenodd"
+                    />
                 </svg>
             </div>
-            <hr className={`${isActive && 'bg-primary'}`}/>
+            <hr className={ `${ isActive && 'bg-primary' }` } />
         </li>
     );
 }
 
-
-function TimeLineMiddle({title, isActive}: { title: string, isActive: boolean }) {
+function TimeLineMiddle({ title, isActive }: { title: string, isActive: boolean }) {
     return (
         <li>
-            <hr className={`${isActive && 'bg-primary'}`}/>
+            <hr className={ `${ isActive && 'bg-primary' }` } />
 
             <div className="timeline-middle">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
-                    className={`${isActive && 'text-primary'} h-5 w-5`}>
+                    className={ `${ isActive && 'text-primary' } h-5 w-5` }
+                >
 
                     <path
                         fillRule="evenodd"
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                        clipRule="evenodd"/>
+                        clipRule="evenodd"
+                    />
                 </svg>
             </div>
             <div className="timeline-end timeline-box">iMac</div>
-            <hr className={`${isActive && 'bg-primary'}`}/>
+            <hr className={ `${ isActive && 'bg-primary' }` } />
         </li>
     );
 }
 
-function TimeLineEnd({title, isActive}: { title: string, isActive: boolean }) {
+function TimeLineEnd({ title, isActive }: { title: string, isActive: boolean }) {
     return (
         <li>
-            <hr className={`${isActive && 'bg-primary'}`}/>
-            <div className="timeline-start timeline-box">{title}</div>
+            <hr className={ `${ isActive && 'bg-primary' }` } />
+            <div className="timeline-start timeline-box">{ title }</div>
             <div className="timeline-middle">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
-                    className={`${isActive && 'text-primary'} h-5 w-5`}>
+                    className={ `${ isActive && 'text-primary' } h-5 w-5` }
+                >
 
                     <path
                         fillRule="evenodd"
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                        clipRule="evenodd"/>
+                        clipRule="evenodd"
+                    />
                 </svg>
             </div>
         </li>
