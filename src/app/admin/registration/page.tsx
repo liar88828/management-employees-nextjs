@@ -6,7 +6,6 @@ import { getContextQuery } from "@/utils/requestHelper";
 import { EmployeesRegistrationTable, Pagination } from "@/app/admin/registration/registration.client";
 import { EMPLOYEE_STATUS, EmployeeCompletePhoto, EmployeeCompletePhotoType } from "@/interface/enum";
 import Link from "next/link";
-import { prisma } from "@/config/prisma";
 import { employeeRegistrationPagination } from "@/server/action/employee.admin";
 
 async function Page(context: TContext) {
@@ -16,7 +15,12 @@ async function Page(context: TContext) {
     const {
         totalPages,
         employees
-    } = await employeeRegistrationPagination(search, EMPLOYEE_STATUS.Registration, page, status)
+    } = await employeeRegistrationPagination(search,
+        [
+            EMPLOYEE_STATUS.Registration,
+            EMPLOYEE_STATUS.Interview,
+        ],
+        page, status)
     // const pageSize = 3; // You can adjust the page size
     // const totalEmployees = await prisma.employees.count({
     //     where: {
@@ -51,6 +55,7 @@ async function Page(context: TContext) {
                            defaultValue={ status }
                            name={ 'status' }
                     />
+
                     <button className={ 'btn join-item ' }><Search /></button>
                 </Form>
 
@@ -59,13 +64,13 @@ async function Page(context: TContext) {
                     <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                         <li><Link
                             href={ `/admin/registration?search=${ search }&status=` }
-                        >{ EmployeeCompletePhoto.SelectAll }</Link></li>
+                        >{ EmployeeCompletePhoto["Select All"] }</Link></li>
                         <li><Link
                             href={ `/admin/registration?search=${ search }&status=${ EmployeeCompletePhoto.Complete }` }
                         >{ EmployeeCompletePhoto.Complete }</Link></li>
                         <li><Link
-                            href={ `/admin/registration?search=${ search }&status=${ EmployeeCompletePhoto.NotCompleted }` }
-                        >{ EmployeeCompletePhoto.NotCompleted }</Link></li>
+                            href={ `/admin/registration?search=${ search }&status=${ EmployeeCompletePhoto["Not Completed"] }` }
+                        >{ EmployeeCompletePhoto["Not Completed"] }</Link></li>
                         {/*{ employeeListStatus.map((item) => (*/ }
                         {/*    <li key={ item }>*/ }
                         {/*        <Link href={ `/admin/registration?search=${ search }&status=${ item }` }>{ item }</Link>*/ }

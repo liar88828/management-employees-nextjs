@@ -6,39 +6,38 @@ import { redirect } from "next/navigation";
 import { decrypt, encrypt } from "@/secure/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { UserDB } from "@/interface/entity/user.model";
-import { ROLE } from "@/interface/enum";
 
 export type UserSession = { isAuth: boolean, userId: string }
 
-export async function createSessionDB(id: string) {
-    const expiresAt = new Date(Date.now() + 60 * 60 * 1000)
-
-    // 1. Create a session in the database
-    const data = await prisma.sessions.create({
-        data: {
-            usersId: id,
-            expiresAt,
-            role: ROLE.USER
-        }
-    })
-
-    // 2. Encrypt the session ID
-    const session = await encrypt({
-        sessionId: data.id,
-        expiresAt,
-        role: data.role
-    })
-
-    // 3. Store the session in cookies for optimistic auth checks
-    const cookieStore = await cookies()
-    cookieStore.set('session', session, {
-        httpOnly: true,
-        secure: true,
-        expires: expiresAt,
-        sameSite: 'lax',
-        path: '/',
-    })
-}
+// export async function createSessionDB(id: string) {
+//     const expiresAt = new Date(Date.now() + 60 * 60 * 1000)
+//
+//     // 1. Create a session in the database
+//     const data = await prisma.sessions.create({
+//         data: {
+//             usersId: id,
+//             expiresAt,
+//             role: ROLE.USER
+//         }
+//     })
+//
+//     // 2. Encrypt the session ID
+//     const session = await encrypt({
+//         sessionId: data.id,
+//         expiresAt,
+//         role: data.role
+//     })
+//
+//     // 3. Store the session in cookies for optimistic auth checks
+//     const cookieStore = await cookies()
+//     cookieStore.set('session', session, {
+//         httpOnly: true,
+//         secure: true,
+//         expires: expiresAt,
+//         sameSite: 'lax',
+//         path: '/',
+//     })
+// }
 
 export const getSession = async () => {
     const cookie = (await cookies()).get('session')?.value
@@ -101,3 +100,9 @@ export const getUser = cache(async () => {
         return null
     }
 })
+
+export const getUserPage = async () => {
+    const user = await getUser()
+    if (!user) redirect('/login');
+    return user
+}

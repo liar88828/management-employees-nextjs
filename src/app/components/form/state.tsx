@@ -2,7 +2,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import React, { ChangeEvent, useState } from "react";
 import { Minus, Plus } from "lucide-react";
 
-export function InputImage({ img, title }: { img?: string, title: string }) {
+export function InputImage({ img, title, errorText }: { img?: string, title: string, errorText?: string }) {
     const { register, formState: { errors } } = useFormContext()
     const [ previewImage, setPreviewImage ] = useState<string>(img ? img : "https://dummyimage.com/400x400/000/fff.jpg");
     const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -16,6 +16,7 @@ export function InputImage({ img, title }: { img?: string, title: string }) {
         <div className="form-control">
             <label className="label">
                 <span className="label-text">{ title }</span>
+
             </label>
             {/* eslint-disable-next-line @next/next/no-img-element */ }
             <img src={ previewImage }
@@ -32,6 +33,9 @@ export function InputImage({ img, title }: { img?: string, title: string }) {
             />
             {/* @ts-ignore */
                 errors.img && <p className="text-error text-sm mt-1">{ errors.img.message }</p> }
+            { errorText &&
+                <span className="text-error text-sm mt-1">{ errorText }</span>
+            }
         </div>
     );
 }

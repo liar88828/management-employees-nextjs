@@ -4,7 +4,7 @@ import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { toDateIndo } from "@/utils/toDate";
 import { usePrint } from "@/hook/usePrint";
 import React from "react";
-import { Companys } from "@prisma/client";
+import { Companys } from "@/assets/company";
 
 export default function EmployeeIDCardInterview(
     { employee, company }:

@@ -6,12 +6,13 @@ import Form from "next/form";
 import { employeeListStatus } from "@/interface/enum";
 import { interviewUpdate } from "@/server/action/inbox";
 import toast from "react-hot-toast";
-import { EmployeeCV } from "@/app/components/employee/employee.page";
 import { EmployeeUserClient, TEmployeeDB } from "@/interface/entity/employee.model";
 import { XIcon } from "lucide-react";
 import { toDateIndo } from "@/utils/toDate";
 import { EmployeePhotos } from "@/app/components/employee/employeePhotos";
-import { MyInput, MyInputNum, MyInputTextArea } from "@/app/components/form/action";
+import { MyInput, MyInputNum, MyInputOption, MyInputTextArea } from "@/app/components/form/action";
+import { EmployeeCV } from "@/app/components/print/employeeCV";
+import { Departements } from ".prisma/client";
 
 export function Pagination({ totalPages, search, status, page, title }: {
     totalPages: number,
@@ -119,7 +120,7 @@ export function InboxModalAction({ employees }: { employees: EmployeeUserClient 
     )
 }
 
-export function FormInterview({ employee }: { employee: Employees }) {
+export function FormInterview({ employee, departments }: { departments: Departements[], employee: Employees }) {
     const [ state, action, pending ] = useActionState(interviewUpdate, undefined)
     useEffect(() => {
         if (state) {
@@ -145,22 +146,54 @@ export function FormInterview({ employee }: { employee: Employees }) {
                 error={ state?.errors?.salary }
                 defaultValue={ state?.value.salary ?? employee.salary }
             />
-            <div className="form-control w-full">
-                <label htmlFor={ `status` } className="label">
-                    <span className="label-text capitalize"> status </span>
-                </label>
-                <select
-                    className="select select-bordered join-item"
-                    name="status"
-                    key={ state?.value.status || employee.status }
-                    defaultValue={ state?.value.status || employee.status }
-                >
-                    <option disabled value="">Select Status</option>
-                    { employeeListStatus.map((item) => (
-                        <option key={ item }>{ item }</option>
-                    )) }
-                </select>
-            </div>
+
+            {/*<div className="form-control w-full">*/ }
+            {/*    <label htmlFor={ `status` } className="label">*/ }
+            {/*        <span className="label-text capitalize"> status </span>*/ }
+            {/*    </label>*/ }
+            {/*    <select*/ }
+            {/*        className="select select-bordered join-item"*/ }
+            {/*        name="status"*/ }
+            {/*        key={ state?.value.status || employee.status }*/ }
+            {/*        defaultValue={ state?.value.status || employee.status }*/ }
+            {/*    >*/ }
+            {/*        <option disabled value="">Select Status</option>*/ }
+            {/*        { employeeListStatus.map((item) => (*/ }
+            {/*            <option key={ item }>{ item }</option>*/ }
+            {/*        )) }*/ }
+            {/*    </select>*/ }
+            {/*</div>*/ }
+            <MyInputOption
+                title={ 'Status' }
+                name={ 'status' }
+                keys={ state?.value.status || employee.status }
+                lists={ employeeListStatus }
+            />
+
+            <MyInputOption
+                title={ 'Department' }
+                name={ 'department' }
+                keys={ state?.value.department || employee.department }
+                lists={ departments.map(item => item.position) }
+
+            />
+
+            {/*<div className="form-control w-full">*/ }
+            {/*    <label htmlFor={ `department` } className="label">*/ }
+            {/*        <span className="label-text capitalize"> department </span>*/ }
+            {/*    </label>*/ }
+            {/*    <select*/ }
+            {/*        className="select select-bordered join-item"*/ }
+            {/*        name="department"*/ }
+            {/*        key={ state?.value.department || employee.department }*/ }
+            {/*        defaultValue={ state?.value.department || employee.department }*/ }
+            {/*    >*/ }
+            {/*        <option disabled value="">Select department</option>*/ }
+            {/*        { departments.map((item) => (*/ }
+            {/*            <option key={ item.id }>{ item.position }</option>*/ }
+            {/*        )) }*/ }
+            {/*    </select>*/ }
+            {/*</div>*/ }
 
             <MyInputTextArea
                 title={ 'notes' }
@@ -180,7 +213,7 @@ export function FormInterview({ employee }: { employee: Employees }) {
 export function InterviewShowCV({ employee }: { employee: TEmployeeDB }) {
     return (
         <>
-            <button className="btn" onClick={ () => {
+            <button className="btn btn-info" onClick={ () => {
                 const modal = document.getElementById('my_modal_cv');
                 if (modal instanceof HTMLDialogElement) {
                     modal.showModal();
@@ -189,7 +222,7 @@ export function InterviewShowCV({ employee }: { employee: TEmployeeDB }) {
             >Show CV
             </button>
             <dialog id="my_modal_cv" className="modal">
-                <div className="modal-box w-11/12 max-w-4xl">
+                <div className="modal-box w-11/12 max-w-4xl bg-base-200/50">
                     <div className="flex justify-between mb-4">
                         <h1></h1>
                         <form method="dialog">

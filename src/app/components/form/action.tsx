@@ -33,7 +33,7 @@ export function MyInput({ title, error, defaultValue }: { defaultValue?: string 
                 placeholder={ `Enter your ${ title }` }
                 className="input input-bordered w-full"
             />
-            <FormError errors={ error } title="must add:"/>
+            <FormError errors={ error } title="must add:" />
         </div>
     );
 }
@@ -49,7 +49,6 @@ export function MyInputHidden({ keys, value }: { value: string | number, keys: s
 
     );
 }
-
 
 export function MyInputTextArea({ title, error, defaultValue }: {
     defaultValue?: string | number,
@@ -68,7 +67,7 @@ export function MyInputTextArea({ title, error, defaultValue }: {
                 placeholder={ `Enter your ${ title }` }
                 className="textarea textarea-bordered w-full"
             ></textarea>
-            <FormError errors={ error } title="must add:"/>
+            <FormError errors={ error } title="must add:" />
         </div>
     );
 }
@@ -91,7 +90,7 @@ export function MyInputNum({ title, error, defaultValue }: {
                 placeholder={ `Enter your ${ title }` }
                 className="input input-bordered w-full"
             />
-            <FormError errors={ error } title="must add:"/>
+            <FormError errors={ error } title="must add:" />
         </div>
     );
 }
@@ -114,7 +113,7 @@ export function MyInputEmail({ title, error, defaultValue }: {
                 placeholder={ `Enter your ${ title }` }
                 className="input input-bordered w-full"
             />
-            <FormError errors={ error } title="must add:"/>
+            <FormError errors={ error } title="must add:" />
         </div>
     );
 }
@@ -138,7 +137,7 @@ export function MyInputDate({ title, error, defaultValue }: {
                 placeholder={ `Enter your ${ title }` }
                 className="input input-bordered w-full"
             />
-            <FormError errors={ error } title="must add:"/>
+            <FormError errors={ error } title="must add:" />
         </div>
     );
 }
@@ -162,13 +161,39 @@ export function MyInputImage({ title, error, defaultValue }: {
                 onChange={ handleImageChange }
                 className="file-input file-input-bordered w-full"
             />
-            <FormError errors={ error } title="must add:"/>
+            <FormError errors={ error } title="must add:" />
             {/* eslint-disable-next-line @next/next/no-img-element */ }
             <img
                 src={ previewImage }
-                 alt="Image Employee"
-                 className="size-40 mt-2 rounded-lg border"
+                alt="Image Employee"
+                className="size-40 mt-2 rounded-lg border"
             />
+        </div>
+    );
+}
+
+export function MyInputOption({ keys, lists, title, name }: {
+    name: string,
+    title: string,
+    keys: string,
+    lists: string[]
+}) {
+    return (
+        <div className="form-control w-full">
+            <label htmlFor={ name } className="label">
+                <span className="label-text capitalize"> { title }</span>
+            </label>
+            <select
+                className="select select-bordered join-item"
+                name={ name }
+                key={ keys }
+                defaultValue={ keys }
+            >
+                <option disabled value="">Select Status</option>
+                { lists.map((item) => (
+                    <option key={ item }>{ item }</option>
+                )) }
+            </select>
         </div>
     );
 }

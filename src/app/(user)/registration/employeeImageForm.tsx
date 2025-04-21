@@ -7,7 +7,7 @@ export function EmployeeImageForm(props: { employee?: TEmployeeDB, error: string
     return <>
         { props.employee && (
             <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">
-                <div className="">
+                <div className="space-y-2">
                     { props.error && props.type === "ktp" && <RegistrationError error={ props.error } /> }
                     <UploadDocument
                         employee={ props.employee }

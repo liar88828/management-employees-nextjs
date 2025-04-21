@@ -1,6 +1,6 @@
 import React from "react";
-import { TableEmployees } from "@/app/admin/account/account.client";
 import { employeesFindValid, userFindAvailable } from "@/server/action/employee.admin";
+import { TableEmployees } from "@/app/admin/_account/account.client";
 
 export default async function page() {
 

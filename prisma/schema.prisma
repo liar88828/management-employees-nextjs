@@ -20,17 +20,17 @@ model Users {
   // otpRegenerate DateTime   @default(now())
   // otpCount      Int        @default(0)
   status     String     @default("OTP")
-  Session    Sessions?
+  // Session    Sessions?
   Employees  Employees?
 }
 
-model Sessions {
-  id        String   @id @default(uuid())
-  usersId   String   @unique
-  expiresAt DateTime
-  role      String
-  Users     Users    @relation(fields: [usersId], references: [id])
-}
+// model Sessions {
+//   id        String   @id @default(uuid())
+//   usersId   String   @unique
+//   expiresAt DateTime
+//   role      String
+//   Users     Users    @relation(fields: [usersId], references: [id])
+// }
 
 model Employees {
   id             String       @id @default(uuid()) // Primary key with auto-increment
@@ -53,10 +53,10 @@ model Employees {
   notes          String // Additional notes about the employee
   img            String
   //
-  country        String
+  // country        String
   educations     Educations[]
   skills         Skills[] // Stored as an array of strings
-  languages      Languages[] // Stored as an array of strings
+  // languages      Languages[] // Stored as an array of strings
   //
   photoKtp       String?
   photo3x4       String?
@@ -86,12 +86,12 @@ model Skills {
   employeesId String
 }
 
-model Languages {
-  id          Int       @id @default(autoincrement())
-  text        String
-  Employees   Employees @relation(fields: [employeesId], references: [id])
-  employeesId String
-}
+// model Languages {
+//   id          Int       @id @default(autoincrement())
+//   text        String
+//   Employees   Employees @relation(fields: [employeesId], references: [id])
+//   employeesId String
+// }
 
 model Departements {
   id       Int    @id @default(autoincrement())
@@ -120,35 +120,35 @@ model Letters {
   LetterEmployees   LetterEmployees[]
 }
 
-model Companys {
-  id      Int     @id @default(autoincrement())
-  name    String
-  address String
-  phone   String
-  email   String
-  img     String?
-  Misi    Misi[]
-  Visi    Visi[]
-}
+// model Companys {
+//   id      Int     @id @default(autoincrement())
+//   name    String
+//   address String
+//   phone   String
+//   email   String
+//   img     String?
+//   Misi    Misi[]
+//   Visi    Visi[]
+// }
 
-model Visi {
-  id         Int      @id @default(autoincrement())
-  text       String
-  Companys   Companys @relation(fields: [companysId], references: [id])
-  companysId Int
-}
+// model Visi {
+//   id         Int      @id @default(autoincrement())
+//   text       String
+//   Companys   Companys @relation(fields: [companysId], references: [id])
+//   companysId Int
+// }
+//
+// model Misi {
+//   id         Int      @id @default(autoincrement())
+//   text       String
+//   Companys   Companys @relation(fields: [companysId], references: [id])
+//   companysId Int
+// }
 
-model Misi {
-  id         Int      @id @default(autoincrement())
-  text       String
-  Companys   Companys @relation(fields: [companysId], references: [id])
-  companysId Int
-}
-
-model Testimonials {
-  id     Int    @id @default(autoincrement())
-  name   String
-  desc   String
-  social String
-  jobs   String
-}
+// model Testimonials {
+//   id     Int    @id @default(autoincrement())
+//   name   String
+//   desc   String
+//   social String
+//   jobs   String
+// }

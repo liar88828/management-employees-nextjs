@@ -1,7 +1,12 @@
-import { EmployeeCreateZodClient, EmployeeCreateZodServer } from "@/schema/employee.valid";
+import { EmployeeRegistrationUserCreateServer } from "@/schema/employee.valid";
+import { Employees } from "@prisma/client";
 
-export const employeeClientExample: EmployeeCreateZodClient = {
-    userId:"",
+export type EmployeeClientExample = Employees & {
+    educations: { text: string } [],
+    skills: { text: string }[],
+};
+export const _employeeClientExample = {
+    userId: "",
     // name: "John Doe",
     // email: "johndoe@example.com",
     // phone: "+1-123-456-7890",
@@ -19,7 +24,7 @@ export const employeeClientExample: EmployeeCreateZodClient = {
     employmentType: "Full-Time",
     notes: "Great team player with excellent problem-solving skills.",
     img: "https://example.com/images/johndoe.jpg",
-    country: "USA",
+    // country: "USA",
     educations: [
         { text: "Bachelor's Degree in Computer Science", },
     ],
@@ -28,14 +33,14 @@ export const employeeClientExample: EmployeeCreateZodClient = {
         { text: "TypeScript" },
         { text: "React" },
     ],
-    languages: [
-        { text: "English" },
-        { text: "Spanish" },
-    ],
+    // languages: [
+    //     { text: "English" },
+    //     { text: "Spanish" },
+    // ],
 };
 
-export const employeeServerExample: EmployeeCreateZodServer & { status: 'Create' } = {
-    userId:"",
+export const employeeServerExample: EmployeeRegistrationUserCreateServer & { status: 'Create' } = {
+    userId: "",
     // name: "Jane Doe",
     // email: "janedoe@example.com",
     // phone: "082-987-654-3210",
@@ -52,7 +57,7 @@ export const employeeServerExample: EmployeeCreateZodServer & { status: 'Create'
     employmentType: "Full-Time", // Example value
     notes: "Detail-oriented and highly skilled in software development.",
     img: "https://example.com/images/janedoe.jpg",
-    country: "USA",
+    // country: "USA",
     registration: false,
     educations: [
         { text: "Master's Degree in Software Engineering", },
@@ -62,9 +67,9 @@ export const employeeServerExample: EmployeeCreateZodServer & { status: 'Create'
         { text: "Machine Learning" },
         { text: "Data Analysis" },
     ],
-    languages: [
-        { text: "English" },
-        { text: "German" },
-    ],
+    // languages: [
+    //     { text: "English" },
+    //     { text: "German" },
+    // ],
 
 }

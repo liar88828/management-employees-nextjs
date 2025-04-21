@@ -1,22 +1,21 @@
 'use client'
-import { FormProvider, useFieldArray, useForm, useFormContext } from "react-hook-form";
-import { BookUser, Minus, Plus, Printer } from "lucide-react";
-import React, { Fragment, ReactNode, useState } from "react";
-import { EmployeeUserClient, TEmployeeDB } from "@/interface/entity/employee.model";
-import { useFormImage } from "@/hook/useFormImage";
-import { employeeCreateClient, EmployeeCreateZodClient } from "@/schema/employee.valid";
-import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
-import { employeeOnUpsertAdmin } from "@/server/action/employee.admin";
-import { usePrint } from "@/hook/usePrint";
-import { TypeFile, uploadFile } from "@/server/action/upload";
 import Form from "next/form";
+import toast from "react-hot-toast";
 import Link from "next/link";
-import { toRupiah } from "@/utils/toRupiah";
+import { FormProvider, useFieldArray, useForm, useFormContext } from "react-hook-form";
+import { BookUser, Minus, Plus } from "lucide-react";
+import { employeeCreateClientAdmin, EmployeeCreateClientAdmin } from "@/schema/employee.valid";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useFormStatus } from "react-dom";
 import { Departements } from ".prisma/client";
-import { employeeListStatus } from "@/interface/enum";
+import { employeeOnUpsertAdmin } from "@/server/action/employee.admin";
+import { useFormImage } from "@/hook/useFormImage";
+import { EmployeeUserClient, TEmployeeDB } from "@/interface/entity/employee.model";
+import { useState } from "react";
+import { TypeFile, uploadFile } from "@/server/action/upload";
 import { EmployeePhotoPageAdmin } from "@/app/components/employee/employeePhotoPageAdmin";
+import { employeeListStatus } from "@/interface/enum";
+import { toRupiah } from "@/utils/toRupiah";
 
 export function EmployeeFormContextClientAdmin({ title, keys }: { title: string, keys: string }) {
     const { register, control } = useFormContext()
@@ -68,8 +67,8 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
 }) {
     const status = useFormStatus()
     const { previewImage, handleImageChange } = useFormImage(employee?.img)
-    const methods = useForm<EmployeeCreateZodClient>({
-        resolver: zodResolver(employeeCreateClient),
+    const methods = useForm<EmployeeCreateClientAdmin>({
+        resolver: zodResolver(employeeCreateClientAdmin),
         defaultValues: ( {
             ...employee,
             userId: undefined,
@@ -77,7 +76,7 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
     });
     const { register, handleSubmit, formState: { errors } } = methods
 
-    const onSubmit = async (data: EmployeeCreateZodClient) => {
+    const onSubmit = async (data: EmployeeCreateClientAdmin) => {
         const toastId = toast.loading('Loading...');
         try {
             await employeeOnUpsertAdmin(method, data, employee?.id)
@@ -395,24 +394,6 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
     );
 }
 
-export function PrintComponent({ children, href }: { href?: string, children: ReactNode }) {
-    const { isPrinting, handlePrint, contentRef } = usePrint()
-    return (
-        <div ref={ contentRef }>
-            <div className=" print:hidden gap-2 mb-2 flex  items-center">
-                { href && <Link href={ href } className={ 'btn btn-outline' }>Edit</Link> }
-                <button
-                    onClick={ handlePrint }
-                    disabled={ isPrinting }
-                    className={ 'btn btn-info ' }
-                >
-                    { isPrinting ? 'Printing...' : <>Print PDF<Printer /></> }
-                </button>
-            </div>
-            { children }
-        </div>
-    );
-}
 
 export function EmployeePhotosUploadClientAdmin({ employee, type }: { employee: TEmployeeDB, type: TypeFile }) {
     const [ imagePreview, setImagePreview ] = useState<string | null>(null);

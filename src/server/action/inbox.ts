@@ -1,12 +1,13 @@
 'use server'
 import { prisma } from "@/config/prisma";
 import { FormStateReturn } from "@/schema/departement.valid";
-import { inboxSchema, InboxValidateType } from "@/schema/inbox";
+import { interviewSchema, InterviewSchemaType, registrationSchema, RegistrationSchemaType } from "@/schema/inbox";
+import { revalidatePath } from "next/cache";
 
-export async function interviewUpdate(state: FormStateReturn<InboxValidateType>, payload: FormData): Promise<FormStateReturn<InboxValidateType>> {
+export async function interviewUpdate(state: FormStateReturn<InterviewSchemaType>, payload: FormData): Promise<FormStateReturn<InterviewSchemaType>> {
     const defaultValue = Object.fromEntries(payload);
     // console.log(defaultValue);
-    const validateData = inboxSchema.safeParse(defaultValue)
+    const validateData = interviewSchema.safeParse(defaultValue)
 
     if (validateData.error) {
         console.log(validateData.error.formErrors.fieldErrors)
@@ -32,6 +33,7 @@ export async function interviewUpdate(state: FormStateReturn<InboxValidateType>,
             notes: validateData.data.notes,
             jobTitle: validateData.data.jobTitle,
             salary: Number(validateData.data.salary),
+            department: validateData.data.department
         }
     })
     // revalidatePath('/')
@@ -42,10 +44,10 @@ export async function interviewUpdate(state: FormStateReturn<InboxValidateType>,
     }
 }
 
-export async function registerUpdate(state: FormStateReturn<InboxValidateType>, payload: FormData): Promise<FormStateReturn<InboxValidateType>> {
+export async function registerUpdateFormDataAdmin(state: FormStateReturn<RegistrationSchemaType>, payload: FormData): Promise<FormStateReturn<RegistrationSchemaType>> {
     const defaultValue = Object.fromEntries(payload);
     // console.log(defaultValue);
-    const validateData = inboxSchema.safeParse(defaultValue)
+    const validateData = registrationSchema.safeParse(defaultValue)
 
     if (validateData.error) {
         console.log(validateData.error.formErrors.fieldErrors)
@@ -71,9 +73,10 @@ export async function registerUpdate(state: FormStateReturn<InboxValidateType>, 
             notes: validateData.data.notes,
             jobTitle: validateData.data.jobTitle,
             salary: Number(validateData.data.salary),
+            department: validateData.data.department,
         }
     })
-    // revalidatePath('/')
+    revalidatePath('/')
     return {
         message: "Success Update Data",
         success: true,

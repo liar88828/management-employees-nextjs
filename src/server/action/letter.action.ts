@@ -36,13 +36,6 @@ export async function getLetterAll(): Promise<LetterEmployee[]> {
 export const getLetterMyId = async (id: string) => {
 
     return prisma.$transaction(async (tx) => {
-        const company = await tx.companys.findFirst()
-        .then(data => {
-            if (!data) {
-                redirect('/admin/company')
-            }
-            return data;
-        })
 
         // ----------
         const letter = await tx.letters.findUnique({
@@ -93,7 +86,7 @@ export const getLetterMyId = async (id: string) => {
             return data;
         })
 
-        return { employees, letter, company }
+        return { employees, letter }
     })
 
 }

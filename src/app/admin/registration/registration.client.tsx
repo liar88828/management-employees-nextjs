@@ -5,10 +5,11 @@ import { Employees } from "@prisma/client";
 import Form from "next/form";
 import { MyInput, MyInputTextArea } from "@/app/components/form/action";
 import { employeeListStatus } from "@/interface/enum";
-import { registerUpdate } from "@/server/action/inbox";
+import { registerUpdateFormDataAdmin } from "@/server/action/inbox";
 import toast from "react-hot-toast";
 import { toDateIndo } from "@/utils/toDate";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
+import { Departements } from ".prisma/client";
 
 export function Pagination({ totalPages, search, status, page }: {
     totalPages: number,
@@ -120,8 +121,8 @@ export function InboxModalAction({ employees }: { employees: EmployeeUserClient 
     )
 }
 
-export function FormRegistration({ employee }: { employee: Employees }) {
-    const [ state, action, pending ] = useActionState(registerUpdate, undefined)
+export function FormRegistration({ employee, departments }: { employee: Employees, departments: Departements[] }) {
+    const [ state, action, pending ] = useActionState(registerUpdateFormDataAdmin, undefined)
     useEffect(() => {
         if (state) {
             if (state.success) {
@@ -144,6 +145,7 @@ export function FormRegistration({ employee }: { employee: Employees }) {
                 error={ state?.errors?.jobTitle }
                 defaultValue={ state?.value.jobTitle ?? employee.jobTitle }
             />
+
             {/*<MyInputNum*/ }
             {/*    title={ 'salary' }*/ }
             {/*    error={ state?.errors?.salary }*/ }
@@ -167,6 +169,23 @@ export function FormRegistration({ employee }: { employee: Employees }) {
                 </select>
             </div>
 
+            <div className="form-control w-full">
+                <label htmlFor={ `department` } className="label">
+                    <span className="label-text capitalize"> department </span>
+                </label>
+                <select
+                    className="select select-bordered join-item"
+                    name="department"
+                    key={ state?.value.department || employee.department }
+                    defaultValue={ state?.value.department || employee.department }
+                >
+                    <option disabled value="">Select department</option>
+                    { departments.map((item) => (
+                        <option key={ item.id }>{ item.position }</option>
+                    )) }
+                </select>
+            </div>
+
             <MyInputTextArea
                 title={ 'notes' }
                 error={ state?.errors?.notes }
@@ -178,6 +197,17 @@ export function FormRegistration({ employee }: { employee: Employees }) {
             >
                 Send
             </button>
+            {/*{ employee.status === 'Interview' &&*/ }
+            {/*    <button*/ }
+            {/*        onClick={ () => {onSendEmailSingle()}}*/ }
+            {/*        type="button"*/ }
+            {/*        disabled={ pending }*/ }
+            {/*        className={ 'btn btn-success' }*/ }
+            {/*    >*/ }
+            {/*        Send Email*/ }
+            {/*    </button>*/ }
+            {/*}*/ }
+
             {/*<button*/ }
             {/*    onClick={ () => {*/ }
             {/*    } }*/ }

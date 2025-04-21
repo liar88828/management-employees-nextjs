@@ -1,4 +1,4 @@
-import { Educations, Employees, Languages, Skills } from "@prisma/client";
+import { Educations, Employees, Skills } from "@prisma/client";
 import { STATUS_EMPLOYEE } from "@/interface/Utils";
 import { UserClient } from "@/interface/entity/user.model";
 
@@ -17,8 +17,8 @@ export type EmployeeCreate =
         userId: string
         status: string | STATUS_EMPLOYEE
         skills: Pick<Skills, 'text'>[];
-        languages: Pick<Languages, 'text'>[];
-        educations: Pick<Languages, 'text'>[];
+        // languages: Pick<Languages, 'text'>[];
+        educations: Pick<Educations, 'text'>[];
     }
 
 export const imageDefault = 'https://dummyimage.com/300x300/000/ffffff.jpg';
@@ -33,7 +33,7 @@ export type EmployeeUserClient = Employees & { User: UserClient }
 export type TEmployeeDB = EmployeeUserClient & {
     status: string | STATUS_EMPLOYEE;
     skills: Skills[];
-    languages: Languages[];
+    // languages: Languages[];
     educations: Educations[];
     createdAt: Date;
     updatedAt: Date;

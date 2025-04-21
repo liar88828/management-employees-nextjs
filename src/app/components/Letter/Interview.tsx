@@ -1,9 +1,8 @@
 import React from "react";
-import Image from "next/image";
-import { Companys } from "@prisma/client";
 import { LetterForm } from "@/assets/letter";
 import { toDateIndo } from "@/utils/toDate";
 import { EmployeeUserClient, imageDefault } from "@/interface/entity/employee.model";
+import { Companys } from "@/assets/company";
 
 export function LetterInterview({ company, employee, form }: {
     company: Companys,
@@ -16,7 +15,7 @@ export function LetterInterview({ company, employee, form }: {
                 {/* Company Letterhead */ }
                 <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center">
-                        <Image
+                        <img
                             width={ 100 }
                             height={ 100 }
                             src={ company.img ?? imageDefault } alt="logo"
@@ -54,8 +53,8 @@ export function LetterInterview({ company, employee, form }: {
                         Saudara/i untuk mengikuti proses interview yang akan dilaksanakan pada:
                     </p>
                     <div className="pl-4">
-                        <p>Hari/Tanggal : { form.interviewDay }, { form.interviewDate }</p>
-                        <p>Waktu : { form.interviewTime }</p>
+                        <p>Hari/Tanggal : { form.interviewDay }, { toDateIndo(form.interviewDate) }</p>
+                        <p>Waktu : { ( form.interviewTime ) }</p>
                         <p>Tempat : { form.interviewLocation }</p>
                         <p>Dress Code : { form.dressCode }</p>
                     </div>

@@ -11,7 +11,7 @@ export default function Forget() {
     const [ state, action, pending ] = useActionState(forget, undefined);
     // console.log(state);
     return (
-        <div className="card card-bordered bg-base-100 lg:mx-60 mt-10">
+        <div className="card card-bordered bg-base-200   mt-10">
             <form action={ action } className="card-body">
                 <h2 className="card-title">Forget</h2>
                 {/* Email Input */ }

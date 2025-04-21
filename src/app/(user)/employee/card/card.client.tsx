@@ -1,10 +1,11 @@
 import React from "react";
-import { Companys, Employees } from "@prisma/client";
+import { Employees } from "@prisma/client";
 import { toDateIndo } from "@/utils/toDate";
 import Image from "next/image";
 import { ktp } from "@/interface/entity/employee.model";
 import { UserClient } from "@/interface/entity/user.model";
 import Link from "next/link";
+import { Companys } from "@/assets/company";
 
 export const EmployeeIDCard = (
     { employee, company, user }:

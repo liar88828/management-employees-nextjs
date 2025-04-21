@@ -1,11 +1,14 @@
 export const exampleCompany = {
-    "name": "John Doe",
+    "name": "Cv Pudji Lestari Sentosa",
     "id": 1,
-    "email": "johndoe@example.com",
-    "phone": "+1234567890",
-    "address": "123 Main Street, Cityville, Country",
-    "img": "https://example.com/profile.jpg"
+    "email": "tahubaxoibupudji@ymail.com",
+    "phone": "024-7691 4420",
+    "address": "Jl.Diponegoro 14 Ungaran, Jawa Tengah",
+    "img": "/logo.png",
+    visi: [ 'text' ],
+    misi: [ 'text' ]
 }
+export type Companys = typeof exampleCompany;
 
 export const employeeData = {
     id: '1',

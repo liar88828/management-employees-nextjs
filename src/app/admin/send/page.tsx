@@ -6,7 +6,7 @@ import { SendTableLetter } from "@/app/admin/send/send.client";
 async function Page() {
     const letter = await getLetterOnlyAll()
     return (
-        <div>
+        < >
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
 
@@ -28,10 +28,8 @@ async function Page() {
                     <Link href={ '/admin/send/create' } className={ 'btn btn-info' }>Create</Link>
                 </div>
             </div>
-
-
             <SendTableLetter data={ letter }/>
-        </div>
+        </ >
     );
 }
 

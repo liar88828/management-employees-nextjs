@@ -1,8 +1,8 @@
 import type React from "react"
-import { Companys } from "@prisma/client";
 import { LetterForm } from "@/assets/letter";
 import { toDateIndo } from "@/utils/toDate";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
+import { Companys } from "@/assets/company";
 
 const SuratPanggilanDiterimaKerja: React.FC<{
 

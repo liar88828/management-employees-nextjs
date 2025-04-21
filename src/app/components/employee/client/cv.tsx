@@ -30,9 +30,27 @@ export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
     );
 }
 
+export function EmployeeCVUser({ employee }: { employee: TEmployeeDB }) {
+    const { isPrinting, handlePrint, contentRef } = usePrint()
+    return (
+        <div ref={ contentRef }>
+            <EmployeeCVPageAdmin employee={ employee } />
+            <div className=" print:hidden gap-2 mt-2 flex items-center">
+                <button
+                    onClick={ handlePrint }
+                    disabled={ isPrinting }
+                    className={ 'btn btn-info' }
+                >
+                    { isPrinting ? 'Printing...' : <Printer /> }
+                </button>
+            </div>
+        </div>
+    );
+}
+
 export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
     return (
-        <div className="card w-full max-w-3xl  bg-white card-bordered">
+        <div className="card w-full max-w-3xl  bg-white card-bordered shadow-lg">
             {/*mx-auto*/ }
 
             <div className="card-body">
@@ -68,7 +86,7 @@ export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
 
                             <p><strong>Address:</strong> { employee.address }</p>
                             <p><strong>City:</strong> { employee.city }</p>
-                            <p><strong>Country:</strong> { employee.country }</p>
+                            {/*<p><strong>Country:</strong> { employee.country }</p>*/ }
                         </div>
                     </section>
 
@@ -103,14 +121,14 @@ export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
                         </ul>
                     </section>
 
-                    <section>
-                        <h3 className="font-semibold mb-2">Languages</h3>
-                        <ul className="list-disc list-inside text-sm">
-                            { employee.languages && employee.languages.map(({ text }, index) => (
-                                <li key={ index }>{ text }</li>
-                            )) }
-                        </ul>
-                    </section>
+                    {/*<section>*/ }
+                    {/*    <h3 className="font-semibold mb-2">Languages</h3>*/ }
+                    {/*    <ul className="list-disc list-inside text-sm">*/ }
+                    {/*        { employee.languages && employee.languages.map(({ text }, index) => (*/ }
+                    {/*            <li key={ index }>{ text }</li>*/ }
+                    {/*        )) }*/ }
+                    {/*    </ul>*/ }
+                    {/*</section>*/ }
 
                     {/*<section>*/ }
                     {/*    <h3 className="font-semibold mb-2">Certifications</h3>*/ }

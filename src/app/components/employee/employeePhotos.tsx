@@ -19,7 +19,7 @@ export function EmployeePhotos({ employee }: { employee: TEmployeeDB }) {
 
                 <section>
                     <h3 className="font-semibold mb-2">Photo 4x6</h3>
-                    <Image src={ employee.photoKtp ?? i3x4 }
+                    <Image src={ employee.photo3x4 ?? i3x4 }
                            alt=""
                            width={ 300 }
                            height={ 400 }

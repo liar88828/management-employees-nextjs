@@ -9,7 +9,7 @@ import { prisma } from "@/config/prisma";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import EmployeeRepository from "@/server/repository/employee.repo";
 import { zodUUID } from "@/schema/zod.valid";
-import { employeeCreateServer } from "@/schema/employee.valid";
+import { employeeRegistrationCreateServerUser } from "@/schema/employee.valid";
 
 export default class EmployeeController
     implements InterfaceController {
@@ -55,7 +55,7 @@ export default class EmployeeController
         // console.log(filePath)
         const data = employeeSanitizeFormData(formData, filePath, '')
         const response = await this.employeeRepository.createOne(
-            employeeCreateServer.parse(data)
+            employeeRegistrationCreateServerUser.parse(data)
         )
         if (response) {
             await saveImageFormData(formData, filePath)
@@ -115,7 +115,7 @@ export async function employeeFindById({ userId, employeeId }: {
                     otpExpired: true,
                 }
             },
-            languages: true,
+            // languages: true,
             skills: true,
             educations: true
         }

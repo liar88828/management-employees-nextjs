@@ -2,6 +2,7 @@ import React from 'react';
 import { employeeFindById, } from "@/server/controller/employee.controller";
 import { toDateIndo } from "@/utils/toDate";
 import { validSession } from "@/secure/db";
+import { InterviewShowCV } from "@/app/admin/interview/interview.client";
 
 async function Page() {
     const { userId } = await validSession()
@@ -28,9 +29,12 @@ async function Page() {
                             Register
                         </button>
 
-                        <button className={ `btn btn-primary ${ !employee && 'btn-disabled' }` }>
-                            Print
-                        </button>
+                        {/*<button className={ `btn btn-primary ${ !employee && 'btn-disabled' }` }>*/ }
+                        {/*    Print*/ }
+                        {/*</button>*/ }
+                        { employee &&
+                            <InterviewShowCV employee={ employee } />
+                        }
                     </div>
                 </div>
             </div>

@@ -1,18 +1,4 @@
 'use client'
-import React from "react";
-import { TEmployeeDB } from "@/interface/entity/employee.model";
-import { FormProvider, useForm } from "react-hook-form";
-import { employeeCreateClient, EmployeeCreateZodClient } from "@/schema/employee.valid";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { UserClient, UserDB } from "@/interface/entity/user.model";
-import { useRouter } from "next/navigation";
-import { formDate } from "@/utils/toDate";
-import { useFormImage } from "@/hook/useFormImage";
-import { EmployeeFormContextClientAdmin } from "@/app/components/employee/employee.client.admin";
-import { Departements } from ".prisma/client";
-import { onUpsertDataUser } from "@/server/action/employee.client";
-import { useFormStatus } from "react-dom";
-import { onAction } from "@/server/action/OnAction";
 //
 // export function EmployeeFormClientUser({ employee, method, user, departments }: {
 //     user: UserClient
@@ -23,8 +9,8 @@ import { onAction } from "@/server/action/OnAction";
 //     const router = useRouter();
 //     const { pending } = useFormStatus()
 //     const { previewImage, handleImageChange } = useFormImage(employee?.img)
-//     const methods = useForm<EmployeeCreateZodClient>({
-//         resolver: zodResolver(employeeCreateClient),
+//     const methods = useForm<EmployeeRegistrationUserCreateClient>({
+//         resolver: zodResolver(employeeRegistrationUserCreateClient),
 //         defaultValues: employee
 //             ? {
 //                 ...employee,
@@ -40,7 +26,7 @@ import { onAction } from "@/server/action/OnAction";
 //
 //     const { register, handleSubmit, formState: { errors } } = methods
 //
-//     const onSubmit = async (data: EmployeeCreateZodClient) => {
+//     const onSubmit = async (data: EmployeeRegistrationUserCreateClient) => {
 //         await onAction(() => {
 //                 onUpsertDataUser(method, data, employee?.id,
 //                     user)

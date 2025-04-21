@@ -8,7 +8,7 @@ export default async function PageEmployeeFormAdmin() {
     return (
         <EmployeeFormClientAdmin
             method={ 'POST' }
-            departments={ departments }
+            // departments={ departments }
             userId={ '' }
         />
     );

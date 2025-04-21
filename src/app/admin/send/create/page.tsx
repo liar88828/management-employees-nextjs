@@ -11,6 +11,7 @@ async function Page(context: TContext) {
     const name = await getContextQuery(context, 'name')
     const department = await getContextQuery(context, 'department')
     const complete = await getContextQuery(context, 'complete') as EmployeeCompletePhotoType
+
     const departments: Departements[] = await prisma.departements.findMany()
     const employees = await employeeFindLatter(name, department, complete)
 

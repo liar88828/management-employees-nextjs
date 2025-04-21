@@ -4,7 +4,7 @@ import {
     DepartmentModalCreate,
     DepartmentModalDelete,
     DepartmentModalUpdate
-} from "@/app/admin/department/DepartmentModal";
+} from "@/app/admin/position/create/DepartmentModal";
 
 async function Page() {
     const dataDepartment = await prisma.$transaction(async (tx) => {
@@ -66,4 +66,3 @@ async function Page() {
 }
 
 export default Page;
-

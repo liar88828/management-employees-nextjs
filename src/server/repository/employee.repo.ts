@@ -3,13 +3,16 @@ import { EmployeeCreate, TEmployeeDB, TEmployeeSearch } from "@/interface/entity
 import { ResponseAll, } from "@/interface/server/param";
 import { InterfaceRepository, ParamsApi } from "@/interface/server/InterfaceRepository";
 import { ErrorPrisma } from "@/utils/ErrorClass";
-import { EmployeeCreateZodClient, EmployeeCreateZodServer, EmployeeUpdateZodServer } from "@/schema/employee.valid";
-import { UserClient } from "@/interface/entity/user.model";
+import {
+    EmployeeRegistrationUserCreateClient,
+    EmployeeRegistrationUserCreateServer,
+    EmployeeUpdateServerUser
+} from "@/schema/employee.valid";
 
 export type EmployeeParams = ParamsApi<TEmployeeSearch>
 
 // getAll data from database
-export default class EmployeeRepository implements InterfaceRepository<EmployeeCreateZodClient> {
+export default class EmployeeRepository implements InterfaceRepository<EmployeeRegistrationUserCreateClient> {
 
     async findAll({ filter, pagination: { limit = 20, page = 1 } }: Required<EmployeeParams>,
     ): Promise<ResponseAll<Omit<TEmployeeDB, 'status'> & { status: string }>> {
@@ -18,7 +21,7 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
         const employees = await prisma.employees.findMany(
             {
                 include: {
-                    languages: true,
+                    // languages: true,
                     skills: true,
                     educations: true,
                     User: {
@@ -55,7 +58,7 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
                         otpExpired: true,
                     }
                 },
-                languages: true,
+                // languages: true,
                 skills: true,
                 educations: true,
             },
@@ -66,13 +69,14 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
         return prisma.employees.findUnique({
             where: { id },
             include: {
-                languages: true,
+                // languages: true,
                 skills: true,
+                educations: true,
             },
         });
     }
 
-    async createOne({ skills, languages, educations, ...employees }: EmployeeCreateZodServer) {
+    async createOne({ skills, educations, ...employees }: EmployeeRegistrationUserCreateServer) {
         return prisma.$transaction(async (tx) => {
 
             // const foundEmployee = await tx.users.findUnique(
@@ -95,12 +99,12 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
                 } )),
             })
 
-            const languageDB = await tx.languages.createMany({
-                data: languages.map(({ text }) => ( {
-                    employeesId: employeeDB.id,
-                    text,
-                } ))
-            })
+            // const languageDB = await tx.languages.createMany({
+            //     data: languages.map(({ text }) => ( {
+            //         employeesId: employeeDB.id,
+            //         text,
+            //     } ))
+            // })
 
             const educationDB = await tx.educations.createMany({
                 data: educations.map(({ text }) => ( {
@@ -109,11 +113,11 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
                 } ))
             })
 
-            return { employeeDB, skillDB, languageDB, educationDB };
+            return { employeeDB, skillDB, educationDB };
         })
     }
 
-    async updateOne({ skills, languages, educations, ...employees }: EmployeeCreate, id: string) {
+    async updateOne({ skills, educations, ...employees }: EmployeeCreate, id: string) {
 
         return prisma.$transaction(async (tx) => {
 
@@ -133,13 +137,13 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
                 } )),
             })
 
-            await tx.languages.deleteMany({ where: { employeesId: id } })
-            const languageDB = await tx.languages.createMany({
-                data: languages.map(({ text }) => ( {
-                    employeesId: employeeDB.id,
-                    text,
-                } ))
-            })
+            // await tx.languages.deleteMany({ where: { employeesId: id } })
+            // const languageDB = await tx.languages.createMany({
+            //     data: languages.map(({ text }) => ( {
+            //         employeesId: employeeDB.id,
+            //         text,
+            //     } ))
+            // })
 
             await tx.educations.deleteMany({ where: { employeesId: id } })
             const educationDB = await tx.educations.createMany({
@@ -164,7 +168,11 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
             // 	}))
             // })
 
-            return { employeeDB, skillDB, languageDB, educationDB };
+            return {
+                employeeDB, skillDB,
+                // languageDB,
+                educationDB
+            };
         })
 
     }
@@ -179,9 +187,13 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
             }
             const employeeDB = await tx.employees.delete({ where: { id } });
             const skillDB = await tx.skills.deleteMany({ where: { employeesId: employeeDB.id } })
-            const languageDB = await tx.languages.deleteMany({ where: { employeesId: employeeDB.id } })
+            // const languageDB = await tx.languages.deleteMany({ where: { employeesId: employeeDB.id } })
             const educationDB = await tx.educations.deleteMany({ where: { employeesId: employeeDB.id } })
-            return { employeeDB, skillDB, languageDB, educationDB };
+            return {
+                employeeDB, skillDB,
+                // languageDB,
+                educationDB
+            };
         })
     }
 
@@ -194,7 +206,7 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
         const employees = await prisma.employees.findMany(
             {
                 include: {
-                    languages: true,
+                    // languages: true,
                     skills: true,
                     educations: true,
                 },
@@ -214,7 +226,11 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
     }
 
     async createUserRepo(
-        { skills, languages, educations, ...employees }: EmployeeCreateZodServer,
+        {
+            skills,
+            // languages,
+            educations, ...employees
+        }: EmployeeRegistrationUserCreateServer,
     ) {
         // console.log(employees)
         return prisma.$transaction(async (tx) => {
@@ -236,21 +252,29 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
                     employeesId: employeeDB.id, text
                 } ))
             })
-            const languageDB = await tx.languages.createMany({
-                data: languages.map(({ text }) => ( {
-                    employeesId: employeeDB.id, text
-                } ))
-            })
+            // const languageDB = await tx.languages.createMany({
+            //     data: languages.map(({ text }) => ( {
+            //         employeesId: employeeDB.id, text
+            //     } ))
+            // })
             const educationDB = await tx.educations.createMany({
                 data: educations.map(({ text }) => ( {
                     employeesId: employeeDB.id, text
                 } ))
             })
-            return { employeeDB, skillDB, languageDB, educationDB };
+            return {
+                employeeDB, skillDB,
+                // languageDB,
+                educationDB
+            };
         })
     }
 
-    async updateUserRepo({ skills, languages, educations, ...employees }: EmployeeUpdateZodServer,
+    async updateUserRepo({
+                             skills,
+                             // languages,
+                             educations, ...employees
+                         }: EmployeeUpdateServerUser,
                          id: string,
     ) {
         return prisma.$transaction(async (tx) => {
@@ -270,19 +294,25 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeC
                     employeesId: employeeDB.id, text
                 } ))
             })
-            await tx.languages.deleteMany({ where: { employeesId: id } })
-            const languageDB = await tx.languages.createMany({
-                data: languages.map(({ text }) => ( {
-                    employeesId: employeeDB.id, text,
-                } ))
-            })
+
+            // await tx.languages.deleteMany({ where: { employeesId: id } })
+            // const languageDB = await tx.languages.createMany({
+            //     data: languages.map(({ text }) => ( {
+            //         employeesId: employeeDB.id, text,
+            //     } ))
+            // })
+
             await tx.educations.deleteMany({ where: { employeesId: id } })
             const educationDB = await tx.educations.createMany({
                 data: educations.map(({ text }) => ( {
                     employeesId: employeeDB.id, text
                 } ))
             })
-            return { employeeDB, skillDB, languageDB, educationDB };
+            return {
+                employeeDB, skillDB,
+                // languageDB,
+                educationDB
+            };
         })
     }
 }

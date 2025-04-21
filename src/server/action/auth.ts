@@ -19,7 +19,7 @@ import { PropertyMap } from "@/interface/types";
 import { ROLE, USER_STATUS } from "@/interface/enum";
 import { otpGenerate } from "@/server/controller/otpController";
 
-export async function signUp(state: FormStateRegister, formData: FormData): Promise<FormStateRegister> {
+export async function register(state: FormStateRegister, formData: FormData): Promise<FormStateRegister> {
     // Validate form fields
     const addressRaw = formData.get('address') ?? ''
     const emailRaw = formData.get('email') ?? ''
@@ -88,7 +88,7 @@ export async function signUp(state: FormStateRegister, formData: FormData): Prom
 
 }
 
-export async function signIn(state: FormStateAuth, formData: FormData): Promise<FormStateAuth> {
+export async function login(state: FormStateAuth, formData: FormData): Promise<FormStateAuth> {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 

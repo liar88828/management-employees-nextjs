@@ -1,55 +1,63 @@
 'use server'
 import { redirect } from "next/navigation";
 import { employeeRepository } from "@/server/controller";
-import { EmployeeCreateZodClient } from "@/schema/employee.valid";
+import { EmployeeRegistrationUserCreateClient } from "@/schema/employee.valid";
 import { saveImage, setPathImage, updateImage } from "@/server/repository/image.repo";
-import { employeeSanitize, employeeSanitizeUpdate } from "@/sanitize/employe.sanitize";
+import { employeeCreateSanitizeUser, employeeSanitizeUpdateUser } from "@/sanitize/employe.sanitize";
 import { EmployeeUserClient, TEmployeeDB } from "@/interface/entity/employee.model";
-import { checkDepartmentPosition } from "@/server/action/department";
 import { employeeFindById } from "@/server/controller/employee.controller";
 import { prisma } from "@/config/prisma";
 import { EMPLOYEE_STATUS, EmployeeCompletePhotoType } from "@/interface/enum";
 import { ZodError } from "zod";
-import { UserClient } from "@/interface/entity/user.model";
+import { revalidatePath } from "next/cache";
 
-export const employeeCreateUser = async (
-    { img, ...data }: EmployeeCreateZodClient,
-) => {
+export async function employeeCreateUser(
+    { img, ...data }: EmployeeRegistrationUserCreateClient,
+    userId: string
+) {
     try {
         const isImage = typeof img === 'object'
         const imageFile = img[0]
         const imagePath = await setPathImage(imageFile)    // Save the image path to the database
-        const employeeData = employeeSanitize(data, imagePath, data?.userId)
+        const employeeData = employeeCreateSanitizeUser(data, userId, imagePath,)
         const response = await employeeRepository.createUserRepo(employeeData,)
         console.log('response : ', response)
         if (response && isImage && imagePath) {
             const pathImage = await saveImage(imageFile, imagePath)
             console.log('saveImage : ', pathImage)
         }
-        return response
+        return {
+            data: response,
+            success: true
+        }
     } catch (error) {
         if (error instanceof Error) {
             console.log(error.message);
+            throw error.message
         }
     }
 }
 
 export async function employeeUpdateUser(
-    { img, ...data }: EmployeeCreateZodClient,
+    { img, ...data }: EmployeeRegistrationUserCreateClient,
     employeeId: string,
+    userId: string
 ) {
     try {
         const isImage = typeof img === 'object';
         const imageFile = img[0]
         const imagePath = await setPathImage(imageFile)    // Save the image path to the database
         // console.log('imageFile',imageFile)
-        const employeeData = employeeSanitizeUpdate(data, imagePath, data?.userId)
+        const employeeData = employeeSanitizeUpdateUser(data, userId, imagePath,)
         const response = await employeeRepository.updateUserRepo(employeeData, employeeId,)
         // console.log('isImage, response',isImage, response)
         if (response && isImage && imagePath) {
             await updateImage(imageFile, imagePath)
         }
-        return response
+        return {
+            data: response,
+            success: true
+        }
     } catch (error) {
 
         if (error instanceof ZodError) {
@@ -72,17 +80,18 @@ export async function employeeUpdateUser(
 
 export async function onUpsertDataUser(
     method: "POST" | "PUT",
-    data: EmployeeCreateZodClient,
+    data: EmployeeRegistrationUserCreateClient,
+    userId: string,
     idEmployee?: string,
 ) {
-    await checkDepartmentPosition(data.department);
-    console.log(method, idEmployee)
-    data.status = EMPLOYEE_STATUS.Registration
+    // await checkDepartmentPosition(data.department);
+    // console.log(method, idEmployee)
     if (method === "POST") {
-        return employeeCreateUser(data,)
+        console.log('Execute Post')
+        return employeeCreateUser(data, userId)
     } else if (method === "PUT" && idEmployee) {
-        // console.log('Execute ')
-        return employeeUpdateUser(data, idEmployee,)
+        console.log('Execute Put')
+        return employeeUpdateUser(data, idEmployee, userId)
     }
     throw new Error('Invalid data');
 }
@@ -98,7 +107,6 @@ export async function getEmployeeByUserIdForIDCard(userId: string) {
     return prisma.employees.findUnique({
         where: { userId, status: EMPLOYEE_STATUS.Active },
         include: {
-            languages: true,
             skills: true,
             educations: true
         },
@@ -113,9 +121,9 @@ export const employeeFindLatter = async (
         User: { name: { contains: name } },
         department: { contains: department },
 
-        photoKtp: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : null,
-        photo3x4: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : null,
-        photoIjazah: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : null,
+        photoKtp: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
+        photo3x4: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
+        photoIjazah: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
     },
     include: {
         User: {
@@ -133,3 +141,31 @@ export const employeeFindLatter = async (
         return { ...i, User: i.User }
     }).filter(i => i !== null)
 })
+
+export async function registrationFinished({ userId }: { userId: string }) {
+    const employeeDB = await prisma.employees.findUnique({
+        where: { userId },
+        select: {
+            photoKtp: true,
+            photoIjazah: true,
+            photo3x4: true,
+        }
+    })
+    if (!employeeDB) {
+        redirect('/registration?error=Please complete the employee&type=form')
+    }
+    if (!employeeDB.photoKtp) {
+        redirect('/registration?error=Please complete the photo Ktp&type=ktp')
+    }
+    if (!employeeDB.photoIjazah) {
+        redirect('/registration?error=Please complete the photo Ijazah&type=ijazah')
+    }
+    if (!employeeDB.photo3x4) {
+        redirect('/registration?error=Please complete the photo 3x4&type=3x4')
+    }
+    await prisma.employees.update({
+        where: { userId },
+        data: { registration: true }
+    })
+    revalidatePath("/");
+}

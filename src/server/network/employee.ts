@@ -1,7 +1,7 @@
 import { toFetch } from "@/hook/toFetch";
 import { ResponseAll } from "@/interface/server/param";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
-import { EmployeeCreateZodClient } from "@/schema/employee.valid";
+import { EmployeeRegistrationUserCreateClient } from "@/schema/employee.valid";
 import { toUrl } from "@/utils/toUrl";
 import { EmployeeParams } from "@/server/repository/employee.repo";
 import { ErrorFetch } from "@/utils/ErrorClass";
@@ -23,8 +23,7 @@ export const employeeFindByUserId = async (userId: string) => {
     })
 };
 
-
-export const employeeCreate = async ({img, ...data}: EmployeeCreateZodClient) => {
+export const employeeCreate = async ({ img, ...data }: EmployeeRegistrationUserCreateClient) => {
     try {
         const formData = new FormData();
 
@@ -53,7 +52,7 @@ export const employeeCreate = async ({img, ...data}: EmployeeCreateZodClient) =>
     }
 };
 
-export const employeeUpdate = async ({img, ...data}: EmployeeCreateZodClient, id: string) => {
+export const employeeUpdate = async ({ img, ...data }: EmployeeRegistrationUserCreateClient, id: string) => {
     try {
         const formData = new FormData();
 
@@ -80,7 +79,7 @@ export const employeeUpdate = async ({img, ...data}: EmployeeCreateZodClient, id
     }
 };
 
-export async function onUpsertData(method: "POST" | "PUT", data: EmployeeCreateZodClient, id?: string) {
+export async function onUpsertData(method: "POST" | "PUT", data: EmployeeRegistrationUserCreateClient, id?: string) {
     if (method === "POST") {
         return employeeCreate(data)
     } else if (method === "PUT" && id) {
@@ -88,7 +87,7 @@ export async function onUpsertData(method: "POST" | "PUT", data: EmployeeCreateZ
     }
 }
 
-export const employeeCreateUserApi = async ({ img, ...data }: EmployeeCreateZodClient) => {
+export const employeeCreateUserApi = async ({ img, ...data }: EmployeeRegistrationUserCreateClient) => {
     const formData = new FormData();
     formData.append('file', img[0]);
     formData.append('data', JSON.stringify(data));
@@ -108,4 +107,3 @@ export const employeeCreateUserApi = async ({ img, ...data }: EmployeeCreateZodC
 
     return response.json();
 }
-

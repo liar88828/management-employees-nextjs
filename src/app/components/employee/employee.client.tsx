@@ -6,37 +6,36 @@ import { Plus } from "lucide-react";
 import { FormProvider, useForm } from "react-hook-form";
 import { TypeFile, uploadFile } from "@/server/action/upload";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Departements } from ".prisma/client";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
-import { employeeCreateClient, EmployeeCreateZodClient } from "@/schema/employee.valid";
-import { onUpsertDataUser } from "@/server/action/employee.client";
+import { employeeCreateClientAdmin, EmployeeCreateClientAdmin } from "@/schema/employee.valid";
 import toast from "react-hot-toast";
 import { EmployeePhotoPageAdmin } from "@/app/components/employee/employeePhotoPageAdmin";
 import { InputTextDynamic } from "@/app/components/form/state";
+import { onUpsertDataAdmin } from "@/server/action/employee.admin";
 
 export interface EmployeeCVProps {
     employee: TEmployeeDB,
     type: string,
 }
 
-export function EmployeeFormClientAdmin({ employee, method, userId, departments }: {
+export function EmployeeFormClientAdmin({ employee, method, userId, }: {
     userId: string,
     employee?: TEmployeeDB,
     method: "POST" | 'PUT',
-    departments: Departements[]
+    // departments: Departements[]
 }) {
 
-    const methods = useForm<EmployeeCreateZodClient>({
-        resolver: zodResolver(employeeCreateClient),
+    const methods = useForm<EmployeeCreateClientAdmin>({
+        resolver: zodResolver(employeeCreateClientAdmin),
         defaultValues: employee ? { ...employee, userId } : undefined
     });
 
     const { register, handleSubmit, formState: { errors } } = methods
 
-    const onSubmit = async (data: EmployeeCreateZodClient) => {
+    const onSubmit = async (data: EmployeeCreateClientAdmin) => {
         const idToast = toast.loading('Updating...')
         try {
-            await onUpsertDataUser(method, data)
+            await onUpsertDataAdmin(method, data)
             toast.success("Updating success")
         } catch (e) {
             if (e instanceof Error) toast.error(`Error updating user : ${ e.message }`)
@@ -122,7 +121,7 @@ export function EmployeeFormClientAdmin({ employee, method, userId, departments 
                             className="input input-bordered"
                         />
                         { errors.dateOfBirth &&
-													<p className="text-error text-sm mt-1">{ errors.dateOfBirth.message }</p> }
+                            <p className="text-error text-sm mt-1">{ errors.dateOfBirth.message }</p> }
 
                     </div>
 
@@ -163,8 +162,7 @@ export function EmployeeFormClientAdmin({ employee, method, userId, departments 
                             placeholder="Department"
                         />
                         { errors.department &&
-													<p className="text-error text-sm mt-1">{ errors.department.message }</p> }
-
+                            <p className="text-error text-sm mt-1">{ errors.department.message }</p> }
                     </div>
 
                     <div className="form-control">
@@ -233,7 +231,7 @@ export function EmployeeFormClientAdmin({ employee, method, userId, departments 
                             placeholder="Postal Code"
                         />
                         { errors.postalCode &&
-													<p className="text-error text-sm mt-1">{ errors.postalCode.message }</p> }
+                            <p className="text-error text-sm mt-1">{ errors.postalCode.message }</p> }
                     </div>
 
                     <div className="form-control">
@@ -258,7 +256,7 @@ export function EmployeeFormClientAdmin({ employee, method, userId, departments 
                             <option value="Part-Time">Part-Time</option>
                         </select>
                         { errors.employmentType &&
-													<p className="text-error text-sm mt-1">{ errors.employmentType.message }</p> }
+                            <p className="text-error text-sm mt-1">{ errors.employmentType.message }</p> }
                     </div>
 
                     <div className="form-control">
@@ -283,7 +281,7 @@ export function EmployeeFormClientAdmin({ employee, method, userId, departments 
                             placeholder="Additional notes"
                         />
                         { errors.educations &&
-													<p className="text-error text-sm mt-1">{ errors.educations.message }</p> }
+                            <p className="text-error text-sm mt-1">{ errors.educations.message }</p> }
                     </div>
 
                     <InputTextDynamic keys={ 'skills' } title={ 'Skills' } />
@@ -378,7 +376,7 @@ export function EmployeeSearchClientAdmin({ children }: { children: React.ReactN
                     </select>
                 </Form>
                 <Link href={ '/admin/employee/create' } className={ 'btn btn-square' }>
-                    <Plus/>
+                    <Plus />
                 </Link>
             </div>
             { children }

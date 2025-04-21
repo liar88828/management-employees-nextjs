@@ -1,9 +1,9 @@
 import React from 'react';
 import { TContext } from "@/interface/server/param";
-import { EmployeeSearchClientAdmin, EmployeeTableClientAdmin } from "@/app/components/employee/employee.client.admin";
 import { getContextQuery, getContextQueryNum } from "@/utils/requestHelper";
 import { Pagination } from "@/app/admin/registration/registration.client";
 import { employeePagination } from "@/server/action/employee.admin";
+import { EmployeeSearchClientAdmin, EmployeeTableClientAdmin } from "@/app/components/employee/employee.client.admin";
 
 export default async function page(context: TContext,) {
     const search = await getContextQuery(context, 'search')

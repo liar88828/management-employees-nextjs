@@ -1,6 +1,6 @@
 import { TEmployeeDB } from "@/interface/entity/employee.model";
-import { Companys } from "@prisma/client";
 import { toDateIndo } from "@/utils/toDate";
+import { Companys } from "@/assets/company";
 
 export default function JobApplication({ employee, company }: { employee: TEmployeeDB, company: Companys }) {
     return (

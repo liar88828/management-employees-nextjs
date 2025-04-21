@@ -1,4 +1,4 @@
-import { testimonialLandingAction } from "@/server/action/testimonial";
+import { exampleTestimonials } from "@/assets/exampleTestimonial";
 
 export async function OurProducts() {
 
@@ -44,14 +44,13 @@ export async function OurProducts() {
 }
 
 export async function Ceremony() {
-    const testimonials = await testimonialLandingAction()
 
     return (
         <section id="testimonials" className="card card-compact mt-20 ">
             <div className="card-body   ">
                 <h2 className="text-title"> Customers Say </h2>
                 <div className="grid grid-cols-1 space-y-2">
-                    { testimonials.map((testimonial, index) => (
+                    { exampleTestimonials.map((testimonial) => (
                         <div
                             key={ testimonial.id }
                             className="rounded-lg border bg-card text-card-foreground shadow-sm p-6"

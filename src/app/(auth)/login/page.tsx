@@ -1,18 +1,18 @@
 'use client';
 import Link from "next/link";
-import { signIn } from "@/server/action/auth";
+import { login } from "@/server/action/auth";
 import { useActionState } from "react";
 import { useOtpStore } from "@/store/otp";
 import { FormError } from "@/app/components/form/action";
 
 export default function LoginForm() {
     const { store, setData } = useOtpStore()
-	const [ state, action, pending ] = useActionState(signIn, undefined);
+    const [ state, action, pending ] = useActionState(login, undefined);
     // console.log(state);
 	return (
-        <div className="card card-bordered bg-base-100  max-w-xl mt-20">
+        <div className="card bg-base-200 max-w-xl mt-10">
             <form action={ action } className="card-body">
-                <h2 className="card-title">Sign In</h2>
+                <h2 className="card-title">Login</h2>
                 {/* Email Input */ }
                 <div className="form-control w-full">
                     <label htmlFor="email" className="label">
@@ -59,7 +59,7 @@ export default function LoginForm() {
                         type="submit"
                         className={ `btn btn-primary w-full ${ pending ? "btn-disabled" : "" } mt-5` }
                     >
-                        { pending ? "Signing In..." : "Sign In" }
+                        { pending ? "Login..." : "Login" }
                     </button>
 
                     <div className="flex sm:justify-between w-full flex-col sm:flex-row">

@@ -51,7 +51,7 @@ export async function EmployeeFormServerAdmin({ idEmployee }: { idEmployee: stri
             employee={ employee.data }
             method={ 'POST' }
             userId={ "" }
-            departments={ departments }
+            // departments={ departments }
 
         />
     );

@@ -1,6 +1,5 @@
 'use client'
 import Link from "next/link";
-import { ChevronLeftIcon, } from 'lucide-react';
 import React from "react";
 import { TMenuList } from "@/assets/MenuList";
 
@@ -21,23 +20,5 @@ export function LinkListLayoutAdmin({ item, path }: {
                 { item.add && <span className=" badge-neutral badge">{ item.add }</span> }
             </Link>
         </li>
-    );
-}
-
-export function AuthLayoutAdmin() {
-    return (
-        <div className="navbar bg-base-200/50 fixed ">
-            <div className="flex-1">
-                <Link
-                    href={ "/" }
-                    className="btn btn-ghost text-xl btn-square "
-                >
-                    <ChevronLeftIcon />
-                </Link>
-
-            </div>
-            <div className="flex-none">
-            </div>
-        </div>
     );
 }
