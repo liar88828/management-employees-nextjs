@@ -61,7 +61,7 @@ export function SendForm({ employees, letter }: { letter?: Letters, employees: E
                     </div>
 
                     { state?.message && (
-                        <p className={ `${ state.success ? 'text-success' : 'text-error' } text-sm mt-1` }>{ state.message }</p>
+                        <p className={ `${ state.success ? 'text-success' : 'text-errors' } text-sm mt-1` }>{ state.message }</p>
                     ) }
                     <div className="card-actions">
                         <button

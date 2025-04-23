@@ -69,7 +69,7 @@ export function EmployeePhotoPageAdmin(
         <div className="card card-bordered " data-theme={ "light" }>
             <div className="card-body">
                 <h2 className="card-title">Add { type }
-                    { !imagePreview && <p className={ 'text-error ' }> *Please Complete</p> }
+                    { !imagePreview && <p className={ 'text-errors ' }> *Please Complete</p> }
                 </h2>
                 <div className="w-48 h-auto">
                     <div className="mt-4">

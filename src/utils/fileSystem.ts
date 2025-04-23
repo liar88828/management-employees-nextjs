@@ -5,7 +5,7 @@ export const fileSystem = async ( filePath: string ) => {
   if( checkFile( "public/" + filePath ) ) {
     return fs.unlink( "public/" + filePath, err => {
       if( err ) {
-        console.error( "Delete error" )
+          console.error("Delete errors")
         throw err;
       }
       console.info( "Delete Success" )

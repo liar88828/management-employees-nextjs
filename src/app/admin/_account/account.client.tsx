@@ -161,7 +161,7 @@ export function TableEmployees({ employees, title, valid }: {
 }) {
     return (
         <section className="space-y-2">
-            <h1 className={ `${ valid ? 'text-success' : 'text-error' }` }>{ title }</h1>
+            <h1 className={ `${ valid ? 'text-success' : 'text-errors' }` }>{ title }</h1>
             <div className="overflow-x-auto">
                 <table className="table bg-base-200 ">
                     <thead>

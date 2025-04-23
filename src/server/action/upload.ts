@@ -46,7 +46,7 @@ export async function uploadFile(
     } catch (error) {
         if (error instanceof Error) {
             console.log(error.message);
-            // return error.message
+            // return errors.message
         }
     }
 }

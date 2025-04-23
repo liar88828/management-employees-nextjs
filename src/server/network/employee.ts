@@ -87,12 +87,12 @@ export async function onUpsertData(method: "POST" | "PUT", data: EmployeeRegistr
     }
 }
 
-export const employeeCreateUserApi = async ({ img, ...data }: EmployeeRegistrationUserCreateClient) => {
+export const _employeeCreateUserApi = async ({ img, ...data }: EmployeeRegistrationUserCreateClient) => {
     const formData = new FormData();
     formData.append('file', img[0]);
     formData.append('data', JSON.stringify(data));
-
-    const response = await fetch(`/api/user/registration/${ data.userId }`, {
+// .userId
+    const response = await fetch(`/api/user/registration/${ data }`, {
         method: 'POST',
         body: formData, // Send as FormData
     });

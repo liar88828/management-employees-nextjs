@@ -20,7 +20,7 @@ export async function encrypt(payload: SessionPayload) {
 	.sign(encodedKey)
 }
 
-// @ts-expect-error
+// @ts-expect-errors
 export async function decrypt(session: string | undefined = ''): Promise<SessionPayload> {
 	try {
 		const data = await jwtVerify(session, encodedKey, {

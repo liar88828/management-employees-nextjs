@@ -79,7 +79,7 @@ export default function LoginForm() {
                         <div className="">
                             Forget Password
                             <Link
-                                href="/forget"
+                                href="/reset"
                                 className={ `btn btn-link mx-0.5 px-0.5` }
                             >
                                 Reset

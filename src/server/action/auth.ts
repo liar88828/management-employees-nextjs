@@ -17,7 +17,7 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { checkPassword } from "@/secure/password";
 import { PropertyMap } from "@/interface/types";
 import { ROLE, USER_STATUS } from "@/interface/enum";
-import { otpGenerate } from "@/server/controller/otpController";
+import { _otpGenerate } from "@/server/controller/otpController";
 
 export async function register(state: FormStateRegister, formData: FormData): Promise<FormStateRegister> {
     // Validate form fields
@@ -71,13 +71,13 @@ export async function register(state: FormStateRegister, formData: FormData): Pr
     if (!user) {
         return {
             prev: failForm,
-            message: 'An error occurred while creating your account.',
+            message: 'An errors occurred while creating your account.',
         }
     }
 
     // 4. Create user session
     // await createSession(user.id)
-    await otpGenerate({
+    await _otpGenerate({
         time: new Date(Date.now() + 60 * 60 * 1000),
         email: user.email,
         reason: 'OTP'
@@ -152,7 +152,7 @@ export async function login(state: FormStateAuth, formData: FormData): Promise<F
             }
         }
         return {
-            message: 'An error occurred while creating your account.',
+            message: 'An errors occurred while creating your account.',
             // prev: { email, password }
         }
     }
@@ -186,7 +186,7 @@ export async function forget(state: FormStateAuth, formData: FormData) {
             throw new Error('User not exists!')
         }
 
-        await otpGenerate({
+        await _otpGenerate({
             time: new Date(Date.now() + 60 * 60 * 1000),
             email: user.email,
             reason: 'RESET'
@@ -207,7 +207,7 @@ export async function forget(state: FormStateAuth, formData: FormData) {
             }
         }
         return {
-            message: 'An error occurred while creating your account.',
+            message: 'An errors occurred while creating your account.',
             // prev: { email, password }
 
         }
@@ -275,12 +275,11 @@ export async function reset(state: FormStateAuth, formData: FormData) {
             }
         }
         return {
-            message: 'An error occurred while creating your account.',
+            message: 'An errors occurred while creating your account.',
             // prev: { email, password }
 
         }
     }
-
 }
 
 export async function changeProfile(state: FormStateAuth, formData: FormData) {
@@ -326,7 +325,7 @@ export async function changeProfile(state: FormStateAuth, formData: FormData) {
 
     if (!user) {
         return {
-            message: 'An error occurred while creating your account.',
+            message: 'An errors occurred while creating your account.',
         }
     }
 
@@ -335,4 +334,70 @@ export async function changeProfile(state: FormStateAuth, formData: FormData) {
 
     // 5. Redirect user
     redirect('/profile')
+}
+
+// export async function checkEmailAction(state: FormStateAuth, formData: FormData) {
+// const email = formData.get('email') as string;
+export async function checkEmailAction({ email }: { email: string }) {
+
+    try {
+
+        // Validate form fields
+        const validatedFields = ForgetFormSchema.safeParse({ email })
+
+        // If any form fields are invalid, return early
+        if (!validatedFields.success) {
+            return {
+                success: false,
+                errors: validatedFields.error.flatten().fieldErrors,
+                message: "Error Validation",
+
+            }
+        }
+
+        const valid = validatedFields.data
+
+        // 3. Insert the user into the database or call an Auth Library's API
+        const user = await prisma.users.findFirst(
+            { where: { email: valid.email } }
+        )
+
+        if (!user) {
+            throw new Error('User not exists!')
+        }
+
+        await _otpGenerate({
+            time: new Date(Date.now() + 60 * 60 * 1000),
+            email: user.email,
+            reason: 'RESET'
+        })
+        return {
+            success: true,
+            errors: null,
+            message: "Success Sending Email",
+        }
+        // redirect('/otp')
+
+    } catch (e) {
+
+        // if (isRedirectError(e)) {
+        //     redirect('/otp')
+        // }
+
+        if (e instanceof Error) {
+            return {
+                message: e.message,
+                success: false,
+                errors: null
+                // prev: { email, password }
+            }
+        }
+        return {
+            message: 'An errors occurred while creating your account.',
+            success: false,
+            errors: null,
+            // prev: { email, password }
+
+        }
+    }
 }

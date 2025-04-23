@@ -22,7 +22,6 @@ export type ResponseAll<T> = {
     limit: number
 }
 
-
 export type OTPGenerate = {
     email: string,
     time: Date,
@@ -33,4 +32,10 @@ export type OTPValid = {
     email: string,
     otp: string,
     // reason: 'RESET' | 'OTP'
+}
+export type ResetPassword = {
+    password: string,
+    confirm: string,
+    otp: string,
+    email: string
 }

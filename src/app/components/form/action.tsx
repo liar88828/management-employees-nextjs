@@ -3,8 +3,8 @@ import { useFormImage } from "@/hook/useFormImage";
 import React from "react";
 
 export const FormError: React.FC<{
-    errors?: string[]; // Array of error messages
-    title?: string; // Optional title for the error list
+    errors?: string[]; // Array of errors messages
+    title?: string; // Optional title for the errors list
 }> = ({ errors, title = "Please address the following errors:" }) => {
     if (!errors || errors.length === 0) return null;
 

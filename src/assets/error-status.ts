@@ -199,7 +199,7 @@ export function findStatusCode(errorName: ErrorStatusName): ErrorStatusCode {
     return status.status_code;
 }
 
-// Function to find error name based on code
+// Function to find errors name based on code
 export function findErrorName(code: ErrorStatusCode): ErrorStatusName {
     const status = errorStatus.find(status => status.status_code === code);
     if (!status) {

@@ -20,6 +20,7 @@ import { checkDepartmentPosition } from "@/server/action/department";
 import { EMPLOYEE_STATUS, EmployeeCompletePhotoType } from "@/interface/enum";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { Users } from ".prisma/client";
+import { revalidatePath } from "next/cache";
 
 export const employeeCreateFormDataAdmin = async ({ img, ...data }: EmployeeCreateClientAdmin,
 ) => {
@@ -178,19 +179,21 @@ export const employeesFindValid = async () => await prisma.employees.findMany({
 })
 
 export const employeePagination = async (search: string, status: string, page: number) => {
+    console.log({ search, status, page })
     const pageSize = 3; // You can adjust the page size
 
     const totalEmployees = await prisma.employees.count({
         where: {
             // name: { contains: search },
-            status: status,
+            status: { contains: status },
             User: { name: { contains: search } }
         }
     });
 
     const employees = await prisma.employees.findMany({
         where: {
-            status: status,
+            // status: status,
+            status: { contains: status },
             User: { name: { contains: search } },
         },
         skip: ( page - 1 ) * pageSize,
@@ -316,18 +319,18 @@ export async function employeeUpdateAdmin(
     } catch (error) {
 
         if (error instanceof ZodError) {
-            // console.log(error.flatten().fieldErrors);
+            // console.log(errors.flatten().fieldErrors);
             // console.log('----');
-            // console.log(error.flatten().fieldErrors);
-            // error.flatten().fieldErrors.toString()
+            // console.log(errors.flatten().fieldErrors);
+            // errors.flatten().fieldErrors.toString()
             // throw {
-            //     error: error.flatten().fieldErrors,
+            //     errors: errors.flatten().fieldErrors,
             //     from: "VALIDATION",
             // }
             throw JSON.stringify(error.flatten().fieldErrors)
         }
         if (error instanceof Error) {
-            // console.log(error.message);
+            // console.log(errors.message);
             throw error.message;
         }
     }
@@ -347,4 +350,17 @@ export async function onUpsertDataAdmin(
         return employeeUpdateAdmin(data, idEmployee,)
     }
     throw new Error('Invalid data');
+}
+
+export async function changeUpdatePosition(idEmployee: string, position?: string) {
+    if (position) {
+        const data = await prisma.employees.update({
+            where: { id: idEmployee },
+            data: { status: position }
+        })
+        revalidatePath('/')
+        return { success: true, data }
+    } else {
+        return { success: false }
+    }
 }

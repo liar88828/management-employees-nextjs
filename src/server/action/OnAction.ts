@@ -1,3 +1,5 @@
+'use client'
+
 import { ResponseData } from "@/interface/server/TResponse";
 import toast from "react-hot-toast";
 
@@ -8,18 +10,20 @@ export async function onAction(fun: () => any, message: string): Promise<Respons
         toast.success(message);
         return response;
     } catch (e) {
+        // console.log('onAction', e);
         if (e instanceof Error) {
+            // console.log('is instance of error');
             toast.error(e.message)
             return {
                 message: e.message,
+                success: false,
                 data: e,
-                success: false
             };
         }
         return {
             message: 'Something went wrong',
+            success: false,
             data: e,
-            success: false
         };
     } finally {
         toast.dismiss(toastId)

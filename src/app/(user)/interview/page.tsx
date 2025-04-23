@@ -12,13 +12,14 @@ async function Page() {
     const { userId } = await validSession()
     const employee = await employeeFindById({ userId })
     if (!employee) return <EmployeeNotFound />
-    if (employee.status !== EMPLOYEE_STATUS.Interview) redirect('/home')
+    if (employee.status === EMPLOYEE_STATUS.Registration) redirect('/home')
     return (
         <div className="">
             <h1 className={ 'text-xl font-bold' }>Interview</h1>
             <p>please print this for interview</p>
             <div className="">
-                <div className="flex flex-col md:flex-row gap-2  bg-base-200/50  ">
+                {/*bg-base-200/50*/ }
+                <div className="flex flex-col md:flex-row gap-2    ">
                     <EmployeeIDCardInterview employee={ employee } company={ exampleCompany } />
                     <EmployeeCVUser employee={ employee } />
                 </div>

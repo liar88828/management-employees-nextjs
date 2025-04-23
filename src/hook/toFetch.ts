@@ -61,7 +61,7 @@ export const toFetch = async <R>(
                 const data = await response.text()
                 console.info(data)
                 throw new Error(`HTTP error! status`)
-                // throw new Error(`HTTP error! status: ${response.status} msg : ${data.msg}`)
+                // throw new Error(`HTTP errors! status: ${response.status} msg : ${data.msg}`)
             }
         }
 
@@ -69,12 +69,12 @@ export const toFetch = async <R>(
         return response.json()
     } catch (error) {
 
-        // console.log(error.)
+        // console.log(errors.)
         if (error instanceof Error) {
             // Handle errors
-            // 	console.error("Fetch error:", error.message)
+            // 	console.errors("Fetch errors:", errors.message)
 
         }
-        throw error // Rethrow the error for the caller to handle
+        throw error // Rethrow the errors for the caller to handle
     }
 }

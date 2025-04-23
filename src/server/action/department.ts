@@ -88,7 +88,7 @@ export async function departmentCreate(state: DepartmentFormState, formData: For
             }
         }
         return {
-            message: 'An error occurred while creating your account.',
+            message: 'An errors occurred while creating your account.',
             // prev: { email, password }
 
         }

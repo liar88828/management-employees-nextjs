@@ -3,7 +3,7 @@ import Form from "next/form";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { FormProvider, useFieldArray, useForm, useFormContext } from "react-hook-form";
-import { BookUser, Minus, Plus } from "lucide-react";
+import { BookUser, Minus, Plus, Search } from "lucide-react";
 import { employeeCreateClientAdmin, EmployeeCreateClientAdmin } from "@/schema/employee.valid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFormStatus } from "react-dom";
@@ -110,10 +110,10 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                     {/*    <input*/ }
                     {/*        type="text"*/ }
                     {/*        { ...register('name') }*/ }
-                    {/*        className={ `input input-bordered ${ errors.name ? 'input-error' : '' }` }*/ }
+                    {/*        className={ `input input-bordered ${ errors.name ? 'input-errors' : '' }` }*/ }
                     {/*        placeholder="Employee Name"*/ }
                     {/*    />*/ }
-                    {/*    { errors.name && <p className="text-error text-sm mt-1">{ errors.name.message }</p> }*/ }
+                    {/*    { errors.name && <p className="text-errors text-sm mt-1">{ errors.name.message }</p> }*/ }
                     {/*</div>*/ }
 
                     {/*<div className="form-control">*/ }
@@ -123,10 +123,10 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                     {/*    <input*/ }
                     {/*        type="email"*/ }
                     {/*        { ...register('email') }*/ }
-                    {/*        className={ `input input-bordered ${ errors.email ? 'input-error' : '' }` }*/ }
+                    {/*        className={ `input input-bordered ${ errors.email ? 'input-errors' : '' }` }*/ }
                     {/*        placeholder="employee@company.com"*/ }
                     {/*    />*/ }
-                    {/*    { errors.email && <p className="text-error text-sm mt-1">{ errors.email.message }</p> }*/ }
+                    {/*    { errors.email && <p className="text-errors text-sm mt-1">{ errors.email.message }</p> }*/ }
                     {/*</div>*/ }
 
                     {/*<div className="form-control">*/ }
@@ -139,7 +139,7 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                     {/*        className="input input-bordered"*/ }
                     {/*        placeholder="Phone Number"*/ }
                     {/*    />*/ }
-                    {/*    { errors.phone && <p className="text-error text-sm mt-1">{ errors.phone.message }</p> }*/ }
+                    {/*    { errors.phone && <p className="text-errors text-sm mt-1">{ errors.phone.message }</p> }*/ }
                     {/*</div>*/ }
 
                     <div className="form-control">
@@ -239,7 +239,7 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                     {/*		className="input input-bordered"*/ }
                     {/*		placeholder="Manager ID"*/ }
                     {/*	/>*/ }
-                    {/*	{errors.salary && <p className="text-error text-sm mt-1">{errors.salary.message}</p>}*/ }
+                    {/*	{errors.salary && <p className="text-errors text-sm mt-1">{errors.salary.message}</p>}*/ }
                     {/*	*/ }
                     {/*</div>*/ }
 
@@ -332,7 +332,7 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                     {/*        className="input input-bordered"*/ }
                     {/*        placeholder="Additional notes"*/ }
                     {/*    />*/ }
-                    {/*    { errors.education && <p className="text-error text-sm mt-1">{ errors.education.message }</p> }*/ }
+                    {/*    { errors.education && <p className="text-errors text-sm mt-1">{ errors.education.message }</p> }*/ }
                     {/*</div>*/ }
 
                     <EmployeeFormContextClientAdmin keys={ 'educations' } title={ 'Educations' } />
@@ -354,7 +354,7 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
                     {/*    />*/ }
                     {/*    {*/ }
                     {/*        //  @ts-ignore*/ }
-                    {/*        errors.img && (<p className="text-error text-sm mt-1">{ errors.img.message }</p>)*/ }
+                    {/*        errors.img && (<p className="text-errors text-sm mt-1">{ errors.img.message }</p>)*/ }
                     {/*    }*/ }
                     {/*</div>*/ }
 
@@ -445,10 +445,13 @@ export function EmployeeSearchClientAdmin({ search, status }: {
                         <option key={ item }>{ item }</option>
                     )) }
                 </select>
+
+                <button className={ 'btn join-item ' }><Search /></button>
+
             </Form>
-            <Link href={ '/admin/employee/create' } className={ 'btn btn-square' }>
-                <Plus />
-            </Link>
+            {/*<Link href={ '/admin/employee/create' } className={ 'btn btn-square' }>*/ }
+            {/*    <Plus />*/ }
+            {/*</Link>*/ }
         </div>
     );
 }

@@ -63,10 +63,10 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
                     {/*    <input*/ }
                     {/*        type="text"*/ }
                     {/*        { ...register('name') }*/ }
-                    {/*        className={ `input input-bordered ${ errors.name ? 'input-error' : '' }` }*/ }
+                    {/*        className={ `input input-bordered ${ errors.name ? 'input-errors' : '' }` }*/ }
                     {/*        placeholder="Employee Name"*/ }
                     {/*    />*/ }
-                    {/*    { errors.name && <p className="text-error text-sm mt-1">{ errors.name.message }</p> }*/ }
+                    {/*    { errors.name && <p className="text-errors text-sm mt-1">{ errors.name.message }</p> }*/ }
                     {/*</div>*/ }
 
                     {/*<div className="form-control">*/ }
@@ -76,10 +76,10 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
                     {/*    <input*/ }
                     {/*        type="email"*/ }
                     {/*        { ...register('email') }*/ }
-                    {/*        className={ `input input-bordered ${ errors.email ? 'input-error' : '' }` }*/ }
+                    {/*        className={ `input input-bordered ${ errors.email ? 'input-errors' : '' }` }*/ }
                     {/*        placeholder="employee@company.com"*/ }
                     {/*    />*/ }
-                    {/*    { errors.email && <p className="text-error text-sm mt-1">{ errors.email.message }</p> }*/ }
+                    {/*    { errors.email && <p className="text-errors text-sm mt-1">{ errors.email.message }</p> }*/ }
                     {/*</div>*/ }
 
                     {/*<div className="form-control">*/ }
@@ -92,7 +92,7 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
                     {/*        className="input input-bordered"*/ }
                     {/*        placeholder="Phone Number"*/ }
                     {/*    />*/ }
-                    {/*    { errors.phone && <p className="text-error text-sm mt-1">{ errors.phone.message }</p> }*/ }
+                    {/*    { errors.phone && <p className="text-errors text-sm mt-1">{ errors.phone.message }</p> }*/ }
                     {/*</div>*/ }
 
                     <div className="form-control">
@@ -188,7 +188,7 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
                     {/*		className="input input-bordered"*/ }
                     {/*		placeholder="Manager ID"*/ }
                     {/*	/>*/ }
-                    {/*	{errors.salary && <p className="text-error text-sm mt-1">{errors.salary.message}</p>}*/ }
+                    {/*	{errors.salary && <p className="text-errors text-sm mt-1">{errors.salary.message}</p>}*/ }
                     {/*	*/ }
                     {/*</div>*/ }
 

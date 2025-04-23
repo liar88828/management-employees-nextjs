@@ -61,18 +61,18 @@ export async function employeeUpdateUser(
     } catch (error) {
 
         if (error instanceof ZodError) {
-            // console.log(error.flatten().fieldErrors);
+            // console.log(errors.flatten().fieldErrors);
             // console.log('----');
-            // console.log(error.flatten().fieldErrors);
-            // error.flatten().fieldErrors.toString()
+            // console.log(errors.flatten().fieldErrors);
+            // errors.flatten().fieldErrors.toString()
             // throw {
-            //     error: error.flatten().fieldErrors,
+            //     errors: errors.flatten().fieldErrors,
             //     from: "VALIDATION",
             // }
             throw JSON.stringify(error.flatten().fieldErrors)
         }
         if (error instanceof Error) {
-            // console.log(error.message);
+            // console.log(errors.message);
             throw error.message;
         }
     }

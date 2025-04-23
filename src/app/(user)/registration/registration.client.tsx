@@ -55,7 +55,7 @@ export function EmployeeFormClientUser({ employee, method, user }: {
             }
             throw new Error('Something went wrong');
         } catch (e) {
-            console.log('is error')
+            console.log('is errors')
             // // console.log(e.message)
             if (e instanceof ErrorValidation) {
                 console.log('e instanceof ErrorValidation')
@@ -66,14 +66,14 @@ export function EmployeeFormClientUser({ employee, method, user }: {
             if (e instanceof Error) {
                 console.log('e instanceof Error')
                 // console.log(e.message)
-                // toast.error(e.message);
+                // toast.errors(e.message);
                 console.log(e.message.toLowerCase())
                 if (e.message.toLowerCase().includes('image')) {
                     console.log('execute')
                     setErrorImage(e.message)
                 }
             }
-            // toast.error(e);
+            // toast.errors(e);
 
         } finally {
             toast.dismiss(idToast)
@@ -101,7 +101,7 @@ export function EmployeeFormClientUser({ employee, method, user }: {
                         <input
                             type="text"
                             { ...register(
-                                //  @ts-expect-error
+                                //  @ts-expect-errors
                                 'name', {
                                     value: user.name,
                                     disabled: true
@@ -118,7 +118,7 @@ export function EmployeeFormClientUser({ employee, method, user }: {
                         <input
                             type="email"
                             { ...register(
-                                //  @ts-expect-error
+                                //  @ts-expect-errors
                                 'email', {
                                     disabled: true
                                 }
@@ -135,7 +135,7 @@ export function EmployeeFormClientUser({ employee, method, user }: {
                         <input
                             type="tel"
                             { ...register(
-                                //  @ts-expect-error
+                                //  @ts-expect-errors
                                 'phone', {
                                     disabled: true
                                 }
@@ -188,7 +188,7 @@ export function EmployeeFormClientUser({ employee, method, user }: {
                     {/*        { ...register('hireDate') }*/ }
                     {/*        className="input input-bordered"*/ }
                     {/*    />*/ }
-                    {/*    { errors.hireDate && <p className="text-error text-sm mt-1">{ errors.hireDate.message }</p> }*/ }
+                    {/*    { errors.hireDate && <p className="text-errors text-sm mt-1">{ errors.hireDate.message }</p> }*/ }
                     {/*</div>*/ }
 
                     <div className="form-control">
@@ -211,7 +211,7 @@ export function EmployeeFormClientUser({ employee, method, user }: {
 
                     {/*    <select*/ }
                     {/*        { ...register('department') }*/ }
-                    {/*        className={ `select select-bordered ${ errors.gender ? 'select-error' : '' }` }*/ }
+                    {/*        className={ `select select-bordered ${ errors.gender ? 'select-errors' : '' }` }*/ }
                     {/*    >*/ }
                     {/*        <option value="">Select Department</option>*/ }
                     {/*        { departments.map(item => (*/ }
@@ -219,7 +219,7 @@ export function EmployeeFormClientUser({ employee, method, user }: {
                     {/*        )) }*/ }
                     {/*    </select>*/ }
                     {/*    { errors.department*/ }
-                    {/*        && <p className="text-error text-sm mt-1">{ errors.department.message }</p>*/ }
+                    {/*        && <p className="text-errors text-sm mt-1">{ errors.department.message }</p>*/ }
                     {/*    }*/ }
                     {/*</div>*/ }
 
@@ -230,10 +230,10 @@ export function EmployeeFormClientUser({ employee, method, user }: {
                     {/*    <input*/ }
                     {/*        type="number"*/ }
                     {/*        { ...register('salary', { valueAsNumber: true }) }*/ }
-                    {/*        className={ `input input-bordered ${ errors.salary ? 'input-error' : '' }` }*/ }
+                    {/*        className={ `input input-bordered ${ errors.salary ? 'input-errors' : '' }` }*/ }
                     {/*        placeholder="Salary"*/ }
                     {/*    />*/ }
-                    {/*    { errors.salary && <p className="text-error text-sm mt-1">{ errors.salary.message }</p> }*/ }
+                    {/*    { errors.salary && <p className="text-errors text-sm mt-1">{ errors.salary.message }</p> }*/ }
                     {/*</div>*/ }
 
                     <div className="form-control">
@@ -291,7 +291,7 @@ export function EmployeeFormClientUser({ employee, method, user }: {
                     {/*        className="input input-bordered"*/ }
                     {/*        placeholder="Additional notes"*/ }
                     {/*    />*/ }
-                    {/*    { errors.country && <p className="text-error text-sm mt-1">{ errors.country.message }</p> }*/ }
+                    {/*    { errors.country && <p className="text-errors text-sm mt-1">{ errors.country.message }</p> }*/ }
                     {/*</div>*/ }
 
                     <div className="form-control">
@@ -316,7 +316,7 @@ export function EmployeeFormClientUser({ employee, method, user }: {
                     {/*        className="textarea textarea-bordered"*/ }
                     {/*        placeholder="Additional notes"*/ }
                     {/*    ></textarea>*/ }
-                    {/*    { errors.notes && <p className="text-error text-sm mt-1">{ errors.notes.message }</p> }*/ }
+                    {/*    { errors.notes && <p className="text-errors text-sm mt-1">{ errors.notes.message }</p> }*/ }
                     {/*</div>*/ }
                 </div>
 
@@ -329,7 +329,7 @@ export function EmployeeFormClientUser({ employee, method, user }: {
                 {/*        className="input input-bordered"*/ }
                 {/*        placeholder="Additional notes"*/ }
                 {/*    />*/ }
-                {/*    { errors.educations && <p className="text-error text-sm mt-1">{ errors.educations.message }</p> }*/ }
+                {/*    { errors.educations && <p className="text-errors text-sm mt-1">{ errors.educations.message }</p> }*/ }
                 {/*</div>*/ }
                 <div className="grid grid-cols-2 gap-4">
                     <InputTextDynamic keys={ 'educations' } title={ 'Educations' } />

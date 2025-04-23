@@ -24,7 +24,7 @@ export function UploadDocument({ employee, type }: { employee: TEmployeeDB, type
         <div className="card card-bordered bg-base-200 ">
             <div className="card-body">
                 <h2 className="card-title">Add { type }
-                    { !imagePreview && <p className={ 'text-error ' }> *Please Complete</p> }
+                    { !imagePreview && <p className={ 'text-errors ' }> *Please Complete</p> }
                 </h2>
 
                 <div className="w-48 h-auto">

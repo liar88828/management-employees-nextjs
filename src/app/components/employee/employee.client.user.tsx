@@ -66,10 +66,10 @@
 //                                 value: user.name,
 //                                 disabled: true
 //                             }) }
-//                             className={ `input input-bordered ${ errors.name ? 'input-error' : '' }` }
+//                             className={ `input input-bordered ${ errors.name ? 'input-errors' : '' }` }
 //                             placeholder="Employee Name"
 //                         />
-//                         { errors.name && <p className="text-error text-sm mt-1">{ errors.name.message }</p> }
+//                         { errors.name && <p className="text-errors text-sm mt-1">{ errors.name.message }</p> }
 //                     </div>
 //
 //                     <div className="form-control">
@@ -82,10 +82,10 @@
 //                                     disabled: true
 //                                 }
 //                             ) }
-//                             className={ `input input-bordered ${ errors.email ? 'input-error' : '' }` }
+//                             className={ `input input-bordered ${ errors.email ? 'input-errors' : '' }` }
 //                             placeholder="employee@company.com"
 //                         />
-//                         { errors.email && <p className="text-error text-sm mt-1">{ errors.email.message }</p> }
+//                         { errors.email && <p className="text-errors text-sm mt-1">{ errors.email.message }</p> }
 //                     </div>
 //
 //                     <div className="form-control">
@@ -101,7 +101,7 @@
 //                             className="input input-bordered"
 //                             placeholder="Phone Number"
 //                         />
-//                         { errors.phone && <p className="text-error text-sm mt-1">{ errors.phone.message }</p> }
+//                         { errors.phone && <p className="text-errors text-sm mt-1">{ errors.phone.message }</p> }
 //                     </div>
 //
 //                     <div className="form-control">
@@ -111,13 +111,13 @@
 //
 //                         <select
 //                             { ...register('gender') }
-//                             className={ `select select-bordered ${ errors.gender ? 'select-error' : '' }` }
+//                             className={ `select select-bordered ${ errors.gender ? 'select-errors' : '' }` }
 //                         >
 //                             <option value="">Select Gender</option>
 //                             <option value="Male">Male</option>
 //                             <option value="Female">Female</option>
 //                         </select>
-//                         { errors.gender && <p className="text-error text-sm mt-1">{ errors.gender.message }</p> }
+//                         { errors.gender && <p className="text-errors text-sm mt-1">{ errors.gender.message }</p> }
 //                     </div>
 //
 //                     {/*// console.log(employee.dateOfBirth)*/ }
@@ -134,7 +134,7 @@
 //                             defaultValue={ employee ? new Date(employee.dateOfBirth).toISOString().split('T')[0] : '' }
 //                         />
 //                         { errors.dateOfBirth &&
-//                             <p className="text-error text-sm mt-1">{ errors.dateOfBirth.message }</p> }
+//                             <p className="text-errors text-sm mt-1">{ errors.dateOfBirth.message }</p> }
 //
 //                     </div>
 //
@@ -147,7 +147,7 @@
 //                     {/*        {...register('hireDate')}*/ }
 //                     {/*        className="input input-bordered"*/ }
 //                     {/*    />*/ }
-//                     {/*    {errors.hireDate && <p className="text-error text-sm mt-1">{errors.hireDate.message}</p>}*/ }
+//                     {/*    {errors.hireDate && <p className="text-errors text-sm mt-1">{errors.hireDate.message}</p>}*/ }
 //                     {/*</div>*/ }
 //
 //                     <div className="form-control">
@@ -157,10 +157,10 @@
 //                         <input
 //                             type="text"
 //                             { ...register('jobTitle') }
-//                             className={ `input input-bordered ${ errors.jobTitle ? 'input-error' : '' }` }
+//                             className={ `input input-bordered ${ errors.jobTitle ? 'input-errors' : '' }` }
 //                             placeholder="Job Title"
 //                         />
-//                         { errors.jobTitle && <p className="text-error text-sm mt-1">{ errors.jobTitle.message }</p> }
+//                         { errors.jobTitle && <p className="text-errors text-sm mt-1">{ errors.jobTitle.message }</p> }
 //                     </div>
 //
 //                     <div className="form-control">
@@ -170,7 +170,7 @@
 //
 //                         <select
 //                             { ...register('department') }
-//                             className={ `select select-bordered ${ errors.gender ? 'select-error' : '' }` }
+//                             className={ `select select-bordered ${ errors.gender ? 'select-errors' : '' }` }
 //                         >
 //                             <option value="">Select Department</option>
 //                             { departments.map(item => (
@@ -178,7 +178,7 @@
 //                             )) }
 //                         </select>
 //                         { errors.department
-//                             && <p className="text-error text-sm mt-1">{ errors.department.message }</p>
+//                             && <p className="text-errors text-sm mt-1">{ errors.department.message }</p>
 //                         }
 //                     </div>
 //
@@ -189,10 +189,10 @@
 //                     {/*    <input*/ }
 //                     {/*        type="number"*/ }
 //                     {/*        { ...register('salary', { valueAsNumber: true }) }*/ }
-//                     {/*        className={ `input input-bordered ${ errors.salary ? 'input-error' : '' }` }*/ }
+//                     {/*        className={ `input input-bordered ${ errors.salary ? 'input-errors' : '' }` }*/ }
 //                     {/*        placeholder="Salary"*/ }
 //                     {/*    />*/ }
-//                     {/*    { errors.salary && <p className="text-error text-sm mt-1">{ errors.salary.message }</p> }*/ }
+//                     {/*    { errors.salary && <p className="text-errors text-sm mt-1">{ errors.salary.message }</p> }*/ }
 //                     {/*</div>*/ }
 //
 //                     <div className="form-control">
@@ -206,7 +206,7 @@
 //                             className="input input-bordered"
 //                             placeholder="Street Address"
 //                         />
-//                         { errors.address && <p className="text-error text-sm mt-1">{ errors.address.message }</p> }
+//                         { errors.address && <p className="text-errors text-sm mt-1">{ errors.address.message }</p> }
 //
 //                     </div>
 //
@@ -220,7 +220,7 @@
 //                             className="input input-bordered"
 //                             placeholder="City"
 //                         />
-//                         { errors.city && <p className="text-error text-sm mt-1">{ errors.city.message }</p> }
+//                         { errors.city && <p className="text-errors text-sm mt-1">{ errors.city.message }</p> }
 //
 //                     </div>
 //
@@ -235,7 +235,7 @@
 //                             placeholder="Postal Code"
 //                         />
 //                         { errors.postalCode &&
-//                             <p className="text-error text-sm mt-1">{ errors.postalCode.message }</p> }
+//                             <p className="text-errors text-sm mt-1">{ errors.postalCode.message }</p> }
 //                     </div>
 //
 //                     <div className="form-control">
@@ -247,7 +247,7 @@
 //                             className="input input-bordered"
 //                             placeholder="Additional notes"
 //                         />
-//                         { errors.country && <p className="text-error text-sm mt-1">{ errors.country.message }</p> }
+//                         { errors.country && <p className="text-errors text-sm mt-1">{ errors.country.message }</p> }
 //                     </div>
 //
 //                     <div className="form-control">
@@ -260,7 +260,7 @@
 //                             <option value="Part-Time">Part-Time</option>
 //                         </select>
 //                         { errors.employmentType &&
-//                             <p className="text-error text-sm mt-1">{ errors.employmentType.message }</p> }
+//                             <p className="text-errors text-sm mt-1">{ errors.employmentType.message }</p> }
 //                     </div>
 //
 //                     <div className="form-control">
@@ -272,7 +272,7 @@
 //                             className="textarea textarea-bordered"
 //                             placeholder="Additional notes"
 //                         ></textarea>
-//                         { errors.notes && <p className="text-error text-sm mt-1">{ errors.notes.message }</p> }
+//                         { errors.notes && <p className="text-errors text-sm mt-1">{ errors.notes.message }</p> }
 //                     </div>
 //
 //                     <EmployeeFormContextClientAdmin keys={ 'educations' } title={ 'Education' } />
@@ -294,7 +294,7 @@
 //                             className="file-input file-input-bordered w-full"
 //                         />
 //                         {/* @ts-ignore */
-//                             errors.img && <p className="text-error text-sm mt-1">{ errors.img.message }</p> }
+//                             errors.img && <p className="text-errors text-sm mt-1">{ errors.img.message }</p> }
 //                         {/*  @next/next/no-img-element */ }
 //                         <img src={ previewImage }
 //                              alt="Image Employee"

@@ -2,12 +2,12 @@ import React from 'react';
 import { employeeFindById, } from "@/server/controller/employee.controller";
 import { toDateIndo } from "@/utils/toDate";
 import { validSession } from "@/secure/db";
-import { InterviewShowCV } from "@/app/admin/interview/interview.client";
+import { InterviewShowCV, InterviewShowDocument } from "@/app/admin/interview/interview.client";
 
 async function Page() {
     const { userId } = await validSession()
     const employee = await employeeFindById({ userId })
-    console.log(employee)
+    // console.log(employee)
     return (
         <div className="">
             {/*<h1 className={ 'text-xl font-bold' }>Welcome to employee-management</h1>*/ }
@@ -20,8 +20,9 @@ async function Page() {
                         <p className={ 'font-bold' }>Note : </p>
                         <p className={ 'text-xs text-base/50 italic' }>- Status is wait from admin</p>
                         { !employee &&
-                            <p className={ 'text-xs text-error italic' }>- Please Complete Register will Show CV</p> }
-                        { !employee && <p className={ 'text-xs text-error italic' }>- Please Complete Register will Show
+                            <p className={ 'text-xs text-errors italic' }>- Please Complete Register will Show CV</p> }
+                        { !employee &&
+                            <p className={ 'text-xs text-errors italic' }>- Please Complete Register will Show
                             ID-Card</p> }
                     </div>
                     <div className="card-actions">
@@ -32,8 +33,10 @@ async function Page() {
                         {/*<button className={ `btn btn-primary ${ !employee && 'btn-disabled' }` }>*/ }
                         {/*    Print*/ }
                         {/*</button>*/ }
-                        { employee &&
+                        { employee && <>
                             <InterviewShowCV employee={ employee } />
+                            <InterviewShowDocument employee={ employee } />
+                        </>
                         }
                     </div>
                 </div>

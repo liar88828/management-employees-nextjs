@@ -1,5 +1,5 @@
 'use client'
-import { Camera, Printer } from 'lucide-react';
+import { Printer } from 'lucide-react';
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { toDateIndo } from "@/utils/toDate";
 import { usePrint } from "@/hook/usePrint";
@@ -18,7 +18,7 @@ export default function EmployeeIDCardInterview(
                  className="p-2 space-y-2"
             >
                 <div
-                    className="h-[12cm] w-[9.5cm] bg-white rounded-lg shadow-lg overflow-hidden"
+                    className="h-[12cm] w-[9.5cm] print:h-[12cm] print:w-[9.5cm] bg-white rounded-lg shadow-lg overflow-hidden"
                 >
                     {/* Card Header */ }
                     <div className="bg-blue-600 p-4 text-center">
@@ -29,26 +29,16 @@ export default function EmployeeIDCardInterview(
                     {/* Card Body */ }
                     <div className="p-6">
                         {/* Photo and Edit Button */ }
-                        <div className="flex justify-between items-start mb-6">
-                            <div className="relative">
-                                { employee.img ? (
-                                    <img
-                                        src={ employee.img }
-                                        alt="Profile"
-                                        className="w-32 h-32 rounded-lg object-cover border-2 border-gray-300"
-                                    />
-                                ) : (
-                                    <div
-                                        className="w-32 h-32 rounded-lg bg-gray-200 flex items-center justify-center border-2 border-gray-300"
-                                    >
-                                        <Camera size={ 48 } className="text-gray-400" />
-                                    </div>
-                                ) }
-                            </div>
+                        <div className="flex justify-center items-center mb-6">
+                            <img
+                                src={ employee.img }
+                                alt="Profile"
+                                className="w-32 h-32 rounded-lg object-cover border-2 border-gray-300"
+                            />
                         </div>
 
                         <div className="space-y-4">
-                            <div className="text-4xl font-bold">{ employee.User.name }</div>
+                            <div className="text-4xl font-bold text-center">{ employee.User.name }</div>
                             {/*<div className="text-gray-600">{employee.role}</div>*/ }
                             <div className="border-t border-b border-gray-200 py-3 space-y-2">
                                 {/*<div className="flex justify-between">*/ }

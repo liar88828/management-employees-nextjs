@@ -47,7 +47,7 @@ export const Countdown = () => {
 
 export function CountdownButton() {
     const { store, setData } = useOtpStore()
-    const { onGenerate } = useEmail()
+    const { onCheckEmail: onGenerate } = useEmail()
 
     const addOneMinute = async () => {
         // let myTime = store.time ?? 0

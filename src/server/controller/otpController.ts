@@ -8,7 +8,7 @@ import { createSession } from "@/secure/cookies";
 import { ResponseData } from "@/interface/server/TResponse";
 import { USER_STATUS } from "@/interface/enum";
 
-export async function otpGenerate(json: OTPGenerate): Promise<ResponseData> {
+export async function _otpGenerate(json: OTPGenerate): Promise<ResponseData> {
     const { time: otpExpired, email, reason } = validGenerateOtp.parse(json)
     const user = await prisma.users.findFirst({ where: { email } })
 
@@ -25,51 +25,52 @@ export async function otpGenerate(json: OTPGenerate): Promise<ResponseData> {
     }
 
     const otp = toOtp({ length: 6 })
-    const otpValid = new Date(Date.now() + 60 * 60 * 1000)// Invalid Date
+    // const otpValid = new Date(Date.now() + 60 * 60 * 1000)// Invalid Date
     // console.log(otpValid)
+    await prisma.$transaction(async (tx) => {
 
-    if (reason === USER_STATUS.OTP) {
-        console.log("OTP")
-        await prisma.users.update({
-            where: { id: user.id },
-            data: {
-                otp,
-                otpExpired,
-                // otpCount: { increment: 1 },
-                status: USER_STATUS.OTP,
-            }
-        })
+        if (reason === USER_STATUS.OTP) {
+            console.log("OTP")
+            await tx.users.update({
+                where: { id: user.id },
+                data: {
+                    otp,
+                    otpExpired,
+                    status: USER_STATUS.OTP,
+                    // otpCount: { increment: 1 },
+                }
+            })
 
-    } else if (reason === USER_STATUS.RESET) {
-        console.log("RESET")
-        await prisma.users.update({
-            where: { id: user.id },
-            data: {
-                otp,
-                otpExpired,
-                // otpCount: { increment: 1 },
-                status: USER_STATUS.RESET
-            }
-        })
-    }
+        } else if (reason === USER_STATUS.RESET) {
+            console.log("RESET")
+            await tx.users.update({
+                where: { id: user.id },
+                data: {
+                    otp,
+                    otpExpired,
+                    status: USER_STATUS.RESET
+                    // otpCount: { increment: 1 },
+                }
+            })
+        }
 
-    const transporter = nodemailer.createTransport({
-        service: "Gmail",
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-            user: process.env.NODEMAILER_EMAIL,
-            pass: process.env.NODEMAILER_PASS,
-        },
-    });
+        const transporter = nodemailer.createTransport({
+            service: "Gmail",
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.NODEMAILER_EMAIL,
+                pass: process.env.NODEMAILER_PASS,
+            },
+        });
 
-    const mailOptions = {
-        from: process.env.NODEMAILER_EMAIL,
-        to: email,
-        subject: "🚀 Hello from Nodemailer!",
-        text: `Your OTP is: ${ otp }`,
-        html: `
+        const mailOptions = {
+            from: process.env.NODEMAILER_EMAIL,
+            to: email,
+            subject: "🚀 Hello from Nodemailer!",
+            text: `Your OTP is: ${ otp }`,
+            html: `
         <div style="font-family: Arial, sans-serif; text-align: center; color: #333;">
             <h2 style="color: #007BFF;">Hello from Nodemailer! 🎉</h2>
             <p>Here is your OTP:</p>
@@ -77,15 +78,17 @@ export async function otpGenerate(json: OTPGenerate): Promise<ResponseData> {
             <p style="font-size: 0.9rem; color: #6c757d;">If you didn't request this email, please ignore it.</p>
         </div>
     `,
-    };
+        };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error("Error sending email: ", error);
-        } else {
-            console.log("Email sent: ", info.response);
-        }
-    });
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error("Error sending email: ", error);
+                throw new Error(error.message)
+            } else {
+                console.log("Email sent: ", info.response);
+            }
+        });
+    })
 
     // const cookieStore = await cookies()
     // cookieStore.set('otpSession',
@@ -109,7 +112,7 @@ export async function otpGenerate(json: OTPGenerate): Promise<ResponseData> {
 
 }
 
-export async function otpValidate(json: OTPValid): Promise<ResponseData> {
+export async function _otpValidate(json: OTPValid): Promise<ResponseData> {
     const { email, otp } = validOtp.parse(json)
     const user = await prisma.users.findFirst({ where: { email } })
 

@@ -15,7 +15,6 @@ export type FormStateRegister = {
     message: string
 } | undefined
 
-
 export type FormStateAuth = {
     errors?: {
         name?: string[]
@@ -61,6 +60,18 @@ export const ResetFormSchema = z.object({
         path: [ "confirm" ],
     });
 
+export const ResetPasswordFormSchema = z.object({
+    confirm: z.string().min(2),
+    email: zodEmail,
+    otp: z.string().min(6),
+    password: zodPassword,
+})
+.refine((data) => data.password === data.confirm,
+    {
+        message: "Passwords don't match",
+        path: [ "confirm" ],
+    });
+
 export type FormFail = {
     address: string
     email: string
@@ -71,4 +82,5 @@ export type FormFail = {
 export type SignUpFormSchemaType = z.infer<typeof SignupFormSchema>
 export type SignInFormSchemaType = z.infer<typeof SignInFormSchema>
 export type ForgetFormSchemaType = z.infer<typeof ForgetFormSchema>
+export type ResetPasswordFormSchemaType = z.infer<typeof ResetPasswordFormSchema>
 export type ResetFormSchemaType = z.infer<typeof ResetFormSchema>

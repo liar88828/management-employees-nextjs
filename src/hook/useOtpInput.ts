@@ -4,7 +4,7 @@ import { useEmail } from "@/hook/useEmail";
 import { useOtpStore } from "@/store/otp";
 
 const useOtpInput = () => {
-    const { onValidate } = useEmail()
+    const { onCheckOtp: onValidate } = useEmail()
     const { store } = useOtpStore()
     const [ otp, setOtp ] = useState('')
     const [ error, setError ] = useState<string>("");

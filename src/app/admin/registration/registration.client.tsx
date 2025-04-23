@@ -148,7 +148,7 @@ export function FormRegistration({ employee, departments }: { employee: Employee
 
             {/*<MyInputNum*/ }
             {/*    title={ 'salary' }*/ }
-            {/*    error={ state?.errors?.salary }*/ }
+            {/*    errors={ state?.errors?.salary }*/ }
             {/*    defaultValue={ state?.value.salary ?? employee.salary }*/ }
             {/*/>*/ }
 

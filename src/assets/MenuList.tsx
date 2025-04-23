@@ -1,9 +1,7 @@
 import {
     Apple,
-    Building2,
     CakeSlice,
     Clipboard,
-    ClipboardCheck,
     Factory,
     GlassWater,
     GraduationCap,
@@ -11,7 +9,7 @@ import {
     Inbox,
     LucidePackageSearch,
     PcCase,
-    Printer, SendHorizontal,
+    SendHorizontal,
     Speech,
     User,
     UserIcon,
@@ -64,12 +62,12 @@ export type TMenuList = {
 }
 
 export const linkAdmin: TMenuList[] = [
-    {
-        href: '/admin/dashboard',
-        icon: <HomeIcon className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
-        label: 'Dashboard',
-        // add: 'pro'
-    },
+    // {
+    //     href: '/admin/dashboard',
+    //     icon: <HomeIcon className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
+    //     label: 'Dashboard',
+    //     // add: 'pro'
+    // },
     {
         href: '/admin/employee',
         icon: <User className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
@@ -112,11 +110,11 @@ export const linkAdmin: TMenuList[] = [
     //     icon: <Waypoints className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
     //     title: 'Department',
     // },
-    {
-        href: '/admin/company',
-        icon: <Building2 className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
-        label: 'Company',
-    },
+    // {
+    //     href: '/admin/company',
+    //     icon: <Building2 className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+    //     label: 'Company',
+    // },
 
 ]
 
@@ -140,16 +138,16 @@ export const linkUser: TMenuList[] = [
         label: 'Interview',
     },
 
-    {
-        href: '/accept',
-        icon: <ClipboardCheck className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
-        label: 'Accept',
-    },
+    // {
+    //     href: '/accept',
+    //     icon: <ClipboardCheck className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+    //     label: 'Accept',
+    // },
 
-    {
-        href: '/print',
-        icon: <Printer className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
-        label: 'Print',
-    },
+    // {
+    //     href: '/print',
+    //     icon: <Printer className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+    //     label: 'Print',
+    // },
 
 ]
