@@ -113,10 +113,13 @@ export function SendFormStore(
                     <form onSubmit={ handleSubmit(onCreate) } className="card-body">
                         <h2 className="card-title">Create Form letter</h2>
                         {/*{ letter?.id && <input type="hidden" value={ letter?.id } name={ 'id' } /> }*/ }
+                        <div className="grid grid-cols-2 gap-5">
+
                         <InputText keys={ "signerName" } title={ "Signer Name" } />
                         <InputDate keys={ 'interviewDate' } title={ 'Interview Date' } />
                         <InputText keys={ "interviewLocation" } title={ "Interview Location" } />
                         <InputText keys={ "dressCode" } title={ "Dress Code" } />
+                        </div>
                         <div className="card-actions">
                             <button
                                 disabled={ isLoading }
@@ -294,7 +297,8 @@ export function SendTableEmployee(
 export function SendTableLetter({ data }: { data: Letters[] }) {
     return (
         <div className="overflow-x-auto ">
-            <table className="table w-full  bg-base-200">
+            <table className="table table-zebra w-full table-sm">
+
                 <thead>
                 <tr>
                     <th>No</th>

@@ -1,7 +1,6 @@
 'use client'
 import React, { useActionState, useEffect } from "react";
 import Link from "next/link";
-import { Employees } from "@prisma/client";
 import Form from "next/form";
 import { employeeListStatus } from "@/interface/enum";
 import { interviewUpdate } from "@/server/action/inbox";
@@ -41,7 +40,7 @@ export function EmployeesTable({ employees }: {
 }) {
     return (
         <div className="overflow-x-auto">
-            <table className="table bg-base-200 ">
+            <table className="table table-zebra w-full table-sm">
                 <thead>
                 <tr className="text-left">
                     <th className="">No</th>
@@ -120,7 +119,7 @@ export function InboxModalAction({ employees }: { employees: EmployeeUserClient 
     )
 }
 
-export function FormInterview({ employee, departments }: { departments: Departements[], employee: Employees }) {
+export function FormInterview({ employee, departments }: { departments: Departements[], employee: TEmployeeDB }) {
     const [ state, action, pending ] = useActionState(interviewUpdate, undefined)
     useEffect(() => {
         if (state) {
@@ -135,75 +134,78 @@ export function FormInterview({ employee, departments }: { departments: Departem
     return (
         <Form action={ action } className={ 'card card-body max-w-4xl bg-base-200' }>
             <input type="hidden" value={ employee.id } name={ 'id' } />
-            <h1>Form Interview</h1>
-            <MyInput
-                title={ "jobTitle" }
-                error={ state?.errors?.jobTitle }
-                defaultValue={ state?.value.jobTitle ?? employee.jobTitle }
-            />
-            <MyInputNum
-                title={ 'salary' }
-                error={ state?.errors?.salary }
-                defaultValue={ state?.value.salary ?? employee.salary }
-            />
+            <h1>Form Detail Interview : { employee.User.name }</h1>
+            <div className="grid grid-cols-2 gap-5">
 
-            {/*<div className="form-control w-full">*/ }
-            {/*    <label htmlFor={ `status` } className="label">*/ }
-            {/*        <span className="label-text capitalize"> status </span>*/ }
-            {/*    </label>*/ }
-            {/*    <select*/ }
-            {/*        className="select select-bordered join-item"*/ }
-            {/*        name="status"*/ }
-            {/*        key={ state?.value.status || employee.status }*/ }
-            {/*        defaultValue={ state?.value.status || employee.status }*/ }
-            {/*    >*/ }
-            {/*        <option disabled value="">Select Status</option>*/ }
-            {/*        { employeeListStatus.map((item) => (*/ }
-            {/*            <option key={ item }>{ item }</option>*/ }
-            {/*        )) }*/ }
-            {/*    </select>*/ }
-            {/*</div>*/ }
-            <MyInputOption
-                title={ 'Status' }
-                name={ 'status' }
-                keys={ state?.value.status || employee.status }
-                lists={ employeeListStatus }
-            />
+                <MyInput
+                    title={ "jobTitle" }
+                    error={ state?.errors?.jobTitle }
+                    defaultValue={ state?.value.jobTitle ?? employee.jobTitle }
+                />
+                <MyInputNum
+                    title={ 'salary' }
+                    error={ state?.errors?.salary }
+                    defaultValue={ state?.value.salary ?? employee.salary }
+                />
 
-            <MyInputOption
-                title={ 'Department' }
-                name={ 'department' }
-                keys={ state?.value.department || employee.department }
-                lists={ departments.map(item => item.position) }
+                {/*<div className="form-control w-full">*/ }
+                {/*    <label htmlFor={ `status` } className="label">*/ }
+                {/*        <span className="label-text capitalize"> status </span>*/ }
+                {/*    </label>*/ }
+                {/*    <select*/ }
+                {/*        className="select select-bordered join-item"*/ }
+                {/*        name="status"*/ }
+                {/*        key={ state?.value.status || employee.status }*/ }
+                {/*        defaultValue={ state?.value.status || employee.status }*/ }
+                {/*    >*/ }
+                {/*        <option disabled value="">Select Status</option>*/ }
+                {/*        { employeeListStatus.map((item) => (*/ }
+                {/*            <option key={ item }>{ item }</option>*/ }
+                {/*        )) }*/ }
+                {/*    </select>*/ }
+                {/*</div>*/ }
+                <MyInputOption
+                    title={ 'Status' }
+                    name={ 'status' }
+                    keys={ state?.value.status || employee.status }
+                    lists={ employeeListStatus }
+                />
 
-            />
+                <MyInputOption
+                    title={ 'Department' }
+                    name={ 'department' }
+                    keys={ state?.value.department || employee.department }
+                    lists={ departments.map(item => item.position) }
 
-            {/*<div className="form-control w-full">*/ }
-            {/*    <label htmlFor={ `department` } className="label">*/ }
-            {/*        <span className="label-text capitalize"> department </span>*/ }
-            {/*    </label>*/ }
-            {/*    <select*/ }
-            {/*        className="select select-bordered join-item"*/ }
-            {/*        name="department"*/ }
-            {/*        key={ state?.value.department || employee.department }*/ }
-            {/*        defaultValue={ state?.value.department || employee.department }*/ }
-            {/*    >*/ }
-            {/*        <option disabled value="">Select department</option>*/ }
-            {/*        { departments.map((item) => (*/ }
-            {/*            <option key={ item.id }>{ item.position }</option>*/ }
-            {/*        )) }*/ }
-            {/*    </select>*/ }
-            {/*</div>*/ }
+                />
 
-            <MyInputTextArea
-                title={ 'notes' }
-                error={ state?.errors?.notes }
-                defaultValue={ state?.value.notes ?? employee.notes }
-            />
+                {/*<div className="form-control w-full">*/ }
+                {/*    <label htmlFor={ `department` } className="label">*/ }
+                {/*        <span className="label-text capitalize"> department </span>*/ }
+                {/*    </label>*/ }
+                {/*    <select*/ }
+                {/*        className="select select-bordered join-item"*/ }
+                {/*        name="department"*/ }
+                {/*        key={ state?.value.department || employee.department }*/ }
+                {/*        defaultValue={ state?.value.department || employee.department }*/ }
+                {/*    >*/ }
+                {/*        <option disabled value="">Select department</option>*/ }
+                {/*        { departments.map((item) => (*/ }
+                {/*            <option key={ item.id }>{ item.position }</option>*/ }
+                {/*        )) }*/ }
+                {/*    </select>*/ }
+                {/*</div>*/ }
+
+                <MyInputTextArea
+                    title={ 'notes' }
+                    error={ state?.errors?.notes }
+                    defaultValue={ state?.value.notes ?? employee.notes }
+                />
+            </div>
 
             <button
                 disabled={ pending }
-                className={ 'btn btn-info' }
+                className={ 'btn btn-info mt-2' }
             >Apply
             </button>
         </Form>

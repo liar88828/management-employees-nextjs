@@ -12,7 +12,7 @@ export default async function Page(context: TContext) {
 
     return (
         <div className="space-y-4 ">
-            <h1 className={ 'text-xl font-bold' }>letter : { letter.id } Example Paper</h1>
+            <h1 className={ 'text-xl font-bold' }>letter : { letter.id } </h1>
             <SendMailRegister employees={ employees } />
             <SendTableEmployee employees={ employees } letter={ letter } company={ exampleCompany } />
             <div className="grid 2xl:grid-cols-2 grid-cols-1 gap-5">

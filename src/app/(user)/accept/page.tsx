@@ -12,7 +12,7 @@ async function Page() {
         return <EmployeeNotFound />
     }
 
-    if (employee.status !== EMPLOYEE_STATUS.Accept) {
+    if (employee.status !== EMPLOYEE_STATUS.Interview_Accept) {
         redirect('/home')
     }
 

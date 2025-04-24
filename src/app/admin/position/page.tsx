@@ -10,14 +10,14 @@ import { PlusIcon } from "lucide-react";
 import { EMPLOYEE_STATUS } from "@/interface/enum";
 
 async function Page(context: TContext) {
-    const positionQuery = await getContextQuery(context, 'query')
+    const department = await getContextQuery(context, 'department')
     const search = await getContextQuery(context, 'search')
-    const departments = await prisma.employees.groupBy({ by: [ 'department' ] })
+    const departments = await prisma.departements.findMany()
 
     async function onSearch(formData: FormData) {
         'use server'
         const searchForm = formData.get('search')
-        redirect(`/admin/position?search=${ searchForm }&query=${ positionQuery }`)
+        redirect(`/admin/position?search=${ searchForm }&department=${ department }`)
     }
 
     return (
@@ -40,15 +40,15 @@ async function Page(context: TContext) {
                         <summary className="btn ">Select Position</summary>
                         <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                             <li>
-                                <Link
-                                    href={ `?search=${ search }&query=` }
-                                >All Position</Link>
+                                <Link href={ `?search=${ search }&department=` }>
+                                    All Position
+                                </Link>
                             </li>
                             { departments.map((item) => (
-                                <li key={ item.department }>
+                                <li key={ item.id }>
                                     <Link
-                                        href={ `?search=${ search }&query=${ item.department }` }
-                                    >{ item.department }</Link>
+                                        href={ `?search=${ search }&department=${ item.position }` }
+                                    >{ item.position }</Link>
                                 </li>
                             )) }
                         </ul>
@@ -62,7 +62,7 @@ async function Page(context: TContext) {
             </div>
 
             <div className="space-y-5">
-                <PositionEmployeeTable position={ positionQuery } name={ search } />
+                <PositionEmployeeTable department={ department } name={ search } />
             </div>
         </div>
     );
@@ -107,17 +107,17 @@ async function PositionEmployee({ position, name }: { position: string, name?: s
         </section>
     );
 }
-async function PositionEmployeeTable({ position, name }: { position: string, name?: string }) {
+async function PositionEmployeeTable({ department, name }: { department: string, name?: string }) {
     const employees = await prisma.employees.findMany({
         where: {
             // name: { contains: name },
             User: { name: { contains: name }, },
-            department: { contains: position },
+            department: { contains: department },
             status: {
                 notIn: [
                     EMPLOYEE_STATUS.Interview,
+                    EMPLOYEE_STATUS.Registration,
                     EMPLOYEE_STATUS.Create,
-                    EMPLOYEE_STATUS.Registration
                 ]
             }
         },
@@ -135,7 +135,7 @@ async function PositionEmployeeTable({ position, name }: { position: string, nam
                 <h1 className="card-title">Empty Data</h1>
             ) : (
                 <div className="overflow-x-auto ">
-                    <table className="table bg-base-300 ">
+                    <table className="table table-zebra w-full table-sm">
                         <thead className="">
                         <tr className=" text-left">
                             <th className="">Name</th>

@@ -461,7 +461,7 @@ export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUse
         <div>
             <div className="overflow-x-auto w-full">
                 <table
-                    data-theme={ 'light' }
+                    // data-theme={ 'light' }
                     className="table table-zebra w-full table-sm"
                 >
                     {/* Table Head */ }

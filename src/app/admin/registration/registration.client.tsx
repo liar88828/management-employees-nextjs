@@ -37,7 +37,8 @@ export function EmployeesRegistrationTable({ employees }: {
 }) {
     return (
         <div className="overflow-x-auto">
-            <table className="table bg-base-200 ">
+            <table className="table table-zebra w-full table-sm">
+
                 <thead>
                 <tr className="text-left">
                     <th>No</th>
