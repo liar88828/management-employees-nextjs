@@ -298,7 +298,6 @@ export function SendTableLetter({ data }: { data: Letters[] }) {
     return (
         <div className="overflow-x-auto ">
             <table className="table table-zebra w-full table-sm">
-
                 <thead>
                 <tr>
                     <th>No</th>

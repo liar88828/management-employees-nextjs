@@ -14,10 +14,10 @@ async function Page() {
     if (!employee) return <EmployeeNotFound />
     if (employee.status === EMPLOYEE_STATUS.Registration) redirect('/home')
     return (
-        <div className="">
+        <div>
             <h1 className={ 'text-xl font-bold' }>Interview</h1>
             <p>please print this for interview</p>
-            <div className="">
+            <div>
                 {/*bg-base-200/50*/ }
                 <div className="flex flex-col md:flex-row gap-2    ">
                     <EmployeeIDCardInterview employee={ employee } company={ exampleCompany } />

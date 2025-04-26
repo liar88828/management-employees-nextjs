@@ -62,7 +62,7 @@ export function CountdownButton() {
 
     return (
         <div className="flex items-center flex-col mb-2">
-            <div className="">
+            <div>
                 <Countdown/>
             </div>
             <button

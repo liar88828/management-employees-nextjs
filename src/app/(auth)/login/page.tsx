@@ -64,7 +64,7 @@ export default function LoginForm() {
 
                     <div className="flex sm:justify-between w-full flex-col sm:flex-row">
 
-                        <div className="">
+                        <div>
                             Dont Have Account
                             <Link
                                 href="/register"
@@ -75,8 +75,7 @@ export default function LoginForm() {
                             Now!
                         </div>
 
-
-                        <div className="">
+                        <div>
                             Forget Password
                             <Link
                                 href="/reset"

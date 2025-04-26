@@ -12,7 +12,7 @@ export const EmployeeIDCard = (
     { company: Companys, user: UserClient, employee: Employees }) => (
     <div className="flex justify-center">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div className="">
+            <div>
                 <h1>Depan</h1>
                 <div className="card card-compact bg-white h-[10.2cm] w-[6.5cm] shadow-lg print:shadow-none">
                     <div className="card-body ">
@@ -76,7 +76,7 @@ export const EmployeeIDCard = (
                 </div>
             </div>
 
-            <div className="">
+            <div>
                 <h1>Belakang</h1>
                 <div className="card card-compact bg-white h-[10.2cm] w-[6.5cm] print:shadow-none">
                     <div className="card-body ">

@@ -24,7 +24,7 @@ export async function OurProducts() {
     //                             className="rounded-md object-cover w-full"
     //                         />
     //                         <h3 className="card-title">{ product.name }</h3>
-    //                         <p className="">
+    //                         <p >
     //                             { product.desc }
     //                         </p>
     //                         <div className="card-actions">

@@ -9,7 +9,7 @@ export default function JobApplication({ employee, company }: { employee: TEmplo
                 <h2 className="text-center text-3xl font-bold mb-6">Surat Lamaran Kerja</h2>
                 <p className="text-right">{ employee.city }, { toDateIndo(new Date()) }</p>
                 <p className="mt-4 font-semibold">Hal: Lamaran Kerja</p>
-                <div className="">
+                <div>
                     <p className="mt-2">Kepada Yth,</p>
                     <p>Manager Personalia</p>
                     <p>PT { company.name }</p>

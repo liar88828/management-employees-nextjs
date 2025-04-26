@@ -21,6 +21,7 @@ import { EMPLOYEE_STATUS, EmployeeCompletePhotoType } from "@/interface/enum";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { Users } from ".prisma/client";
 import { revalidatePath } from "next/cache";
+import { globalPageSize } from "@/config/nextPublicBaseUrl";
 
 export const employeeCreateFormDataAdmin = async ({ img, ...data }: EmployeeCreateClientAdmin,
 ) => {
@@ -179,8 +180,8 @@ export const employeesFindValid = async () => await prisma.employees.findMany({
 })
 
 export const employeePagination = async (search: string, status: string, page: number) => {
-    console.log({ search, status, page })
-    const pageSize = 3; // You can adjust the page size
+    // console.log({ search, status, page })
+    // const globalPageSize = 3; // You can adjust the page size
 
     const totalEmployees = await prisma.employees.count({
         where: {
@@ -196,8 +197,8 @@ export const employeePagination = async (search: string, status: string, page: n
             status: { contains: status },
             User: { name: { contains: search } },
         },
-        skip: ( page - 1 ) * pageSize,
-        take: pageSize,
+        skip: ( page - 1 ) * globalPageSize,
+        take: globalPageSize,
         include: {
             User: {
                 omit: {
@@ -216,7 +217,7 @@ export const employeePagination = async (search: string, status: string, page: n
         .filter((i) => i !== null)
     })
 
-    const totalPages = Math.ceil(totalEmployees / pageSize);
+    const totalPages = Math.ceil(totalEmployees / globalPageSize);
 
     return { totalPages, employees }
 }
@@ -229,7 +230,7 @@ export const employeeRegistrationPagination = async (
 ) => {
 
     // console.log( search, status, page, complete )
-    const pageSize = 3; // You can adjust the page size
+    // const globalPageSize = 3; // You can adjust the page size
     const totalEmployees = await prisma.employees.count({
         where: {
             // name: { contains: search },
@@ -253,8 +254,8 @@ export const employeeRegistrationPagination = async (
             // photoIjazah: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : undefined,
 
         },
-        skip: ( page - 1 ) * pageSize,
-        take: pageSize,
+        skip: ( page - 1 ) * globalPageSize,
+        take: globalPageSize,
         include: {
             User: {
                 omit: {
@@ -274,7 +275,7 @@ export const employeeRegistrationPagination = async (
         // .filter((i) => i !== null)
     })
 
-    const totalPages = Math.ceil(totalEmployees / pageSize);
+    const totalPages = Math.ceil(totalEmployees / globalPageSize);
     // console.log( totalPages,'totalPages')
     // console.log( totalEmployees,'totalEmployees')
     return { totalPages, employees }
@@ -341,7 +342,7 @@ export async function onUpsertDataAdmin(
     idEmployee?: string,
 ) {
     // await checkDepartmentPosition(data.department);
-    console.log(method, idEmployee)
+    // console.log(method, idEmployee)
     data.status = EMPLOYEE_STATUS.Registration
     if (method === "POST") {
         return employeeCreateAdmin(data,)
@@ -363,4 +364,62 @@ export async function changeUpdatePosition(idEmployee: string, position?: string
     } else {
         return { success: false }
     }
+}
+
+export const employeePositions = async ({ search, department, page }: {
+    search: string,
+    department: string,
+    page: number,
+
+}) => {
+
+    const totalEmployees = await prisma.employees.count({
+        where: {
+            // name: { contains: search },
+            User: { name: { contains: search } },
+            department: { contains: department },
+            status: {
+                notIn: [
+                    EMPLOYEE_STATUS.Interview,
+                    EMPLOYEE_STATUS.Registration,
+                    EMPLOYEE_STATUS.Create,
+                ]
+            }
+        }
+    });
+
+    const employees = await prisma.employees.findMany({
+        skip: ( page - 1 ) * globalPageSize,
+        take: globalPageSize,
+        where: {
+            // name: { contains: name },
+            User: { name: { contains: search } },
+            department: { contains: department },
+            status: {
+                notIn: [
+                    EMPLOYEE_STATUS.Interview,
+                    EMPLOYEE_STATUS.Registration,
+                    EMPLOYEE_STATUS.Create,
+                ]
+            }
+        },
+        include: {
+            User: {
+                omit: {
+                    password: true, otp: true, otpExpired: true
+                }
+            }
+        }
+    }).then((item): EmployeeUserClient[] => {
+        return item
+        .map((i) => {
+            if (i && i.User) return { ...i, User: i.User }
+            return null
+        })
+        .filter((i) => i !== null)
+    })
+
+    const totalPages = Math.ceil(totalEmployees / globalPageSize);
+
+    return { employees, totalPages }
 }

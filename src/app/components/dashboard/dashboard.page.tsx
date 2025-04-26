@@ -12,13 +12,13 @@ export function GridCardChild({ classNames, data, title }: {
         <div className={ `card  ${ classNames }  2xl:card-normal card-compact` }>
             <div className="card-body">
                 <div className=" flex md:flex-col xl:flex-row justify-around items-end md:items-start xl:items-end">
-                    <div className="">
+                    <div>
                         <h1 className={ 'font-bold ~text-2xl/3xl' }>
                             {/*{ toRupiah(data.totalAll) }*/ }
                         </h1>
                         <p className={ 'text-base-content/50 ~text-xs/base' }>{ title }</p>
                     </div>
-                    <div className="">
+                    <div>
                         <h2 className="text-xl font-bold  text-end sm:text-end md:text-start xl:text-end ">
                             {/*{ data.count }*/ }
                         </h2>
@@ -105,14 +105,14 @@ export function DashboardCustomerPage({ customers }: { customers: Object[] }) {
                                     />
                                 </div>
                             </div>
-                            <div className="">
+                            <div>
                                 <h2 className="font-bold ">
                                     {/*{ customer.name }*/ }
                                 </h2>
                                 <p className={ 'text-base-content/50 text-nowrap' }>{ 20 } Purchase xxx</p>
                             </div>
                         </div>
-                        <div className="">
+                        <div>
                             <p className={ 'font-bold' }>{ toRupiah(2000) }xxx</p>
                         </div>
                     </div>
@@ -144,7 +144,7 @@ export function DashboardProductPage({ products }: { products: Object[] }) {
                                     />
                                 </div>
                             </div>
-                            <div className="">
+                            <div>
                                 <h2 className="font-bold ">
                                     {/*{ product.name }*/ }
                                 </h2>
@@ -154,7 +154,7 @@ export function DashboardProductPage({ products }: { products: Object[] }) {
                             </div>
                         </div>
 
-                        <div className="">
+                        <div>
                             <p className={ 'font-bold' }>
                                 {/*{ product.qty }*/ }
                             </p>

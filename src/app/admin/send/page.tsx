@@ -2,9 +2,14 @@ import Link from 'next/link';
 import React from 'react';
 import { getLetterOnlyAll } from "@/server/action/letter.action";
 import { SendTableLetter } from "@/app/admin/send/send.client";
+import { PaginationComponent } from "@/app/components/PaginationComponent";
+import { getContextQuery, getContextQueryNum } from "@/utils/requestHelper";
+import { TContext } from "@/interface/server/param";
 
-async function Page() {
-    const letter = await getLetterOnlyAll()
+export default async function Page(context: TContext) {
+    const search = await getContextQuery(context, 'search')
+    const page = await getContextQueryNum(context, 'page')
+    const { totalPages, data } = await getLetterOnlyAll({ page, search })
     return (
         < >
             <div className="flex justify-between items-center">
@@ -24,13 +29,19 @@ async function Page() {
                     </details>
                 </div>
 
-                <div className="">
+                <div>
                     <Link href={ '/admin/send/create' } className={ 'btn btn-info' }>Create</Link>
                 </div>
             </div>
-            <SendTableLetter data={ letter }/>
+            <div className="space-y-5">
+                <SendTableLetter data={ data } />
+                <PaginationComponent
+                    totalPages={ totalPages }
+                    title={ 'send' }
+                    search={ search }
+                    page={ page }
+                />
+            </div>
         </ >
     );
 }
-
-export default Page;

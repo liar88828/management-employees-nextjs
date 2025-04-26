@@ -17,10 +17,10 @@ async function Page() {
     }
 
     return (
-        <div className="">
+        <div>
             <h1 className={ 'text-xl font-bold' }>Accept</h1>
             <p>please print this</p>
-            <div className="">
+            <div>
             </div>
 
         </div>

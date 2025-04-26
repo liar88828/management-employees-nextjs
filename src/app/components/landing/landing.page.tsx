@@ -8,7 +8,7 @@ export function Header(
 ) {
     return <header className="navbar bg-base-300 ">
         <div className="flex justify-between  w-full">
-            <Link className="" href="/">
+            <Link href="/">
                 <Image src="/my-logo.png" alt="Tahu Bakso Logo" width={ 100 } height={ 100 }/>
                 {/* <span className="hidden font-bold sm:inline-block">Tahu Bakso Delights</span> */ }
             </Link>
@@ -95,17 +95,17 @@ export function ContactUs() {
                     Contact Us
                 </h2>
                 <form className="grid grid-cols-1 space-y-2">
-                    <div className="">
+                    <div>
                         <input
                             className="input input-bordered w-full"
                             placeholder="Your Name"/>
                     </div>
-                    <div className="">
+                    <div>
                         <input
                             className="input input-bordered w-full"
                             placeholder="Your Email"/>
                     </div>
-                    <div className="">
+                    <div>
                         <textarea
                             className="textarea textarea-bordered w-full"
                             placeholder="Your Message">

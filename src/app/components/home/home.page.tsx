@@ -9,7 +9,7 @@ export function CategoryList(props: {
         onClick={ props.onClick }
         className="border shadow p-5 bg-base-200/40 rounded-2xl flex items-center flex-col gap-2 "
     >
-        <div className="">
+            <div>
             { props.item.icon }
         </div>
 

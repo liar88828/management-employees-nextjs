@@ -14,14 +14,14 @@ export function EmployeeImageForm(props: { employee?: TEmployeeDB, error: string
                         type={ "KTP" }
                     />
                 </div>
-                <div className="">
+                <div>
                     { props.error && props.type === "3x4" && <RegistrationError error={ props.error } /> }
                     <UploadDocument
                         employee={ props.employee }
                         type={ "3x4" }
                     />
                 </div>
-                <div className="">
+                <div>
                     { props.error && props.type === "ijazah" && <RegistrationError error={ props.error } /> }
                     <UploadDocument
                         employee={ props.employee }

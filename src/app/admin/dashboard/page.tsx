@@ -2,7 +2,7 @@ import React from 'react';
 import { redirect } from "next/navigation";
 
 function Page() {
-    redirect('/admin/   employee');
+    redirect('/admin/employee');
     return (
         <div></div>
     );

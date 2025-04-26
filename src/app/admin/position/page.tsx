@@ -1,53 +1,56 @@
 import React from 'react';
-import { prisma } from "@/config/prisma";
 import Form from "next/form";
-import { toDateIndo } from "@/utils/toDate";
-import { TContext } from "@/interface/server/param";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { getContextQuery } from "@/utils/requestHelper";
-import { PlusIcon } from "lucide-react";
-import { EMPLOYEE_STATUS } from "@/interface/enum";
+import { prisma } from "@/config/prisma";
+import { TContext } from "@/interface/server/param";
+import { getContextQuery, getContextQueryNum } from "@/utils/requestHelper";
+import { PlusIcon, SearchIcon } from "lucide-react";
+import { employeePositions } from "@/server/action/employee.admin";
+import { PaginationComponent } from "@/app/components/PaginationComponent";
+import { PositionEmployeeTable } from "@/app/admin/position/component";
 
-async function Page(context: TContext) {
-    const department = await getContextQuery(context, 'department')
+export default async function Page(context: TContext) {
     const search = await getContextQuery(context, 'search')
+    const status = await getContextQuery(context, 'status')
+    const department = await getContextQuery(context, 'department')
+    const page = await getContextQueryNum(context, 'page')
     const departments = await prisma.departements.findMany()
-
-    async function onSearch(formData: FormData) {
-        'use server'
-        const searchForm = formData.get('search')
-        redirect(`/admin/position?search=${ searchForm }&department=${ department }`)
-    }
+    const { totalPages, employees } = await employeePositions({ department, search, page })
 
     return (
         <div className="space-y-5">
             <div className="flex justify-between gap-4">
                 <div className="flex gap-4">
-                    <Form action={ onSearch } className={ 'join ' }>
-                        <input name="search"
+                    <Form action={ '/admin/position' }
+                          className={ 'join ' }
+                    >
+                        <input type="search"
+                               className={ 'input input-bordered join-item ' }
                                defaultValue={ search }
-                               className={ 'input input-bordered join-item' }
+                               name={ 'search' }
+                        />
+                        <input type="hidden"
+                               defaultValue={ department }
+                               name={ 'department' }
                         />
                         <button
                             className={ 'btn join-item' }
                             type="submit"
-                        >Submit
+                        >
+                            <SearchIcon />
                         </button>
                     </Form>
 
                     <details className="dropdown">
-                        <summary className="btn ">Select Position</summary>
+                        <summary className="btn m-1">Select Department</summary>
                         <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                             <li>
-                                <Link href={ `?search=${ search }&department=` }>
-                                    All Position
-                                </Link>
+                                <Link href={ `/admin/position?search=${ search }&department=` }
+                                >Select Department</Link>
                             </li>
                             { departments.map((item) => (
                                 <li key={ item.id }>
-                                    <Link
-                                        href={ `?search=${ search }&department=${ item.position }` }
+                                    <Link href={ `/admin/position?search=${ search }&department=${ item.position }` }
                                     >{ item.position }</Link>
                                 </li>
                             )) }
@@ -62,120 +65,16 @@ async function Page(context: TContext) {
             </div>
 
             <div className="space-y-5">
-                <PositionEmployeeTable department={ department } name={ search } />
+                <PositionEmployeeTable employees={ employees } />
+                <PaginationComponent
+                    page={ page }
+                    totalPages={ totalPages }
+                    search={ search }
+                    status={ status }
+                    department={ department }
+                    title={ 'position' }
+                />
             </div>
-        </div>
-    );
-}
-
-export default Page;
-
-async function PositionEmployee({ position, name }: { position: string, name?: string }) {
-    const employees = await prisma.employees.findMany({
-        where: {
-            ...( name && { name: { contains: name } } ),
-            department: position
-        },
-        include: {
-            User: {
-                omit: {
-                    password: true, otp: true, otpExpired: true
-                }
-            }
-        }
-    })
-    return (
-        <section>
-            <h1 className={ 'text-xl font-bold' }>{ position }</h1>
-
-            {
-                employees.length === 0
-                    ? <h1 className={ 'card-title' }>Empty Data</h1>
-                    : <div className={ 'grid sm:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-4' }>
-                        { employees.map((employee) => (
-                            <div className="card bg-base-200 " key={ employee.id }>
-                                <div className="card-body">
-                                    <PositionEmployeeList title={ 'Name' } desc={ employee?.User?.name ?? '' } />
-                                    <PositionEmployeeList title={ 'email' } desc={ employee.User?.email ?? '' } />
-                                    <PositionEmployeeList title={ 'Phone' } desc={ employee.User?.phone ?? '' } />
-                                    <PositionEmployeeList title={ 'Hire' } desc={ toDateIndo(employee.hireDate) } />
-                                </div>
-                            </div>
-                        )) }
-                    </div>
-            }
-        </section>
-    );
-}
-async function PositionEmployeeTable({ department, name }: { department: string, name?: string }) {
-    const employees = await prisma.employees.findMany({
-        where: {
-            // name: { contains: name },
-            User: { name: { contains: name }, },
-            department: { contains: department },
-            status: {
-                notIn: [
-                    EMPLOYEE_STATUS.Interview,
-                    EMPLOYEE_STATUS.Registration,
-                    EMPLOYEE_STATUS.Create,
-                ]
-            }
-        },
-        include: {
-            User: {
-                omit: {
-                    password: true, otp: true, otpExpired: true
-                }
-            }
-        }
-    })
-    return (
-        <section>
-            { employees.length === 0 ? (
-                <h1 className="card-title">Empty Data</h1>
-            ) : (
-                <div className="overflow-x-auto ">
-                    <table className="table table-zebra w-full table-sm">
-                        <thead className="">
-                        <tr className=" text-left">
-                            <th className="">Name</th>
-                            <th className="">Email</th>
-                            <th className="">Phone</th>
-                            <th className="">Hire Date</th>
-                            <th className="">Position</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        { employees.map((employee) => (
-                            <tr key={ employee.id } className="hover:bg-gray-100/20">
-                                <td className="">{ employee.User?.name }</td>
-                                <td className="">{ employee.User?.email }</td>
-                                <td className="text-nowrap">{ employee.User?.phone }</td>
-                                <td className="">{ toDateIndo(employee.hireDate) }</td>
-                                <td className="">{ employee.department }</td>
-                            </tr>
-                        )) }
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td></td>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            ) }
-        </section>
-    );
-}
-
-function PositionEmployeeList({ title, desc }: {
-    title: string,
-    desc: string,
-}) {
-    return (
-        <div className="flex ">
-            <p className={ 'text-nowrap' }>{ title } : </p>
-            <p className={ 'text-right' }>{ desc }</p>
         </div>
     );
 }

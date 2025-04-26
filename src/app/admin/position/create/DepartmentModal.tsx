@@ -26,7 +26,7 @@ export function DepartmentModalCreate() {
             </button>
             <dialog id="ModalCreateDepartment" className="modal">
                 <div className="modal-box ">
-                    <form action={ action } className="">
+                    <form action={ action }>
                         <h2 className="card-title">Add Department Position</h2>
                         <div className="form-control w-full">
                             <label htmlFor="email" className="label">

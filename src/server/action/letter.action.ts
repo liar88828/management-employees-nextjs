@@ -5,11 +5,29 @@ import { LetterEmployee, LetterForm } from "@/assets/letter";
 import { getDateCalender, toDateClock, toDateDayName } from "@/utils/toDate";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { LetterFormSchema, LetterFormSchemaType, LetterFormState } from "@/schema/send.valid";
-import { Letters } from "@prisma/client";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
+import { globalPageSize } from "@/config/nextPublicBaseUrl";
 
-export async function getLetterOnlyAll(): Promise<Letters[]> {
-    return prisma.letters.findMany()
+export async function getLetterOnlyAll({ page, search }: { page: number, search: string }) {
+
+    const totalEmployees = await prisma.letters.count({
+        where: { interviewLocation: { contains: search } },
+        orderBy: { updatedAt: 'desc' }
+    })
+
+    const data = await prisma.letters.findMany({
+        skip: ( page - 1 ) * globalPageSize,
+        take: globalPageSize,
+        where: { interviewLocation: { contains: search } },
+        orderBy: { updatedAt: 'desc' }
+    })
+
+    const totalPages = Math.ceil(totalEmployees / globalPageSize);
+
+    return {
+        data,
+        totalPages
+    }
 }
 
 export async function getLetterAll(): Promise<LetterEmployee[]> {

@@ -23,7 +23,7 @@ async function Page(context: TContext) {
             EMPLOYEE_STATUS.Interview_Reject,
         ],
         page, status)
-    // const pageSize = 3; // You can adjust the page size
+    // const globalPageSize = 3; // You can adjust the page size
     // const totalEmployees = await prisma.employees.count({
     //     where: {
     //         User: { name: { contains: search } },
@@ -36,11 +36,11 @@ async function Page(context: TContext) {
     //         User: { name: { contains: search } },
     //         status: EMPLOYEE_STATUS.Registration
     //     },
-    //     skip: ( page - 1 ) * pageSize,
-    //     take: pageSize
+    //     skip: ( page - 1 ) * globalPageSize,
+    //     take: globalPageSize
     // });
     //
-    // const totalPages = Math.ceil(totalEmployees / pageSize);
+    // const totalPages = Math.ceil(totalEmployees / globalPageSize);
     return (
         <div className="space-y-2">
             <div className="flex gap-2 items-center">

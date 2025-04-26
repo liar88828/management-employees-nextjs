@@ -25,18 +25,18 @@ export function AccountModal({ user, employees }: { user: Users, employees: Empl
                             <table className="table bg-base-200 ">
                                 <thead>
                                 <tr className="text-left">
-                                    <th className="">ID</th>
-                                    <th className="">Name</th>
-                                    <th className="">Email</th>
-                                    <th className="">Phone</th>
-                                    {/*<th className="">Gender</th>*/ }
-                                    {/*<th className="">Job Title</th>*/ }
-                                    <th className="">Department</th>
-                                    {/*<th className="">Employment Type</th>*/ }
-                                    <th className="">Hire Date</th>
-                                    {/*<th className="">Salary</th>*/ }
-                                    <th className="">Status</th>
-                                    <th className="">Action</th>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    {/*<th >Gender</th>*/ }
+                                    {/*<th >Job Title</th>*/ }
+                                    <th>Department</th>
+                                    {/*<th >Employment Type</th>*/ }
+                                    <th>Hire Date</th>
+                                    {/*<th >Salary</th>*/ }
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -44,18 +44,18 @@ export function AccountModal({ user, employees }: { user: Users, employees: Empl
                                 .filter(employee => employee.User.name.toLowerCase().includes(search.toLowerCase()))
                                 .map((employee) => (
                                     <tr key={ employee.id } className="hover:bg-gray-100/20">
-                                        <td className="">{ employee.id }</td>
-                                        <td className="">{ employee.User.name }</td>
-                                        <td className="">{ employee.User.email }</td>
-                                        <td className="">{ employee.User.phone }</td>
-                                        {/*<td className="">{ employee.gender }</td>*/ }
-                                        {/*<td className="">{ employee.jobTitle }</td>*/ }
-                                        <td className="">{ employee.department }</td>
-                                        {/*<td className="">{ employee.employmentType }</td>*/ }
-                                        <td className="">{ toDateIndo(employee.hireDate) }</td>
-                                        {/*<td className="">{ employee.salary }</td>*/ }
-                                        <td className="">{ employee.status }</td>
-                                        <td className="">
+                                        <td>{ employee.id }</td>
+                                        <td>{ employee.User.name }</td>
+                                        <td>{ employee.User.email }</td>
+                                        <td>{ employee.User.phone }</td>
+                                        {/*<td >{ employee.gender }</td>*/ }
+                                        {/*<td >{ employee.jobTitle }</td>*/ }
+                                        <td>{ employee.department }</td>
+                                        {/*<td >{ employee.employmentType }</td>*/ }
+                                        <td>{ toDateIndo(employee.hireDate) }</td>
+                                        {/*<td >{ employee.salary }</td>*/ }
+                                        <td>{ employee.status }</td>
+                                        <td>
                                             <div>
                                                 <button
                                                     className={ 'btn btn-success btn-square' }
@@ -102,39 +102,39 @@ export function RemoveUserEmployeeButton({ employeeId }: { employeeId: string })
 export function UserAvailable({ users, employees }: { users: Users[], employees: EmployeeUserClient[] }) {
     return (
         <section>
-            <h1 className="">User Available List</h1>
+            <h1>User Available List</h1>
 
             <div className="overflow-x-auto">
                 <table className="table bg-base-200">
                     <thead>
-                    <tr className="">
-                        <th className="">Name</th>
-                        <th className="">Phone</th>
-                        <th className="">Email</th>
-                        {/*<th className="">Role</th>*/ }
-                        <th className="">OTP</th>
-                        {/*<th className="">OTP Count</th>*/ }
-                        {/*<th className="">OTP Regenerate</th>*/ }
-                        {/*<th className="">OTP Expired</th>*/ }
-                        <th className="">Status</th>
-                        <th className="">Action</th>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        {/*<th >Role</th>*/ }
+                        <th>OTP</th>
+                        {/*<th >OTP Count</th>*/ }
+                        {/*<th >OTP Regenerate</th>*/ }
+                        {/*<th >OTP Expired</th>*/ }
+                        <th>Status</th>
+                        <th>Action</th>
 
                     </tr>
                     </thead>
                     <tbody>
                     { users.map((user) => (
                         <tr key={ user.id } className="hover:bg-gray-100/20">
-                            <td className="">{ user.name }</td>
-                            <td className="">{ user.phone }</td>
-                            <td className="">{ user.email }</td>
-                            {/*<td className="">{ user.role }</td>*/ }
-                            <td className="">{ user.otp ?? 'N/A' }</td>
-                            {/*<td className="">{ user.otpCount }</td>*/ }
-                            {/*<td className="">{ new Date(user.otpRegenerate).toLocaleString() }</td>*/ }
-                            {/*<td className="">{ new Date(user.otpExpired).toLocaleString() }</td>*/ }
-                            <td className="">{ user.status }</td>
-                            <td className="">
-                                <div className="">
+                            <td>{ user.name }</td>
+                            <td>{ user.phone }</td>
+                            <td>{ user.email }</td>
+                            {/*<td >{ user.role }</td>*/ }
+                            <td>{ user.otp ?? 'N/A' }</td>
+                            {/*<td >{ user.otpCount }</td>*/ }
+                            {/*<td >{ new Date(user.otpRegenerate).toLocaleString() }</td>*/ }
+                            {/*<td >{ new Date(user.otpExpired).toLocaleString() }</td>*/ }
+                            <td>{ user.status }</td>
+                            <td>
+                                <div>
                                     <AccountModal user={ user } employees={ employees }/>
                                 </div>
                             </td>
@@ -166,35 +166,35 @@ export function TableEmployees({ employees, title, valid }: {
                 <table className="table bg-base-200 ">
                     <thead>
                     <tr className="text-left">
-                        <th className="">ID</th>
-                        <th className="">Name</th>
-                        <th className="">Email</th>
-                        <th className="">Phone</th>
-                        {/*<th className="">Gender</th>*/ }
-                        {/*<th className="">Job Title</th>*/ }
-                        <th className="">Department</th>
-                        {/*<th className="">Employment Type</th>*/ }
-                        <th className="">Hire Date</th>
-                        {/*<th className="">Salary</th>*/ }
-                        <th className="">Status</th>
-                        <th className="">Action</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        {/*<th >Gender</th>*/ }
+                        {/*<th >Job Title</th>*/ }
+                        <th>Department</th>
+                        {/*<th >Employment Type</th>*/ }
+                        <th>Hire Date</th>
+                        {/*<th >Salary</th>*/ }
+                        <th>Status</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     { employees.map((employee) => (
                         <tr key={ employee.id } className="hover:bg-gray-100/20">
-                            <td className="">{ employee.id }</td>
-                            <td className="">{ employee.User.name }</td>
-                            <td className="">{ employee.User.email }</td>
-                            <td className="">{ employee.User.phone }</td>
-                            {/*<td className="">{ employee.gender }</td>*/ }
-                            {/*<td className="">{ employee.jobTitle }</td>*/ }
-                            <td className="">{ employee.department }</td>
-                            {/*<td className="">{ employee.employmentType }</td>*/ }
-                            <td className="">{ toDateIndo(employee.hireDate) }</td>
-                            {/*<td className="">{ employee.salary }</td>*/ }
-                            <td className="">{ employee.status }</td>
-                            <td className="">
+                            <td>{ employee.id }</td>
+                            <td>{ employee.User.name }</td>
+                            <td>{ employee.User.email }</td>
+                            <td>{ employee.User.phone }</td>
+                            {/*<td >{ employee.gender }</td>*/ }
+                            {/*<td >{ employee.jobTitle }</td>*/ }
+                            <td>{ employee.department }</td>
+                            {/*<td >{ employee.employmentType }</td>*/ }
+                            <td>{ toDateIndo(employee.hireDate) }</td>
+                            {/*<td >{ employee.salary }</td>*/ }
+                            <td>{ employee.status }</td>
+                            <td>
                                 { valid
                                     ? <RemoveUserEmployeeButton employeeId={ employee.id }/>
                                     : <button></button>

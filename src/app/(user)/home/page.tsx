@@ -9,14 +9,14 @@ async function Page() {
     const employee = await employeeFindById({ userId })
     // console.log(employee)
     return (
-        <div className="">
+        <div>
             {/*<h1 className={ 'text-xl font-bold' }>Welcome to employee-management</h1>*/ }
             <div className="card bg-base-200">
                 <div className="card-body ">
                     <h1 className={ 'card-title' }>Register ID # { employee ? employee.id : 'Empty' }</h1>
                     <p>Register At : { employee ? toDateIndo(employee.createdAt) : 'Empty' }</p>
                     <p>Status : { employee ? employee.status : '' }</p>
-                    <div className="">
+                    <div>
                         <p className={ 'font-bold' }>Note : </p>
                         <p className={ 'text-xs text-base/50 italic' }>- Status is wait from admin</p>
                         { !employee &&

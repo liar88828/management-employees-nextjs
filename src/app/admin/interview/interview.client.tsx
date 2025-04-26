@@ -43,36 +43,36 @@ export function EmployeesTable({ employees }: {
             <table className="table table-zebra w-full table-sm">
                 <thead>
                 <tr className="text-left">
-                    <th className="">No</th>
-                    <th className="">Name</th>
-                    <th className="">Email</th>
-                    <th className="">Phone</th>
-                    {/*<th className="">Gender</th>*/ }
-                    {/*<th className="">Job Title</th>*/ }
-                    {/*<th className="">Department</th>*/ }
-                    {/*<th className="">Employment Type</th>*/ }
-                    <th className="">Hire Date</th>
-                    {/*<th className="">Salary</th>*/ }
-                    {/*<th className="">Status</th>*/ }
-                    <th className="">Action</th>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    {/*<th >Gender</th>*/ }
+                    {/*<th >Job Title</th>*/ }
+                    {/*<th >Department</th>*/ }
+                    {/*<th >Employment Type</th>*/ }
+                    <th>Hire Date</th>
+                    {/*<th >Salary</th>*/ }
+                    {/*<th >Status</th>*/ }
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 { employees.map((employee, index) => (
                     <tr key={ employee.id } className="hover:bg-gray-100/20">
-                        <td className="">{ index + 1 }</td>
-                        <td className="">{ employee.User.name }</td>
-                        <td className="">{ employee.User.email }</td>
+                        <td>{ index + 1 }</td>
+                        <td>{ employee.User.name }</td>
+                        <td>{ employee.User.email }</td>
                         <td className="text-nowrap">{ employee.User.phone }</td>
-                        {/*<td className="">{ employee.gender }</td>*/ }
-                        {/*<td className="">{ employee.jobTitle }</td>*/ }
-                        {/*<td className="">{ employee.department }</td>*/ }
-                        {/*<td className="">{ employee.employmentType }</td>*/ }
-                        <td className="">{ toDateIndo(employee.hireDate) }</td>
-                        {/*<td className="">{ employee.salary }</td>*/ }
-                        {/*<td className="">{ employee.status }</td>*/ }
-                        <td className="">
-                            <div className="">
+                        {/*<td >{ employee.gender }</td>*/ }
+                        {/*<td >{ employee.jobTitle }</td>*/ }
+                        {/*<td >{ employee.department }</td>*/ }
+                        {/*<td >{ employee.employmentType }</td>*/ }
+                        <td>{ toDateIndo(employee.hireDate) }</td>
+                        {/*<td >{ employee.salary }</td>*/ }
+                        {/*<td >{ employee.status }</td>*/ }
+                        <td>
+                            <div>
                                 <Link
                                     className={ 'btn btn-info' }
                                     href={ `/admin/interview/${ employee.id }` }
