@@ -1,5 +1,6 @@
 import React from 'react';
-import { EmployeeFormClientAdmin, } from "@/app/components/employee/employee.client";
+
+import { EmployeeFormClientAdmin } from "@/app/admin/employee/create/employeeFormClientAdmin";
 
 export default async function PageEmployeeFormAdmin() {
     // const departments = await departmentGetAllPage()

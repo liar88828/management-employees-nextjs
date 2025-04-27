@@ -1,12 +1,12 @@
 import React from 'react';
-import EmployeeIDCardInterview from "@/app/components/employee/client/IDCard";
-import { EmployeeCVUser } from "@/app/components/employee/client/cv";
+import IDCardEmployeeGlobal from "@/app/components/employee/client/IDCardEmployeeGlobal";
 import { validSession } from "@/secure/db";
 import { EmployeeNotFound } from "@/app/components/error/registrationFirst";
 import { employeeFindById } from "@/server/controller/employee.controller";
 import { EMPLOYEE_STATUS } from "@/interface/enum";
 import { redirect } from "next/navigation";
 import { exampleCompany } from "@/assets/company";
+import EmployeeInterviewCVUser from "@/app/(user)/interview/components/employeeInterviewCVUser";
 
 async function Page() {
     const { userId } = await validSession()
@@ -20,8 +20,8 @@ async function Page() {
             <div>
                 {/*bg-base-200/50*/ }
                 <div className="flex flex-col md:flex-row gap-2    ">
-                    <EmployeeIDCardInterview employee={ employee } company={ exampleCompany } />
-                    <EmployeeCVUser employee={ employee } />
+                    <IDCardEmployeeGlobal employee={ employee } company={ exampleCompany } />
+                    <EmployeeInterviewCVUser employee={ employee } />
                 </div>
                 <div>
                     <div className="divider"></div>

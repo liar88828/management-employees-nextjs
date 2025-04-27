@@ -3,10 +3,11 @@ import { TContext } from "@/interface/server/param";
 import { getContextParam } from "@/utils/requestHelper";
 import { employeeRepository } from "@/server/controller";
 import { EmptyData } from "@/app/components/PageErrorData";
-import { FormRegistration } from "@/app/admin/registration/registration.client";
-import { InterviewShowCV, InterviewShowDocument } from "@/app/admin/interview/interview.client";
 import { prisma } from "@/config/prisma";
 import { Departements } from ".prisma/client";
+import { InterviewShowCVGlobal } from "@/app/admin/interview/components/interviewShowCVGlobal";
+import { InterviewShowDocument } from "@/app/admin/interview/components/interviewShowDocument";
+import { RegistrationForm } from "@/app/admin/registration/components/RegistrationForm";
 
 export default async function Page(context: TContext) {
     const employeeId = await getContextParam(context, 'id')
@@ -19,9 +20,9 @@ export default async function Page(context: TContext) {
 
     return (
         <div className={ 'space-y-4' }>
-            <FormRegistration employee={ employee } departments={ departments } />
+            <RegistrationForm employee={ employee } departments={ departments } />
             <div className="space-x-4">
-                <InterviewShowCV employee={ employee } />
+                <InterviewShowCVGlobal employee={ employee } />
                 <InterviewShowDocument employee={ employee } />
             </div>
         </div>

@@ -1,13 +1,14 @@
-import { Search } from "lucide-react";
+import Link from "next/link";
+import React from "react";
 import Form from "next/form";
+import { Search } from "lucide-react";
 import { TContext } from "@/interface/server/param";
 import { getContextQuery } from "@/utils/requestHelper";
 import { EMPLOYEE_STATUS } from "@/interface/enum";
-import { EmployeesTable, Pagination } from "@/app/admin/interview/interview.client";
 import { employeePagination } from "@/server/action/employee.admin";
-import Link from "next/link";
-import React from "react";
 import { prisma } from "@/config/prisma";
+import { PaginationComponent } from "@/app/components/PaginationComponent";
+import { InterviewTable } from "@/app/admin/interview/components/interviewTable";
 
 async function Page(context: TContext) {
     const search = await getContextQuery(context, 'search')
@@ -67,8 +68,8 @@ async function Page(context: TContext) {
                 {/*</details>*/ }
             </div>
 
-            <EmployeesTable employees={ employees } />
-            <Pagination
+            <InterviewTable employees={ employees } />
+            <PaginationComponent
                 page={ page }
                 totalPages={ totalPages }
                 search={ search }

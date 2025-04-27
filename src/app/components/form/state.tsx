@@ -1,3 +1,4 @@
+'use client'
 import { useFieldArray, useFormContext } from "react-hook-form";
 import React, { ChangeEvent, useState } from "react";
 import { Minus, Plus } from "lucide-react";

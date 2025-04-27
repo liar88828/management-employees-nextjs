@@ -2,7 +2,8 @@ import React from 'react';
 import { employeeFindById, } from "@/server/controller/employee.controller";
 import { toDateIndo } from "@/utils/toDate";
 import { validSession } from "@/secure/db";
-import { InterviewShowCV, InterviewShowDocument } from "@/app/admin/interview/interview.client";
+import { InterviewShowCVGlobal } from "@/app/admin/interview/components/interviewShowCVGlobal";
+import { InterviewShowDocument } from "@/app/admin/interview/components/interviewShowDocument";
 
 async function Page() {
     const { userId } = await validSession()
@@ -34,7 +35,7 @@ async function Page() {
                         {/*    Print*/ }
                         {/*</button>*/ }
                         { employee && <>
-                            <InterviewShowCV employee={ employee } />
+                            <InterviewShowCVGlobal employee={ employee } />
                             <InterviewShowDocument employee={ employee } />
                         </>
                         }

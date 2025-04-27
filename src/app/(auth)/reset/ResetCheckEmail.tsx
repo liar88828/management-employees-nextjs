@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { useEmail } from "@/hook/useEmail";
 import React, { useEffect, useState } from "react";
 
-export default function CheckEmail() {
+export default function ResetCheckEmail() {
     const { store, setData } = useOtpStore()
     const { onCheckEmail } = useEmail()
     const [ messageError, setMessageError ] = useState<string | null>()

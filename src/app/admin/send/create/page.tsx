@@ -1,11 +1,12 @@
 import React from 'react';
-import { EmployeesSendTable, SendFormStore } from "@/app/admin/send/send.client";
 import { prisma } from "@/config/prisma";
 import { getContextQuery } from "@/utils/requestHelper";
 import { TContext } from "@/interface/server/param";
 import { Departements } from ".prisma/client";
 import { employeeFindLatter } from "@/server/action/employee.client";
 import { EmployeeCompletePhotoType } from "@/interface/enum";
+import { SendTableEmployees } from "@/app/admin/send/components/sendTableEmployees";
+import { SendFormStore } from "@/app/admin/send/components/sendFormStore";
 
 async function Page(context: TContext) {
     const name = await getContextQuery(context, 'name')
@@ -17,7 +18,7 @@ async function Page(context: TContext) {
 
     return ( <>
             <SendFormStore />
-            <EmployeesSendTable
+            <SendTableEmployees
                 employees={ employees }
                 departments={ departments }
             />

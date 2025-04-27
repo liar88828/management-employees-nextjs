@@ -7,7 +7,8 @@ import { getContextQuery, getContextQueryNum } from "@/utils/requestHelper";
 import { PlusIcon, SearchIcon } from "lucide-react";
 import { employeePositions } from "@/server/action/employee.admin";
 import { PaginationComponent } from "@/app/components/PaginationComponent";
-import { PositionEmployeeTable } from "@/app/admin/position/component";
+
+import { PositionEmployeeTable } from "@/app/admin/position/components/positionEmployeeTable";
 
 export default async function Page(context: TContext) {
     const search = await getContextQuery(context, 'search')
@@ -18,7 +19,7 @@ export default async function Page(context: TContext) {
     const { totalPages, employees } = await employeePositions({ department, search, page })
 
     return (
-        <div className="space-y-5">
+        <div className="space-y-2">
             <div className="flex justify-between gap-4">
                 <div className="flex gap-4">
                     <Form action={ '/admin/position' }
@@ -64,17 +65,15 @@ export default async function Page(context: TContext) {
                 </Link>
             </div>
 
-            <div className="space-y-5">
-                <PositionEmployeeTable employees={ employees } />
-                <PaginationComponent
-                    page={ page }
-                    totalPages={ totalPages }
-                    search={ search }
-                    status={ status }
-                    department={ department }
-                    title={ 'position' }
-                />
-            </div>
+            <PositionEmployeeTable employees={ employees } />
+            <PaginationComponent
+                page={ page }
+                totalPages={ totalPages }
+                search={ search }
+                status={ status }
+                department={ department }
+                title={ 'position' }
+            />
         </div>
     );
 }

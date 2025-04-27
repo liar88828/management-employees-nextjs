@@ -3,10 +3,11 @@ import { Search } from "lucide-react";
 import Form from "next/form";
 import { TContext } from "@/interface/server/param";
 import { getContextQuery } from "@/utils/requestHelper";
-import { EmployeesRegistrationTable, Pagination } from "@/app/admin/registration/registration.client";
 import { EMPLOYEE_STATUS, EmployeeCompletePhoto, EmployeeCompletePhotoType } from "@/interface/enum";
 import Link from "next/link";
 import { employeeRegistrationPagination } from "@/server/action/employee.admin";
+import { PaginationComponent } from "@/app/components/PaginationComponent";
+import { RegistrationTable } from "@/app/admin/registration/components/RegistrationTable";
 
 async function Page(context: TContext) {
     const search = await getContextQuery(context, 'search')
@@ -82,8 +83,14 @@ async function Page(context: TContext) {
                 </details>
             </div>
             {/*{JSON.stringify(employees)}*/ }
-            <EmployeesRegistrationTable employees={ employees } />
-            <Pagination page={ page } totalPages={ totalPages } search={ search } status={ status } />
+            <RegistrationTable employees={ employees } />
+            <PaginationComponent
+                page={ page }
+                totalPages={ totalPages }
+                search={ search }
+                status={ status }
+                title={ 'registration' }
+            />
         </div>
     );
 }

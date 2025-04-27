@@ -1,10 +1,7 @@
 import React from 'react';
 import { prisma } from "@/config/prisma";
-import {
-    DepartmentModalCreate,
-    DepartmentModalDelete,
-    DepartmentModalUpdate
-} from "@/app/admin/position/create/DepartmentModal";
+import Link from "next/link";
+import { PositionModalUpdate } from "@/app/admin/position/components/PositionModalUpdate";
 
 async function Page() {
     const dataDepartment = await prisma.$transaction(async (tx) => {
@@ -13,21 +10,22 @@ async function Page() {
             by: [ 'department' ],
             _count: true,
         })
-        return departments.map(dept => ({
+        return departments.map(dept => ( {
             id: dept.id,
             position: dept.position,
             count: employee.find(emp => emp.department === dept.position)?._count ?? 0
-        }));
+        } ));
     });
 
     return (
         <div>
             <div className="flex justify-between ">
-                <h1 className={ 'text-xl font-bold ' }>Employee Position</h1>
-                <DepartmentModalCreate/>
+                <h1 className={ 'my-title ' }>Employee Position</h1>
+                {/*<PositionModalCreate />*/ }
             </div>
             <div className="overflow-x-auto mt-3">
-                <table className="table bg-base-200 table-auto">
+                <table className="my-table">
+
                     {/* head */ }
                     <thead>
                     <tr>
@@ -47,8 +45,16 @@ async function Page() {
                             <td>{ item.count }</td>
                             <td>
                                 <div className="flex gap-2">
-                                    <DepartmentModalDelete department={ item }/>
-                                    <DepartmentModalUpdate department={ item }/>
+                                    <Link
+                                        className={ 'btn btn-info' }
+                                        href={ `/admin/position/${ item.position }?department=${ item.position }` }
+                                    >
+                                        Detail
+                                    </Link>
+
+                                    {/*<DepartmentModalDelete department={ item }/>*/ }
+                                    <PositionModalUpdate department={ item } />
+
                                 </div>
                             </td>
                         </tr>

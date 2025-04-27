@@ -1,9 +1,10 @@
 import React from 'react';
 import { TContext } from "@/interface/server/param";
 import { getContextQuery, getContextQueryNum } from "@/utils/requestHelper";
-import { Pagination } from "@/app/admin/registration/registration.client";
 import { employeePagination } from "@/server/action/employee.admin";
-import { EmployeeSearchClientAdmin, EmployeeTableClientAdmin } from "@/app/components/employee/employee.client.admin";
+import { EmployeeTableClientAdmin } from "@/app/admin/employee/components/employeeTableClientAdmin";
+import { EmployeeSearchClientAdmin } from "@/app/admin/employee/components/employeeSearchClientAdmin";
+import { PaginationComponent } from "@/app/components/PaginationComponent";
 
 export default async function page(context: TContext,) {
     const search = await getContextQuery(context, 'search')
@@ -12,10 +13,16 @@ export default async function page(context: TContext,) {
     // const limit = await getContextQuery(context, 'limit')
     const { totalPages, employees } = await employeePagination(search, status, page)
     return (
-        <>
+        <div className={ 'space-y-2' }>
             <EmployeeSearchClientAdmin search={ search } status={ status } />
             <EmployeeTableClientAdmin employees={ employees } />
-            <Pagination page={ page } totalPages={ totalPages } search={ search } status={ status } />
-        </>
+            <PaginationComponent
+                page={ page }
+                totalPages={ totalPages }
+                search={ search }
+                status={ status }
+                title={ 'employee' }
+            />
+        </div>
     );
 }

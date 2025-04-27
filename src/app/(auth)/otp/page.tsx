@@ -1,12 +1,11 @@
 'use client'
 import React from "react";
 import { useOtpStore } from "@/store/otp";
-import { CountdownButton } from "@/app/(auth)/otp/countdown";
+import { OtpCountdownButton } from "@/app/(auth)/otp/OtpCountdownButton";
 import { OtpForm } from "@/app/(auth)/otp/OtpForm";
 
 export default function Page() {
     const { store } = useOtpStore()
-
     return (
         <div className="flex items-center justify-center pt-20 ">
             <div className=" p-8 rounded shadow-md w-full max-w-sm">
@@ -18,7 +17,7 @@ export default function Page() {
                         </p>
                     ) }
                 </div>
-                <CountdownButton/>
+                <OtpCountdownButton />
                 <OtpForm/>
             </div>
         </div>

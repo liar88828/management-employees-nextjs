@@ -6,7 +6,7 @@ import { usePrint } from "@/hook/usePrint";
 import React from "react";
 import { Companys } from "@/assets/company";
 
-export default function EmployeeIDCardInterview(
+export default function IDCardEmployeeGlobal(
     { employee, company }:
     { employee: TEmployeeDB, company: Companys }
 ) {

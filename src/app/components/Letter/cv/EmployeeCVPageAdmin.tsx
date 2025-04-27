@@ -1,56 +1,7 @@
 'use client'
 import { TEmployeeDB } from "@/interface/entity/employee.model";
-import { usePrint } from "@/hook/usePrint";
 import React from "react";
 import { toDate } from "@/utils/toDate";
-import { Printer } from "lucide-react";
-import { InterviewShowDocument } from "@/app/admin/interview/interview.client";
-import { EmployeeUpdateStatus } from "@/app/admin/employee/EmployeeUpdateStatus";
-
-export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
-    const { isPrinting, handlePrint, contentRef } = usePrint()
-    return (
-        <div ref={ contentRef }>
-            <EmployeeCVPageAdmin employee={ employee } />
-            <div className=" print:hidden gap-2 mt-2 flex items-center">
-                {/*<Link href={ +employee.id + '/edit' }*/ }
-                {/*      className={ 'btn btn-success' }*/ }
-                {/*>*/ }
-                {/*    Edit*/ }
-                {/*</Link>*/ }
-
-                <button
-                    onClick={ handlePrint }
-                    disabled={ isPrinting }
-                    className={ 'btn btn-info' }
-                >
-                    { isPrinting ? 'Printing...' : <Printer /> }
-                </button>
-
-                <InterviewShowDocument employee={ employee } />
-                <EmployeeUpdateStatus employee={ employee } />
-            </div>
-        </div>
-    );
-}
-
-export function EmployeeCVUser({ employee }: { employee: TEmployeeDB }) {
-    const { isPrinting, handlePrint, contentRef } = usePrint()
-    return (
-        <div ref={ contentRef }>
-            <EmployeeCVPageAdmin employee={ employee } />
-            <div className=" print:hidden gap-2 mt-2 flex items-center">
-                <button
-                    onClick={ handlePrint }
-                    disabled={ isPrinting }
-                    className={ 'btn btn-info' }
-                >
-                    { isPrinting ? 'Printing...' : <Printer /> }
-                </button>
-            </div>
-        </div>
-    );
-}
 
 export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
     return (

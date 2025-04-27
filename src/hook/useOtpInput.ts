@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useEmail } from "@/hook/useEmail";
 import { useOtpStore } from "@/store/otp";
 
-const useOtpInput = () => {
+export default function useOtpInput() {
     const { onCheckOtp: onValidate } = useEmail()
     const { store } = useOtpStore()
     const [ otp, setOtp ] = useState('')
@@ -26,7 +26,5 @@ const useOtpInput = () => {
         }
     };
 
-    return { otp, error, handleChange,  handleSubmit };
+    return { otp, error, handleChange, handleSubmit };
 };
-
-export default useOtpInput;

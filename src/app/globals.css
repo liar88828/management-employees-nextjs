@@ -9,6 +9,15 @@
 }
 
 @layer components {
+
+    .my-title {
+        @apply text-xl font-bold;
+    }
+
+    .my-table {
+        @apply table table-zebra w-full table-sm bg-base-200/50;
+    }
+
     .text-title {
         @apply text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl;
     }
@@ -16,6 +25,8 @@
     .container {
         @apply scroll-pl-6
     }
+
+
 }
 
 /* width */

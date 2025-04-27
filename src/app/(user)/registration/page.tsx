@@ -3,15 +3,15 @@ import { redirect } from "next/navigation";
 import { employeeFindById } from "@/server/controller/employee.controller";
 import { prisma } from "@/config/prisma";
 import { Departements } from ".prisma/client";
-import { EmployeeFormClientUser } from "@/app/(user)/registration/registration.client";
+import { EmployeeFormClientUser } from "@/app/(user)/registration/components/registration.client";
 import { getUserPage } from "@/secure/db";
 import { getContextQuery } from "@/utils/requestHelper";
 import { TContext } from "@/interface/server/param";
 import { RegistrationError } from "@/app/components/error/registrationFirst";
-import { EmployeeImageForm } from "@/app/(user)/registration/employeeImageForm";
+import { EmployeeImageForm } from "@/app/(user)/registration/components/employeeImageForm";
 import { registrationFinished } from "@/server/action/employee.client";
 
-async function Page(context: TContext) {
+export default async function Page(context: TContext) {
     const error = await getContextQuery(context, 'error')
     const type = await getContextQuery(context, 'type')
     const user = await getUserPage()
@@ -47,5 +47,3 @@ async function Page(context: TContext) {
 
     );
 }
-
-export default Page;

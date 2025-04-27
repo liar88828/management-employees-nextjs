@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useOtpStore } from "@/store/otp";
 import { useEmail } from "@/hook/useEmail";
 
-export default function CheckOtp() {
+export default function ResetCheckOtp() {
     const { onCheckOtp } = useEmail()
     const { store, setData } = useOtpStore()
     const [ messageError, setMessageError ] = useState<string | null>()

@@ -163,5 +163,5 @@ export function DashboardProductPage({ products }: { products: Object[] }) {
                 )) }
             </div>
         </div>
-    );
+    )
 }

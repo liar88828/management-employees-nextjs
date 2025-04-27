@@ -4,7 +4,7 @@ import { useEmail } from "@/hook/useEmail";
 import { useOtpStore } from "@/store/otp";
 // const targetTime = new Date(Date.now() + 60 * 1000).getTime();
 
-export const Countdown = () => {
+export const OtpCountdownTime = () => {
     const { store: { time: targetTime }, setData } = useOtpStore()
 
     const [ remainingTime, setRemainingTime ] = useState(targetTime ? targetTime - Date.now() : 0);
@@ -45,7 +45,7 @@ export const Countdown = () => {
 //     const date = dataUser - dataNow
 //     console.log(date)// to date
 
-export function CountdownButton() {
+export function OtpCountdownButton() {
     const { store, setData } = useOtpStore()
     const { onCheckEmail: onGenerate } = useEmail()
 
@@ -63,7 +63,7 @@ export function CountdownButton() {
     return (
         <div className="flex items-center flex-col mb-2">
             <div>
-                <Countdown/>
+                <OtpCountdownTime />
             </div>
             <button
                 disabled={ store.remainingTime > 0 }
