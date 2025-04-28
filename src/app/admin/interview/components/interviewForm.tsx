@@ -2,14 +2,14 @@
 import { Department } from "@/interface/entity/departement.model";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import React, { useActionState, useEffect } from "react";
-import { interviewUpdate } from "@/server/action/inbox";
+import { interviewUpdateAction } from "@/server/action/inbox";
 import toast from "react-hot-toast";
 import Form from "next/form";
 import { MyInput, MyInputNum, MyInputOption, MyInputTextArea } from "@/app/components/form/action";
-import { employeeListStatus } from "@/interface/enum";
+import { StatusEmployeeList } from "@/interface/enum";
 
 export function InterviewForm({ employee, departments }: { departments: Department[], employee: TEmployeeDB }) {
-    const [ state, action, pending ] = useActionState(interviewUpdate, undefined)
+    const [ state, action, pending ] = useActionState(interviewUpdateAction, undefined)
     useEffect(() => {
         if (state) {
             if (state.success) {
@@ -48,7 +48,7 @@ export function InterviewForm({ employee, departments }: { departments: Departme
                 {/*        defaultValue={ state?.value.status || employee.status }*/ }
                 {/*    >*/ }
                 {/*        <option disabled value="">Select Status</option>*/ }
-                {/*        { employeeListStatus.map((item) => (*/ }
+                {/*        { StatusEmployeeList.map((item) => (*/ }
                 {/*            <option key={ item }>{ item }</option>*/ }
                 {/*        )) }*/ }
                 {/*    </select>*/ }
@@ -57,7 +57,7 @@ export function InterviewForm({ employee, departments }: { departments: Departme
                     title={ 'Status' }
                     name={ 'status' }
                     keys={ state?.value.status || employee.status }
-                    lists={ employeeListStatus }
+                    lists={ StatusEmployeeList }
                 />
 
                 <MyInputOption
@@ -69,16 +69,16 @@ export function InterviewForm({ employee, departments }: { departments: Departme
                 />
 
                 {/*<div className="form-control w-full">*/ }
-                {/*    <label htmlFor={ `department` } className="label">*/ }
-                {/*        <span className="label-text capitalize"> department </span>*/ }
+                {/*    <label htmlFor={ `departments` } className="label">*/ }
+                {/*        <span className="label-text capitalize"> departments </span>*/ }
                 {/*    </label>*/ }
                 {/*    <select*/ }
                 {/*        className="select select-bordered join-item"*/ }
-                {/*        name="department"*/ }
-                {/*        key={ state?.value.department || employee.department }*/ }
-                {/*        defaultValue={ state?.value.department || employee.department }*/ }
+                {/*        name="departments"*/ }
+                {/*        key={ state?.value.departments || employee.departments }*/ }
+                {/*        defaultValue={ state?.value.departments || employee.departments }*/ }
                 {/*    >*/ }
-                {/*        <option disabled value="">Select department</option>*/ }
+                {/*        <option disabled value="">Select departments</option>*/ }
                 {/*        { departments.map((item) => (*/ }
                 {/*            <option key={ item.id }>{ item.position }</option>*/ }
                 {/*        )) }*/ }

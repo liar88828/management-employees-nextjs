@@ -2,7 +2,7 @@ import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { toDate } from "@/utils/toDate";
 import React from "react";
 
-export function EmployeeCVPageClient
+export function EmployeeCVPageClientx
 ({ employee }: { employee: TEmployeeDB }) {
     return (
         <div className="card w-full max-w-3xl  bg-white card-bordered shadow-lg">

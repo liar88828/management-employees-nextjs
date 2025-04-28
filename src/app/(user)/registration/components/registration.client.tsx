@@ -7,9 +7,9 @@ import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { employeeRegistrationUserCreateClient, EmployeeRegistrationUserCreateClient } from "@/schema/employee.valid";
-import { onUpsertDataUser } from "@/server/action/employee.client";
+import { onUpsertDataUserAction } from "@/server/action/employee.client";
 import { InputImage, InputTextDynamic } from "@/app/components/form/state";
-import { ErrorValidation } from "@/utils/ErrorClass";
+import { ErrorValidation } from "@/utils/error/ErrorClass";
 
 export function EmployeeFormClientUser({ employee, method, user }: {
     user: UserDB,
@@ -45,7 +45,7 @@ export function EmployeeFormClientUser({ employee, method, user }: {
             // console.log("data : ",data)
             // data.userId = user.id
             // data.registration = false
-            const response = await onUpsertDataUser(method, data, user.id, employee?.id);
+            const response = await onUpsertDataUserAction(method, data, user.id, employee?.id);
             if (response?.success) {
                 clear()
                 reset()
@@ -210,7 +210,7 @@ export function EmployeeFormClientUser({ employee, method, user }: {
                     {/*    </label>*/ }
 
                     {/*    <select*/ }
-                    {/*        { ...register('department') }*/ }
+                    {/*        { ...register('departments') }*/ }
                     {/*        className={ `select select-bordered ${ errors.gender ? 'select-errors' : '' }` }*/ }
                     {/*    >*/ }
                     {/*        <option value="">Select Department</option>*/ }
@@ -218,8 +218,8 @@ export function EmployeeFormClientUser({ employee, method, user }: {
                     {/*            <option key={ item.id } value={ item.position }>{ item.position }</option>*/ }
                     {/*        )) }*/ }
                     {/*    </select>*/ }
-                    {/*    { errors.department*/ }
-                    {/*        && <p className="text-errors text-sm mt-1">{ errors.department.message }</p>*/ }
+                    {/*    { errors.departments*/ }
+                    {/*        && <p className="text-errors text-sm mt-1">{ errors.departments.message }</p>*/ }
                     {/*    }*/ }
                     {/*</div>*/ }
 

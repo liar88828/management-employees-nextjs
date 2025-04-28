@@ -6,7 +6,6 @@
 // GET     /users?name=kyle`        200     []
 // DELETE  /users/john              204     No Content
 
-
 export class ErrorResponse extends Error {
     constructor(public msg: string, public code: number) {
         super(msg);
@@ -28,10 +27,13 @@ export class ErrorFetch extends Error {
     }
 }
 
-export class ErrorPrisma extends Error {
-    constructor(public msg: string, public code: number) {
+export class ErrorDatabase extends Error {
+    constructor(
+        public msg: string,
+        // public code: number
+    ) {
         super(msg);
-        Object.setPrototypeOf(this, ErrorPrisma.prototype);
+        Object.setPrototypeOf(this, ErrorDatabase.prototype);
     }
 }
 
@@ -39,6 +41,14 @@ export class ErrorAction extends Error {
     constructor(public msg: string) {
         super(msg);
         Object.setPrototypeOf(this, ErrorAction.prototype);
+    }
+}
+
+export class ErrorCheck extends Error {
+    constructor(public msg: string, public from: string) {
+        super(msg);
+        this.name = "ErrorCheck";
+        Object.setPrototypeOf(this, ErrorCheck.prototype);
     }
 }
 

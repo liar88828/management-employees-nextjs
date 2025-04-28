@@ -14,7 +14,7 @@ export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUse
                     {/* Table Head */ }
                     <thead>
                     <tr>
-                        {/*<th>ID</th>*/ }
+                        <th>No</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th className={ 'text-nowrap' }>Phone</th>
@@ -31,9 +31,10 @@ export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUse
 
                     {/* Table Body */ }
                     <tbody className={ 'overflow-y-auto ' }>
-                    { employees.map((employee) => (
+                    { employees.map((employee, i) => (
                         <tr key={ employee.id }>
                             {/*<td>{ employee.id }</td>*/ }
+                            <td>{ i + 1 }</td>
                             <td>{ employee.User.name }</td>
                             <td>{ employee.User.email }</td>
                             <td className={ 'text-nowrap' }>{ employee.User.phone || "-" }</td>
@@ -43,12 +44,14 @@ export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUse
                             <td>{ employee.department || "-" }</td>
                             <td>{ toRupiah(employee.salary) }</td>
                             <td>{ employee.employmentType }</td>
-                            <td><p className={ `badge ${
-                                employee.status === "Active" ? "badge-success" : "badge-error"
-                            }` }
-                            >
-                                { employee.status }
-                            </p></td>
+                            <td>
+                                <p className={ 'badge badge-info' }
+                                    // className={ `badge ${
+                                    //     employee.status === "Active" ? "badge-success" : "badge-error"
+                                    // }` }
+                                >
+                                    { employee.status }
+                                </p></td>
                             <td>
                                 <Link
                                     href={ `/admin/employee/${ employee.id }` }

@@ -3,13 +3,13 @@ export enum ROLE {
     ADMIN = "ADMIN"
 }
 
-export enum USER_STATUS {
+export enum STATUS_USER {
     OTP = 'OTP',
     RESET = 'RESET',
     COMPLETED = 'COMPLETED',
 }
 
-export enum EMPLOYEE_STATUS {
+export enum STATUS_EMPLOYEE {
     Create = 'Create',
     Registration = 'Registration',
     Registration_False = 'Registration_False',
@@ -22,7 +22,7 @@ export enum EMPLOYEE_STATUS {
 }
 
 // export const employeeList = [ 'Pending', 'Fail', 'Complete', 'Active', 'Disabled' ]
-export const employeeListStatus = [
+export const StatusEmployeeList = [
     'Registration',
     'Registration_False',
     'Interview',

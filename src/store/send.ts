@@ -8,6 +8,8 @@ type StoreSend = {
 };
 
 interface StateSend {
+    message: string | null,
+    setMessage: (message: string | null) => void
     store: StoreSend
     setStore: (data: Partial<StoreSend>) => void
     setSelectEmployee: (idEmployee: string) => void
@@ -18,6 +20,8 @@ interface StateSend {
 
 export const useSendStore = create<StateSend>()(
     (set, get) => ( {
+        message: null,
+        setMessage: (message: string | null) => set({ message }),
         store: {
             selectAll: [],
             name: "",

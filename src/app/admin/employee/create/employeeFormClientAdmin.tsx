@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { employeeCreateClientAdmin, EmployeeCreateClientAdmin } from "@/schema/employee.valid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
-import { onUpsertDataAdmin } from "@/server/action/employee.admin";
+import { onUpsertDataAdminAction } from "@/server/action/employee-admin.action";
 import { InputTextDynamic } from "@/app/components/form/state";
 import React from "react";
 
@@ -25,7 +25,7 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
     const onSubmit = async (data: EmployeeCreateClientAdmin) => {
         const idToast = toast.loading('Updating...')
         try {
-            await onUpsertDataAdmin(method, data)
+            await onUpsertDataAdminAction(method, data)
             toast.success("Updating success")
         } catch (e) {
             if (e instanceof Error) toast.error(`Error updating user : ${ e.message }`)

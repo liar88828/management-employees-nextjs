@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import Zod from "zod"
 import { Prisma } from ".prisma/client"
 import type { TMethod, ToModel } from "@/interface/Utils"
-import { ErrorPrisma } from "@/utils/ErrorClass";
+import { ErrorDatabase } from "@/utils/error/ErrorClass";
 
 export async function getId({ params }: TContext) {
     const param = await params
@@ -185,14 +185,14 @@ export async function ResponseJson(
             }
         }
 
-        if (err instanceof ErrorPrisma) {
+        if (err instanceof ErrorDatabase) {
             return NextResponse.json(
                 {
                     message: `Error on ${ method } ErrorPrisma`,
                     data: err.msg,
                     success: false
                 },
-                { status: err.code }
+                { status: 404 }
             )
         }
 

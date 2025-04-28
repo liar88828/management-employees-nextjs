@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useActionState } from "react";
 import { toDateIndo } from "@/utils/toDate";
 import { prisma } from "@/config/prisma";
-import { PositionEmployeeList } from "@/app/admin/position/components/positionEmployeeList";
-import { useFormStatus } from "react-dom";
-import { onAction } from "@/server/action/OnAction";
-import { departmentDelete } from "@/server/action/department";
-import { Trash } from "lucide-react";
-import { Department } from "@/interface/entity/departement.model";
+import { departmentCreateFormDataAction } from "@/server/action/department.action";
+import { FormError } from "@/app/components/form/action";
+import { LoadingAction } from "@/app/components/LoadingData";
 
+export function PositionEmployeeList({ title, desc }: {
+    title: string,
+    desc: string,
+}) {
+    return (
+        <div className="flex ">
+            <p className={ 'text-nowrap' }>{ title } : </p>
+            <p className={ 'text-right' }>{ desc }</p>
+        </div>
+    );
+}
 async function PositionEmployee_({ position, name }: { position: string, name?: string }) {
     const employees = await prisma.employees.findMany({
         where: {
@@ -46,34 +54,55 @@ async function PositionEmployee_({ position, name }: { position: string, name?: 
     );
 }
 
-export function DepartmentModalDelete({ department }: { department: Department }) {
-    const { pending } = useFormStatus()
-    const onDelete = async () => {
-        await onAction(async () => await departmentDelete(department.id),
-            `Success Delete Data Department By ID ${ department.id }`)
-    }
-
+export function PositionModalCreatexx() {
+    const [ state, action, pending ] = useActionState(departmentCreateFormDataAction, undefined);
     return (
         <div>
             {/* Open the modal using document.getElementById('ID').showModal() method */ }
-            <button className="btn btn-error btn-sm btn-square" onClick={ () => {
-                // @ts-ignore
-                document.getElementById(`DepartmentModalDelete_${ department.id }`).showModal()
-            } }
+            <button
+                // btn-sm btn-square
+                className="btn btn-success "
+                onClick={ () => {
+                    // @ts-ignore
+                    document.getElementById('ModalCreateDepartment').showModal()
+                } }
             >
-                <Trash />
+                {/*<Plus/>*/ }
+                Create
             </button>
-            <dialog id={ `DepartmentModalDelete_${ department.id }` } className="modal">
-                <div className="modal-box space-y-5">
-                    <h2 className="card-title">Delete ID { department.id } - Position { department.position }</h2>
-                    <p>Are You Sure want Delete this data ???</p>
-                    <div className="modal-action">
-                        <button className={ `btn btn-error  btn-square ${ pending && 'btn-disabled' }` }
-                                onClick={ onDelete }
-                        >
-                            <Trash />
-                        </button>
+            <dialog id="ModalCreateDepartment" className="modal">
+                <div className="modal-box ">
+                    <form action={ action }>
+                        <h2 className="card-title">Add Department Position</h2>
+                        <div className="form-control w-full">
+                            <label htmlFor="email" className="label">
+                                <span className="label-text">Position</span>
+                            </label>
+                            <input
+                                id="position"
+                                name="position"
+                                placeholder="Enter Position"
+                                className="input input-bordered w-full"
+                            />
+                            <FormError errors={ state?.errors?.position } title="must add:" />
+                        </div>
 
+                        { state?.message && (
+                            <p className="text-red-500 text-sm mt-1">{ state.message }</p>
+                        ) }
+                        <div className="card-actions">
+                            <button
+                                disabled={ pending }
+                                type="submit"
+                                className={ `btn btn-primary w-full ${ pending ? "btn-disabled " : "" } mt-5` }
+                            >
+                                { pending ? "Creating..." : "Create" }
+                                <LoadingAction isLoading={ pending } />
+                            </button>
+
+                        </div>
+                    </form>
+                    <div className="modal-action">
                         <form method="dialog">
                             {/* if there is a button in form, it will close the modal */ }
                             <button className="btn">Close</button>
@@ -81,6 +110,7 @@ export function DepartmentModalDelete({ department }: { department: Department }
                     </div>
                 </div>
             </dialog>
+
         </div>
     )
 }

@@ -8,8 +8,11 @@ export function RegistrationTable({ employees }: {
     // valid?: boolean
 }) {
     return (
-        <div className="overflow-x-auto">
-            <table className="my-table bg-base-200/50">
+        <div className="overflow-x-auto w-full">
+
+            <table
+                className="my-table"
+            >
 
                 <thead>
                 <tr className="text-left">
@@ -37,7 +40,7 @@ export function RegistrationTable({ employees }: {
                         <td className="text-nowrap">{ employee.User.phone }</td>
                         {/*<td >{ employee.gender }</td>*/ }
                         {/*<td >{ employee.jobTitle }</td>*/ }
-                        {/*<td >{ employee.department }</td>*/ }
+                        {/*<td >{ employee.departments }</td>*/ }
                         {/*<td >{ employee.employmentType }</td>*/ }
                         <td>{ toDateIndo(employee.hireDate) }</td>
                         <td>{

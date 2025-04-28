@@ -4,14 +4,14 @@ import { employeeRepository } from "@/server/controller";
 import { EmployeeRegistrationUserCreateClient } from "@/schema/employee.valid";
 import { saveImage, setPathImage, updateImage } from "@/server/repository/image.repo";
 import { employeeCreateSanitizeUser, employeeSanitizeUpdateUser } from "@/sanitize/employe.sanitize";
-import { EmployeeUserClient, TEmployeeDB } from "@/interface/entity/employee.model";
+import { EmployeeUserClientLatter, TEmployeeDB } from "@/interface/entity/employee.model";
 import { employeeFindById } from "@/server/controller/employee.controller";
 import { prisma } from "@/config/prisma";
-import { EMPLOYEE_STATUS, EmployeeCompletePhotoType } from "@/interface/enum";
+import { EmployeeCompletePhotoType, ROLE, STATUS_EMPLOYEE } from "@/interface/enum";
 import { ZodError } from "zod";
 import { revalidatePath } from "next/cache";
 
-export async function employeeCreateUser(
+export async function employeeCreateUserAction(
     { img, ...data }: EmployeeRegistrationUserCreateClient,
     userId: string
 ) {
@@ -38,7 +38,7 @@ export async function employeeCreateUser(
     }
 }
 
-export async function employeeUpdateUser(
+export async function employeeUpdateUserAction(
     { img, ...data }: EmployeeRegistrationUserCreateClient,
     employeeId: string,
     userId: string
@@ -78,34 +78,34 @@ export async function employeeUpdateUser(
     }
 }
 
-export async function onUpsertDataUser(
+export async function onUpsertDataUserAction(
     method: "POST" | "PUT",
     data: EmployeeRegistrationUserCreateClient,
     userId: string,
     idEmployee?: string,
 ) {
-    // await checkDepartmentPosition(data.department);
+    // await checkDepartmentPosition(data.departments);
     // console.log(method, idEmployee)
     if (method === "POST") {
         console.log('Execute Post')
-        return employeeCreateUser(data, userId)
+        return employeeCreateUserAction(data, userId)
     } else if (method === "PUT" && idEmployee) {
         console.log('Execute Put')
-        return employeeUpdateUser(data, idEmployee, userId)
+        return employeeUpdateUserAction(data, idEmployee, userId)
     }
     throw new Error('Invalid data');
 }
 
-export async function getEmployeeByUserIdRedirect(userId: string): Promise<TEmployeeDB> {
+export async function etEmployeeByUserIdRedirect(userId: string): Promise<TEmployeeDB> {
     return employeeFindById({ userId }).then(data => {
         if (!data) redirect('/home')
         return data
     })
 }
 
-export async function getEmployeeByUserIdForIDCard(userId: string) {
+export async function employeeByUserIdForIDCardLoader(userId: string) {
     return prisma.employees.findUnique({
-        where: { userId, status: EMPLOYEE_STATUS.Active },
+        where: { userId, status: STATUS_EMPLOYEE.Active },
         include: {
             skills: true,
             educations: true
@@ -114,35 +114,53 @@ export async function getEmployeeByUserIdForIDCard(userId: string) {
 
 }
 
-export const employeeFindLatter = async (
+export async function employeeFindLatterLoader(
     name: string, department: string, complete: EmployeeCompletePhotoType
-) => await prisma.employees.findMany({
-    where: {
-        User: { name: { contains: name } },
-        department: { contains: department },
-
-        photoKtp: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-        photo3x4: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-        photoIjazah: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-    },
-    include: {
-        User: {
-            omit: {
-                password: true,
-                otp: true,
-                otpExpired: true
+) {
+    return prisma.employees.findMany({
+        where: {
+            User: {
+                role: { not: ROLE.ADMIN, },
+                name: { contains: name, }
+            },
+            status: {
+                notIn: [
+                    STATUS_EMPLOYEE.Active,
+                    STATUS_EMPLOYEE.Create,
+                    STATUS_EMPLOYEE.Resign,
+                    STATUS_EMPLOYEE.Registration,
+                    STATUS_EMPLOYEE.Registration_False,
+                    STATUS_EMPLOYEE.Disabled,
+                ]
+            },
+            sendEmail: 1,
+            department: { contains: department },
+            photoKtp: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
+            photo3x4: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
+            photoIjazah: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
+        },
+        include: {
+            LetterEmployees: true,
+            User: {
+                omit: {
+                    password: true,
+                    otp: true,
+                    otpExpired: true
+                }
             }
-        }
-    },
-})
-.then(item => {
-    return item.map((i): EmployeeUserClient | null => {
-        if (!i) return null
-        return { ...i, User: i.User }
-    }).filter(i => i !== null)
-})
+        },
+    })
+    .then(item => {
+        return item.map((i): EmployeeUserClientLatter | null => {
+            if (!i) return null
+            return { ...i, User: i.User }
+        }).filter(i => i !== null)
+    })
+}
 
-export async function registrationFinished({ userId }: { userId: string }) {
+export async function registrationFinishedAction({ userId }: { userId: string })
+// : Promise<ActionResponse|void>
+{
     const employeeDB = await prisma.employees.findUnique({
         where: { userId },
         select: {
@@ -163,9 +181,15 @@ export async function registrationFinished({ userId }: { userId: string }) {
     if (!employeeDB.photo3x4) {
         redirect('/registration?error=Please complete the photo 3x4&type=3x4')
     }
-    await prisma.employees.update({
+    const data = await prisma.employees.update({
         where: { userId },
         data: { registration: true }
     })
     revalidatePath("/");
+
+    // return {
+    //     data,
+    //     success: true,
+    //     message: "Success Update Data"
+    // }
 }

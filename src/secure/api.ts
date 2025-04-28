@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { ErrorResponse } from "@/utils/ErrorClass";
+import { ErrorResponse } from "@/utils/error/ErrorClass";
 import { decrypt } from "@/secure/jwt";
 
 export async function fromRequest(request: NextRequest,) {
@@ -11,4 +11,3 @@ export async function fromRequest(request: NextRequest,) {
     return await decrypt(token)
 
 }
-

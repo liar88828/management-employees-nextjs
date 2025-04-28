@@ -1,12 +1,12 @@
 import React from "react";
-import { employeesFindValid, userFindAvailable } from "@/server/action/employee.admin";
+import { employeesFindValidLoader, userFindAvailableLoader } from "@/server/action/employee-admin.action";
 import { TableEmployees } from "@/app/admin/_account/account.client";
 
 export default async function page() {
 
-    const employeesValid = await employeesFindValid()
+    const employeesValid = await employeesFindValidLoader()
     // const employeesNull = await employeesFindNull()
-    const userAvailable = await userFindAvailable(employeesValid)
+    const userAvailable = await userFindAvailableLoader(employeesValid)
 
     return (
 

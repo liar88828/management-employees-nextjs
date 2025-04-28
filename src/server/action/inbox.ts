@@ -4,7 +4,7 @@ import { FormStateReturn } from "@/schema/departement.valid";
 import { interviewSchema, InterviewSchemaType, registrationSchema, RegistrationSchemaType } from "@/schema/inbox";
 import { revalidatePath } from "next/cache";
 
-export async function interviewUpdate(state: FormStateReturn<InterviewSchemaType>, payload: FormData): Promise<FormStateReturn<InterviewSchemaType>> {
+export async function interviewUpdateAction(state: FormStateReturn<InterviewSchemaType>, payload: FormData): Promise<FormStateReturn<InterviewSchemaType>> {
     const defaultValue = Object.fromEntries(payload);
     // console.log(defaultValue);
     const validateData = interviewSchema.safeParse(defaultValue)
@@ -44,7 +44,7 @@ export async function interviewUpdate(state: FormStateReturn<InterviewSchemaType
     }
 }
 
-export async function registerUpdateFormDataAdmin(state: FormStateReturn<RegistrationSchemaType>, payload: FormData): Promise<FormStateReturn<RegistrationSchemaType>> {
+export async function registerUpdateFormDataAdminAction(state: FormStateReturn<RegistrationSchemaType>, payload: FormData): Promise<FormStateReturn<RegistrationSchemaType>> {
     const defaultValue = Object.fromEntries(payload);
     // console.log(defaultValue);
     const validateData = registrationSchema.safeParse(defaultValue)

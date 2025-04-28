@@ -1,4 +1,4 @@
-import { Educations, Employees, Skills } from "@prisma/client";
+import { Educations, Employees, LetterEmployees, Skills } from "@prisma/client";
 import { STATUS_EMPLOYEE } from "@/interface/Utils";
 import { UserClient } from "@/interface/entity/user.model";
 
@@ -29,6 +29,10 @@ export const ijazah = 'https://dummyimage.com/297x210/000/ffffff.jpg';
 type EmployeeClient = Employees & UserClient
 
 export type EmployeeUserClient = Employees & { User: UserClient }
+export type EmployeeUserClientLatter = Employees & {
+    User: UserClient
+    LetterEmployees: LetterEmployees[]
+}
 
 export type TEmployeeDB = EmployeeUserClient & {
     status: string | STATUS_EMPLOYEE;

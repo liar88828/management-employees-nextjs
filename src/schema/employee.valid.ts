@@ -122,7 +122,7 @@ export const employeeUpdateServerUser = z.object({
     })),
     userId: z.string(),
     img: z.string().min(2).optional(),
-    // department: z.string().min(2).max(100),
+    // departments: z.string().min(2).max(100),
     // hireDate: z.coerce.date(),
     // registration: z.boolean(),
     // salary: z.number().min(0, "Salary must be a positive number"),

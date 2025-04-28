@@ -1,21 +1,31 @@
-import { EmployeeUserClient } from "@/interface/entity/employee.model";
+'use client'
+import { EmployeeUserClientLatter } from "@/interface/entity/employee.model";
 import { Department } from "@/interface/entity/departement.model";
 import { useSendStore } from "@/store/send";
 import Form from "next/form";
 import { EmployeeCompletePhoto } from "@/interface/enum";
 import React from "react";
 
-export function SendTableEmployees({ employees, departments }: {
-    employees: EmployeeUserClient[],
+export function SendFormTableEmployees({ employees, departments }: {
+    employees: EmployeeUserClientLatter[],
     departments: Department[]
 }) {
-    const { store, setStore, setSelectEmployee, setSelectAllEmployee, getEmployeeExist } = useSendStore()
+    const { setStore, setSelectEmployee, setSelectAllEmployee, getEmployeeExist, message } = useSendStore()
 
     return (
-        <section className="space-y-2 mt-4">
+        <section className="card card-body bg-base-200 mt-2">
+            <div className="">
+
+                <h1 className={ 'card-title' }>Select Employee
+                    { message &&
+                        <span className={ 'text-error' }>{ message }</span>
+                    }
+                </h1>
+
+            </div>
             {/*<h1>Please Select Want To Send Letter</h1>*/ }
             <Form action="/admin/send/create"
-                  className={ 'space-x-4' }
+                  className={ 'flex flex-wrap gap-1' }
             >
 
                 <input
@@ -31,7 +41,7 @@ export function SendTableEmployees({ employees, departments }: {
                     name={ 'complete' }
                     className="select select-bordered "
                 >
-                    <option>{ EmployeeCompletePhoto["Select All"] }</option>
+                    <option value={ EmployeeCompletePhoto["Select All"] }>Select Complete Document</option>
                     <option>{ EmployeeCompletePhoto.Complete }</option>
                     <option>{ EmployeeCompletePhoto["Not Completed"] }</option>
                 </select>
@@ -41,7 +51,7 @@ export function SendTableEmployees({ employees, departments }: {
                     name={ 'department' }
                     className="select select-bordered "
                 >
-                    <option value={ '' }>Select All</option>
+                    <option value={ '' }>Select Department</option>
                     { departments.map(department => (
                         <option key={ department.id }>{ department.position }</option>
                     )) }
@@ -52,7 +62,7 @@ export function SendTableEmployees({ employees, departments }: {
             </Form>
 
             <div className="overflow-x-auto">
-                <table className="table bg-base-200 ">
+                <table className="my-table bg-base-100">
                     <thead>
                     <tr className="text-left">
                         <th>
@@ -68,6 +78,7 @@ export function SendTableEmployees({ employees, departments }: {
                         <th>Phone</th>
                         <th>Department</th>
                         <th>Status</th>
+                        <th>Count</th>
                         {/*<th >Action</th>*/ }
                     </tr>
                     </thead>
@@ -86,9 +97,10 @@ export function SendTableEmployees({ employees, departments }: {
                             </td>
                             <td>{ employee.User.name }</td>
                             <td>{ employee.User.email }</td>
-                            <td>{ employee.User.phone }</td>
+                            <td className={ 'text-nowrap' }>{ employee.User.phone }</td>
                             <td>{ employee.department }</td>
                             <td>{ employee.status }</td>
+                            <td>{ employee.LetterEmployees.length }</td>
                             {/*<td >*/ }
                             {/*    Action*/ }
                             {/*</td>*/ }

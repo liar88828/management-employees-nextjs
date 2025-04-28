@@ -4,7 +4,7 @@ import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { EmployeeRegistrationUserCreateClient } from "@/schema/employee.valid";
 import { toUrl } from "@/utils/toUrl";
 import { EmployeeParams } from "@/server/repository/employee.repo";
-import { ErrorFetch } from "@/utils/ErrorClass";
+import { ErrorFetch } from "@/utils/error/ErrorClass";
 
 export const employeeAll = async ({filter, pagination}: EmployeeParams) => {
     const url = toUrl('employee', {...filter, ...pagination})
@@ -97,7 +97,7 @@ export const _employeeCreateUserApi = async ({ img, ...data }: EmployeeRegistrat
         body: formData, // Send as FormData
     });
 
-    console.log('employeeCreateUser', response.json());
+    console.log('employeeCreateUserAction', response.json());
     if (!response.ok) {
         const data = await response.json();
         console.error(data)

@@ -2,7 +2,7 @@ import { prisma } from "@/config/prisma";
 import { EmployeeCreate, TEmployeeDB, TEmployeeSearch } from "@/interface/entity/employee.model";
 import { ResponseAll, } from "@/interface/server/param";
 import { InterfaceRepository, ParamsApi } from "@/interface/server/InterfaceRepository";
-import { ErrorPrisma } from "@/utils/ErrorClass";
+import { ErrorDatabase } from "@/utils/error/ErrorClass";
 import {
     EmployeeRegistrationUserCreateClient,
     EmployeeRegistrationUserCreateServer,
@@ -86,7 +86,7 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeR
             //     }
             // );
             // if (foundEmployee) {
-            //     throw new ErrorPrisma("Employee already exists", 404);
+            //     throw new ErrorDatabase("Employee already exists", 404);
             // }
             const employeeDB = await tx.employees.create({
                 data: { ...employees }
@@ -241,7 +241,7 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeR
             //     }
             // );
             // if (foundUser) {
-            //     throw new ErrorPrisma("Employee already exists", 404);
+            //     throw new ErrorDatabase("Employee already exists", 404);
             // }
             const employeeDB = await tx.employees.create({
                 data: { ...employees }
@@ -283,7 +283,8 @@ export default class EmployeeRepository implements InterfaceRepository<EmployeeR
                 where: { userId: employees.userId }
             });
             if (!foundEmployee) {
-                throw new ErrorPrisma("Is Not Found", 404);
+                // 404
+                throw new ErrorDatabase("Is Not Found");
             }
             const employeeDB = await tx.employees.update({
                 where: { id }, data: { ...employees }

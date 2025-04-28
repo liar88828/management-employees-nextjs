@@ -28,7 +28,7 @@
 //
 //     const onSubmit = async (data: EmployeeRegistrationUserCreateClient) => {
 //         await onAction(() => {
-//                 onUpsertDataUser(method, data, employee?.id,
+//                 onUpsertDataUserAction(method, data, employee?.id,
 //                     user)
 //             },
 //             'Success Create Data Employee')
@@ -169,7 +169,7 @@
 //                         </title>
 //
 //                         <select
-//                             { ...register('department') }
+//                             { ...register('departments') }
 //                             className={ `select select-bordered ${ errors.gender ? 'select-errors' : '' }` }
 //                         >
 //                             <option value="">Select Department</option>
@@ -177,8 +177,8 @@
 //                                 <option key={ item.id } value={ item.position }>{ item.position }</option>
 //                             )) }
 //                         </select>
-//                         { errors.department
-//                             && <p className="text-errors text-sm mt-1">{ errors.department.message }</p>
+//                         { errors.departments
+//                             && <p className="text-errors text-sm mt-1">{ errors.departments.message }</p>
 //                         }
 //                     </div>
 //

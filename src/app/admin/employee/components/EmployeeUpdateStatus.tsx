@@ -2,8 +2,8 @@
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { XIcon } from "lucide-react";
 import React, { useState } from "react";
-import { employeeListStatus } from "@/interface/enum";
-import { changeUpdatePosition } from "@/server/action/employee.admin";
+import { StatusEmployeeList } from "@/interface/enum";
+import { changeUpdatePositionAction } from "@/server/action/employee-admin.action";
 
 export function EmployeeUpdateStatus({ employee }: { employee: TEmployeeDB }) {
 
@@ -38,13 +38,13 @@ export function EmployeeUpdateStatus({ employee }: { employee: TEmployeeDB }) {
                         >
                             <option disabled value={ '' }>Filter</option>
                             {/*<option value={ '' }>All</option>*/ }
-                            { employeeListStatus.map(item => (
+                            { StatusEmployeeList.map(item => (
                                 <option key={ item }>{ item }</option>
                             )) }
                         </select>
                         <button
                             className={ 'btn btn-success ' }
-                            onClick={ () => changeUpdatePosition(employee.id, changePosition) }
+                            onClick={ () => changeUpdatePositionAction(employee.id, changePosition) }
                         >Change
                         </button>
                     </div>

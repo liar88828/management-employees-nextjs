@@ -1,0 +1,49 @@
+import Form from "next/form";
+import { Search } from "lucide-react";
+import Link from "next/link";
+import { EmployeeCompletePhoto } from "@/interface/enum";
+import React from "react";
+export default function RegistrationSearch(
+    { search, status }: { search: string, status: string }
+) {
+    return (
+        <div className="flex gap-2 items-center flex-wrap">
+            <Form
+                action={ `/admin/registration` }
+                className="join"
+            >
+                <input type="search"
+                       className={ 'input input-bordered join-item ' }
+                       defaultValue={ search }
+                       name={ 'search' }
+                />
+                <input type="hidden"
+                       defaultValue={ status }
+                       name={ 'status' }
+                />
+
+                <button className={ 'btn join-item ' }><Search /></button>
+            </Form>
+
+            <details className="dropdown">
+                <summary className="btn">Select Status</summary>
+                <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                    <li><Link
+                        href={ `/admin/registration?search=${ search }&status=` }
+                    >{ EmployeeCompletePhoto["Select All"] }</Link></li>
+                    <li><Link
+                        href={ `/admin/registration?search=${ search }&status=${ EmployeeCompletePhoto.Complete }` }
+                    >{ EmployeeCompletePhoto.Complete }</Link></li>
+                    <li><Link
+                        href={ `/admin/registration?search=${ search }&status=${ EmployeeCompletePhoto["Not Completed"] }` }
+                    >{ EmployeeCompletePhoto["Not Completed"] }</Link></li>
+                    {/*{ StatusEmployeeList.map((item) => (*/ }
+                    {/*    <li key={ item }>*/ }
+                    {/*        <Link href={ `/admin/registration?search=${ search }&status=${ item }` }>{ item }</Link>*/ }
+                    {/*    </li>*/ }
+                    {/*)) }*/ }
+                </ul>
+            </details>
+        </div>
+    );
+}

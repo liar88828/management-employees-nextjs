@@ -1,5 +1,5 @@
 import Form from "next/form";
-import { employeeListStatus } from "@/interface/enum";
+import { StatusEmployeeList } from "@/interface/enum";
 import { Search } from "lucide-react";
 
 export function EmployeeSearchClientAdmin({ search, status }: {
@@ -7,7 +7,7 @@ export function EmployeeSearchClientAdmin({ search, status }: {
     status: string,
 }) {
     return (
-        <div className="flex justify-between gap-2">
+        <div className="flex gap-2 items-center flex-wrap">
             <Form action={ '/admin/employee' } className="join w-full">
                 <input
                     type="text"
@@ -21,7 +21,7 @@ export function EmployeeSearchClientAdmin({ search, status }: {
                 >
                     <option disabled value={ '' }>Filter</option>
                     {/*<option value={ '' }>All</option>*/ }
-                    { employeeListStatus.map(item => (
+                    { StatusEmployeeList.map(item => (
                         <option key={ item }>{ item }</option>
                     )) }
                 </select>

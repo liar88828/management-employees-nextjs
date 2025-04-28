@@ -1,9 +1,8 @@
-'use client'
 import { TEmployeeDB } from "@/interface/entity/employee.model";
-import React from "react";
 import { toDate } from "@/utils/toDate";
+import React from "react";
 
-export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
+export function EmployeeCVGlobal({ employee }: { employee: TEmployeeDB }) {
     return (
         <div className="card w-full max-w-3xl  bg-white card-bordered shadow-lg">
             {/*mx-auto*/ }
@@ -29,7 +28,7 @@ export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
                     </div>
 
                 </div>
-                <div className="divider "></div>
+                <div className="divider my-1 "></div>
 
                 <div className=" grid gap-6 mt-2">
                     <section>
@@ -52,20 +51,12 @@ export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
                             <p><strong>Hire Date:</strong> { toDate(employee.hireDate) }</p>
                             <p><strong>Employee ID:</strong> { employee.id }</p>
                         </div>
-                        <div className="divider "></div>
 
                     </section>
+                </div>
+                <div className="divider my-1 "></div>
 
-                    <section>
-                        <h3 className="font-semibold mb-2">Skills</h3>
-                        <div className="flex flex-wrap gap-2">
-                            { employee.skills && employee.skills.map(({ text }, index) => (
-                                <div className="badge badge-neutral badge-outline" key={ index }>
-                                    { text }
-                                </div>
-                            )) }
-                        </div>
-                    </section>
+                <div className="grid grid-cols-2 ">
 
                     <section>
                         <h3 className="font-semibold mb-2">Education</h3>
@@ -74,6 +65,21 @@ export function EmployeeCVPageAdmin({ employee }: { employee: TEmployeeDB }) {
                                 <li key={ index }>{ text }</li>
                             )) }
                         </ul>
+                    </section>
+                    <section>
+                        <h3 className="font-semibold mb-2">Skills</h3>
+                        <ul className="list-disc list-inside text-sm">
+                            { employee.skills && employee.skills.map(({ text }, index) => (
+                                <li key={ index }>{ text }</li>
+                            )) }
+                        </ul>
+                        {/*<div className="flex flex-wrap gap-2">*/ }
+                        {/*    { employee.skills && employee.skills.map(({ text }, index) => (*/ }
+                        {/*        <div className="badge badge-neutral badge-outline" key={ index }>*/ }
+                        {/*            { text }*/ }
+                        {/*        </div>*/ }
+                        {/*    )) }*/ }
+                        {/*</div>*/ }
                     </section>
 
                     {/*<section>*/ }

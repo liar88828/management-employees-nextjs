@@ -5,10 +5,10 @@ import { Letters } from "@prisma/client";
 import { LoadingSpin } from "@/app/components/LoadingData";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { MyInput, MyInputDate } from "@/app/components/form/action";
-import { letterEmployeeActionFormData } from "@/server/action/letter.action";
+import { _sendEmployeeFormDataAction } from "@/server/action/send.action";
 
-export function SendForm({ employees, letter }: { letter?: Letters, employees: EmployeeUserClient[] }) {
-    const [ state, action, pending ] = useActionState(letterEmployeeActionFormData, undefined);
+export function SendFormx({ employees, letter }: { letter?: Letters, employees: EmployeeUserClient[] }) {
+    const [ state, action, pending ] = useActionState(_sendEmployeeFormDataAction, undefined);
     // console.log(state)
     return (
         <div className="flex items-center justify-center">
@@ -42,7 +42,7 @@ export function SendForm({ employees, letter }: { letter?: Letters, employees: E
                     {/*    Select Employee Or Save as Template*/ }
                     {/*</div>*/ }
                     <div>
-                        {/*<SendTableEmployees employees={ employees } />*/ }
+                        {/*<SendFormTableEmployees employees={ employees } />*/ }
                     </div>
 
                     { state?.message && (

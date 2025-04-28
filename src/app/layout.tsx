@@ -1,7 +1,8 @@
 import { Metadata } from 'next'
 import './globals.css'
 import { Inter } from 'next/font/google'
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
+import ClientProvider from "@/app/components/Layout/clientProvider";
 // If loading a variable font, you don't need to specify the font weight
 const inter = Inter({
     subsets: [ 'latin' ],
@@ -25,9 +26,9 @@ export default function RootLayout({ children }: {
             // data-theme={ (isDarkTheme || !isDarkTheme) ? "dark" : "light" }
               data-theme={ "light" }
         >
-        {/*<ReactQueryProvider>*/ }
+        <ClientProvider>
             { children }
-        {/*</ReactQueryProvider>*/ }
+        </ClientProvider>
         </body>
         </html>
     )

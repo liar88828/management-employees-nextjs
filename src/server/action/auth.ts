@@ -16,7 +16,7 @@ import { userRepository } from "@/server/controller";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { checkPassword } from "@/secure/password";
 import { PropertyMap } from "@/interface/types";
-import { ROLE, USER_STATUS } from "@/interface/enum";
+import { ROLE, STATUS_USER } from "@/interface/enum";
 import { _otpGenerate } from "@/server/controller/otpController";
 
 export async function register(state: FormStateRegister, formData: FormData): Promise<FormStateRegister> {
@@ -118,7 +118,7 @@ export async function login(state: FormStateAuth, formData: FormData): Promise<F
             throw new Error('User not exists!')
         }
         // console.log(user.isValidate)
-        if (user.status === USER_STATUS.OTP) {
+        if (user.status === STATUS_USER.OTP) {
             // console.log('will redirect to otp')
             // throw new Error('User is not Registered!. please go Otp')
             redirect('/otp')
@@ -245,7 +245,7 @@ export async function reset(state: FormStateAuth, formData: FormData) {
             throw new Error('User not exists!')
         }
 
-        if (user.status === USER_STATUS.RESET) {
+        if (user.status === STATUS_USER.RESET) {
             // console.log('will redirect to otp')
             // throw new Error('User is not Registered!. please go Otp')
             redirect('/otp')
@@ -257,7 +257,7 @@ export async function reset(state: FormStateAuth, formData: FormData) {
             where: { id: user.id },
             data: {
                 password: hashedPassword,
-                status: USER_STATUS.COMPLETED
+                status: STATUS_USER.COMPLETED
             }
         })
         // await createSession({ usersId: user.id, role: user.role })

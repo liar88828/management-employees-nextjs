@@ -16,16 +16,16 @@ import {
 import { employeeRepository } from "@/server/controller";
 import { ZodError } from "zod";
 import { prisma } from "@/config/prisma";
-import { checkDepartmentPosition } from "@/server/action/department";
-import { EMPLOYEE_STATUS, EmployeeCompletePhotoType } from "@/interface/enum";
+import { checkDepartmentPosition } from "@/server/action/department.action";
+import { EmployeeCompletePhotoType, STATUS_EMPLOYEE } from "@/interface/enum";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { Users } from ".prisma/client";
 import { revalidatePath } from "next/cache";
 import { globalPageSize } from "@/config/nextPublicBaseUrl";
+import { ActionResponse } from "@/interface/action";
 
-export const employeeCreateFormDataAdmin = async ({ img, ...data }: EmployeeCreateClientAdmin,
-) => {
-    // console.log('employeeCreateFormDataAdmin', data);
+export async function employeeCreateFormDataAdminAction({ img, ...data }: EmployeeCreateClientAdmin) {
+    // console.log('employeeCreateFormDataAdminAction', data);
     const formData = new FormData();
     formData.append('file', img[0]);
     formData.append('data', JSON.stringify(data));
@@ -40,7 +40,8 @@ export const employeeCreateFormDataAdmin = async ({ img, ...data }: EmployeeCrea
 
 }
 
-export async function employeeUpdateFormDataAdmin({ img, ...data }: EmployeeCreateClientAdmin, employeeId: string) {
+export async function employeeUpdateFormDataAdminAction(
+    { img, ...data }: EmployeeCreateClientAdmin, employeeId: string) {
     try {
         const typeImage = typeof img === 'object';
         const formData = new FormData();
@@ -62,17 +63,17 @@ export async function employeeUpdateFormDataAdmin({ img, ...data }: EmployeeCrea
     }
 }
 
-export async function employeeOnUpsertAdmin(
+export async function employeeOnUpsertAdminAction(
     method: "POST" | "PUT",
     data: EmployeeCreateClientAdmin,
     id?: string) {
     try {
         await checkDepartmentPosition(data.department);
         if (method === "POST") {
-            data.status = EMPLOYEE_STATUS.Registration
-            return employeeCreateFormDataAdmin(data)
+            data.status = STATUS_EMPLOYEE.Registration
+            return employeeCreateFormDataAdminAction(data)
         } else if (method === "PUT" && id) {
-            return employeeUpdateFormDataAdmin(data, id)
+            return employeeUpdateFormDataAdminAction(data, id)
         }
         throw new Error('Something went wrong');
     } catch (error) {
@@ -117,7 +118,7 @@ export async function employeeOnConnectUser(userId: string, employeeId: string) 
 //     })
 // }
 
-export const userFindAvailable = async (employeesValid: ( EmployeeUserClient | null )[]): Promise<Users[]> => {
+export async function userFindAvailableLoader(employeesValid: ( EmployeeUserClient | null )[]): Promise<Users[]> {
 
     const employeeValid = employeesValid
     // .filter(item => item !== null)
@@ -161,7 +162,7 @@ export const employeesFindNull = async () => await prisma.employees.findMany({
 })
 
 // : Promise<TEmployeeDB[]>
-export const employeesFindValid = async () => await prisma.employees.findMany({
+export const employeesFindValidLoader = async () => await prisma.employees.findMany({
     where: {
         // userId: { not: null },
         User: { role: "USER" },
@@ -179,7 +180,7 @@ export const employeesFindValid = async () => await prisma.employees.findMany({
     return item.filter(item => item !== null)
 })
 
-export const employeePagination = async (search: string, status: string, page: number) => {
+export const employeePaginationLoader = async (search: string, status: string, page: number) => {
     // console.log({ search, status, page })
     // const globalPageSize = 3; // You can adjust the page size
 
@@ -222,7 +223,7 @@ export const employeePagination = async (search: string, status: string, page: n
     return { totalPages, employees }
 }
 
-export const employeeRegistrationPagination = async (
+export const employeeRegistrationPaginationLoader = async (
     search: string,
     status: string[],
     page: number,
@@ -301,7 +302,7 @@ export async function employeeCreateAdmin(
         }
     }
 }
-export async function employeeUpdateAdmin(
+export async function employeeUpdateAdminAction(
     { img, ...data }: EmployeeCreateClientAdmin,
     employeeId: string,
 ) {
@@ -336,42 +337,47 @@ export async function employeeUpdateAdmin(
         }
     }
 }
-export async function onUpsertDataAdmin(
+
+export async function onUpsertDataAdminAction(
     method: "POST" | "PUT",
     data: EmployeeCreateClientAdmin,
     idEmployee?: string,
 ) {
-    // await checkDepartmentPosition(data.department);
+    // await checkDepartmentPosition(data.departments);
     // console.log(method, idEmployee)
-    data.status = EMPLOYEE_STATUS.Registration
+    data.status = STATUS_EMPLOYEE.Registration
     if (method === "POST") {
         return employeeCreateAdmin(data,)
     } else if (method === "PUT" && idEmployee) {
         // console.log('Execute ')
-        return employeeUpdateAdmin(data, idEmployee,)
+        return employeeUpdateAdminAction(data, idEmployee,)
     }
     throw new Error('Invalid data');
 }
 
-export async function changeUpdatePosition(idEmployee: string, position?: string) {
+export async function changeUpdatePositionAction(idEmployee: string, position?: string): Promise<ActionResponse> {
     if (position) {
         const data = await prisma.employees.update({
             where: { id: idEmployee },
             data: { status: position }
         })
         revalidatePath('/')
-        return { success: true, data }
+        return {
+            success: true, data,
+            message: 'Successfully updated position'
+        }
     } else {
-        return { success: false }
+        return {
+            success: false,
+            data: null,
+            message: 'Failed to update position'
+        }
     }
 }
 
-export const employeePositions = async ({ search, department, page }: {
-    search: string,
-    department: string,
-    page: number,
-
-}) => {
+export async function employeePositionsLoader(
+    { search, department, page }: { search: string, department: string, page: number }
+) {
 
     const totalEmployees = await prisma.employees.count({
         where: {
@@ -380,9 +386,9 @@ export const employeePositions = async ({ search, department, page }: {
             department: { contains: department },
             status: {
                 notIn: [
-                    EMPLOYEE_STATUS.Interview,
-                    EMPLOYEE_STATUS.Registration,
-                    EMPLOYEE_STATUS.Create,
+                    STATUS_EMPLOYEE.Interview,
+                    STATUS_EMPLOYEE.Registration,
+                    STATUS_EMPLOYEE.Create,
                 ]
             }
         }
@@ -397,9 +403,9 @@ export const employeePositions = async ({ search, department, page }: {
             department: { contains: department },
             status: {
                 notIn: [
-                    EMPLOYEE_STATUS.Interview,
-                    EMPLOYEE_STATUS.Registration,
-                    EMPLOYEE_STATUS.Create,
+                    STATUS_EMPLOYEE.Interview,
+                    STATUS_EMPLOYEE.Registration,
+                    STATUS_EMPLOYEE.Create,
                 ]
             }
         },

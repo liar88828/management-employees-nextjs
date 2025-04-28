@@ -3,8 +3,8 @@ import { EmployeePhotoAdmin } from "@/app/components/employee/employee.page";
 import { employeeFindByUserId, employeeId } from "@/server/network/employee";
 import { EmptyData } from "@/app/components/PageErrorData";
 import { validSession } from "@/secure/db";
-import { getEmployeeByUserIdForIDCard } from "@/server/action/employee.client";
-import { departmentGetAllPage } from "@/server/action/department";
+import { employeeByUserIdForIDCardLoader } from "@/server/action/employee.client";
+import { departmentGetAllPage } from "@/server/action/department.action";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { EmployeeFormClientAdmin } from "@/app/admin/employee/create/employeeFormClientAdmin";
 import { EmployeeCVAdmin } from "@/app/components/employee/client/employeeCVAdmin";
@@ -40,7 +40,7 @@ export async function EmployeeDetailServerAdminNew({ employee }: { employee: TEm
 export async function EmployeeDetailServerClient() {
     const { userId } = await validSession()
 
-    const employee = await getEmployeeByUserIdForIDCard(userId);
+    const employee = await employeeByUserIdForIDCardLoader(userId);
 
     if (!employee) {
         return <EmptyData page={ `Employee Detail ${ userId }` }/>

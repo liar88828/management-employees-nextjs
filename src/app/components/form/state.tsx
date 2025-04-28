@@ -101,19 +101,24 @@ export function InputText({ keys, title }: { keys: string, title: string }) {
         </div>
     );
 }
-export function InputDate({ keys, title }: { keys: string, title: string }) {
+
+export function InputDate({ keys, title, now }: { keys: string, title: string, now?: boolean }) {
     const { register, formState: { errors } } = useFormContext()
 
     // @ts-ignore
     // const errorMessage = errors[keys].message as string
+    const today = new Date().toISOString().split('T')[0];
+    // const today = new Date().toLocaleDateString('ID-id')
 
     return (
         <div className="form-control">
             <label className="label">
-                <span className="label-text">{ title }</span>
+                <span className="label-text">{ title }  </span>
             </label>
             <input
+
                 type={ 'date' }
+                min={ now ? today : undefined }
                 { ...register(keys) }
                 className="input input-bordered"
                 placeholder={ `Add ${ title }...` }

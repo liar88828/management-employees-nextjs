@@ -3,11 +3,13 @@ import { FlagsOptionals, FlagsRequired } from "@/interface/generic";
 
 export type DepartmentFormState = {
     errors?: { position?: string[] }
-    message?: string
+    form?: string;
+    success: boolean;
+    message: string
 } | undefined
 
 export const DepartmentFormSchema = z.object({
-    position: z.string()
+    position: z.string().min(5)
 })
 
 export type FormStateReturn<T> = {

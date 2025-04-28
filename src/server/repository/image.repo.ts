@@ -1,7 +1,7 @@
 'use server'
 import path from "path";
 import fs from "fs";
-import { ErrorResponse } from "@/utils/ErrorClass";
+import { ErrorResponse } from "@/utils/error/ErrorClass";
 
 export const saveImageFormData = async (
     formData: FormData,

@@ -9,7 +9,7 @@ import { getContextQuery } from "@/utils/requestHelper";
 import { TContext } from "@/interface/server/param";
 import { RegistrationError } from "@/app/components/error/registrationFirst";
 import { EmployeeImageForm } from "@/app/(user)/registration/components/employeeImageForm";
-import { registrationFinished } from "@/server/action/employee.client";
+import { registrationFinishedAction } from "@/server/action/employee.client";
 
 export default async function Page(context: TContext) {
     const error = await getContextQuery(context, 'error')
@@ -23,7 +23,7 @@ export default async function Page(context: TContext) {
         redirect('/home');
     }
 
-    const actionRegistrationFinished = registrationFinished.bind(null, { userId: user.id })
+    const actionRegistrationFinished = registrationFinishedAction.bind(null, { userId: user.id })
     return (
         <div className="flex flex-col gap-5">
             { error && type === 'form' && <RegistrationError error={ error } /> }

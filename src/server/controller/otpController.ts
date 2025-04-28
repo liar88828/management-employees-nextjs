@@ -6,7 +6,7 @@ import { toOtp } from "@/utils/toOtp";
 import nodemailer from "nodemailer";
 import { createSession } from "@/secure/cookies";
 import { ResponseData } from "@/interface/server/TResponse";
-import { USER_STATUS } from "@/interface/enum";
+import { STATUS_USER } from "@/interface/enum";
 
 export async function _otpGenerate(json: OTPGenerate): Promise<ResponseData> {
     const { time: otpExpired, email, reason } = validGenerateOtp.parse(json)
@@ -29,26 +29,26 @@ export async function _otpGenerate(json: OTPGenerate): Promise<ResponseData> {
     // console.log(otpValid)
     await prisma.$transaction(async (tx) => {
 
-        if (reason === USER_STATUS.OTP) {
+        if (reason === STATUS_USER.OTP) {
             console.log("OTP")
             await tx.users.update({
                 where: { id: user.id },
                 data: {
                     otp,
                     otpExpired,
-                    status: USER_STATUS.OTP,
+                    status: STATUS_USER.OTP,
                     // otpCount: { increment: 1 },
                 }
             })
 
-        } else if (reason === USER_STATUS.RESET) {
+        } else if (reason === STATUS_USER.RESET) {
             console.log("RESET")
             await tx.users.update({
                 where: { id: user.id },
                 data: {
                     otp,
                     otpExpired,
-                    status: USER_STATUS.RESET
+                    status: STATUS_USER.RESET
                     // otpCount: { increment: 1 },
                 }
             })
@@ -128,8 +128,8 @@ export async function _otpValidate(json: OTPValid): Promise<ResponseData> {
         throw new Error("Otp Is Not Match")
     }
 
-    if (user.status === USER_STATUS.OTP
-        || user.status === USER_STATUS.RESET
+    if (user.status === STATUS_USER.OTP
+        || user.status === STATUS_USER.RESET
     ) {
 
         await prisma.users.update({
@@ -138,7 +138,7 @@ export async function _otpValidate(json: OTPValid): Promise<ResponseData> {
             },
             data: {
                 otp: null,
-                status: USER_STATUS.COMPLETED
+                status: STATUS_USER.COMPLETED
             }
         })
 

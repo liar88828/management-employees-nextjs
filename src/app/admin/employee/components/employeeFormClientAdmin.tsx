@@ -6,7 +6,7 @@ import { useFormImage } from "@/hook/useFormImage";
 import { FormProvider, useForm } from "react-hook-form";
 import { employeeCreateClientAdmin, EmployeeCreateClientAdmin } from "@/schema/employee.valid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { employeeOnUpsertAdmin } from "@/server/action/employee.admin";
+import { employeeOnUpsertAdminAction } from "@/server/action/employee-admin.action";
 import { EmployeeFormContextClientAdmin } from "@/app/components/employee/employee.client.admin";
 import { Department } from "@/interface/entity/departement.model";
 
@@ -16,6 +16,7 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
     method: "POST" | 'PUT',
     departments: Department[]
 }) {
+
     const status = useFormStatus()
     const { previewImage, handleImageChange } = useFormImage(employee?.img)
     const methods = useForm<EmployeeCreateClientAdmin>({
@@ -30,7 +31,7 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
     const onSubmit = async (data: EmployeeCreateClientAdmin) => {
         const toastId = toast.loading('Loading...');
         try {
-            await employeeOnUpsertAdmin(method, data, employee?.id)
+            const response = await employeeOnUpsertAdminAction(method, data, employee?.id)
             toast.success("Success Create Employee");
         } catch (e: unknown) {
             if (e instanceof Error) {

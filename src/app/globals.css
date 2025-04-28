@@ -15,7 +15,7 @@
     }
 
     .my-table {
-        @apply table table-zebra w-full table-sm bg-base-200/50;
+        @apply table table-zebra w-full table-sm bg-base-200/40;
     }
 
     .text-title {

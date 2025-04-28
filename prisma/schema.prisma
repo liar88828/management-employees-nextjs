@@ -52,6 +52,7 @@ model Employees {
   employmentType String // Employment type (e.g., "Full-Time", "Part-Time")
   notes          String // Additional notes about the employee
   img            String
+  sendEmail      Int          @default(0)
   //
   // country        String
   educations     Educations[]

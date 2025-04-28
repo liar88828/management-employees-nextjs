@@ -1,21 +1,18 @@
 import React from 'react';
-import { SendMailRegister } from "@/app/admin/send/[id]/sendMailRegister";
 import { TContext } from "@/interface/server/param";
 import { getContextParam } from "@/utils/requestHelper";
-import { getLetterMyId } from "@/server/action/letter.action";
+import { sendMyIdLoader } from "@/server/action/send.action";
 import { exampleCompany } from "@/assets/company";
 import { SendTableEmployee } from "@/app/admin/send/components/sendTableEmployee";
+import { SendHeaderDetail } from "@/app/admin/send/components/sendHeader";
 
 export default async function Page(context: TContext) {
     const letterId = await getContextParam(context, 'id')
-    const { letter, employees, } = await getLetterMyId(letterId)
+    const { letter, employees, } = await sendMyIdLoader(letterId)
 
     return (
         <div className="space-y-4 ">
-            <div className="flex justify-between items-end">
-                <h1 className={ 'my-title' }>letter : { letter.id } </h1>
-                <SendMailRegister employees={ employees } />
-            </div>
+            <SendHeaderDetail letter={ letter } employees={ employees } />
             <SendTableEmployee employees={ employees } letter={ letter } company={ exampleCompany } />
             <div className="grid 2xl:grid-cols-2 grid-cols-1 gap-5">
                 {/*<LetterInterview employee={ employees[0] } company={ company } form={ letter } />*/ }

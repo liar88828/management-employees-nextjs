@@ -38,7 +38,7 @@ export function DashboardOrderPage(props: { orders: Object[] }) {
             <div className="card-body ">
                 <h2 className="card-title">Top Order</h2>
                 <div className="overflow-x-auto">
-                    <table className="table  w-full table-auto table-xs md:table-md">
+                    <table className="my-table">
                         <thead>
                         <tr>
                             <th>Img</th>

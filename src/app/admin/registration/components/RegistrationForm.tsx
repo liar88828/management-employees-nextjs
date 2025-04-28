@@ -2,14 +2,14 @@
 import { Employees } from "@prisma/client";
 import { Department } from "@/interface/entity/departement.model";
 import { useActionState, useEffect } from "react";
-import { registerUpdateFormDataAdmin } from "@/server/action/inbox";
+import { registerUpdateFormDataAdminAction } from "@/server/action/inbox";
 import toast from "react-hot-toast";
 import Form from "next/form";
 import { MyInput, MyInputTextArea } from "@/app/components/form/action";
-import { employeeListStatus } from "@/interface/enum";
+import { StatusEmployeeList } from "@/interface/enum";
 
 export function RegistrationForm({ employee, departments }: { employee: Employees, departments: Department[] }) {
-    const [ state, action, pending ] = useActionState(registerUpdateFormDataAdmin, undefined)
+    const [ state, action, pending ] = useActionState(registerUpdateFormDataAdminAction, undefined)
     useEffect(() => {
         if (state) {
             if (state.success) {
@@ -50,7 +50,7 @@ export function RegistrationForm({ employee, departments }: { employee: Employee
                     defaultValue={ state?.value.status || employee.status }
                 >
                     <option disabled value="">Select Status</option>
-                    { employeeListStatus.map((item) => (
+                    { StatusEmployeeList.map((item) => (
                         <option key={ item }>{ item }</option>
                     )) }
                 </select>
@@ -58,7 +58,7 @@ export function RegistrationForm({ employee, departments }: { employee: Employee
 
             <div className="form-control w-full">
                 <label htmlFor={ `department` } className="label">
-                    <span className="label-text capitalize"> department </span>
+                    <span className="label-text capitalize"> departments </span>
                 </label>
                 <select
                     className="select select-bordered join-item"
@@ -66,7 +66,7 @@ export function RegistrationForm({ employee, departments }: { employee: Employee
                     key={ state?.value.department || employee.department }
                     defaultValue={ state?.value.department || employee.department }
                 >
-                    <option disabled value="">Select department</option>
+                    <option disabled value="">Select departments</option>
                     { departments.map((item) => (
                         <option key={ item.id }>{ item.position }</option>
                     )) }

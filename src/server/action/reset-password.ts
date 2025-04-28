@@ -1,17 +1,17 @@
 'use server'
 import { ResetPasswordFormSchema } from "@/schema/auth.valid";
 import { prisma } from "@/config/prisma";
-import { USER_STATUS } from "@/interface/enum";
+import { STATUS_USER } from "@/interface/enum";
 import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { OTPGenerate, OTPValid, ResetPassword } from "@/interface/server/param";
-import { ResponseData } from "@/interface/server/TResponse";
 import { validGenerateOtp, validOtp } from "@/schema/validGenerateOtp";
 import { toOtp } from "@/utils/toOtp";
 import nodemailer from "nodemailer";
+import { ActionResponse } from "@/interface/action";
 
-export async function checkEmail(json: OTPGenerate): Promise<ResponseData> {
+export async function checkEmailAction(json: OTPGenerate): Promise<ActionResponse> {
     const { success, data, error } = validGenerateOtp.safeParse(json)
     if (!success) {
         return {
@@ -42,26 +42,26 @@ export async function checkEmail(json: OTPGenerate): Promise<ResponseData> {
     // console.log(otpValid)
     await prisma.$transaction(async (tx) => {
 
-        if (data.reason === USER_STATUS.OTP) {
+        if (data.reason === STATUS_USER.OTP) {
             console.log("OTP")
             await tx.users.update({
                 where: { id: user.id },
                 data: {
                     otp,
                     otpExpired: data.time,
-                    status: USER_STATUS.OTP,
+                    status: STATUS_USER.OTP,
                     // otpCount: { increment: 1 },
                 }
             })
 
-        } else if (data.reason === USER_STATUS.RESET) {
+        } else if (data.reason === STATUS_USER.RESET) {
             console.log("RESET")
             await tx.users.update({
                 where: { id: user.id },
                 data: {
                     otp,
                     otpExpired: data.time,
-                    status: USER_STATUS.RESET
+                    status: STATUS_USER.RESET
                     // otpCount: { increment: 1 },
                 }
             })
@@ -125,7 +125,7 @@ export async function checkEmail(json: OTPGenerate): Promise<ResponseData> {
 
 }
 
-export async function checkOtp(json: OTPValid): Promise<ResponseData> {
+export async function checkOtpAction(json: OTPValid): Promise<ActionResponse> {
     const { success, data, error } = validOtp.safeParse(json)
     if (!success) {
         return {
@@ -161,7 +161,7 @@ export async function checkOtp(json: OTPValid): Promise<ResponseData> {
     };
 }
 
-export async function resetPassword({ password, confirm, email, otp }: ResetPassword): Promise<ResponseData> {
+export async function resetPasswordAction({ password, confirm, email, otp }: ResetPassword): Promise<ActionResponse> {
     try {
         // Validate form fields
         const validatedFields = ResetPasswordFormSchema.safeParse({
@@ -197,7 +197,7 @@ export async function resetPassword({ password, confirm, email, otp }: ResetPass
             throw new Error('Otp Or User are not exists!')
         }
 
-        // if (user.status === USER_STATUS.RESET) {
+        // if (user.status === STATUS_USER.RESET) {
         //     // console.log('will redirect to otp')
         //     // throw new Error('User is not Registered!. please go Otp')
         //     redirect('/otp')
@@ -209,7 +209,7 @@ export async function resetPassword({ password, confirm, email, otp }: ResetPass
             where: { id: user.id },
             data: {
                 password: hashedPassword,
-                status: USER_STATUS.COMPLETED,
+                status: STATUS_USER.COMPLETED,
                 otp: null,
                 // otpExpired: null
             }

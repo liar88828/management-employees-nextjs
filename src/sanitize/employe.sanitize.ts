@@ -8,7 +8,7 @@ import {
     EmployeeUpdateServerUser,
     EmployeeUpdateZodServer
 } from "@/schema/employee.valid";
-import { EMPLOYEE_STATUS } from "@/interface/enum";
+import { STATUS_EMPLOYEE } from "@/interface/enum";
 
 export function employeeSanitizeFormData(
     formData: FormData, imagePath?: string, userId?: string): EmployeeRegistrationUserCreateServer {
@@ -43,7 +43,7 @@ export function employeeCreateSanitizeUser(
         department: "",
         salary: 0,
         notes: "",
-        status: EMPLOYEE_STATUS.Registration,
+        status: STATUS_EMPLOYEE.Registration,
         hireDate: new Date(),
         // userId: userId ? userId : data.userId,
         img: imagePath ? imagePath : '/image/png'

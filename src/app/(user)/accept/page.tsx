@@ -2,7 +2,7 @@ import React from 'react';
 import { validSession } from "@/secure/db";
 import { EmployeeNotFound } from "@/app/components/error/registrationFirst";
 import { employeeFindById } from "@/server/controller/employee.controller";
-import { EMPLOYEE_STATUS } from "@/interface/enum";
+import { STATUS_EMPLOYEE } from "@/interface/enum";
 import { redirect } from "next/navigation";
 
 async function Page() {
@@ -12,7 +12,7 @@ async function Page() {
         return <EmployeeNotFound />
     }
 
-    if (employee.status !== EMPLOYEE_STATUS.Interview_Accept) {
+    if (employee.status !== STATUS_EMPLOYEE.Interview_Accept) {
         redirect('/home')
     }
 

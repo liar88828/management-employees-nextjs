@@ -36,7 +36,7 @@ export function InterviewTable({ employees }: {
                         <td className="text-nowrap">{ employee.User.phone }</td>
                         {/*<td >{ employee.gender }</td>*/ }
                         {/*<td >{ employee.jobTitle }</td>*/ }
-                        {/*<td >{ employee.department }</td>*/ }
+                        {/*<td >{ employee.departments }</td>*/ }
                         {/*<td >{ employee.employmentType }</td>*/ }
                         <td>{ toDateIndo(employee.hireDate) }</td>
                         {/*<td >{ employee.salary }</td>*/ }
