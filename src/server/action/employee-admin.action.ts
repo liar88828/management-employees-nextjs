@@ -16,7 +16,7 @@ import {
 import { employeeRepository } from "@/server/controller";
 import { ZodError } from "zod";
 import { prisma } from "@/config/prisma";
-import { checkDepartmentPosition } from "@/server/action/department.action";
+import { checkPositionPosition } from "@/server/action/position.action";
 import { EmployeeCompletePhotoType, STATUS_EMPLOYEE } from "@/interface/enum";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { Users } from ".prisma/client";
@@ -68,7 +68,7 @@ export async function employeeOnUpsertAdminAction(
     data: EmployeeCreateClientAdmin,
     id?: string) {
     try {
-        await checkDepartmentPosition(data.department);
+        await checkPositionPosition(data.position);
         if (method === "POST") {
             data.status = STATUS_EMPLOYEE.Registration
             return employeeCreateFormDataAdminAction(data)
@@ -343,7 +343,7 @@ export async function onUpsertDataAdminAction(
     data: EmployeeCreateClientAdmin,
     idEmployee?: string,
 ) {
-    // await checkDepartmentPosition(data.departments);
+    // await checkPositionPosition(data.positions);
     // console.log(method, idEmployee)
     data.status = STATUS_EMPLOYEE.Registration
     if (method === "POST") {
@@ -376,14 +376,14 @@ export async function changeUpdatePositionAction(idEmployee: string, position?: 
 }
 
 export async function employeePositionsLoader(
-    { search, department, page }: { search: string, department: string, page: number }
+    { search, position, page }: { search: string, position: string, page: number }
 ) {
 
     const totalEmployees = await prisma.employees.count({
         where: {
             // name: { contains: search },
             User: { name: { contains: search } },
-            department: { contains: department },
+            position: { contains: position },
             status: {
                 notIn: [
                     STATUS_EMPLOYEE.Interview,
@@ -400,7 +400,7 @@ export async function employeePositionsLoader(
         where: {
             // name: { contains: name },
             User: { name: { contains: search } },
-            department: { contains: department },
+            position: { contains: position },
             status: {
                 notIn: [
                     STATUS_EMPLOYEE.Interview,

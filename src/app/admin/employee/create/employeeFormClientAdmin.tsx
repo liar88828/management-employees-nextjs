@@ -12,12 +12,16 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
     userId: string,
     employee?: TEmployeeDB,
     method: "POST" | 'PUT',
-    // departments: Departements[]
+    // positions: Positions[]
 }) {
 
     const methods = useForm<EmployeeCreateClientAdmin>({
         resolver: zodResolver(employeeCreateClientAdmin),
-        defaultValues: employee ? { ...employee, userId } : undefined
+        defaultValues: employee ? {
+            ...employee,
+            userId,
+            position: employee.position ?? undefined,
+        } : undefined
     });
 
     const { register, handleSubmit, formState: { errors } } = methods
@@ -143,16 +147,16 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
 
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text">Department</span>
+                            <span className="label-text">Position</span>
                         </label>
                         <input
                             type="text"
-                            { ...register('department') }
+                            { ...register('position') }
                             className="input input-bordered"
-                            placeholder="Department"
+                            placeholder="Position"
                         />
-                        { errors.department &&
-                            <p className="text-error text-sm mt-1">{ errors.department.message }</p> }
+                        { errors.position &&
+                            <p className="text-error text-sm mt-1">{ errors.position.message }</p> }
                     </div>
 
                     <div className="form-control">

@@ -1,24 +1,24 @@
 'use server'
 import { FormStateAuth } from "@/schema/auth.valid";
 import { prisma } from "@/config/prisma";
-import { DepartmentFormSchema, DepartmentFormState } from "@/schema/departement.valid";
+import { PositionFormSchema, PositionFormState } from "@/schema/departement.valid";
 import { redirect } from "next/navigation";
 import { ErrorDatabase } from "@/utils/error/ErrorClass";
 import { ActionResponse } from "@/interface/action";
 import { revalidatePath } from "next/cache";
 
-export type DepartmentUpdateActionType = { departmentId: number, position: string };
+export type PositionUpdateActionType = { positionId: number, position: string };
 
-export async function departmentGetAllPage() {
-    const departments = await prisma.departements.findMany()
+export async function positionGetAllPage() {
+    const positions = await prisma.positions.findMany()
 
-    if (departments.length === 0) {
-        redirect(`/admin/department`)
+    if (positions.length === 0) {
+        redirect(`/admin/position`)
     }
-    return departments
+    return positions
 }
 
-export async function profileManagementFindAll(state: DepartmentFormState, formData: FormData) {
+export async function profileManagementFindAll(state: PositionFormState, formData: FormData) {
 
 }
 
@@ -30,37 +30,37 @@ export async function profileManagementUpdate(state: any, formData: FormData) {
 
 }
 
-export async function checkDepartmentPosition(departmentPosition: string) {
-    const department = await prisma.departements.findUnique({
+export async function checkPositionPosition(positionPosition: string) {
+    const position = await prisma.positions.findUnique({
         where: {
-            position: departmentPosition
+            position: positionPosition
         }
     })
-    if (!department) {
-        throw new ErrorDatabase(`Department not found for ${ departmentPosition }`)
+    if (!position) {
+        throw new ErrorDatabase(`Position not found for ${ positionPosition }`)
     }
-    return department
+    return position
 }
 
-export async function checkDepartmentId(id: number) {
-    const department = await prisma.departements.findUnique({
+export async function checkPositionId(id: number) {
+    const position = await prisma.positions.findUnique({
         where: { id }
     })
 
-    if (!department) {
-        // throw new ErrorCheck("Department Not Exist", 'checkDepartmentId')
-        throw new ErrorDatabase("checkDepartmentId : Department Not Exist",)
+    if (!position) {
+        // throw new ErrorCheck("Position Not Exist", 'checkPositionId')
+        throw new ErrorDatabase("checkPositionId : Position Not Exist",)
     }
 
-    return department
+    return position
 }
 
-export async function departmentCreateFormDataAction(state: DepartmentFormState, formData: FormData): Promise<DepartmentFormState> {
+export async function positionCreateFormDataAction(state: PositionFormState, formData: FormData): Promise<PositionFormState> {
     const position = formData.get('position') as string;
 
     // try {
     // Validate form fields
-    const validatedFields = DepartmentFormSchema.safeParse({
+    const validatedFields = PositionFormSchema.safeParse({
         position,
     })
 
@@ -74,24 +74,24 @@ export async function departmentCreateFormDataAction(state: DepartmentFormState,
         }
     }
 
-    const departmentDB = await prisma.departements.findUnique({
+    const positionDB = await prisma.positions.findUnique({
         where: { position }
     })
 
-    if (departmentDB) {
+    if (positionDB) {
         return {
-            message: "Department already exists",
+            message: "Position already exists",
             success: false
         }
     }
 
-    await prisma.departements.create({
+    await prisma.positions.create({
         data: { position: validatedFields.data.position }
     })
     revalidatePath('/')
     return {
         success: true,
-        message: "Department created successfully",
+        message: "Position created successfully",
     }
 
     // } catch (e) {
@@ -101,7 +101,7 @@ export async function departmentCreateFormDataAction(state: DepartmentFormState,
     //     }
     //
     //     if (e instanceof z.ZodError) {
-    //         return catchErrorZod(e, 'departmentCreateFormDataAction')
+    //         return catchErrorZod(e, 'positionCreateFormDataAction')
     //     }
     //
     //     if (e instanceof Error) {
@@ -120,10 +120,10 @@ export async function departmentCreateFormDataAction(state: DepartmentFormState,
 
 }
 
-export async function departmentDeleteAction(departmentId: number): Promise<ActionResponse> {
+export async function positionDeleteAction(positionId: number): Promise<ActionResponse> {
     try {
-        await checkDepartmentId(departmentId);
-        const data = await prisma.departements.delete({ where: { id: departmentId } })
+        await checkPositionId(positionId);
+        const data = await prisma.positions.delete({ where: { id: positionId } })
         return {
             data,
             success: true,
@@ -142,32 +142,32 @@ export async function departmentDeleteAction(departmentId: number): Promise<Acti
         return {
             data: null,
             success: false,
-            message: 'departmentDeleteAction : Something went wrong',
+            message: 'positionDeleteAction : Something went wrong',
         }
     }
 }
 
-export async function departmentUpdateAction({ departmentId, position }: DepartmentUpdateActionType): Promise<{
+export async function positionUpdateAction({ positionId, position }: PositionUpdateActionType): Promise<{
     success: boolean,
     message: string,
 }> {
     try {
         return prisma.$transaction(async (tx) => {
 
-            const departmentDB = await tx.departements.findUnique({ where: { id: departmentId } })
+            const positionDB = await tx.positions.findUnique({ where: { id: positionId } })
 
-            if (!departmentDB) {
-                throw new Error("Department Not Exist")
+            if (!positionDB) {
+                throw new Error("Position Not Exist")
             }
 
-            await tx.departements.update({
-                where: { id: departmentId },
+            await tx.positions.update({
+                where: { id: positionId },
                 data: { position }
             })
 
             await tx.employees.updateMany({
-                where: { department: departmentDB.position },
-                data: { department: position }
+                where: { position: positionDB.position },
+                data: { position: position }
             })
 
             return {
@@ -190,19 +190,19 @@ export async function departmentUpdateAction({ departmentId, position }: Departm
     }
 }
 
-export type DepartmentPosition = { id: number, position: string, count: number }
+export type PositionPosition = { id: number, position: string, count: number }
 
-export async function departmentEmployeeLoader(): Promise<DepartmentPosition[]> {
+export async function positionEmployeeLoader(): Promise<PositionPosition[]> {
     return prisma.$transaction(async (tx) => {
-        const departments = await tx.departements.findMany()
+        const positions = await tx.positions.findMany()
         const employee = await tx.employees.groupBy({
-            by: [ 'department' ],
+            by: [ 'position' ],
             _count: true,
         })
-        return departments.map(dept => ( {
+        return positions.map(dept => ( {
             id: dept.id,
             position: dept.position,
-            count: employee.find(emp => emp.department === dept.position)?._count ?? 0
+            count: employee.find(emp => emp.position === dept.position)?._count ?? 0
         } ));
     });
 }

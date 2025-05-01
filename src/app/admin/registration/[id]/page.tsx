@@ -4,7 +4,7 @@ import { getContextParam } from "@/utils/requestHelper";
 import { employeeRepository } from "@/server/controller";
 import { EmptyData } from "@/app/components/PageErrorData";
 import { prisma } from "@/config/prisma";
-import { Departements } from ".prisma/client";
+import { Positions } from ".prisma/client";
 import { InterviewShowCVGlobal } from "@/app/admin/interview/components/interviewShowCVGlobal";
 import { InterviewShowDocument } from "@/app/admin/interview/components/interviewShowDocument";
 import { RegistrationForm } from "@/app/admin/registration/components/RegistrationForm";
@@ -12,7 +12,7 @@ import { RegistrationForm } from "@/app/admin/registration/components/Registrati
 export default async function Page(context: TContext) {
     const employeeId = await getContextParam(context, 'id')
     const employee = await employeeRepository.findById({ employeeId })
-    const departments: Departements[] = await prisma.departements.findMany()
+    const positions: Positions[] = await prisma.positions.findMany()
 
     if (!employee) {
         return <EmptyData page={ `Employee Detail ${ employeeId }` } />
@@ -20,7 +20,7 @@ export default async function Page(context: TContext) {
 
     return (
         <div className={ 'space-y-4' }>
-            <RegistrationForm employee={ employee } departments={ departments } />
+            <RegistrationForm employee={ employee } positions={ positions } />
             <div className="space-x-4">
                 <InterviewShowCVGlobal employee={ employee } />
                 <InterviewShowDocument employee={ employee } />

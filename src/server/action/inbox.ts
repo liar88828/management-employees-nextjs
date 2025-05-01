@@ -33,7 +33,7 @@ export async function interviewUpdateAction(state: FormStateReturn<InterviewSche
             notes: validateData.data.notes,
             jobTitle: validateData.data.jobTitle,
             salary: Number(validateData.data.salary),
-            department: validateData.data.department
+            position: validateData.data.position
         }
     })
     // revalidatePath('/')
@@ -73,7 +73,7 @@ export async function registerUpdateFormDataAdminAction(state: FormStateReturn<R
             notes: validateData.data.notes,
             jobTitle: validateData.data.jobTitle,
             salary: Number(validateData.data.salary),
-            department: validateData.data.department,
+            position: validateData.data.position,
         }
     })
     revalidatePath('/')

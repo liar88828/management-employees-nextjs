@@ -8,13 +8,13 @@ import { employeeCreateClientAdmin, EmployeeCreateClientAdmin } from "@/schema/e
 import { zodResolver } from "@hookform/resolvers/zod";
 import { employeeOnUpsertAdminAction } from "@/server/action/employee-admin.action";
 import { EmployeeFormContextClientAdmin } from "@/app/components/employee/employee.client.admin";
-import { Department } from "@/interface/entity/departement.model";
+import { Position } from "@/interface/entity/position.model";
 
-export function EmployeeFormClientAdmin({ departments, employee, method }: {
+export function EmployeeFormClientAdmin({ positions, employee, method }: {
     userId?: string
     employee?: TEmployeeDB,
     method: "POST" | 'PUT',
-    departments: Department[]
+    positions: Position[]
 }) {
 
     const status = useFormStatus()
@@ -23,6 +23,7 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
         resolver: zodResolver(employeeCreateClientAdmin),
         defaultValues: ( {
             ...employee,
+            position: employee?.position ?? undefined,
             userId: undefined,
         } )
     });
@@ -151,21 +152,21 @@ export function EmployeeFormClientAdmin({ departments, employee, method }: {
 
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text">Department</span>
+                            <span className="label-text">Position</span>
                         </label>
 
                         <select
-                            { ...register('department') }
+                            { ...register('position') }
                             className={ `select select-bordered ${ errors.gender ? 'select-error' : '' }` }
                         >
-                            <option value="">Select Department</option>
-                            { departments.map(item => (
+                            <option value="">Select Position</option>
+                            { positions.map(item => (
                                 <option key={ item.id } value={ item.position }>{ item.position }</option>
                             )) }
                         </select>
 
-                        { errors.department
-                            && <p className="text-error text-sm mt-1">{ errors.department.message }</p> }
+                        { errors.position
+                            && <p className="text-error text-sm mt-1">{ errors.position.message }</p> }
                     </div>
 
                     <div className="form-control">

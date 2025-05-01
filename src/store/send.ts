@@ -3,7 +3,7 @@ import { create } from 'zustand'
 type StoreSend = {
     name: string
     selectAll: string[]
-    department: string
+    position: string
     complete: string
 };
 
@@ -25,7 +25,7 @@ export const useSendStore = create<StateSend>()(
         store: {
             selectAll: [],
             name: "",
-            department: "",
+            position: "",
             complete: "",
         },
         setStore: (data) => {

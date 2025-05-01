@@ -1,9 +1,9 @@
 import React from 'react';
-import { departmentEmployeeLoader } from "@/server/action/department.action";
-import { PositionDepatment } from "@/app/admin/position/components/positionDepatment";
+import { positionEmployeeLoader } from "@/server/action/position.action";
+import { PositionDepartment } from "@/app/admin/position/components/positionDepartment";
 
 export default async function Page() {
-    const department = await departmentEmployeeLoader();
+    const position = await positionEmployeeLoader();
 
-    return <PositionDepatment departments={ department } />
+    return <PositionDepartment positions={ position } />
 }

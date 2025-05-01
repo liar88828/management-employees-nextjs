@@ -206,20 +206,20 @@ export function EmployeeFormClientUser({ employee, method, user }: {
 
                     {/*<div className="form-control">*/ }
                     {/*    <label className="label">*/ }
-                    {/*        <span className="label-text">Department</span>*/ }
+                    {/*        <span className="label-text">Position</span>*/ }
                     {/*    </label>*/ }
 
                     {/*    <select*/ }
-                    {/*        { ...register('departments') }*/ }
+                    {/*        { ...register('positions') }*/ }
                     {/*        className={ `select select-bordered ${ errors.gender ? 'select-errors' : '' }` }*/ }
                     {/*    >*/ }
-                    {/*        <option value="">Select Department</option>*/ }
-                    {/*        { departments.map(item => (*/ }
+                    {/*        <option value="">Select Position</option>*/ }
+                    {/*        { positions.map(item => (*/ }
                     {/*            <option key={ item.id } value={ item.position }>{ item.position }</option>*/ }
                     {/*        )) }*/ }
                     {/*    </select>*/ }
-                    {/*    { errors.departments*/ }
-                    {/*        && <p className="text-errors text-sm mt-1">{ errors.departments.message }</p>*/ }
+                    {/*    { errors.positions*/ }
+                    {/*        && <p className="text-errors text-sm mt-1">{ errors.positions.message }</p>*/ }
                     {/*    }*/ }
                     {/*</div>*/ }
 

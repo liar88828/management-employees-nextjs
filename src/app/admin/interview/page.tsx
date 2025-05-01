@@ -11,9 +11,9 @@ import InterviewSearch from "@/app/admin/interview/components/interviewSearch";
 async function Page(context: TContext) {
     const search = await getContextQuery(context, 'search')
     const status = await getContextQuery(context, 'status')
-    const department = await getContextQuery(context, 'department')
+    const position = await getContextQuery(context, 'position')
     const page = Number(await getContextQuery(context, 'page')) || 1;
-    const departments = await prisma.departements.findMany()
+    const positions = await prisma.positions.findMany()
     const { totalPages, employees } = await employeePaginationLoader(search, STATUS_EMPLOYEE.Interview, page)
     // console.log(employees);
 
@@ -21,8 +21,8 @@ async function Page(context: TContext) {
         <div className="space-y-2">
             <InterviewSearch
                 search={ search }
-                departments={ departments }
-                department={ department }
+                positions={ positions }
+                position={ position }
             />
             <InterviewTable employees={ employees } />
             <PaginationComponent

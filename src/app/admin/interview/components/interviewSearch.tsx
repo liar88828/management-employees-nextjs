@@ -2,10 +2,10 @@ import Form from "next/form";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import { Department } from "@/interface/entity/departement.model";
+import { Position } from "@/interface/entity/position.model";
 
 export default function InterviewSearch(
-    { search, departments, department }: { search: string, department: string, departments: Department[] }
+    { search, positions, position }: { search: string, position: string, positions: Position[] }
 ) {
     return (
         <div className="flex gap-2 items-center">
@@ -19,19 +19,19 @@ export default function InterviewSearch(
                        name={ 'search' }
                 />
                 <input type="hidden"
-                       defaultValue={ department }
-                       name={ 'department' }
+                       defaultValue={ position }
+                       name={ 'position' }
                 />
                 <button className={ 'btn join-item ' }><Search /></button>
             </Form>
 
             <details className="dropdown">
-                <summary className="btn m-1">Select Department</summary>
+                <summary className="btn m-1">Select Position</summary>
                 <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
 
-                    { departments.map((item) => (
+                    { positions.map((item) => (
                         <li key={ item.id }>
-                            <Link href={ `/admin/registration?search=${ search }&department=${ item }` }
+                            <Link href={ `/admin/registration?search=${ search }&position=${ item }` }
                             >{ item.position }</Link>
                         </li>
                     )) }

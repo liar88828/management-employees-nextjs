@@ -41,7 +41,6 @@ model Employees {
   dateOfBirth    DateTime
   hireDate       DateTime
   jobTitle       String // Employee's job position
-  department     String // Department where the employee works
   salary         Int // Employee's salary
   // managerId      Int? // Foreign key referencing the manager
   status         String       @default("Create") // Employment status
@@ -71,6 +70,7 @@ model Employees {
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   LetterEmployees LetterEmployees[]
+  position        String? // Position where the employee works
 }
 
 model Educations {
@@ -94,7 +94,7 @@ model Skills {
 //   employeesId String
 // }
 
-model Departements {
+model Positions {
   id       Int    @id @default(autoincrement())
   position String @unique
 }

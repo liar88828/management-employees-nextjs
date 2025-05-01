@@ -1,14 +1,14 @@
 'use client'
-import { DepartmentPosition } from "@/server/action/department.action";
+import { PositionPosition } from "@/server/action/position.action";
 import Link from "next/link";
 import {
-    DepartmentModalDelete,
     PositionModalCreate,
+    PositionModalDelete,
     PositionModalUpdate
 } from "@/app/admin/position/components/PositionModal";
 import React from "react";
 
-export function PositionDepatment({ departments }: { departments: DepartmentPosition[] }) {
+export function PositionDepartment({ positions }: { positions: PositionPosition[] }) {
     return (
         < >
             <div className="flex justify-between ">
@@ -30,7 +30,7 @@ export function PositionDepatment({ departments }: { departments: DepartmentPosi
                     </tr>
                     </thead>
                     <tbody>
-                    { departments.map(item => (
+                    { positions.map(item => (
                         <tr key={ item.id }>
                             <th></th>
                             <td>{ item.id }</td>
@@ -40,13 +40,13 @@ export function PositionDepatment({ departments }: { departments: DepartmentPosi
                                 <div className="flex gap-2">
                                     <Link
                                         className={ 'btn btn-info' }
-                                        href={ `/admin/position/${ item.position }?department=${ item.position }` }
+                                        href={ `/admin/position/${ item.position }?position=${ item.position }` }
                                     >
                                         Detail
                                     </Link>
 
-                                    <PositionModalUpdate department={ item } />
-                                    { item.count === 0 && <DepartmentModalDelete department={ item } /> }
+                                    <PositionModalUpdate positionProps={ item } />
+                                    { item.count === 0 && <PositionModalDelete position={ item } /> }
 
                                 </div>
                             </td>

@@ -39,7 +39,7 @@ export function EmployeeDetail({ employee }: {
                     <p><strong>Date of Birth:</strong> { toDate(employee.dateOfBirth ?? 0) || "N/A" }</p>
                     <p><strong>Hire Date:</strong> { toDate(employee.hireDate) }</p>
                     <p><strong>Job Title:</strong> { employee.jobTitle }</p>
-                    <p><strong>Department:</strong> { employee.department || "N/A" }</p>
+                    <p><strong>Position:</strong> { employee.position || "N/A" }</p>
                 </div>
                 <div>
                     <p><strong>Salary:</strong> ${ employee.salary.toFixed(2) }</p>

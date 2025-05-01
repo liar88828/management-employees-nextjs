@@ -11,9 +11,9 @@ export async function GET(request: NextRequest, context: TContext) {
     )
 }
 
-export async function POST(request: NextRequest, context: TContext) {
+export async function POST(request: NextRequest,) {
     return await ResponseJson(
-        async () => userController.employeeCreate(request, context),
+        async () => userController.employeeCreate(request),
         "POST",
         "user"
     )

@@ -10,14 +10,14 @@ import { InterviewForm } from "@/app/admin/interview/components/interviewForm";
 export default async function Page(context: TContext) {
     const employeeId = await getContextParam(context, 'id')
     const employee = await employeeRepository.findById({ employeeId })
-    const departments = await prisma.departements.findMany()
+    const positions = await prisma.positions.findMany()
 
     if (!employee) {
         return <EmptyData page={ `Employee Detail ${ employeeId }` }/>
     }
     return (
         <div className={ 'space-y-4' }>
-            <InterviewForm employee={ employee } departments={ departments } />
+            <InterviewForm employee={ employee } positions={ positions } />
             <div className="space-x-4">
                 <InterviewShowCVGlobal employee={ employee } />
                 <InterviewShowDocument employee={ employee }/>

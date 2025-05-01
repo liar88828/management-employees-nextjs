@@ -84,7 +84,7 @@ export async function onUpsertDataUserAction(
     userId: string,
     idEmployee?: string,
 ) {
-    // await checkDepartmentPosition(data.departments);
+    // await checkPositionPosition(data.positions);
     // console.log(method, idEmployee)
     if (method === "POST") {
         console.log('Execute Post')
@@ -115,7 +115,7 @@ export async function employeeByUserIdForIDCardLoader(userId: string) {
 }
 
 export async function employeeFindLatterLoader(
-    name: string, department: string, complete: EmployeeCompletePhotoType
+    name: string, position: string, complete: EmployeeCompletePhotoType
 ) {
     return prisma.employees.findMany({
         where: {
@@ -134,7 +134,7 @@ export async function employeeFindLatterLoader(
                 ]
             },
             sendEmail: 1,
-            department: { contains: department },
+            position: { contains: position },
             photoKtp: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
             photo3x4: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
             photoIjazah: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,

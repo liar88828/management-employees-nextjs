@@ -1,9 +1,9 @@
 'use client'
 //
-// export function EmployeeFormClientUser({ employee, method, user, departments }: {
+// export function EmployeeFormClientUser({ employee, method, user, positions }: {
 //     user: UserClient
 //     employee?: TEmployeeDB,
-//     departments: Departements[]
+//     positions: Positions[]
 //     method: "POST" | 'PUT',
 // }) {
 //     const router = useRouter();
@@ -165,20 +165,20 @@
 //
 //                     <div className="form-control">
 //                         <title className="title">
-//                             <span className="title-text">Department</span>
+//                             <span className="title-text">Position</span>
 //                         </title>
 //
 //                         <select
-//                             { ...register('departments') }
+//                             { ...register('positions') }
 //                             className={ `select select-bordered ${ errors.gender ? 'select-errors' : '' }` }
 //                         >
-//                             <option value="">Select Department</option>
-//                             { departments.map(item => (
+//                             <option value="">Select Position</option>
+//                             { positions.map(item => (
 //                                 <option key={ item.id } value={ item.position }>{ item.position }</option>
 //                             )) }
 //                         </select>
-//                         { errors.departments
-//                             && <p className="text-errors text-sm mt-1">{ errors.departments.message }</p>
+//                         { errors.positions
+//                             && <p className="text-errors text-sm mt-1">{ errors.positions.message }</p>
 //                         }
 //                     </div>
 //

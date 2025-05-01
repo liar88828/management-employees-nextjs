@@ -4,7 +4,7 @@ import { employeeFindByUserId, employeeId } from "@/server/network/employee";
 import { EmptyData } from "@/app/components/PageErrorData";
 import { validSession } from "@/secure/db";
 import { employeeByUserIdForIDCardLoader } from "@/server/action/employee.client";
-import { departmentGetAllPage } from "@/server/action/department.action";
+import { positionGetAllPage } from "@/server/action/position.action";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { EmployeeFormClientAdmin } from "@/app/admin/employee/create/employeeFormClientAdmin";
 import { EmployeeCVAdmin } from "@/app/components/employee/client/employeeCVAdmin";
@@ -55,7 +55,7 @@ export async function EmployeeDetailServerClient() {
 
 export async function EmployeeFormServerAdmin({ idEmployee }: { idEmployee: string }) {
     const employee = await employeeId(idEmployee)
-    const departments = await departmentGetAllPage()
+    const positions = await positionGetAllPage()
 
     if (!employee) {
         return <EmptyData page={ `Employee Detail ${ idEmployee }` }/>
@@ -65,7 +65,7 @@ export async function EmployeeFormServerAdmin({ idEmployee }: { idEmployee: stri
             employee={ employee.data }
             method={ 'POST' }
             userId={ "" }
-            // departments={ departments }
+            // positions={ positions }
 
         />
     );

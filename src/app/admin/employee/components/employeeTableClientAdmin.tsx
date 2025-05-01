@@ -21,7 +21,7 @@ export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUse
                         {/*<th>Gender</th>*/ }
                         <th>Hire Date</th>
                         <th>Job Title</th>
-                        <th>Department</th>
+                        <th>Position</th>
                         <th>Salary</th>
                         <th>Employment Type</th>
                         <th>Status</th>
@@ -41,7 +41,7 @@ export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUse
                             {/*<td>{ employee.gender || "-" }</td>*/ }
                             <td>{ new Date(employee.hireDate).toLocaleDateString() }</td>
                             <td>{ employee.jobTitle }</td>
-                            <td>{ employee.department || "-" }</td>
+                            <td>{ employee.position || "-" }</td>
                             <td>{ toRupiah(employee.salary) }</td>
                             <td>{ employee.employmentType }</td>
                             <td>

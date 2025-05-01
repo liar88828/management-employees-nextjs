@@ -14,7 +14,7 @@ export const _employeeClientExample = {
     dateOfBirth: new Date("1990-01-15"),
     hireDate: new Date("2022-06-01"),
     jobTitle: "Software Engineer",
-    department: "IT",
+    position: "IT",
     salary: 75000,
     // managerId: 101,
     status: "Active",
@@ -48,7 +48,7 @@ export const employeeServerExample: EmployeeRegistrationUserCreateServer & { sta
     dateOfBirth: new Date("1988-03-25"),
     hireDate: new Date("2023-01-15"),
     jobTitle: "Senior Developer",
-    department: "Engineering",
+    position: "Engineering",
     salary: 95000,
     status: "Create", // Must be one of: 'Fail', 'Complete', 'Pending', 'Active', 'Disabled'
     address: "456 Oak Avenue",

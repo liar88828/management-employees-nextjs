@@ -29,6 +29,7 @@ export const ijazah = 'https://dummyimage.com/297x210/000/ffffff.jpg';
 type EmployeeClient = Employees & UserClient
 
 export type EmployeeUserClient = Employees & { User: UserClient }
+
 export type EmployeeUserClientLatter = Employees & {
     User: UserClient
     LetterEmployees: LetterEmployees[]

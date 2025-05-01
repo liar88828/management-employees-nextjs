@@ -1,8 +1,6 @@
 import React from 'react';
 import { redirect } from "next/navigation";
 import { employeeFindById } from "@/server/controller/employee.controller";
-import { prisma } from "@/config/prisma";
-import { Departements } from ".prisma/client";
 import { EmployeeFormClientUser } from "@/app/(user)/registration/components/registration.client";
 import { getUserPage } from "@/secure/db";
 import { getContextQuery } from "@/utils/requestHelper";
@@ -16,7 +14,7 @@ export default async function Page(context: TContext) {
     const type = await getContextQuery(context, 'type')
     const user = await getUserPage()
 
-    const departments: Departements[] = await prisma.departements.findMany()
+    // const position: Position[] = await prisma.positions.findMany()
     const employee = await employeeFindById({ userId: user.id })
 
     if (employee && employee.registration === true) {
@@ -29,7 +27,7 @@ export default async function Page(context: TContext) {
             { error && type === 'form' && <RegistrationError error={ error } /> }
             <EmployeeFormClientUser
                 employee={ employee }
-                // departments={ departments }
+                // positions={ positions }
                 method={ employee ? "PUT" : 'POST' }
                 user={ user }
             />

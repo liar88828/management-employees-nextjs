@@ -34,7 +34,7 @@ export default class UserController
 		)
 	}
 
-    async employeeCreate(request: NextRequest, context: TContext): Promise<any> {
+	async employeeCreate(request: NextRequest): Promise<any> {
         await authApi(request, true)
         const json = await getJson(request)
         // console.log(`test :${ json }`)

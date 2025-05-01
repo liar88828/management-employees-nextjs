@@ -2,27 +2,27 @@
 
 import React, { useActionState, useEffect, useState } from "react";
 import {
-    departmentCreateFormDataAction,
-    departmentDeleteAction,
-    departmentUpdateAction,
-    DepartmentUpdateActionType
-} from "@/server/action/department.action";
+    positionCreateFormDataAction,
+    positionDeleteAction,
+    positionUpdateAction,
+    PositionUpdateActionType
+} from "@/server/action/position.action";
 import { FormError } from "@/app/components/form/action";
 import { LoadingAction } from "@/app/components/LoadingData";
 import { useFormStatus } from "react-dom";
 import { onAction } from "@/server/action/OnAction";
-import { Department } from "@/interface/entity/departement.model";
+import { Position } from "@/interface/entity/position.model";
 import toast from "react-hot-toast";
 import { Trash } from "lucide-react";
 
 export function PositionModalCreate() {
-    const [ state, action, pending ] = useActionState(departmentCreateFormDataAction, undefined);
+    const [ state, action, pending ] = useActionState(positionCreateFormDataAction, undefined);
     // console.log(state)
 
     useEffect(() => {
         if (state?.success === true) {
             toast.success("Success Create Position ");
-            ( document.getElementById('ModalCreateDepartment') as HTMLDialogElement ).close()
+            ( document.getElementById('ModalCreatePosition') as HTMLDialogElement ).close()
         } else if (state?.success === false) {
             toast.error("Failed Create Data");
 
@@ -36,16 +36,16 @@ export function PositionModalCreate() {
                 // btn-sm btn-square
                 className="btn btn-success "
                 onClick={ () => {
-                    ( document.getElementById('ModalCreateDepartment') as HTMLDialogElement ).showModal()
+                    ( document.getElementById('ModalCreatePosition') as HTMLDialogElement ).showModal()
                 } }
             >
                 {/*<Plus/>*/ }
                 Create
             </button>
-            <dialog id="ModalCreateDepartment" className="modal">
+            <dialog id="ModalCreatePosition" className="modal">
                 <div className="modal-box ">
                     <form action={ action }>
-                        <h2 className="card-title">Add Department Position</h2>
+                        <h2 className="card-title">Add Position Position</h2>
                         <div className="form-control w-full">
                             <label htmlFor="email" className="label">
                                 <span className="label-text">Position</span>
@@ -86,11 +86,12 @@ export function PositionModalCreate() {
         </div>
     )
 }
-export function PositionModalUpdate({ department }: { department: Department }) {
-    const [ position, setPosition ] = useState(department.position)
+export function PositionModalUpdate({ positionProps }: { positionProps: Position }) {
+    const [ position, setPosition ] = useState(positionProps.position)
     const { pending } = useFormStatus()
-    const onUpdate = async (data: DepartmentUpdateActionType) => {
-        await onAction(() => departmentUpdateAction(data), `Success Delete Data Department By ID ${ department.id }`)
+    const onUpdate = async (data: PositionUpdateActionType) => {
+        await onAction(() => positionUpdateAction(data),
+            `Success Delete Data Position By ID ${ positionProps.id }`)
     }
 
     return (
@@ -101,22 +102,22 @@ export function PositionModalUpdate({ department }: { department: Department }) 
                 className="btn btn-primary "
                 onClick={ () => {
                     // @ts-ignore
-                    document.getElementById(`DepartmentModalUpdate_${ department.id }`).showModal()
+                    document.getElementById(`PositionModalUpdate_${ position.id }`).showModal()
                 } }
             >
                 {/*<Pen/>*/ }
                 Edit
             </button>
-            <dialog id={ `DepartmentModalUpdate_${ department.id }` } className="modal">
+            <dialog id={ `PositionModalUpdate_${ positionProps.id }` } className="modal">
                 <div className="modal-box space-y-5">
-                    <h2 className="card-title">Update ID { department.id } - Position { department.position }</h2>
+                    <h2 className="card-title">Update ID { positionProps.id } - Position { positionProps.position }</h2>
                     <p>Are You Sure want Update this data ???</p>
                     <input type="text" onChange={ e => setPosition(e.target.value) }
                            className="input input-bordered w-full"
                     />
                     <div className="modal-action">
                         <button className={ `btn btn-info ${ pending && 'btn-disabled' }` }
-                                onClick={ () => onUpdate({ departmentId: department.id, position }) }
+                                onClick={ () => onUpdate({ positionId: positionProps.id, position }) }
                         >
                             {/*<Pen/>*/ }
                             Edit
@@ -132,11 +133,11 @@ export function PositionModalUpdate({ department }: { department: Department }) 
         </div>
     )
 }
-export function DepartmentModalDelete({ department }: { department: Department }) {
+export function PositionModalDelete({ position }: { position: Position }) {
     const { pending } = useFormStatus()
     const onDelete = async () => {
-        await onAction(async () => await departmentDeleteAction(department.id),
-            `Success Delete Data Department By ID ${ department.id }`)
+        await onAction(async () => await positionDeleteAction(position.id),
+            `Success Delete Data Position By ID ${ position.id }`)
     }
 
     return (
@@ -144,14 +145,14 @@ export function DepartmentModalDelete({ department }: { department: Department }
             {/* Open the modal using document.getElementById('ID').showModal() method */ }
             <button className="btn btn-error  btn-square" onClick={ () => {
                 // @ts-ignore
-                document.getElementById(`DepartmentModalDelete_${ department.id }`).showModal()
+                document.getElementById(`PositionModalDelete_${ position.id }`).showModal()
             } }
             >
                 <Trash />
             </button>
-            <dialog id={ `DepartmentModalDelete_${ department.id }` } className="modal">
+            <dialog id={ `PositionModalDelete_${ position.id }` } className="modal">
                 <div className="modal-box space-y-5">
-                    <h2 className="card-title">Delete ID { department.id } - Position { department.position }</h2>
+                    <h2 className="card-title">Delete ID { position.id } - Position { position.position }</h2>
                     <p>Are You Sure want Delete this data ???</p>
                     <div className="modal-action">
                         <button className={ `btn btn-error  btn-square ${ pending && 'btn-disabled' }` }

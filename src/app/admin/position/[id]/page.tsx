@@ -10,21 +10,21 @@ import PositionDetailSearch from "@/app/admin/position/components/positionSearch
 export default async function Page(context: TContext) {
     const search = await getContextQuery(context, 'search')
     const status = await getContextQuery(context, 'status')
-    const department = await getContextQuery(context, 'department')
+    const position = await getContextQuery(context, 'position')
     const page = await getContextQueryNum(context, 'page')
-    // const departments = await prisma.departements.findMany({})
-    const { totalPages, employees } = await employeePositionsLoader({ department, search, page })
+    // const positions = await prisma.positions.findMany({})
+    const { totalPages, employees } = await employeePositionsLoader({ position, search, page })
 
     return (
         <div className="space-y-2">
-            <PositionDetailSearch search={ search } department={ department } />
+            <PositionDetailSearch search={ search } position={ position } />
             <PositionEmployeeTable employees={ employees } />
             <PaginationComponent
                 page={ page }
                 totalPages={ totalPages }
                 search={ search }
                 status={ status }
-                department={ department }
+                position={ position }
                 title={ 'position' }
             />
         </div>

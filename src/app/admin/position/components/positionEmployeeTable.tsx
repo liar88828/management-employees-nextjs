@@ -34,7 +34,7 @@ export async function PositionEmployeeTable({ employees }: { employees: Employee
                             <td>{ employee.User?.email }</td>
                             <td className="text-nowrap">{ employee.User?.phone }</td>
                             <td>{ toDateIndo(employee.hireDate) }</td>
-                            <td>{ employee.department }</td>
+                            <td>{ employee.position }</td>
                         </tr>
                     )) }
                     </tbody>

@@ -1,6 +1,6 @@
 'use client'
 import { Employees } from "@prisma/client";
-import { Department } from "@/interface/entity/departement.model";
+import { Position } from "@/interface/entity/position.model";
 import { useActionState, useEffect } from "react";
 import { registerUpdateFormDataAdminAction } from "@/server/action/inbox";
 import toast from "react-hot-toast";
@@ -8,7 +8,7 @@ import Form from "next/form";
 import { MyInput, MyInputTextArea } from "@/app/components/form/action";
 import { StatusEmployeeList } from "@/interface/enum";
 
-export function RegistrationForm({ employee, departments }: { employee: Employees, departments: Department[] }) {
+export function RegistrationForm({ employee, positions }: { employee: Employees, positions: Position[] }) {
     const [ state, action, pending ] = useActionState(registerUpdateFormDataAdminAction, undefined)
     useEffect(() => {
         if (state) {
@@ -57,17 +57,17 @@ export function RegistrationForm({ employee, departments }: { employee: Employee
             </div>
 
             <div className="form-control w-full">
-                <label htmlFor={ `department` } className="label">
-                    <span className="label-text capitalize"> departments </span>
+                <label htmlFor={ `position` } className="label">
+                    <span className="label-text capitalize"> positions </span>
                 </label>
                 <select
                     className="select select-bordered join-item"
-                    name="department"
-                    key={ state?.value.department || employee.department }
-                    defaultValue={ state?.value.department || employee.department }
+                    name="position"
+                    key={ state?.value.position || employee.position }
+                    defaultValue={ state?.value.position || employee.position }
                 >
-                    <option disabled value="">Select departments</option>
-                    { departments.map((item) => (
+                    <option disabled value="">Select positions</option>
+                    { positions.map((item) => (
                         <option key={ item.id }>{ item.position }</option>
                     )) }
                 </select>

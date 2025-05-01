@@ -1,7 +1,7 @@
 import React, { useActionState } from "react";
 import { toDateIndo } from "@/utils/toDate";
 import { prisma } from "@/config/prisma";
-import { departmentCreateFormDataAction } from "@/server/action/department.action";
+import { positionCreateFormDataAction } from "@/server/action/position.action";
 import { FormError } from "@/app/components/form/action";
 import { LoadingAction } from "@/app/components/LoadingData";
 
@@ -20,7 +20,7 @@ async function PositionEmployee_({ position, name }: { position: string, name?: 
     const employees = await prisma.employees.findMany({
         where: {
             ...( name && { name: { contains: name } } ),
-            department: position
+            position: position
         },
         include: {
             User: {
@@ -55,7 +55,7 @@ async function PositionEmployee_({ position, name }: { position: string, name?: 
 }
 
 export function PositionModalCreatexx() {
-    const [ state, action, pending ] = useActionState(departmentCreateFormDataAction, undefined);
+    const [ state, action, pending ] = useActionState(positionCreateFormDataAction, undefined);
     return (
         <div>
             {/* Open the modal using document.getElementById('ID').showModal() method */ }
@@ -64,16 +64,16 @@ export function PositionModalCreatexx() {
                 className="btn btn-success "
                 onClick={ () => {
                     // @ts-ignore
-                    document.getElementById('ModalCreateDepartment').showModal()
+                    document.getElementById('ModalCreatePosition').showModal()
                 } }
             >
                 {/*<Plus/>*/ }
                 Create
             </button>
-            <dialog id="ModalCreateDepartment" className="modal">
+            <dialog id="ModalCreatePosition" className="modal">
                 <div className="modal-box ">
                     <form action={ action }>
-                        <h2 className="card-title">Add Department Position</h2>
+                        <h2 className="card-title">Add Position Position</h2>
                         <div className="form-control w-full">
                             <label htmlFor="email" className="label">
                                 <span className="label-text">Position</span>

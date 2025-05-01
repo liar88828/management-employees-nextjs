@@ -1,5 +1,5 @@
 'use client'
-import { Department } from "@/interface/entity/departement.model";
+import { Position } from "@/interface/entity/position.model";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import React, { useActionState, useEffect } from "react";
 import { interviewUpdateAction } from "@/server/action/inbox";
@@ -8,7 +8,7 @@ import Form from "next/form";
 import { MyInput, MyInputNum, MyInputOption, MyInputTextArea } from "@/app/components/form/action";
 import { StatusEmployeeList } from "@/interface/enum";
 
-export function InterviewForm({ employee, departments }: { departments: Department[], employee: TEmployeeDB }) {
+export function InterviewForm({ employee, positions }: { positions: Position[], employee: TEmployeeDB }) {
     const [ state, action, pending ] = useActionState(interviewUpdateAction, undefined)
     useEffect(() => {
         if (state) {
@@ -61,25 +61,25 @@ export function InterviewForm({ employee, departments }: { departments: Departme
                 />
 
                 <MyInputOption
-                    title={ 'Department' }
-                    name={ 'department' }
-                    keys={ state?.value.department || employee.department }
-                    lists={ departments.map(item => item.position) }
+                    title={ 'Position' }
+                    name={ 'position' }
+                    keys={ state?.value.position || employee.position }
+                    lists={ positions.map(item => item.position) }
 
                 />
 
                 {/*<div className="form-control w-full">*/ }
-                {/*    <label htmlFor={ `departments` } className="label">*/ }
-                {/*        <span className="label-text capitalize"> departments </span>*/ }
+                {/*    <label htmlFor={ `positions` } className="label">*/ }
+                {/*        <span className="label-text capitalize"> positions </span>*/ }
                 {/*    </label>*/ }
                 {/*    <select*/ }
                 {/*        className="select select-bordered join-item"*/ }
-                {/*        name="departments"*/ }
-                {/*        key={ state?.value.departments || employee.departments }*/ }
-                {/*        defaultValue={ state?.value.departments || employee.departments }*/ }
+                {/*        name="positions"*/ }
+                {/*        key={ state?.value.positions || employee.positions }*/ }
+                {/*        defaultValue={ state?.value.positions || employee.positions }*/ }
                 {/*    >*/ }
-                {/*        <option disabled value="">Select departments</option>*/ }
-                {/*        { departments.map((item) => (*/ }
+                {/*        <option disabled value="">Select positions</option>*/ }
+                {/*        { positions.map((item) => (*/ }
                 {/*            <option key={ item.id }>{ item.position }</option>*/ }
                 {/*        )) }*/ }
                 {/*    </select>*/ }

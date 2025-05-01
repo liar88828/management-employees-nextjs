@@ -47,7 +47,7 @@ export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
                     <section>
                         <h3 className="font-semibold mb-2">Professional Details</h3>
                         <div className="grid grid-cols-2 gap-2 text-sm">
-                            <p><strong>Department:</strong> { employee.department }</p>
+                            <p><strong>Position:</strong> { employee.position }</p>
                             <p><strong>Hire Date:</strong> { toDate(employee.hireDate) }</p>
                             <p><strong>Employee ID:</strong> { employee.id }</p>
                         </div>

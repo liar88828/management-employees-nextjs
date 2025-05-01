@@ -106,9 +106,9 @@ export const linkAdmin: TMenuList[] = [
 
 
     // {
-    //     href: '/admin/departments',
+    //     href: '/admin/positions',
     //     icon: <Waypoints className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
-    //     title: 'Department',
+    //     title: 'Position',
     // },
     // {
     //     href: '/admin/company',

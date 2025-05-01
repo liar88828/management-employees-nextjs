@@ -1,14 +1,14 @@
 'use client'
 import { EmployeeUserClientLatter } from "@/interface/entity/employee.model";
-import { Department } from "@/interface/entity/departement.model";
+import { Position } from "@/interface/entity/position.model";
 import { useSendStore } from "@/store/send";
 import Form from "next/form";
 import { EmployeeCompletePhoto } from "@/interface/enum";
 import React from "react";
 
-export function SendFormTableEmployees({ employees, departments }: {
+export function SendFormTableEmployees({ employees, positions }: {
     employees: EmployeeUserClientLatter[],
-    departments: Department[]
+    positions: Position[]
 }) {
     const { setStore, setSelectEmployee, setSelectAllEmployee, getEmployeeExist, message } = useSendStore()
 
@@ -47,13 +47,13 @@ export function SendFormTableEmployees({ employees, departments }: {
                 </select>
 
                 <select
-                    onChange={ (e) => setStore({ department: e.target.value }) }
-                    name={ 'department' }
+                    onChange={ (e) => setStore({ position: e.target.value }) }
+                    name={ 'position' }
                     className="select select-bordered "
                 >
-                    <option value={ '' }>Select Department</option>
-                    { departments.map(department => (
-                        <option key={ department.id }>{ department.position }</option>
+                    <option value={ '' }>Select Position</option>
+                    { positions.map(position => (
+                        <option key={ position.id }>{ position.position }</option>
                     )) }
                 </select>
 
@@ -76,7 +76,7 @@ export function SendFormTableEmployees({ employees, departments }: {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
-                        <th>Department</th>
+                        <th>Position</th>
                         <th>Status</th>
                         <th>Count</th>
                         {/*<th >Action</th>*/ }
@@ -98,7 +98,7 @@ export function SendFormTableEmployees({ employees, departments }: {
                             <td>{ employee.User.name }</td>
                             <td>{ employee.User.email }</td>
                             <td className={ 'text-nowrap' }>{ employee.User.phone }</td>
-                            <td>{ employee.department }</td>
+                            <td>{ employee.position }</td>
                             <td>{ employee.status }</td>
                             <td>{ employee.LetterEmployees.length }</td>
                             {/*<td >*/ }

@@ -23,13 +23,13 @@ export function BaseLayoutAdmin({ children, isLogin }: {
     return ( <>
             <NavbarAdmin
                 isLogin={ isLogin }
-                setSideMenuIsExpand={ () => setSideMenuIsExpand(prevState => !prevState) }
+                sideMenuIsExpandAction={ () => setSideMenuIsExpand(prevState => !prevState) }
                 showNavbar={ showNavbar }
             />
 
             <div className=" container max-w-full px-2 ">
                 <SidebarAdmin
-                    setSideMenuIsExpand={ () => setSideMenuIsExpand(prevState => !prevState) }
+                    sideMenuIsExpandAction={ () => setSideMenuIsExpand(prevState => !prevState) }
                     sideMenuIsExpand={ sideMenuIsExpand }
                     path={ path }
 
@@ -75,12 +75,12 @@ export function DockAdmin({ showBottomNav, path }: {
 
 export function SidebarAdmin(
     {
-        setSideMenuIsExpand,
+        sideMenuIsExpandAction,
         sideMenuIsExpand,
         path
     }: {
         sideMenuIsExpand: boolean,
-        setSideMenuIsExpand: () => void
+        sideMenuIsExpandAction: () => void
         path: string
 
     }) {
@@ -102,7 +102,7 @@ export function SidebarAdmin(
                     </div>
                     <button
                         className="btn btn-ghost text-xl btn-square"
-                        onClick={ setSideMenuIsExpand }
+                        onClick={ sideMenuIsExpandAction }
                     >
                         <Menu />
                     </button>
@@ -144,12 +144,12 @@ export function LinkListLayoutAdmin({ item, path }: {
 export function NavbarAdmin(
     {
         showNavbar,
-        setSideMenuIsExpand,
-        isLogin
+        isLogin,
+        sideMenuIsExpandAction,
     }: {
         isLogin: boolean;
         showNavbar: boolean,
-        setSideMenuIsExpand: () => any
+        sideMenuIsExpandAction: () => any
     }) {
     return (
         <div
@@ -163,7 +163,7 @@ export function NavbarAdmin(
                 <BackButton />
                 <button
                     className="btn btn-ghost text-xl invisible  sm:visible  btn-square"
-                    onClick={ setSideMenuIsExpand }
+                    onClick={ sideMenuIsExpandAction }
                 >
                     <Menu />
                 </button>

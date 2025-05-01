@@ -3,11 +3,11 @@ import React from 'react';
 import { EmployeeFormClientAdmin } from "@/app/admin/employee/create/employeeFormClientAdmin";
 
 export default async function PageEmployeeFormAdmin() {
-    // const departments = await departmentGetAllPage()
+    // const positions = await positionGetAllPage()
 
     return (
         <EmployeeFormClientAdmin
-            // departments={ departments }
+            // positions={ positions }
             method={ 'POST' }
             userId={ '' }
         />

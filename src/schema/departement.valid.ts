@@ -1,14 +1,14 @@
 import { z } from "zod";
 import { FlagsOptionals, FlagsRequired } from "@/interface/generic";
 
-export type DepartmentFormState = {
+export type PositionFormState = {
     errors?: { position?: string[] }
     form?: string;
     success: boolean;
     message: string
 } | undefined
 
-export const DepartmentFormSchema = z.object({
+export const PositionFormSchema = z.object({
     position: z.string().min(5)
 })
 

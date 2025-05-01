@@ -22,7 +22,7 @@ export function RegistrationTable({ employees }: {
                     <th>Phone</th>
                     {/*<th >Gender</th>*/ }
                     {/*<th >Job Title</th>*/ }
-                    {/*<th >Department</th>*/ }
+                    {/*<th >Position</th>*/ }
                     {/*<th >Employment Type</th>*/ }
                     <th>Hire Date</th>
                     <th>Complete</th>
@@ -40,7 +40,7 @@ export function RegistrationTable({ employees }: {
                         <td className="text-nowrap">{ employee.User.phone }</td>
                         {/*<td >{ employee.gender }</td>*/ }
                         {/*<td >{ employee.jobTitle }</td>*/ }
-                        {/*<td >{ employee.departments }</td>*/ }
+                        {/*<td >{ employee.positions }</td>*/ }
                         {/*<td >{ employee.employmentType }</td>*/ }
                         <td>{ toDateIndo(employee.hireDate) }</td>
                         <td>{

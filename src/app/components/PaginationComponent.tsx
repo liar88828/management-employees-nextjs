@@ -19,14 +19,14 @@ export function PaginationComponent(
         status,
         page,
         title,
-        department
+        position
     }: {
         totalPages: number,
         search: string,
         page: number,
         title: string,
         status?: string,
-        department?: string
+        position?: string
     }) {
     return (
         <div className="flex justify-center mt-4 space-x-2">
@@ -37,7 +37,7 @@ export function PaginationComponent(
                         search,
                         status,
                         page: i + 1,
-                        department
+                        position
                     }) }
                     className={ `btn ${ page === i + 1 ? 'btn-primary' : 'btn-outline' }` }
                 >

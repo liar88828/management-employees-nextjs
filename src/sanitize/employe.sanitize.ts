@@ -40,7 +40,7 @@ export function employeeCreateSanitizeUser(
         ...data,
         userId,
         registration: false,
-        department: "",
+        position: "",
         salary: 0,
         notes: "",
         status: STATUS_EMPLOYEE.Registration,
@@ -98,7 +98,7 @@ export function employeeCreateSanitizeAdmin(
     const validateData: EmployeeRegistrationUserCreateServer = {
         ...data,
         registration: false,
-        department: "",
+        position: "",
         salary: 0,
         notes: "",
         userId: userId ?? '',
