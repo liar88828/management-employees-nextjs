@@ -3,7 +3,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { Minus, Plus } from "lucide-react";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { useState } from "react";
-import { TypeFile, uploadFile } from "@/server/action/upload";
+import { TypeFile, uploadFile } from "@/server/action/upload.action";
 import { EmployeePhotoPageAdmin } from "@/app/components/employee/employeePhotoPageAdmin";
 
 export function EmployeeFormContextClientAdmin({ title, keys }: { title: string, keys: string }) {

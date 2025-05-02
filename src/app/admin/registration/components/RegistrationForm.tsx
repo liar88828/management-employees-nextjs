@@ -2,11 +2,11 @@
 import { Employees } from "@prisma/client";
 import { Position } from "@/interface/entity/position.model";
 import { useActionState, useEffect } from "react";
-import { registerUpdateFormDataAdminAction } from "@/server/action/inbox";
 import toast from "react-hot-toast";
 import Form from "next/form";
 import { MyInput, MyInputTextArea } from "@/app/components/form/action";
 import { StatusEmployeeList } from "@/interface/enum";
+import { registerUpdateFormDataAdminAction } from "@/server/action/register.action";
 
 export function RegistrationForm({ employee, positions }: { employee: Employees, positions: Position[] }) {
     const [ state, action, pending ] = useActionState(registerUpdateFormDataAdminAction, undefined)

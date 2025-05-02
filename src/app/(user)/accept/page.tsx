@@ -1,9 +1,9 @@
 import React from 'react';
 import { validSession } from "@/secure/db";
 import { EmployeeNotFound } from "@/app/components/error/registrationFirst";
-import { employeeFindById } from "@/server/controller/employee.controller";
 import { STATUS_EMPLOYEE } from "@/interface/enum";
 import { redirect } from "next/navigation";
+import { employeeFindById } from "@/server/action/employee-admin.action";
 
 async function Page() {
     const { userId } = await validSession()

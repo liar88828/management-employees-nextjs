@@ -1,6 +1,7 @@
 import { Educations, Employees, LetterEmployees, Skills } from "@prisma/client";
 import { STATUS_EMPLOYEE } from "@/interface/Utils";
 import { UserClient } from "@/interface/entity/user.model";
+import { ParamsApi } from "@/interface/server/InterfaceRepository";
 
 export type TEmployeeSearch = {
     name: string
@@ -43,3 +44,4 @@ export type TEmployeeDB = EmployeeUserClient & {
     createdAt: Date;
     updatedAt: Date;
 }
+export type EmployeeParams = ParamsApi<TEmployeeSearch>

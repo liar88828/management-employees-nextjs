@@ -3,7 +3,7 @@ import { RegistrationError } from "@/app/components/error/registrationFirst";
 import { UploadDocument } from "@/app/components/employee/client/upload-document";
 import React from "react";
 
-export function EmployeeImageForm(props: { employee?: TEmployeeDB, error: string, type: string }) {
+export function EmployeeImageForm(props: { employee: TEmployeeDB | null, error: string, type: string }) {
     return <>
         { props.employee && (
             <div className="grid grid-cols-2 xl:grid-cols-3 gap-4">

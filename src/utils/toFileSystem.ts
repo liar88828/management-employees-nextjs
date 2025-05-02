@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export const fileSystem = async ( filePath: string ) => {
+export const toFileSystem = async (filePath: string) => {
   console.log( checkFile( "public/" + filePath ) )
   if( checkFile( "public/" + filePath ) ) {
     return fs.unlink( "public/" + filePath, err => {

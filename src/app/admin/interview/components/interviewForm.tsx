@@ -2,11 +2,11 @@
 import { Position } from "@/interface/entity/position.model";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import React, { useActionState, useEffect } from "react";
-import { interviewUpdateAction } from "@/server/action/inbox";
 import toast from "react-hot-toast";
 import Form from "next/form";
 import { MyInput, MyInputNum, MyInputOption, MyInputTextArea } from "@/app/components/form/action";
 import { StatusEmployeeList } from "@/interface/enum";
+import { interviewUpdateAction } from "@/server/action/interview.action";
 
 export function InterviewForm({ employee, positions }: { positions: Position[], employee: TEmployeeDB }) {
     const [ state, action, pending ] = useActionState(interviewUpdateAction, undefined)

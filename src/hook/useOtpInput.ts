@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useEmail } from "@/hook/useEmail";
 import { useOtpStore } from "@/store/otp";
-import { validUserByOtpAction } from "@/server/action/reset-password";
+import { validUserByOtpAction } from "@/server/action/reset-password.action";
 import { useRouter } from "next/navigation";
 
 export default function useOtpInput() {

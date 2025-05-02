@@ -1,8 +1,8 @@
 import React from 'react';
-import { employeeId } from "@/server/network/employee";
+import { employeeId } from "@/server/network/employee.network";
 import { EmptyData } from "@/app/components/PageErrorData";
 import { TContext } from "@/interface/server/param";
-import { getContextParam } from "@/utils/requestHelper";
+import { getContextParam } from "@/utils/toRequest";
 import { positionGetAllPage } from "@/server/action/position.action";
 import { EmployeeFormClientAdmin } from "@/app/admin/employee/update/[id]/employeeFormClientAdmin";
 

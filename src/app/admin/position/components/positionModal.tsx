@@ -10,7 +10,7 @@ import {
 import { FormError } from "@/app/components/form/action";
 import { LoadingAction } from "@/app/components/LoadingData";
 import { useFormStatus } from "react-dom";
-import { onAction } from "@/server/action/OnAction";
+import { toAction } from "@/utils/toAction";
 import { Position } from "@/interface/entity/position.model";
 import toast from "react-hot-toast";
 import { Trash } from "lucide-react";
@@ -89,7 +89,7 @@ export function PositionModalUpdate({ positionProps }: { positionProps: Position
     const [ position, setPosition ] = useState(positionProps.position)
     const { pending } = useFormStatus()
     const onUpdate = async (data: PositionUpdateActionType) => {
-        await onAction(() => positionUpdateAction(data),
+        await toAction(() => positionUpdateAction(data),
             `Success Delete Data Position By ID ${ positionProps.id }`)
     }
 
@@ -135,7 +135,7 @@ export function PositionModalUpdate({ positionProps }: { positionProps: Position
 export function PositionModalDelete({ position }: { position: Position }) {
     const { pending } = useFormStatus()
     const onDelete = async () => {
-        await onAction(async () => await positionDeleteAction(position.id),
+        await toAction(async () => await positionDeleteAction(position.id),
             `Success Delete Data Position By ID ${ position.id }`)
     }
 

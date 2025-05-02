@@ -1,7 +1,7 @@
 import React from 'react';
 import { sendOnlyAllLoader } from "@/server/action/send.action";
 import { PaginationComponent } from "@/app/components/PaginationComponent";
-import { getContextQuery, getContextQueryNum } from "@/utils/requestHelper";
+import { getContextQuery, getContextQueryNum } from "@/utils/toRequest";
 import { TContext } from "@/interface/server/param";
 import { SendTableLetter } from "@/app/admin/send/components/sendTableLetter";
 import { SendHeader } from "@/app/admin/send/components/sendHeader";

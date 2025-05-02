@@ -2,8 +2,10 @@ import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { toDateIndo } from "@/utils/toDate";
 import React from "react";
 import { ErrorComponent } from "@/app/components/error/ErrorComponent";
+import Link from "next/link";
 
 export async function PositionEmployeeTable({ employees }: { employees: EmployeeUserClient[] }) {
+
     if (employees.length === 0) {
         return <ErrorComponent title={ 'EmptyData' } description={ 'Maybe Data is Server is Busy' } />
 
@@ -24,6 +26,7 @@ export async function PositionEmployeeTable({ employees }: { employees: Employee
                         <th>Phone</th>
                         <th>Hire Date</th>
                         <th>Position</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -35,6 +38,12 @@ export async function PositionEmployeeTable({ employees }: { employees: Employee
                             <td className="text-nowrap">{ employee.User?.phone }</td>
                             <td>{ toDateIndo(employee.hireDate) }</td>
                             <td>{ employee.position }</td>
+                            <td>
+                                <Link
+                                    className={ 'btn btn-info' }
+                                    href={ `/admin/employee/${ employee.id }` }
+                                >Detail</Link>
+                            </td>
                         </tr>
                     )) }
                     </tbody>

@@ -1,9 +1,9 @@
 import React from 'react';
-import { employeeFindById, } from "@/server/controller/employee.controller";
 import { toDateIndo } from "@/utils/toDate";
 import { validSession } from "@/secure/db";
 import { InterviewShowCVGlobal } from "@/app/admin/interview/components/interviewShowCVGlobal";
 import { InterviewShowDocument } from "@/app/admin/interview/components/interviewShowDocument";
+import { employeeFindById } from "@/server/action/employee-admin.action";
 
 async function Page() {
     const { userId } = await validSession()

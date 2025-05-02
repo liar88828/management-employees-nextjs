@@ -1,25 +1,24 @@
 import { toFetch } from "@/hook/toFetch";
 import { ResponseAll } from "@/interface/server/param";
-import { TEmployeeDB } from "@/interface/entity/employee.model";
+import { EmployeeParams, TEmployeeDB } from "@/interface/entity/employee.model";
 import { EmployeeRegistrationUserCreateClient } from "@/schema/employee.valid";
 import { toUrl } from "@/utils/toUrl";
-import { EmployeeParams } from "@/server/repository/employee.repo";
 import { ErrorFetch } from "@/utils/error/ErrorClass";
 
-export const employeeAll = async ({filter, pagination}: EmployeeParams) => {
-    const url = toUrl('employee', {...filter, ...pagination})
-    return toFetch<ResponseAll<TEmployeeDB>>('GET', {url})
+export const employeeAll = async ({ filter, pagination }: EmployeeParams) => {
+    const url = toUrl('employee', { ...filter, ...pagination })
+    return toFetch<ResponseAll<TEmployeeDB>>('GET', { url })
 };
 
 export const employeeId = async (id: string) => {
     return toFetch<TEmployeeDB>('GET', {
-        url: `employee/${id}`
+        url: `employee/${ id }`
     })
 };
 
 export const employeeFindByUserId = async (userId: string) => {
     return toFetch<TEmployeeDB>('GET', {
-        url: `employee/user/${userId}`
+        url: `employee/user/${ userId }`
     })
 };
 
@@ -59,7 +58,7 @@ export const employeeUpdate = async ({ img, ...data }: EmployeeRegistrationUserC
         formData.append('file', img[0]);
         formData.append('data', JSON.stringify(data));
 
-        const response = await fetch(`/api/employee/${id}`, {
+        const response = await fetch(`/api/employee/${ id }`, {
             method: 'PUT',
             body: formData, // Send as FormData
         });

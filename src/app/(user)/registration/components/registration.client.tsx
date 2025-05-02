@@ -7,13 +7,13 @@ import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { employeeRegistrationUserCreateClient, EmployeeRegistrationUserCreateClient } from "@/schema/employee.valid";
-import { onUpsertDataUserAction } from "@/server/action/employee.client";
+import { onUpsertDataUserAction } from "@/server/action/employee-user.action";
 import { InputImage, InputTextDynamic } from "@/app/components/form/state";
 import { ErrorValidation } from "@/utils/error/ErrorClass";
 
 export function EmployeeFormClientUser({ employee, method, user }: {
     user: UserDB,
-    employee?: TEmployeeDB,
+    employee: TEmployeeDB | null,
     method: "POST" | 'PUT'
 }) {
     // const router = useRouter();

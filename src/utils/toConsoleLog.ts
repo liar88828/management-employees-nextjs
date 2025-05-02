@@ -1,4 +1,4 @@
-export function consoleLog(from: string, message?: string|null) {
+export function toConsoleLog(from: string, message?: string | null) {
     console.log({from, message})
 }
 

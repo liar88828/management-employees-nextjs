@@ -1,8 +1,8 @@
-'use server'
-import { prisma } from "@/config/prisma";
 import { FormStateReturn } from "@/schema/departement.valid";
-import { interviewSchema, InterviewSchemaType, registrationSchema, RegistrationSchemaType } from "@/schema/inbox";
-import { revalidatePath } from "next/cache";
+import { interviewSchema, InterviewSchemaType } from "@/schema/inbox";
+import { prisma } from "@/config/prisma";
+import { globalPageSize } from "@/config/nextPublicBaseUrl";
+import { EmployeeUserClient } from "@/interface/entity/employee.model";
 
 export async function interviewUpdateAction(state: FormStateReturn<InterviewSchemaType>, payload: FormData): Promise<FormStateReturn<InterviewSchemaType>> {
     const defaultValue = Object.fromEntries(payload);
@@ -58,43 +58,47 @@ export async function interviewUpdateAction(state: FormStateReturn<InterviewSche
         value: defaultValue
     }
 }
+export const employeeInterviewLoader = async (search: string, status: string, page: number) => {
+    // console.log({ search, status, page })
+    // const globalPageSize = 3; // You can adjust the page size
 
-export async function registerUpdateFormDataAdminAction(state: FormStateReturn<RegistrationSchemaType>, payload: FormData): Promise<FormStateReturn<RegistrationSchemaType>> {
-    const defaultValue = Object.fromEntries(payload);
-    // console.log(defaultValue);
-    const validateData = registrationSchema.safeParse(defaultValue)
+    const totalEmployees = await prisma.employees.count({
+        where: {
+            // name: { contains: search },
+            status: status,
+            registration: true,
+            User: { name: { contains: search } }
+        }
+    });
 
-    if (validateData.error) {
-        console.log(validateData.error.formErrors.fieldErrors)
-        return {
-            value: defaultValue,
-            errors: validateData.error.formErrors.fieldErrors,
-            message: "Validate False",
-            success: false
+    const employees = await prisma.employees.findMany({
+        where: {
+            // status: status,
+            status: status,
+            registration: true,
+            User: { name: { contains: search } },
+        },
+        skip: ( page - 1 ) * globalPageSize,
+        take: globalPageSize,
+        include: {
+            User: {
+                omit: {
+                    password: true,
+                    otp: true,
+                    otpExpired: true,
+                }
+            }
         }
-    }
-    const findEmployeeId = await prisma.employees.findUnique({ where: { id: validateData.data.id } });
-    if (!findEmployeeId) {
-        return {
-            value: defaultValue,
-            message: 'The Employee Data is Not Found ',
-            success: false
-        }
-    }
-    await prisma.employees.update({
-        where: { id: validateData.data.id },
-        data: {
-            status: validateData.data.status,
-            notes: validateData.data.notes,
-            jobTitle: validateData.data.jobTitle,
-            salary: Number(validateData.data.salary),
-            position: validateData.data.position,
-        }
+    }).then((item): EmployeeUserClient[] => {
+        return item
+        .map((i) => {
+            if (i && i.User) return { ...i, User: i.User }
+            return null
+        })
+        .filter((i) => i !== null)
     })
-    revalidatePath('/')
-    return {
-        message: "Success Update Data",
-        success: true,
-        value: defaultValue
-    }
+
+    const totalPages = Math.ceil(totalEmployees / globalPageSize);
+
+    return { totalPages, employees }
 }

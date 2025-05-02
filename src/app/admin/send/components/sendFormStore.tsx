@@ -8,9 +8,10 @@ import { useSendStore } from "@/store/send";
 import { sendEmployeeStoreAction } from "@/server/action/send.action";
 import { InputDate, InputText } from "@/app/components/form/state";
 import { LoadingSpin } from "@/app/components/LoadingData";
+import { ReactNode } from "react";
 
 export function SendFormStore(
-    // { children }: { children: ReactNode }
+    { children }: { children: ReactNode }
     // { employees, letter }: { letter?: Letters, employees: EmployeeUserClient[] }
 ) {
     const methods = useForm<LetterFormSchemaType>({
@@ -45,7 +46,7 @@ export function SendFormStore(
         <div className="flex items-center justify-center">
             <div className="w-full max-w-4xl card card-bordered bg-base-200 sm:card-normal card-compact ">
                 <FormProvider { ...methods }>
-                    <form onSubmit={ handleSubmit(onCreate) } className="card-body">
+                    <div className="card-body">
                         <h2 className="card-title">Create Form letter</h2>
                         {/*{ letter?.id && <input type="hidden" value={ letter?.id } name={ 'id' } /> }*/ }
                         <div className="grid grid-cols-2 gap-5">
@@ -55,17 +56,18 @@ export function SendFormStore(
                             <InputText keys={ "dressCode" } title={ "Dress Code" } />
                         </div>
 
-                        {/*{ children }*/ }
+                        { children }
                         <div className="card-actions">
                             <button
                                 disabled={ isLoading }
                                 type="submit"
                                 className={ `btn btn-primary w-full ${ isLoading ? "btn-disabled" : "" } mt-5` }
+                                onClick={ handleSubmit(onCreate) }
                             >
                                 { isLoading && <LoadingSpin /> } Create
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </FormProvider>
             </div>
         </div>

@@ -3,7 +3,7 @@ import Form from "next/form";
 import Link from "next/link";
 import React, { Fragment, useState } from "react";
 import { Plus } from "lucide-react";
-import { TypeFile, uploadFile } from "@/server/action/upload";
+import { TypeFile, uploadFile } from "@/server/action/upload.action";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { EmployeePhotoPageAdmin } from "@/app/components/employee/employeePhotoPageAdmin";
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { TContext } from "@/interface/server/param";
-import { getContextQuery } from "@/utils/requestHelper";
+import { getContextQuery } from "@/utils/toRequest";
 import { EmployeeCompletePhotoType, STATUS_EMPLOYEE } from "@/interface/enum";
-import { employeeRegistrationPaginationLoader } from "@/server/action/employee-admin.action";
 import { PaginationComponent } from "@/app/components/PaginationComponent";
 import { RegistrationTable } from "@/app/admin/registration/components/RegistrationTable";
 import RegistrationSearch from "@/app/admin/registration/components/registrationSearch";
+import { employeeRegistrationPaginationLoader } from "@/server/action/register.action";
 
 async function Page(context: TContext) {
     const search = await getContextQuery(context, 'search')

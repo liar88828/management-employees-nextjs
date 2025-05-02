@@ -13,16 +13,17 @@ export function SendFormTableEmployees({ employees, positions }: {
     const { setStore, setSelectEmployee, setSelectAllEmployee, getEmployeeExist, message } = useSendStore()
 
     return (
-        <section className="card card-body bg-base-200 mt-2">
-            <div className="">
 
+        // card card-body
+        <section
+            className=" bg-base-200  space-y-2 mt-2"
+        >
                 <h1 className={ 'card-title' }>Select Employee
                     { message &&
                         <span className={ 'text-error' }>{ message }</span>
                     }
                 </h1>
 
-            </div>
             {/*<h1>Please Select Want To Send Letter</h1>*/ }
             <Form action="/admin/send/create"
                   className={ 'flex flex-wrap gap-1' }

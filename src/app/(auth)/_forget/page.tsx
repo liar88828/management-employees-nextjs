@@ -1,6 +1,6 @@
 'use client';
 
-import { forget } from "@/server/action/auth";
+import { forget } from "@/server/action/auth.action";
 import { useActionState } from "react";
 import Link from "next/link";
 import { useOtpStore } from "@/store/otp";

@@ -1,9 +1,9 @@
 import React from "react";
 import { EmployeePhotoAdmin } from "@/app/components/employee/employee.page";
-import { employeeFindByUserId, employeeId } from "@/server/network/employee";
+import { employeeFindByUserId, employeeId } from "@/server/network/employee.network";
 import { EmptyData } from "@/app/components/PageErrorData";
 import { validSession } from "@/secure/db";
-import { employeeByUserIdForIDCardLoader } from "@/server/action/employee.client";
+import { employeeByUserIdForIDCardLoader } from "@/server/action/employee-user.action";
 import { positionGetAllPage } from "@/server/action/position.action";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { EmployeeFormClientAdmin } from "@/app/admin/employee/create/employeeFormClientAdmin";

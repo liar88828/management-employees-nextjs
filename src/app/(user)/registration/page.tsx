@@ -1,13 +1,13 @@
 import React from 'react';
 import { redirect } from "next/navigation";
-import { employeeFindById } from "@/server/controller/employee.controller";
 import { EmployeeFormClientUser } from "@/app/(user)/registration/components/registration.client";
 import { getUserPage } from "@/secure/db";
-import { getContextQuery } from "@/utils/requestHelper";
+import { getContextQuery } from "@/utils/toRequest";
 import { TContext } from "@/interface/server/param";
 import { RegistrationError } from "@/app/components/error/registrationFirst";
 import { EmployeeImageForm } from "@/app/(user)/registration/components/employeeImageForm";
-import { registrationFinishedAction } from "@/server/action/employee.client";
+import { registrationFinishedAction } from "@/server/action/employee-user.action";
+import { employeeFindById } from "@/server/action/employee-admin.action";
 
 export default async function Page(context: TContext) {
     const error = await getContextQuery(context, 'error')

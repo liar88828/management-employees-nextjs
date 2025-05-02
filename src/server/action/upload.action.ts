@@ -1,8 +1,60 @@
-'use server'
+"use server";
+import { revalidatePath } from "next/cache";
+import { prisma } from "@/config/prisma";
 import path from "path";
 import fs from "fs";
 import { ErrorResponse } from "@/utils/error/ErrorClass";
 
+export type TypeFile = 'KTP' | '3x4' | 'ijazah'
+
+type UploadFileType = {
+    typeFile: TypeFile,
+    id: string,
+    from: string
+};
+
+export async function uploadFile(
+    { id, from, typeFile }: UploadFileType,
+    formData: FormData) {
+    try {
+
+        // const file = formData.get("file") as File;
+        // const arrayBuffer = await file.arrayBuffer();
+        // const buffer = new Uint8Array(arrayBuffer);
+        // const name = `/uploads/${ file.name }`
+        // await fs.writeFile(`./public${ name }`, buffer);
+        // console.log(typeFile);
+
+        const response = await fetch("http://localhost:8000/images/", {
+            method: "POST",
+            body: formData,
+        })
+        const data = await response.json()
+        console.log(data, 'data')
+        if (!data.success) {
+            throw new Error(`Error uploading file: ${ id } : ${ data.detail }`)
+        }
+        if (from === 'employee') {
+            await prisma.employees.update({
+                where: { id },
+                data:
+                    typeFile === 'KTP'
+                        ? { photoKtp: data.full_path }
+                        : typeFile === '3x4'
+                            ? { photo3x4: data.full_path }
+                            : typeFile === 'ijazah'
+                                ? { photoIjazah: data.full_path }
+                                : {},
+            });
+        }
+        revalidatePath("/");
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(error.message);
+            // return errors.message
+        }
+    }
+}
 export const saveImageFormData = async (
     formData: FormData,
     pathImage: string,
@@ -33,7 +85,6 @@ export const saveImageFormData = async (
     fs.writeFileSync(filePath, buffer);
     return pathImage
 }
-
 export const saveImage = async (
     imageFile: File,
     pathImage: string,
@@ -55,7 +106,6 @@ export const saveImage = async (
     fs.writeFileSync(filePath, buffer);
     return pathImage
 }
-
 export const deleteImage = async (imagePath: string) => {
     // Get the absolute file path
     const filePath = path.join(process.cwd(), 'public', imagePath);
@@ -70,19 +120,16 @@ export const deleteImage = async (imagePath: string) => {
     //     throw new Error(`File ${ imagePath } not found.`);
     // }
 };
-
 export const updateImage = async (imageFile: File, imagePath: string, oldImagePath?: string | null) => {
     if (oldImagePath) {
         await deleteImage(oldImagePath)
     }
     return saveImage(imageFile, imagePath);
 }
-
 export const updateImageFormData = async (formData: FormData, imagePath: string, key: string = "file") => {
     await deleteImage(imagePath)
     return saveImageFormData(formData, imagePath, key);
 }
-
 export const saveImageAction = async (imgFile: File, pathImage: string) => {// Get the image file from the form data
 
     if (!imgFile) {
@@ -110,7 +157,6 @@ export const saveImageAction = async (imgFile: File, pathImage: string) => {// G
     fs.writeFileSync(filePath, buffer);
     return pathImage
 }
-
 export const pathImage = async (formData: FormData, isThrow?: boolean) => {// Get the image file from the form data
     const imgFile = formData.get('file') as File;
     // console.log(imgFile)
@@ -124,7 +170,6 @@ export const pathImage = async (formData: FormData, isThrow?: boolean) => {// Ge
     // `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.name }`
     return `/uploads/${ imgFile.name }`
 }
-
 export const setPathImage = async (imgFile: File) => {// Get the image file from the form data
     if (!imgFile) {
         throw new ErrorResponse('Image is required', 401);

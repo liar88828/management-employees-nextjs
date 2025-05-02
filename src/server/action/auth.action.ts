@@ -12,12 +12,12 @@ import {
     SignInFormSchema,
     SignupFormSchema
 } from "@/schema/auth.valid";
-import { userRepository } from "@/server/controller";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { checkPassword } from "@/secure/password";
 import { PropertyMap } from "@/interface/types";
 import { ROLE, STATUS_USER } from "@/interface/enum";
-import { _otpGenerate } from "@/server/controller/otpController";
+import { _otpGenerate } from "@/server/action/otp.action";
+import { userCreateOne, userFindByIdValid, userUpdateOne } from "@/server/action/user.action";
 
 export async function register(state: FormStateRegister, formData: FormData): Promise<FormStateRegister> {
     // Validate form fields
@@ -65,7 +65,7 @@ export async function register(state: FormStateRegister, formData: FormData): Pr
     const hashedPassword = await bcrypt.hash(password, 10)
 
     // 3. Insert the user into the database or call an Auth Library's API
-    const user = await userRepository.createOne({
+    const user = await userCreateOne({
         name,
         email,
         password: hashedPassword,
@@ -309,7 +309,7 @@ export async function changeProfile(state: FormStateAuth, formData: FormData) {
     // 2. Prepare data for insertion into database
     const { name, email, password, phone, address, id } = validatedFields.data
 
-    const userDB = await userRepository.findByIdValid(id)
+    const userDB = await userFindByIdValid(id)
 
     await checkPassword(password, userDB.password)
 
@@ -317,7 +317,7 @@ export async function changeProfile(state: FormStateAuth, formData: FormData) {
     const hashedPassword = await bcrypt.hash(password, 10)
 
     // 3. Insert the user into the database or call an Auth Library's API
-    const user = await userRepository.updateOne(
+    const user = await userUpdateOne(
         {
             name,
             email,

@@ -3,7 +3,7 @@
 import { ResponseData } from "@/interface/server/TResponse";
 import toast from "react-hot-toast";
 
-export async function onAction(fun: () => any, message: string): Promise<ResponseData> {
+export async function toAction(fun: () => any, message: string): Promise<ResponseData> {
     const toastId = toast.loading('Loading ....');
     try {
         const response = await fun()

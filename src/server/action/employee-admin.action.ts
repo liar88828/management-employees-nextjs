@@ -1,5 +1,23 @@
 'use server'
-import { EmployeeCreateClientAdmin } from "@/schema/employee.valid";
+import {
+    EmployeeCreateClientAdmin,
+    EmployeeRegistrationUserCreateServer,
+    EmployeeUpdateServerUser
+} from "@/schema/employee.valid";
+import {
+    employeeCreateSanitizeAdmin,
+    employeeSanitizeFormData,
+    employeeSanitizeUpdateAdmin
+} from "@/sanitize/employe.sanitize";
+import { ZodError } from "zod";
+import { prisma } from "@/config/prisma";
+import { checkPositionPosition } from "@/server/action/position.action";
+import { STATUS_EMPLOYEE } from "@/interface/enum";
+import { EmployeeUserClient, TEmployeeDB } from "@/interface/entity/employee.model";
+import { Users } from ".prisma/client";
+import { revalidatePath } from "next/cache";
+import { globalPageSize } from "@/config/nextPublicBaseUrl";
+import { ActionResponse } from "@/interface/action";
 import {
     pathImage,
     saveImage,
@@ -7,22 +25,8 @@ import {
     setPathImage,
     updateImage,
     updateImageFormData
-} from "@/server/repository/image.repo";
-import {
-    employeeCreateSanitizeAdmin,
-    employeeSanitizeFormData,
-    employeeSanitizeUpdateAdmin
-} from "@/sanitize/employe.sanitize";
-import { employeeRepository } from "@/server/controller";
-import { ZodError } from "zod";
-import { prisma } from "@/config/prisma";
-import { checkPositionPosition } from "@/server/action/position.action";
-import { EmployeeCompletePhotoType, STATUS_EMPLOYEE } from "@/interface/enum";
-import { EmployeeUserClient } from "@/interface/entity/employee.model";
-import { Users } from ".prisma/client";
-import { revalidatePath } from "next/cache";
-import { globalPageSize } from "@/config/nextPublicBaseUrl";
-import { ActionResponse } from "@/interface/action";
+} from "@/server/action/upload.action";
+import { ErrorDatabase } from "@/utils/error/ErrorClass";
 
 export async function employeeCreateFormDataAdminAction({ img, ...data }: EmployeeCreateClientAdmin) {
     // console.log('employeeCreateFormDataAdminAction', data);
@@ -32,7 +36,7 @@ export async function employeeCreateFormDataAdminAction({ img, ...data }: Employ
 
     const filePath = await pathImage(formData)    // Save the image path to the database
     const employeeData = employeeSanitizeFormData(formData, filePath)
-    const response = await employeeRepository.createUserRepo(employeeData,)
+    const response = await createUserRepo(employeeData,)
     if (response) {
         await saveImageFormData(formData, filePath)
     }
@@ -51,7 +55,7 @@ export async function employeeUpdateFormDataAdminAction(
         const employeeData = employeeSanitizeFormData(formData, filePath, data.userId)
 
         // @ts-ignore
-        const response = await employeeRepository.updateUserRepo(employeeData, employeeId,)
+        const response = await updateUserRepo(employeeData, employeeId,)
         if (response && typeImage) {
             await updateImageFormData(formData, filePath)
         }
@@ -221,109 +225,6 @@ export const employeePageLoader = async (search: string, status: string, page: n
     return { totalPages, employees }
 }
 
-export const employeeInterviewLoader = async (search: string, status: string, page: number) => {
-    // console.log({ search, status, page })
-    // const globalPageSize = 3; // You can adjust the page size
-
-    const totalEmployees = await prisma.employees.count({
-        where: {
-            // name: { contains: search },
-            status: status,
-            registration: true,
-            User: { name: { contains: search } }
-        }
-    });
-
-    const employees = await prisma.employees.findMany({
-        where: {
-            // status: status,
-            status: status,
-            registration: true,
-            User: { name: { contains: search } },
-        },
-        skip: ( page - 1 ) * globalPageSize,
-        take: globalPageSize,
-        include: {
-            User: {
-                omit: {
-                    password: true,
-                    otp: true,
-                    otpExpired: true,
-                }
-            }
-        }
-    }).then((item): EmployeeUserClient[] => {
-        return item
-        .map((i) => {
-            if (i && i.User) return { ...i, User: i.User }
-            return null
-        })
-        .filter((i) => i !== null)
-    })
-
-    const totalPages = Math.ceil(totalEmployees / globalPageSize);
-
-    return { totalPages, employees }
-}
-
-export const employeeRegistrationPaginationLoader = async (
-    search: string,
-    status: string[],
-    page: number,
-    complete: EmployeeCompletePhotoType,
-) => {
-
-    // console.log( search, status, page, complete )
-    // const globalPageSize = 3; // You can adjust the page size
-    const totalEmployees = await prisma.employees.count({
-        where: {
-            // name: { contains: search },
-            status: { in: status },
-            User: { name: { contains: search } },
-
-            photoKtp: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-            photo3x4: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-            photoIjazah: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-        }
-    });
-
-    const employees = await prisma.employees.findMany({
-        where: {
-            status: { in: status },
-            User: { name: { contains: search } },
-
-            photoKtp: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-            photo3x4: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-            photoIjazah: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-            // photoIjazah: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : undefined,
-
-        },
-        skip: ( page - 1 ) * globalPageSize,
-        take: globalPageSize,
-        include: {
-            User: {
-                omit: {
-                    password: true,
-                    otp: true,
-                    otpExpired: true,
-                }
-            }
-        }
-    })
-    .then((item): EmployeeUserClient[] => {
-        return item
-        // .map((i) => {
-        //     if (i && i.User) return { ...i, User: i.User }
-        //     return null
-        // })
-        // .filter((i) => i !== null)
-    })
-
-    const totalPages = Math.ceil(totalEmployees / globalPageSize);
-    // console.log( totalPages,'totalPages')
-    // console.log( totalEmployees,'totalEmployees')
-    return { totalPages, employees }
-}
 export async function employeeCreateAdmin(
     { img, ...data }: EmployeeCreateClientAdmin,
 ) {
@@ -332,7 +233,7 @@ export async function employeeCreateAdmin(
         const imageFile = img[0]
         const imagePath = await setPathImage(imageFile)    // Save the image path to the database
         const employeeData = employeeCreateSanitizeAdmin(data, data?.userId, imagePath,)
-        const response = await employeeRepository.createUserRepo(employeeData,)
+        const response = await createUserRepo(employeeData,)
         console.log('response : ', response)
         if (response && isImage && imagePath) {
             const pathImage = await saveImage(imageFile, imagePath)
@@ -355,7 +256,7 @@ export async function employeeUpdateAdminAction(
         const imagePath = await setPathImage(imageFile)    // Save the image path to the database
         // console.log('imageFile',imageFile)
         const employeeData = employeeSanitizeUpdateAdmin(data, imagePath, data?.userId)
-        const response = await employeeRepository.updateUserRepo(employeeData, employeeId,)
+        const response = await updateUserRepo(employeeData, employeeId,)
         // console.log('isImage, response',isImage, response)
         if (response && isImage && imagePath) {
             await updateImage(imageFile, imagePath)
@@ -472,3 +373,139 @@ export async function employeePositionsLoader(
 
     return { employees, totalPages }
 }
+
+export async function employeeFindById(
+    { userId, employeeId }: { employeeId?: string, userId?: string }
+): Promise<TEmployeeDB | null> {
+    return prisma.employees.findUnique({
+        where: { id: employeeId, userId: userId },
+        include: {
+            User: {
+                omit: {
+                    password: true,
+                    otp: true,
+                    otpExpired: true,
+                }
+            },
+            // languages: true,
+            skills: true,
+            educations: true,
+        },
+    });
+}
+
+export async function createUserRepo(
+    {
+        skills,
+        // languages,
+        educations, ...employees
+    }: EmployeeRegistrationUserCreateServer,
+) {
+    // console.log(employees)
+    return prisma.$transaction(async (tx) => {
+        // const foundUser = await tx.users.findUnique(
+        //     {
+        //         select: { email: true },
+        //         where: { email: user.email }
+        //     }
+        // );
+        // if (foundUser) {
+        //     throw new ErrorDatabase("Employee already exists", 404);
+        // }
+        const employeeDB = await tx.employees.create({
+            data: { ...employees }
+        });
+
+        const skillDB = await tx.skills.createMany({
+            data: skills.map(({ text }) => ( {
+                employeesId: employeeDB.id, text
+            } ))
+        })
+        // const languageDB = await tx.languages.createMany({
+        //     data: languages.map(({ text }) => ( {
+        //         employeesId: employeeDB.id, text
+        //     } ))
+        // })
+        const educationDB = await tx.educations.createMany({
+            data: educations.map(({ text }) => ( {
+                employeesId: employeeDB.id, text
+            } ))
+        })
+        return {
+            employeeDB, skillDB,
+            // languageDB,
+            educationDB
+        };
+    })
+}
+
+export async function updateUserRepo({
+                                         skills,
+                                         // languages,
+                                         educations, ...employees
+                                     }: EmployeeUpdateServerUser,
+                                     id: string,
+) {
+    return prisma.$transaction(async (tx) => {
+
+        const foundEmployee = await tx.employees.findFirst({
+            where: { userId: employees.userId }
+        });
+        if (!foundEmployee) {
+            // 404
+            throw new ErrorDatabase("Is Not Found");
+        }
+        const employeeDB = await tx.employees.update({
+            where: { id }, data: { ...employees }
+        });
+        await tx.skills.deleteMany({ where: { employeesId: id } })
+        const skillDB = await tx.skills.createMany({
+            data: skills.map(({ text }) => ( {
+                employeesId: employeeDB.id, text
+            } ))
+        })
+
+        // await tx.languages.deleteMany({ where: { employeesId: id } })
+        // const languageDB = await tx.languages.createMany({
+        //     data: languages.map(({ text }) => ( {
+        //         employeesId: employeeDB.id, text,
+        //     } ))
+        // })
+
+        await tx.educations.deleteMany({ where: { employeesId: id } })
+        const educationDB = await tx.educations.createMany({
+            data: educations.map(({ text }) => ( {
+                employeesId: employeeDB.id, text
+            } ))
+        })
+        return {
+            employeeDB, skillDB,
+            // languageDB,
+            educationDB
+        };
+    })
+}
+
+// export async function employeeFindById({ userId, employeeId }: {
+//     userId?: string,
+//     employeeId?: string
+// }): Promise<TEmployeeDB | undefined> {
+//     return prisma.employees.findUnique({
+//         where: { userId, id: employeeId },
+//         include: {
+//             User: {
+//                 omit: {
+//                     password: true,
+//                     otp: true,
+//                     otpExpired: true,
+//                 }
+//             },
+//             // languages: true,
+//             skills: true,
+//             educations: true
+//         }
+//     }).then(item => {
+//         if (!item) return undefined
+//         return item
+//     })
+// }

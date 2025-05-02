@@ -1,7 +1,9 @@
 'use client'
 import Link from "next/link";
 import React from "react";
-import { nodemailerSendRegister } from "@/server/controller/nodemailer.controller";
+import { nodemailerSendRegister } from "@/server/action/nodemailer.action";
+import { sendDetailDeleteAction } from "@/server/action/send.action";
+import { EmployeeUserClient } from "@/interface/entity/employee.model";
 
 export function SendHeader() {
     return <div className="flex justify-between items-center">
@@ -28,14 +30,25 @@ export function SendHeader() {
     </div>;
 }
 
-export function SendHeaderDetail(props: { letter: any, employees: any }) {
+export function SendHeaderDetail(props: { letter: any, employees: EmployeeUserClient[] }) {
+
     return <div className="flex justify-between items-end">
         <h1 className={ "my-title" }>letter : { props.letter.id } </h1>
-        <button
-            className="btn btn-primary "
-            onClick={ () => nodemailerSendRegister(props.employees) }
-        >
-            Send All Email
-        </button>
-    </div>;
+        <div className="space-x-2">
+            { props.employees.length === 0
+                ? <button
+                    className="btn btn-error "
+                    onClick={ () => sendDetailDeleteAction(props.letter.id) }
+                >
+                    Delete
+                </button>
+                : <button
+                    className="btn btn-primary "
+                    onClick={ () => nodemailerSendRegister(props.employees) }
+                >
+                    Send
+                </button>
+            }
+        </div>
+    </div>
 }

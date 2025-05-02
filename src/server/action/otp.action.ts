@@ -1,6 +1,6 @@
 'use server'
 import { OTPGenerate, OTPValid } from "@/interface/server/param";
-import { validGenerateOtp, validOtp } from "@/schema/validGenerateOtp";
+import { otpValid, validOtp } from "@/schema/otp.valid";
 import { prisma } from "@/config/prisma";
 import { toOtp } from "@/utils/toOtp";
 import nodemailer from "nodemailer";
@@ -9,7 +9,7 @@ import { ResponseData } from "@/interface/server/TResponse";
 import { STATUS_USER } from "@/interface/enum";
 
 export async function _otpGenerate(json: OTPGenerate): Promise<ResponseData> {
-    const { time: otpExpired, email, reason } = validGenerateOtp.parse(json)
+    const { time: otpExpired, email, reason } = otpValid.parse(json)
     const user = await prisma.users.findFirst({ where: { email } })
 
     if (!user) {

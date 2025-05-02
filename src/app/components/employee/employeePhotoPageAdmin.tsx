@@ -1,4 +1,4 @@
-import { TypeFile } from "@/server/action/upload";
+import { TypeFile } from "@/server/action/upload.action";
 import { i3x4, ktp, TEmployeeDB } from "@/interface/entity/employee.model";
 import React from "react";
 

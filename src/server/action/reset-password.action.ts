@@ -6,13 +6,13 @@ import { redirect } from "next/navigation";
 import bcrypt from "bcrypt";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { OTPGenerate, OTPValid, ResetPassword } from "@/interface/server/param";
-import { validGenerateOtp, validOtp } from "@/schema/validGenerateOtp";
+import { otpValid, validOtp } from "@/schema/otp.valid";
 import { toOtp } from "@/utils/toOtp";
 import nodemailer from "nodemailer";
 import { ActionResponse } from "@/interface/action";
 
 export async function checkEmailAction(json: OTPGenerate): Promise<ActionResponse> {
-    const { success, data, error } = validGenerateOtp.safeParse(json)
+    const { success, data, error } = otpValid.safeParse(json)
     if (!success) {
         return {
             errors: error.flatten().fieldErrors,

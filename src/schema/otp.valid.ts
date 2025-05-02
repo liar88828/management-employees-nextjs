@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { OTPGenerate, OTPValid } from "@/interface/server/param";
 
-export const validGenerateOtp: z.ZodType<OTPGenerate> = z.object({
+export const otpValid: z.ZodType<OTPGenerate> = z.object({
     email: z.string().email(),
     time: z.coerce.date(),
     reason: z.enum([ 'RESET', 'OTP' ]),
@@ -13,5 +13,5 @@ export const validOtp: z.ZodType<OTPValid> = z.object({
     // reason: z.enum([ 'RESET', 'OTP' ]),
 })
 
-export type ValidGenerateOtpType = z.infer<typeof validGenerateOtp>
+export type ValidGenerateOtpType = z.infer<typeof otpValid>
 export type ValidOtpType = z.infer<typeof validOtp>

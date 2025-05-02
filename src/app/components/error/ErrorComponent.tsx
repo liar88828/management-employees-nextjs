@@ -14,7 +14,12 @@ export function ErrorComponent({ title, description }: { title: string, descript
                     <button onClick={ () => router.back() } className={ 'btn  btn-neutral ' }>Back</button>
                 </div>
             </div>
-
         </section>
+    );
+}
+
+export function EmptyComponent({ title, description }: { title: string, description: string }) {
+    return (
+        <ErrorComponent title={ title } description={ description } />
     );
 }

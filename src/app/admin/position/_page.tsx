@@ -1,6 +1,6 @@
 import React from 'react';
 import { TContext } from "@/interface/server/param";
-import { getContextQuery, getContextQueryNum } from '@/utils/requestHelper';
+import { getContextQuery, getContextQueryNum } from '@/utils/toRequest';
 import PositionDetailSearch from './components/positionSearch';
 import { PaginationComponent } from '@/app/components/PaginationComponent';
 import { employeePositionsLoader } from '@/server/action/employee-admin.action';

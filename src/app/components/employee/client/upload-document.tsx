@@ -1,6 +1,6 @@
 'use client'
 import { i3x4, ktp, TEmployeeDB } from "@/interface/entity/employee.model";
-import { TypeFile, uploadFile } from "@/server/action/upload";
+import { TypeFile, uploadFile } from "@/server/action/upload.action";
 import React, { useState } from "react";
 
 export function UploadDocument({ employee, type }: { employee: TEmployeeDB, type: TypeFile }) {

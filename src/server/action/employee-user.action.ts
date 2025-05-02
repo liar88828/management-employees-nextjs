@@ -1,15 +1,14 @@
 'use server'
 import { redirect } from "next/navigation";
-import { employeeRepository } from "@/server/controller";
 import { EmployeeRegistrationUserCreateClient } from "@/schema/employee.valid";
-import { saveImage, setPathImage, updateImage } from "@/server/repository/image.repo";
 import { employeeCreateSanitizeUser, employeeSanitizeUpdateUser } from "@/sanitize/employe.sanitize";
-import { EmployeeUserClientLatter, TEmployeeDB } from "@/interface/entity/employee.model";
-import { employeeFindById } from "@/server/controller/employee.controller";
+import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { prisma } from "@/config/prisma";
-import { EmployeeCompletePhotoType, ROLE, STATUS_EMPLOYEE } from "@/interface/enum";
+import { STATUS_EMPLOYEE } from "@/interface/enum";
 import { ZodError } from "zod";
 import { revalidatePath } from "next/cache";
+import { createUserRepo, employeeFindById, updateUserRepo } from "@/server/action/employee-admin.action";
+import { saveImage, setPathImage, updateImage } from "@/server/action/upload.action";
 
 export async function employeeCreateUserAction(
     { img, ...data }: EmployeeRegistrationUserCreateClient,
@@ -20,7 +19,7 @@ export async function employeeCreateUserAction(
         const imageFile = img[0]
         const imagePath = await setPathImage(imageFile)    // Save the image path to the database
         const employeeData = employeeCreateSanitizeUser(data, userId, imagePath,)
-        const response = await employeeRepository.createUserRepo(employeeData,)
+        const response = await createUserRepo(employeeData,)
         console.log('response : ', response)
         if (response && isImage && imagePath) {
             const pathImage = await saveImage(imageFile, imagePath)
@@ -49,7 +48,7 @@ export async function employeeUpdateUserAction(
         const imagePath = await setPathImage(imageFile)    // Save the image path to the database
         // console.log('imageFile',imageFile)
         const employeeData = employeeSanitizeUpdateUser(data, userId, imagePath,)
-        const response = await employeeRepository.updateUserRepo(employeeData, employeeId,)
+        const response = await updateUserRepo(employeeData, employeeId,)
         // console.log('isImage, response',isImage, response)
         if (response && isImage && imagePath) {
             await updateImage(imageFile, imagePath)
@@ -112,50 +111,6 @@ export async function employeeByUserIdForIDCardLoader(userId: string) {
         },
     })
 
-}
-
-export async function employeeFindLatterLoader(
-    name: string, position: string, complete: EmployeeCompletePhotoType
-) {
-    return prisma.employees.findMany({
-        where: {
-            User: {
-                role: { not: ROLE.ADMIN, },
-                name: { contains: name, }
-            },
-            status: {
-                notIn: [
-                    STATUS_EMPLOYEE.Active,
-                    STATUS_EMPLOYEE.Create,
-                    STATUS_EMPLOYEE.Resign,
-                    STATUS_EMPLOYEE.Registration,
-                    STATUS_EMPLOYEE.Registration_Reject,
-                    STATUS_EMPLOYEE.Disabled,
-                ]
-            },
-            sendEmail: 1,
-            position: { contains: position },
-            photoKtp: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-            photo3x4: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-            photoIjazah: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-        },
-        include: {
-            LetterEmployees: true,
-            User: {
-                omit: {
-                    password: true,
-                    otp: true,
-                    otpExpired: true
-                }
-            }
-        },
-    })
-    .then(item => {
-        return item.map((i): EmployeeUserClientLatter | null => {
-            if (!i) return null
-            return { ...i, User: i.User }
-        }).filter(i => i !== null)
-    })
 }
 
 export async function registrationFinishedAction({ userId }: { userId: string })

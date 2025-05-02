@@ -3,7 +3,8 @@ import { Companys } from "@/assets/company";
 import { LetterForm } from "@/assets/letter";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { toDateIndo } from "@/utils/toDate";
-import { SendLatterModal } from "@/app/admin/send/components/sendLatterModal";
+import { SendDeleteModal, SendDetailModal } from "@/app/admin/send/components/sendModal";
+import { ErrorComponent } from "@/app/components/error/ErrorComponent";
 
 export function SendTableEmployee(
     { employees, letter, company }:
@@ -13,6 +14,11 @@ export function SendTableEmployee(
         employees: EmployeeUserClient[]
     }
 ) {
+
+    if (employees.length === 0) {
+        return <ErrorComponent title={ 'Send Employee Empty ' } description={ 'Please add Employee ' } />
+    }
+
     return (
         <div className="overflow-x-auto  ">
             <table className="my-table">
@@ -21,12 +27,12 @@ export function SendTableEmployee(
                     <th>Employee Name</th>
                     {/*<th>Employee Phone</th>*/ }
                     <th>Employee Email</th>
-                    <th>Employee Here</th>
+                    {/*<th>Employee Here</th>*/ }
                     {/*<th>Employee Birth</th>*/ }
-                    <th>Employee Status</th>
+                    {/*<th>Employee Status</th>*/ }
                     <th>Interview Date</th>
                     <th>Interview Location</th>
-                    <th>Letter Create</th>
+                    {/*<th>Letter Create</th>*/ }
                     <th>Action</th>
 
                 </tr>
@@ -39,19 +45,24 @@ export function SendTableEmployee(
                         <td>{ item.User.name }</td>
                         {/*<td>{ item.User.phone }</td>*/ }
                         <td>{ item.User.email }</td>
-                        <td>{ toDateIndo(item.hireDate) }</td>
+                        {/*<td>{ toDateIndo(item.hireDate) }</td>*/ }
                         {/*<td>{ toDateIndo(item.dateOfBirth) }</td>*/ }
-                        <td>{ item.status }</td>
+                        {/*<td>{ item.status }</td>*/ }
                         {/**/ }
                         <td>{ toDateIndo(letter.interviewDate) }</td>
                         <td>{ letter.interviewLocation }</td>
-                        <td>{ toDateIndo(letter.createdAt) }</td>
-                        <td>
-                            <SendLatterModal
+                        {/*<td>{ toDateIndo(letter.createdAt) }</td>*/ }
+                        <td className={ 'flex gap-2' }>
+                            <SendDetailModal
                                 keys={ item.id }
                                 letter={ letter }
                                 employee={ item }
                                 company={ company }
+                            />
+                            <SendDeleteModal
+                                keys={ item.id }
+                                letter={ letter }
+                                employee={ item }
                             />
                         </td>
                     </tr>

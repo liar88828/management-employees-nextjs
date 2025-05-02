@@ -3,9 +3,9 @@ import IDCardEmployeeGlobal from "@/app/components/employee/client/IDCardEmploye
 import { PageLoadingSpin } from "@/app/components/LoadingData";
 import { validSession } from "@/secure/db";
 import { EmployeeNotFound } from "@/app/components/error/registrationFirst";
-import { employeeFindById } from "@/server/controller/employee.controller";
 import { exampleCompany } from "@/assets/company";
 import { EmployeeCVClient } from "@/app/components/employee/client/employeeCVClient";
+import { employeeFindById } from "@/server/action/employee-admin.action";
 
 async function Page() {
     const { userId } = await validSession()

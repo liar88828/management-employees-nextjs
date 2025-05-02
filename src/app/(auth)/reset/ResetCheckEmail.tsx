@@ -1,6 +1,6 @@
 'use client';
 
-import { checkEmailAction } from "@/server/action/auth";
+import { checkEmailAction } from "@/server/action/auth.action";
 import { useOtpStore } from "@/store/otp";
 import toast from "react-hot-toast";
 import { useEmail } from "@/hook/useEmail";

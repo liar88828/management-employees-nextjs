@@ -6,7 +6,7 @@ export default function PositionDetailSearch(
 ) {
     return (
         <div className="flex justify-between gap-4">
-            <h1 className={ 'my-title' }>Detail { position }</h1>
+            <h1 className={ 'my-title' }>Detail Position : { position }</h1>
             <div className="flex gap-4">
                 <Form action={ '/admin/position' }
                       className={ 'join ' }
@@ -15,6 +15,7 @@ export default function PositionDetailSearch(
                            className={ 'input input-bordered join-item ' }
                            defaultValue={ search }
                            name={ 'search' }
+                           placeholder={ 'Name Employee ....' }
                     />
                     <input type="hidden"
                            defaultValue={ position }

@@ -5,7 +5,7 @@ import {
     PositionModalCreate,
     PositionModalDelete,
     PositionModalUpdate
-} from "@/app/admin/position/components/PositionModal";
+} from "@/app/admin/position/components/positionModal";
 import React from "react";
 
 export function PositionDepartment({ positions }: { positions: PositionPosition[] }) {

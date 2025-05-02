@@ -5,9 +5,11 @@ import { LetterEmployee, LetterForm } from "@/assets/letter";
 import { getDateCalender, toDateClock, toDateDayName } from "@/utils/toDate";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { LetterFormSchema, LetterFormSchemaType, LetterFormState } from "@/schema/send.valid";
-import { EmployeeUserClient } from "@/interface/entity/employee.model";
+import { EmployeeUserClient, EmployeeUserClientLatter } from "@/interface/entity/employee.model";
 import { globalPageSize } from "@/config/nextPublicBaseUrl";
 import { ActionResponse } from "@/interface/action";
+import { EmployeeCompletePhotoType, ROLE, STATUS_EMPLOYEE } from "@/interface/enum";
+import { revalidatePath } from "next/cache";
 
 export async function getLetterAll(): Promise<LetterEmployee[]> {
     return prisma.letters.findMany({
@@ -121,12 +123,12 @@ export async function sendOnlyAllLoader({ page, search }: { page: number, search
     }
 }
 
-export async function sendMyIdLoader(id: string) {
+export async function sendDetailByIdLoader(id: string) {
 
     return prisma.$transaction(async (tx) => {
 
         // ----------
-        const letter = await tx.letters.findUnique({
+        const letter: LetterForm = await tx.letters.findUnique({
             where: { id },
             include: { LetterEmployees: true }
         })
@@ -173,6 +175,20 @@ export async function sendMyIdLoader(id: string) {
             }
             return data;
         })
+
+        // console.log({ employees, letter })
+        // const CombineLatterEmployees: CombineLatterEmployees
+        //     = {
+        //     ...letter,
+        //     LetterEmployees: letter.LetterEmployees.map((item) => {
+        //             const employee = employees.find(emp => emp.id === item.employeesId);
+        //             return {
+        //                 ...item,
+        //                 employee
+        //             }
+        //         }
+        //     )
+        // }
 
         return { employees, letter }
     })
@@ -227,4 +243,106 @@ export async function sendEmployeeStoreAction(latter: LetterFormSchemaType, idEm
         }
     }
 
+}
+export async function sendEmployeeFindLoader(
+    name: string, position: string, complete: EmployeeCompletePhotoType
+) {
+    // console.log(name, position,complete);
+    return prisma.employees.findMany({
+        where: {
+            User: {
+                role: { not: ROLE.ADMIN, },
+                name: { contains: name, }
+            },
+            status: {
+                notIn: [
+                    STATUS_EMPLOYEE.Active,
+                    STATUS_EMPLOYEE.Create,
+                    STATUS_EMPLOYEE.Resign,
+                    STATUS_EMPLOYEE.Registration,
+                    STATUS_EMPLOYEE.Registration_Reject,
+                    STATUS_EMPLOYEE.Disabled,
+                ]
+            },
+            // sendEmail: 1,
+            position: { contains: position },
+            photoKtp: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
+            photo3x4: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
+            photoIjazah: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
+        },
+        include: {
+            LetterEmployees: true,
+            User: {
+                omit: {
+                    password: true,
+                    otp: true,
+                    otpExpired: true
+                }
+            }
+        },
+    })
+    .then(item => {
+        return item.map((i): EmployeeUserClientLatter | null => {
+            if (!i) return null
+            return { ...i, User: i.User }
+        }).filter(i => i !== null)
+    })
+}
+export async function sendDetailEmployeeDeleteAction(
+    idLatter: string,
+    idEmployee: string
+) {
+
+    await prisma.$transaction(async (tx) => {
+        // const countLatterEmployee = await tx.letterEmployees.count({
+        //     where: {
+        //         lettersId: idLatter,
+        //         employeesId: idEmployee
+        //     }
+        // })
+
+        const latterEmployeeDB = await tx.letterEmployees.findFirst({
+            where: {
+                lettersId: idLatter,
+                employeesId: idEmployee
+            }
+        })
+
+        if (!latterEmployeeDB) {
+            redirect(`/admin/send/${ idLatter }`)
+        }
+
+        const latterEmployee = await tx.letterEmployees.delete({
+            where: { id: latterEmployeeDB.id }
+        })
+
+        // if (countLatterEmployee === 1) {
+        //     await tx.letters.delete({
+        //         where: {
+        //             id: latterEmployee.lettersId
+        //         }
+        //     })
+        // }
+    })
+    revalidatePath('/')
+}
+
+export async function sendDetailDeleteAction(idLetter: string) {
+
+    await prisma.$transaction(async (tx) => {
+
+        // const latterDB = await tx.letterEmployees.count({
+        //     where: {
+        //         lettersId:idLetter
+        //     }
+        // })
+
+        await tx.letterEmployees.deleteMany({
+            where: { lettersId: idLetter }
+        })
+        await tx.letters.delete({
+            where: { id: idLetter }
+        })
+
+    })
 }

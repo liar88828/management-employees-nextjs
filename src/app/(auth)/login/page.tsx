@@ -1,6 +1,6 @@
 'use client';
 import Link from "next/link";
-import { login } from "@/server/action/auth";
+import { login } from "@/server/action/auth.action";
 import { useActionState } from "react";
 import { useOtpStore } from "@/store/otp";
 import { FormError } from "@/app/components/form/action";

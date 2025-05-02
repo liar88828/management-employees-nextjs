@@ -1,4 +1,4 @@
-import { ValidGenerateOtpType, ValidOtpType } from "@/schema/validGenerateOtp";
+import { ValidGenerateOtpType, ValidOtpType } from "@/schema/otp.valid";
 
 export const validGenerateOtpExample: ValidGenerateOtpType = {
     email: "example@example.com", // A valid email address
