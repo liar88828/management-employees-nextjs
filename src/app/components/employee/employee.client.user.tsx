@@ -252,15 +252,15 @@
 //
 //                     <div className="form-control">
 //                         <title className="title">
-//                             <span className="title-text">Employment Type</span>
+//                             <span className="title-text">Work Time</span>
 //                         </title>
-//                         <select { ...register("employmentType") } className="select select-bordered">
+//                         <select { ...register("workTime") } className="select select-bordered">
 //                             <option value="">Select Type</option>
 //                             <option value="Full-Time">Full-Time</option>
 //                             <option value="Part-Time">Part-Time</option>
 //                         </select>
-//                         { errors.employmentType &&
-//                             <p className="text-errors text-sm mt-1">{ errors.employmentType.message }</p> }
+//                         { errors.workTime &&
+//                             <p className="text-errors text-sm mt-1">{ errors.workTime.message }</p> }
 //                     </div>
 //
 //                     <div className="form-control">

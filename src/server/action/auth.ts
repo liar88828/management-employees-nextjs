@@ -56,6 +56,11 @@ export async function register(state: FormStateRegister, formData: FormData): Pr
     // Call the provider or db to create a user...
     // 2. Prepare data for insertion into database
     const { name, email, password, phone, address } = validatedFields.data
+
+    const userDB = await prisma.users.findUnique({ where: { email } })
+    if (userDB) {
+        redirect('/login?message=User already exists!')
+    }
     // e.g. Hash the user's password before storing it
     const hashedPassword = await bcrypt.hash(password, 10)
 

@@ -23,7 +23,7 @@ export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUse
                         <th>Job Title</th>
                         <th>Position</th>
                         <th>Salary</th>
-                        <th>Employment Type</th>
+                        <th>Work Time</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -43,7 +43,7 @@ export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUse
                             <td>{ employee.jobTitle }</td>
                             <td>{ employee.position || "-" }</td>
                             <td>{ toRupiah(employee.salary) }</td>
-                            <td>{ employee.employmentType }</td>
+                            <td>{ employee.workTime }</td>
                             <td>
                                 <p className={ 'badge badge-info' }
                                     // className={ `badge ${

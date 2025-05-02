@@ -1,3 +1,4 @@
+'use client'
 import { Companys } from "@/assets/company";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { LetterForm } from "@/assets/letter";

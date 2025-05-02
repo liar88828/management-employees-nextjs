@@ -7,7 +7,7 @@ export function AuthLayout() {
         <div className="navbar bg-base-300/70 fixed ">
             <div className="flex-1">
                 <Link
-                    href={ "/public" }
+                    href={ "/login" }
                     className="btn btn-ghost text-xl btn-square "
                 >
                     <ChevronLeftIcon />

@@ -129,7 +129,7 @@ export async function employeeFindLatterLoader(
                     STATUS_EMPLOYEE.Create,
                     STATUS_EMPLOYEE.Resign,
                     STATUS_EMPLOYEE.Registration,
-                    STATUS_EMPLOYEE.Registration_False,
+                    STATUS_EMPLOYEE.Registration_Reject,
                     STATUS_EMPLOYEE.Disabled,
                 ]
             },

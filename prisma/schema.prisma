@@ -33,36 +33,36 @@ model Users {
 // }
 
 model Employees {
-  id             String       @id @default(uuid()) // Primary key with auto-increment
+  id           String       @id @default(uuid()) // Primary key with auto-increment
   // name            String
   // email           String            @unique
   // phone           String
-  gender         String // Gender (e.g., "Male", "Female", "Other")
-  dateOfBirth    DateTime
-  hireDate       DateTime
-  jobTitle       String // Employee's job position
-  salary         Int // Employee's salary
+  gender       String // Gender (e.g., "Male", "Female", "Other")
+  dateOfBirth  DateTime
+  hireDate     DateTime
+  jobTitle     String // Employee's job position
+  salary       Int // Employee's salary
   // managerId      Int? // Foreign key referencing the manager
-  status         String       @default("Create") // Employment status
-  registration   Boolean      @default(false) // Employment status
-  address        String
-  city           String // City where the employee lives
-  postalCode     String // Postal/ZIP code
-  employmentType String // Employment type (e.g., "Full-Time", "Part-Time")
-  notes          String // Additional notes about the employee
-  img            String
-  sendEmail      Int          @default(0)
+  status       String       @default("Create") // Employment status
+  registration Boolean      @default(false) // Employment status
+  address      String
+  city         String // City where the employee lives
+  postalCode   String // Postal/ZIP code
+  workTime     String // Work Time (e.g., "Full-Time", "Part-Time")
+  notes        String // Additional notes about the employee
+  img          String
+  sendEmail    Int          @default(0)
   //
   // country        String
-  educations     Educations[]
-  skills         Skills[] // Stored as an array of strings
+  educations   Educations[]
+  skills       Skills[] // Stored as an array of strings
   // languages      Languages[] // Stored as an array of strings
   //
-  photoKtp       String?
-  photo3x4       String?
-  photoIjazah    String?
-  User           Users        @relation(fields: [userId], references: [id])
-  userId         String       @unique
+  photoKtp     String?
+  photo3x4     String?
+  photoIjazah  String?
+  User         Users        @relation(fields: [userId], references: [id])
+  userId       String       @unique
   // Letters        Letters[]
   // LetterEmployees LetterEmployees[]
 

@@ -14,6 +14,7 @@ export function EmployeeSearchClientAdmin({ search, status }: {
                     className={ 'input input-bordered join-item w-full' }
                     name={ 'search' }
                     defaultValue={ search }
+                    placeholder={ 'Employee Name .....' }
                 />
                 <select className="select select-bordered join-item w-fit"
                         defaultValue={ status }

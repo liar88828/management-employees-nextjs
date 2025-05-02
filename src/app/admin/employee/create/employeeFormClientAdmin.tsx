@@ -242,15 +242,15 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
 
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text">Employment Type</span>
+                            <span className="label-text">Work Time</span>
                         </label>
-                        <select { ...register("employmentType") } className="select select-bordered">
+                        <select { ...register("workTime") } className="select select-bordered">
                             <option value="">Select Type</option>
                             <option value="Full-Time">Full-Time</option>
                             <option value="Part-Time">Part-Time</option>
                         </select>
-                        { errors.employmentType &&
-                            <p className="text-error text-sm mt-1">{ errors.employmentType.message }</p> }
+                        { errors.workTime &&
+                            <p className="text-error text-sm mt-1">{ errors.workTime.message }</p> }
                     </div>
 
                     <div className="form-control">

@@ -25,7 +25,6 @@ export function PositionModalCreate() {
             ( document.getElementById('ModalCreatePosition') as HTMLDialogElement ).close()
         } else if (state?.success === false) {
             toast.error("Failed Create Data");
-
         }
     }, [ state ]);
 
@@ -102,7 +101,7 @@ export function PositionModalUpdate({ positionProps }: { positionProps: Position
                 className="btn btn-primary "
                 onClick={ () => {
                     // @ts-ignore
-                    document.getElementById(`PositionModalUpdate_${ position.id }`).showModal()
+                    document.getElementById(`PositionModalUpdate_${ positionProps.id }`).showModal()
                 } }
             >
                 {/*<Pen/>*/ }

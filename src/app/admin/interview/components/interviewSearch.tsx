@@ -17,6 +17,8 @@ export default function InterviewSearch(
                        className={ 'input input-bordered join-item ' }
                        defaultValue={ search }
                        name={ 'search' }
+                       placeholder={ 'Employee Name .....' }
+
                 />
                 <input type="hidden"
                        defaultValue={ position }

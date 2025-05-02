@@ -1,9 +1,8 @@
+import React from "react";
 import { Companys } from "@/assets/company";
 import { LetterForm } from "@/assets/letter";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { toDateIndo } from "@/utils/toDate";
-import React from "react";
-
 import { SendLatterModal } from "@/app/admin/send/components/sendLatterModal";
 
 export function SendTableEmployee(

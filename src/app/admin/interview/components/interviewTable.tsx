@@ -20,7 +20,7 @@ export function InterviewTable({ employees }: {
                     {/*<th >Gender</th>*/ }
                     {/*<th >Job Title</th>*/ }
                     {/*<th >Position</th>*/ }
-                    {/*<th >Employment Type</th>*/ }
+                    {/*<th >Work Time</th>*/ }
                     <th>Hire Date</th>
                     {/*<th >Salary</th>*/ }
                     {/*<th >Status</th>*/ }
@@ -37,7 +37,7 @@ export function InterviewTable({ employees }: {
                         {/*<td >{ employee.gender }</td>*/ }
                         {/*<td >{ employee.jobTitle }</td>*/ }
                         {/*<td >{ employee.positions }</td>*/ }
-                        {/*<td >{ employee.employmentType }</td>*/ }
+                        {/*<td >{ employee.workTime }</td>*/ }
                         <td>{ toDateIndo(employee.hireDate) }</td>
                         {/*<td >{ employee.salary }</td>*/ }
                         {/*<td >{ employee.status }</td>*/ }

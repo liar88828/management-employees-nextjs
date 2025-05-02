@@ -26,7 +26,7 @@ export const employeeData = {
     address: '123 Main St, Apartment 4B',
     city: 'New York',
     postalCode: '10001',
-    employmentType: 'Full-time',
+    workTime: 'Full-time',
     notes: 'N/A',
     img: 'https://randomuser.me/api/portraits/men/1.jpg',
     country: 'USA',

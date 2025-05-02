@@ -1,3 +1,4 @@
+'use client'
 import Link from "next/link";
 import React from "react";
 import { nodemailerSendRegister } from "@/server/controller/nodemailer.controller";
@@ -33,7 +34,8 @@ export function SendHeaderDetail(props: { letter: any, employees: any }) {
         <button
             className="btn btn-primary "
             onClick={ () => nodemailerSendRegister(props.employees) }
-        >Send All Email
+        >
+            Send All Email
         </button>
     </div>;
 }

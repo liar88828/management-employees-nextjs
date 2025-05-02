@@ -235,7 +235,16 @@ export async function resetPasswordAction({ password, confirm, email, otp }: Res
             success: false,
             data: '',
             // prev: { email, password }
-
         }
     }
+}
+
+export async function validUserByOtpAction(email: string) {
+    await prisma.users.update({
+        where: { email },
+        data: {
+            status: STATUS_USER.COMPLETED,
+            otp: null
+        }
+    })
 }

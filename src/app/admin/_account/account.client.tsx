@@ -32,7 +32,7 @@ export function AccountModal({ user, employees }: { user: Users, employees: Empl
                                     {/*<th >Gender</th>*/ }
                                     {/*<th >Job Title</th>*/ }
                                     <th>Position</th>
-                                    {/*<th >Employment Type</th>*/ }
+                                    {/*<th >Work Time</th>*/ }
                                     <th>Hire Date</th>
                                     {/*<th >Salary</th>*/ }
                                     <th>Status</th>
@@ -51,7 +51,7 @@ export function AccountModal({ user, employees }: { user: Users, employees: Empl
                                         {/*<td >{ employee.gender }</td>*/ }
                                         {/*<td >{ employee.jobTitle }</td>*/ }
                                         <td>{ employee.position }</td>
-                                        {/*<td >{ employee.employmentType }</td>*/ }
+                                        {/*<td >{ employee.workTime }</td>*/ }
                                         <td>{ toDateIndo(employee.hireDate) }</td>
                                         {/*<td >{ employee.salary }</td>*/ }
                                         <td>{ employee.status }</td>
@@ -173,7 +173,7 @@ export function TableEmployees({ employees, title, valid }: {
                         {/*<th >Gender</th>*/ }
                         {/*<th >Job Title</th>*/ }
                         <th>Position</th>
-                        {/*<th >Employment Type</th>*/ }
+                        {/*<th >Work Time</th>*/ }
                         <th>Hire Date</th>
                         {/*<th >Salary</th>*/ }
                         <th>Status</th>
@@ -190,7 +190,7 @@ export function TableEmployees({ employees, title, valid }: {
                             {/*<td >{ employee.gender }</td>*/ }
                             {/*<td >{ employee.jobTitle }</td>*/ }
                             <td>{ employee.position }</td>
-                            {/*<td >{ employee.employmentType }</td>*/ }
+                            {/*<td >{ employee.workTime }</td>*/ }
                             <td>{ toDateIndo(employee.hireDate) }</td>
                             {/*<td >{ employee.salary }</td>*/ }
                             <td>{ employee.status }</td>

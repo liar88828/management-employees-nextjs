@@ -23,7 +23,7 @@ export function RegistrationTable({ employees }: {
                     {/*<th >Gender</th>*/ }
                     {/*<th >Job Title</th>*/ }
                     {/*<th >Position</th>*/ }
-                    {/*<th >Employment Type</th>*/ }
+                    {/*<th >Work Time</th>*/ }
                     <th>Hire Date</th>
                     <th>Complete</th>
                     {/*<th >Salary</th>*/ }
@@ -41,13 +41,18 @@ export function RegistrationTable({ employees }: {
                         {/*<td >{ employee.gender }</td>*/ }
                         {/*<td >{ employee.jobTitle }</td>*/ }
                         {/*<td >{ employee.positions }</td>*/ }
-                        {/*<td >{ employee.employmentType }</td>*/ }
+                        {/*<td >{ employee.workTime }</td>*/ }
                         <td>{ toDateIndo(employee.hireDate) }</td>
-                        <td>{
-                            employee.photo3x4 === null ||
-                            employee.photoKtp === null ||
-                            employee.photoIjazah === null ? 'Not Complete' : 'Complete'
-                        }</td>
+                        <td>
+                            <span className={ ' badge badge-neural text-nowrap' }>
+
+                            {
+                                employee.photo3x4 === null ||
+                                employee.photoKtp === null ||
+                                employee.photoIjazah === null ? 'Not Complete' : 'Complete'
+                            }
+                            </span>
+                        </td>
                         {/*<td >{ employee.salary }</td>*/ }
                         {/*<td >{ employee.status }</td>*/ }
                         <td>

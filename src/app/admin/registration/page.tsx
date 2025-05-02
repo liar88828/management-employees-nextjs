@@ -17,7 +17,7 @@ async function Page(context: TContext) {
     } = await employeeRegistrationPaginationLoader(search,
         [
             STATUS_EMPLOYEE.Registration,
-            STATUS_EMPLOYEE.Registration_False,
+            // STATUS_EMPLOYEE.Registration_False,
             STATUS_EMPLOYEE.Interview,
             STATUS_EMPLOYEE.Interview_Reject,
         ],

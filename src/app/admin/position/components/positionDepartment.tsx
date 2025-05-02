@@ -17,7 +17,7 @@ export function PositionDepartment({ positions }: { positions: PositionPosition[
             </div>
 
             <div className="overflow-x-auto mt-3">
-                <table className="my-table">
+                <table className="my-table ">
 
                     {/* head */ }
                     <thead>

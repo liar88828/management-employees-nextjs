@@ -21,7 +21,7 @@ export const _employeeClientExample = {
     address: "123 Elm Street",
     city: "Springfield",
     postalCode: "12345",
-    employmentType: "Full-Time",
+    workTime: "Full-Time",
     notes: "Great team player with excellent problem-solving skills.",
     img: "https://example.com/images/johndoe.jpg",
     // country: "USA",
@@ -54,7 +54,7 @@ export const employeeServerExample: EmployeeRegistrationUserCreateServer & { sta
     address: "456 Oak Avenue",
     city: "Metropolis",
     postalCode: "54321",
-    employmentType: "Full-Time", // Example value
+    workTime: "Full-Time", // Example value
     notes: "Detail-oriented and highly skilled in software development.",
     img: "https://example.com/images/janedoe.jpg",
     // country: "USA",

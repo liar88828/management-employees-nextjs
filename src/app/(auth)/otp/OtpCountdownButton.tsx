@@ -1,6 +1,5 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import { useEmail } from "@/hook/useEmail";
 import { useOtpStore } from "@/store/otp";
 // const targetTime = new Date(Date.now() + 60 * 1000).getTime();
 
@@ -27,16 +26,16 @@ export const OtpCountdownTime = () => {
     }, [ isMounted, setData, targetTime ]);
 
     // If there's no target time, or it's null, show a message
-    if (!targetTime) return (<>Is button will add 1 min</>);
+    if (!targetTime) return ( <>Is button will add 1 min</> );
 
     // If countdown has finished
-    if (remainingTime <= 0) return (<>Time&#39;s up!</>);
+    if (remainingTime <= 0) return ( <>Time&#39;s up!</> );
 
     const seconds = Math.floor(remainingTime / 1000);
     const minutes = Math.floor(seconds / 60);
     const displaySeconds = seconds % 60;
 
-    return (<>{ minutes }:{ displaySeconds < 10 ? `0${ displaySeconds }` : displaySeconds }s</>
+    return ( <>{ minutes }:{ displaySeconds < 10 ? `0${ displaySeconds }` : displaySeconds }s</>
     );
 };
 
@@ -44,34 +43,3 @@ export const OtpCountdownTime = () => {
 //     const dataNow = Date.now(); // Get current time in milliseconds
 //     const date = dataUser - dataNow
 //     console.log(date)// to date
-
-export function OtpCountdownButton() {
-    const { store, setData } = useOtpStore()
-    const { onCheckEmail: onGenerate } = useEmail()
-
-    const addOneMinute = async () => {
-        // let myTime = store.time ?? 0
-        let moreTime = Date.now() + 62 * 1000
-        setData({ time: moreTime })
-        await onGenerate({
-            email: store.email,
-            time: new Date(moreTime),
-            reason: store.reason
-        })
-    };
-
-    return (
-        <div className="flex items-center flex-col mb-2">
-            <div>
-                <OtpCountdownTime />
-            </div>
-            <button
-                disabled={ store.remainingTime > 0 }
-                className="btn btn-sm btn-primary"
-                onClick={ addOneMinute }
-            >
-                Send email : { store.email }
-            </button>
-        </div>
-    );
-}

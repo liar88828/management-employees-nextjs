@@ -22,8 +22,8 @@ export const employeeCreateClientAdmin = z.object({
     address: zodAddress,
     city: z.string().min(2),
     postalCode: z.string().min(2),
-    // employmentType: z.enum(["Full-Time", "Part-Time"]),
-    employmentType: z.string().min(2),
+    // workTime: z.enum(["Full-Time", "Part-Time"]),
+    workTime: z.string().min(2),
     notes: z.string().min(2),
     img: zodImage(true),
     country: z.string().min(2),
@@ -60,7 +60,7 @@ export const employeeRegistrationUserCreateClient = z.object({
     address: zodAddress,
     city: z.string().min(2),
     postalCode: z.string().min(2),
-    employmentType: z.string().min(2),
+    workTime: z.string().min(2),
     img: zodImage(true),
     skills: z.array(z.object({
         text: z.string().min(2, "Skills must be at least 2 characters"),
@@ -84,7 +84,7 @@ export const employeeRegistrationCreateServerUser = z.object({
     address: zodAddress,
     city: z.string().min(2).max(100),
     postalCode: z.string().min(2).max(100),
-    employmentType: z.string().min(2),//[ "Full-Time", "Part-Time" ]
+    workTime: z.string().min(2),//[ "Full-Time", "Part-Time" ]
     // education: z.string().min(2).max(100),
     skills: z.array(z.object({
         text: z.string().min(2).max(100),
@@ -112,7 +112,7 @@ export const employeeUpdateServerUser = z.object({
     address: zodAddress,
     city: z.string().min(2).max(100),
     postalCode: z.string().min(2).max(100),
-    employmentType: z.string().min(2),//[ "Full-Time", "Part-Time" ]
+    workTime: z.string().min(2),//[ "Full-Time", "Part-Time" ]
     // education: z.string().min(2).max(100),
     skills: z.array(z.object({
         text: z.string().min(2).max(100),
@@ -146,7 +146,7 @@ export const employeeUpdateServer = z.object({
     address: zodAddress,
     city: z.string().min(2).max(100),
     postalCode: z.string().min(2).max(100),
-    employmentType: z.string().min(2),//[ "Full-Time", "Part-Time" ]
+    workTime: z.string().min(2),//[ "Full-Time", "Part-Time" ]
     notes: z.string().min(2).max(100),
     img: z.string().min(2).optional(),
     country: z.string().min(2).max(100),

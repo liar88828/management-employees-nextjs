@@ -12,9 +12,9 @@ export enum STATUS_USER {
 export enum STATUS_EMPLOYEE {
     Create = 'Create',
     Registration = 'Registration',
-    Registration_False = 'Registration_False',
+    Registration_Reject = 'Registration_Reject',
     Interview = 'Interview',
-    Interview_Accept = 'Interview_Accept',
+    // Interview_Accept = 'Interview_Accept',
     Interview_Reject = 'Interview_Reject',
     Active = 'Active',
     Disabled = 'Disabled',
@@ -24,9 +24,9 @@ export enum STATUS_EMPLOYEE {
 // export const employeeList = [ 'Pending', 'Fail', 'Complete', 'Active', 'Disabled' ]
 export const StatusEmployeeList = [
     'Registration',
-    'Registration_False',
+    'Registration_Reject',
     'Interview',
-    'Interview_Accept',
+    // 'Interview_Accept',
     'Interview_Reject',
     'Active',
     'Disabled',

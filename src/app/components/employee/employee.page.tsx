@@ -43,7 +43,7 @@ export function EmployeeDetail({ employee }: {
                 </div>
                 <div>
                     <p><strong>Salary:</strong> ${ employee.salary.toFixed(2) }</p>
-                    <p><strong>Employment Type:</strong> { employee.employmentType }</p>
+                    <p><strong>Work Time:</strong> { employee.workTime }</p>
                     <p><strong>Status:</strong> { employee.status }</p>
                     <p><strong>Address:</strong> { employee.address || "N/A" }</p>
                     <p><strong>City:</strong> { employee.city || "N/A" }</p>

@@ -4,15 +4,17 @@ import { login } from "@/server/action/auth";
 import { useActionState } from "react";
 import { useOtpStore } from "@/store/otp";
 import { FormError } from "@/app/components/form/action";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
     const { store, setData } = useOtpStore()
     const [ state, action, pending ] = useActionState(login, undefined);
-    // console.log(state);
-	return (
+    const searchParam = useSearchParams()
+    const message = searchParam.get('message')
+    return (
         <div className="card bg-base-200 max-w-xl mt-10">
             <form action={ action } className="card-body">
-                <h2 className="card-title">Login</h2>
+                <h2 className="card-title">Login { message && <span className={ 'text-error' }>{ message }</span> }</h2>
                 {/* Email Input */ }
                 <div className="form-control w-full">
                     <label htmlFor="email" className="label">
@@ -27,7 +29,7 @@ export default function LoginForm() {
                         className="input input-bordered w-full"
                         // defaultValue={ state?.prev?.email ??''}
                     />
-                    <FormError errors={ state?.errors?.email } title="must add:"/>
+                    <FormError errors={ state?.errors?.email } title="must add:" />
                 </div>
 
                 {/* Password Input */ }
@@ -43,7 +45,7 @@ export default function LoginForm() {
                         className="input input-bordered w-full"
                         // defaultValue={ state?.prev?.password ??''}
                     />
-                    <FormError errors={ state?.errors?.password } title="must Add:"/>
+                    <FormError errors={ state?.errors?.password } title="must Add:" />
                 </div>
                 { state?.message && (
                     <p className="text-red-500 text-sm mt-1">{ state.message }</p>

@@ -180,13 +180,12 @@ export const employeesFindValidLoader = async () => await prisma.employees.findM
     return item.filter(item => item !== null)
 })
 
-export const employeePaginationLoader = async (search: string, status: string, page: number) => {
-    // console.log({ search, status, page })
+export const employeePageLoader = async (search: string, status: string, page: number) => {
+    console.log({ search, status, page })
     // const globalPageSize = 3; // You can adjust the page size
 
     const totalEmployees = await prisma.employees.count({
         where: {
-            // name: { contains: search },
             status: { contains: status },
             User: { name: { contains: search } }
         }
@@ -194,8 +193,52 @@ export const employeePaginationLoader = async (search: string, status: string, p
 
     const employees = await prisma.employees.findMany({
         where: {
-            // status: status,
             status: { contains: status },
+            User: { name: { contains: search } },
+        },
+        skip: ( page - 1 ) * globalPageSize,
+        take: globalPageSize,
+        include: {
+            User: {
+                omit: {
+                    password: true,
+                    otp: true,
+                    otpExpired: true,
+                }
+            }
+        }
+    }).then((item): EmployeeUserClient[] => {
+        return item
+        .map((i) => {
+            if (i && i.User) return { ...i, User: i.User }
+            return null
+        })
+        .filter((i) => i !== null)
+    })
+
+    const totalPages = Math.ceil(totalEmployees / globalPageSize);
+
+    return { totalPages, employees }
+}
+
+export const employeeInterviewLoader = async (search: string, status: string, page: number) => {
+    // console.log({ search, status, page })
+    // const globalPageSize = 3; // You can adjust the page size
+
+    const totalEmployees = await prisma.employees.count({
+        where: {
+            // name: { contains: search },
+            status: status,
+            registration: true,
+            User: { name: { contains: search } }
+        }
+    });
+
+    const employees = await prisma.employees.findMany({
+        where: {
+            // status: status,
+            status: status,
+            registration: true,
             User: { name: { contains: search } },
         },
         skip: ( page - 1 ) * globalPageSize,
