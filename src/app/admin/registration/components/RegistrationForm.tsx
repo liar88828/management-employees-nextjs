@@ -21,88 +21,99 @@ export function RegistrationForm({ employee, positions }: { employee: Employees,
     }, [ employee.status, state ]);
 
     return (
-        <Form action={ action } className={ 'card card-body max-w-4xl bg-base-200' }>
+        <Form action={ action }
+              className={ 'card  max-w-4xl bg-base-200' }
+        >
+            <div className="card-body ">
+                <h1 className={ 'card-title' }>Form Registration</h1>
+                <input type="hidden"
+                       value={ employee.id } name={ 'id' }
+                />
+                <input
+                    type={ "hidden" } value={ 0 } name={ 'salary' }
+                />
+                <div className="grid grid-cols-2 gap-5">
 
-            <input type="hidden" value={ employee.id } name={ 'id' } />
-            <input type={ "hidden" } value={ 0 } name={ 'salary' } />
+                    <MyInput
+                        title={ "jobTitle" }
+                        error={ state?.errors?.jobTitle }
+                        defaultValue={ state?.value.jobTitle ?? employee.jobTitle }
+                    />
 
-            <h1>Form Registration</h1>
-            <MyInput
-                title={ "jobTitle" }
-                error={ state?.errors?.jobTitle }
-                defaultValue={ state?.value.jobTitle ?? employee.jobTitle }
-            />
+                    {/*<MyInputNum*/ }
+                    {/*    title={ 'salary' }*/ }
+                    {/*    errors={ state?.errors?.salary }*/ }
+                    {/*    defaultValue={ state?.value.salary ?? employee.salary }*/ }
+                    {/*/>*/ }
 
-            {/*<MyInputNum*/ }
-            {/*    title={ 'salary' }*/ }
-            {/*    errors={ state?.errors?.salary }*/ }
-            {/*    defaultValue={ state?.value.salary ?? employee.salary }*/ }
-            {/*/>*/ }
+                    <div className="form-control w-full">
+                        <label htmlFor={ `status` } className="label">
+                            <span className="label-text capitalize"> status </span>
+                        </label>
+                        <select
+                            className="select select-bordered join-item"
+                            name="status"
+                            key={ state?.value.status || employee.status }
+                            defaultValue={ state?.value.status || employee.status }
+                        >
+                            <option disabled value="">Select Status</option>
+                            { StatusEmployeeList.map((item) => (
+                                <option key={ item }>{ item }</option>
+                            )) }
+                        </select>
+                    </div>
 
-            <div className="form-control w-full">
-                <label htmlFor={ `status` } className="label">
-                    <span className="label-text capitalize"> status </span>
-                </label>
-                <select
-                    className="select select-bordered join-item"
-                    name="status"
-                    key={ state?.value.status || employee.status }
-                    defaultValue={ state?.value.status || employee.status }
-                >
-                    <option disabled value="">Select Status</option>
-                    { StatusEmployeeList.map((item) => (
-                        <option key={ item }>{ item }</option>
-                    )) }
-                </select>
+                    <div className="form-control w-full">
+                        <label htmlFor={ `position` } className="label">
+                            <span className="label-text capitalize"> positions </span>
+                        </label>
+                        <select
+                            className="select select-bordered join-item"
+                            name="position"
+                            key={ state?.value.position || employee.position }
+                            defaultValue={ state?.value.position || employee.position }
+                        >
+                            <option disabled value="">Select positions</option>
+                            { positions.map((item) => (
+                                <option key={ item.id }>{ item.position }</option>
+                            )) }
+                        </select>
+                    </div>
+
+                    <MyInputTextArea title={ 'notes' }
+                                     error={ state?.errors?.notes }
+                                     defaultValue={ state?.value.notes ?? employee.notes }
+                    />
+                </div>
+                <div className="card-actions">
+                    <button
+                        disabled={ pending }
+                        className={ 'btn btn-info btn-block' }
+                    >
+                        Send
+                    </button>
+                    {/*{ employee.status === 'Interview' &&*/ }
+                    {/*    <button*/ }
+                    {/*        onClick={ () => {onSendEmailSingle()}}*/ }
+                    {/*        type="button"*/ }
+                    {/*        disabled={ pending }*/ }
+                    {/*        className={ 'btn btn-success' }*/ }
+                    {/*    >*/ }
+                    {/*        Send Email*/ }
+                    {/*    </button>*/ }
+                    {/*}*/ }
+
+                    {/*<button*/ }
+                    {/*    onClick={ () => {*/ }
+                    {/*    } }*/ }
+                    {/*    type={ 'button' }*/ }
+                    {/*    className={ 'btn btn-success' }*/ }
+                    {/*>*/ }
+                    {/*    Send Email*/ }
+                    {/*</button>*/ }
+                </div>
             </div>
 
-            <div className="form-control w-full">
-                <label htmlFor={ `position` } className="label">
-                    <span className="label-text capitalize"> positions </span>
-                </label>
-                <select
-                    className="select select-bordered join-item"
-                    name="position"
-                    key={ state?.value.position || employee.position }
-                    defaultValue={ state?.value.position || employee.position }
-                >
-                    <option disabled value="">Select positions</option>
-                    { positions.map((item) => (
-                        <option key={ item.id }>{ item.position }</option>
-                    )) }
-                </select>
-            </div>
-
-            <MyInputTextArea
-                title={ 'notes' }
-                error={ state?.errors?.notes }
-                defaultValue={ state?.value.notes ?? employee.notes }
-            />
-            <button
-                disabled={ pending }
-                className={ 'btn btn-info' }
-            >
-                Send
-            </button>
-            {/*{ employee.status === 'Interview' &&*/ }
-            {/*    <button*/ }
-            {/*        onClick={ () => {onSendEmailSingle()}}*/ }
-            {/*        type="button"*/ }
-            {/*        disabled={ pending }*/ }
-            {/*        className={ 'btn btn-success' }*/ }
-            {/*    >*/ }
-            {/*        Send Email*/ }
-            {/*    </button>*/ }
-            {/*}*/ }
-
-            {/*<button*/ }
-            {/*    onClick={ () => {*/ }
-            {/*    } }*/ }
-            {/*    type={ 'button' }*/ }
-            {/*    className={ 'btn btn-success' }*/ }
-            {/*>*/ }
-            {/*    Send Email*/ }
-            {/*</button>*/ }
         </Form>
     )
 }

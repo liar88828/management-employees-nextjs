@@ -50,13 +50,26 @@ export const toDate = (value?: number | string | Date) => {
 }
 
 export const toDateIndo = (date: number | string | Date):  string => {
-
     return new Date(date).toLocaleString(
 		"id-ID",
 		{
             dateStyle: "full",
 		})
+}
 
+export const toDateIndoFull = (date: number | string | Date): string => {
+    return new Date(date).toLocaleString(
+        "id-ID",
+        {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        })
 }
 
 export const defaultDate = () => {

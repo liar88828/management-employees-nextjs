@@ -1,40 +1,27 @@
 'use server'
+import bcrypt from "bcrypt";
 import { ResetPasswordFormSchema } from "@/schema/auth.valid";
 import { prisma } from "@/config/prisma";
 import { STATUS_USER } from "@/interface/enum";
 import { redirect } from "next/navigation";
-import bcrypt from "bcrypt";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { OTPGenerate, OTPValid, ResetPassword } from "@/interface/server/param";
 import { otpValid, validOtp } from "@/schema/otp.valid";
 import { toOtp } from "@/utils/toOtp";
-import nodemailer from "nodemailer";
 import { ActionResponse } from "@/interface/action";
+import { toDateIndoFull } from "@/utils/toDate";
+import { nodemailerSendOtp } from "@/server/action/nodemailer.action";
 
 export async function checkEmailAction(json: OTPGenerate): Promise<ActionResponse> {
+    // console.log(json)
     const { success, data, error } = otpValid.safeParse(json)
     if (!success) {
         return {
             errors: error.flatten().fieldErrors,
             success: false,
-            data: '',
+            data: null,
             message: 'Error Validate'
         }
-    }
-    const user = await prisma.users.findUnique({
-        where: { email: data.email }
-    })
-
-    if (!user) {
-        throw "User Email doesn't exist"
-    }
-
-    // console.log(new Date())
-    // console.log(user.otpDate)
-    // console.log(user.otpDate < new Date())
-
-    if (user.otpExpired > new Date()) {
-        throw "Please Wait until OTP date is end "
     }
 
     const otp = toOtp({ length: 6 })
@@ -42,10 +29,27 @@ export async function checkEmailAction(json: OTPGenerate): Promise<ActionRespons
     // console.log(otpValid)
     await prisma.$transaction(async (tx) => {
 
+        const userDB = await tx.users.findUnique({
+            where: { email: data.email }
+        })
+        // console.log('---------------is executed---------------')
+
+        if (!userDB) {
+            throw "User Email doesn't exist"
+        }
+
+        // console.log(new Date())
+        // console.log(userDB.otpExpired)
+        // console.log(userDB.otpDate < new Date())
+
+        if (userDB.otpExpired > new Date()) {
+            throw `Please Wait until OTP date is end ${ toDateIndoFull(userDB.otpExpired) }`
+        }
+
         if (data.reason === STATUS_USER.OTP) {
             console.log("OTP")
             await tx.users.update({
-                where: { id: user.id },
+                where: { id: userDB.id },
                 data: {
                     otp,
                     otpExpired: data.time,
@@ -57,7 +61,7 @@ export async function checkEmailAction(json: OTPGenerate): Promise<ActionRespons
         } else if (data.reason === STATUS_USER.RESET) {
             console.log("RESET")
             await tx.users.update({
-                where: { id: user.id },
+                where: { id: userDB.id },
                 data: {
                     otp,
                     otpExpired: data.time,
@@ -67,46 +71,13 @@ export async function checkEmailAction(json: OTPGenerate): Promise<ActionRespons
             })
         }
 
-        const transporter = nodemailer.createTransport({
-            service: "Gmail",
-            host: "smtp.gmail.com",
-            port: 465,
-            secure: true,
-            auth: {
-                user: process.env.NODEMAILER_EMAIL,
-                pass: process.env.NODEMAILER_PASS,
-            },
-        });
-
-        const mailOptions = {
-            from: process.env.NODEMAILER_EMAIL,
-            to: data.email,
-            subject: "🚀 Hello from Nodemailer!",
-            text: `Your OTP is: ${ otp }`,
-            html: `
-        <div style="font-family: Arial, sans-serif; text-align: center; color: #333;">
-            <h2 style="color: #007BFF;">Hello from Nodemailer! 🎉</h2>
-            <p>Here is your OTP:</p>
-            <p style="font-size: 1.5rem; font-weight: bold; color: #28a745;">${ otp }</p>
-            <p style="font-size: 0.9rem; color: #6c757d;">If you didn't request this email, please ignore it.</p>
-        </div>
-    `,
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log("Error sending email: ", error);
-                throw error.message
-            } else {
-                console.log("Email sent: ", info.response);
-            }
-        });
+        await nodemailerSendOtp(otp, data.email)
     })
 
     // const cookieStore = await cookies()
     // cookieStore.set('otpSession',
     //     JSON.stringify({
-    //         email: user.email,
+    //         email: userDB.email,
     //         otpValid
     //     })
     //     , {

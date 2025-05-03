@@ -1,5 +1,4 @@
 import React from "react";
-import { Companys } from "@/assets/company";
 import { LetterForm } from "@/assets/letter";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { toDateIndo } from "@/utils/toDate";
@@ -7,12 +6,8 @@ import { SendDeleteModal, SendDetailModal } from "@/app/admin/send/components/se
 import { ErrorComponent } from "@/app/components/error/ErrorComponent";
 
 export function SendTableEmployee(
-    { employees, letter, company }:
-    {
-        company: Companys,
-        letter: LetterForm,
-        employees: EmployeeUserClient[]
-    }
+    { employees, letter }:
+    { letter: LetterForm, employees: EmployeeUserClient[] }
 ) {
 
     if (employees.length === 0) {
@@ -57,7 +52,6 @@ export function SendTableEmployee(
                                 keys={ item.id }
                                 letter={ letter }
                                 employee={ item }
-                                company={ company }
                             />
                             <SendDeleteModal
                                 keys={ item.id }

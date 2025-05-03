@@ -1,3 +1,4 @@
+'use server'
 import { FormStateReturn } from "@/schema/departement.valid";
 import { interviewSchema, InterviewSchemaType } from "@/schema/inbox";
 import { prisma } from "@/config/prisma";
@@ -27,30 +28,20 @@ export async function interviewUpdateAction(state: FormStateReturn<InterviewSche
         }
     }
 
-    if ([ 'Registration_False', 'Interview_Reject' ].includes(validateData.data.status)) {
-        await prisma.employees.update({
-            where: { id: validateData.data.id },
-            data: {
-                status: validateData.data.status,
-                notes: validateData.data.notes,
-                jobTitle: validateData.data.jobTitle,
-                salary: Number(validateData.data.salary),
-                position: validateData.data.position,
-                registration: false
-            }
-        })
-    } else {
-        await prisma.employees.update({
-            where: { id: validateData.data.id },
-            data: {
-                status: validateData.data.status,
-                notes: validateData.data.notes,
-                jobTitle: validateData.data.jobTitle,
-                salary: Number(validateData.data.salary),
-                position: validateData.data.position
-            }
-        })
-    }
+    const registration = [ 'Registration_Reject', 'Interview_Reject' ].includes(validateData.data.status)
+
+    await prisma.employees.update({
+        where: { id: validateData.data.id },
+        data: {
+            status: validateData.data.status,
+            notes: validateData.data.notes,
+            jobTitle: validateData.data.jobTitle,
+            salary: Number(validateData.data.salary),
+            position: validateData.data.position,
+            registration: !registration
+        }
+    })
+
     // revalidatePath('/')
     return {
         message: "Success Update Data",

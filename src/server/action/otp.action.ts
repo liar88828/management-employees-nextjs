@@ -3,10 +3,10 @@ import { OTPGenerate, OTPValid } from "@/interface/server/param";
 import { otpValid, validOtp } from "@/schema/otp.valid";
 import { prisma } from "@/config/prisma";
 import { toOtp } from "@/utils/toOtp";
-import nodemailer from "nodemailer";
 import { createSession } from "@/secure/cookies";
 import { ResponseData } from "@/interface/server/TResponse";
 import { STATUS_USER } from "@/interface/enum";
+import { nodemailerSendOtp } from "@/server/action/nodemailer.action";
 
 export async function _otpGenerate(json: OTPGenerate): Promise<ResponseData> {
     const { time: otpExpired, email, reason } = otpValid.parse(json)
@@ -54,40 +54,8 @@ export async function _otpGenerate(json: OTPGenerate): Promise<ResponseData> {
             })
         }
 
-        const transporter = nodemailer.createTransport({
-            service: "Gmail",
-            host: "smtp.gmail.com",
-            port: 465,
-            secure: true,
-            auth: {
-                user: process.env.NODEMAILER_EMAIL,
-                pass: process.env.NODEMAILER_PASS,
-            },
-        });
+        await nodemailerSendOtp(otp, email)
 
-        const mailOptions = {
-            from: process.env.NODEMAILER_EMAIL,
-            to: email,
-            subject: "🚀 Hello from Nodemailer!",
-            text: `Your OTP is: ${ otp }`,
-            html: `
-        <div style="font-family: Arial, sans-serif; text-align: center; color: #333;">
-            <h2 style="color: #007BFF;">Hello from Nodemailer! 🎉</h2>
-            <p>Here is your OTP:</p>
-            <p style="font-size: 1.5rem; font-weight: bold; color: #28a745;">${ otp }</p>
-            <p style="font-size: 0.9rem; color: #6c757d;">If you didn't request this email, please ignore it.</p>
-        </div>
-    `,
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error("Error sending email: ", error);
-                throw new Error(error.message)
-            } else {
-                console.log("Email sent: ", info.response);
-            }
-        });
     })
 
     // const cookieStore = await cookies()

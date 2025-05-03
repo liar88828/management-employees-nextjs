@@ -4,10 +4,10 @@ import { toDateIndo } from "@/utils/toDate";
 import { EmployeeUserClient, imageDefault } from "@/interface/entity/employee.model";
 import { Companys } from "@/assets/company";
 
-export function LetterInterview({ company, employee, form }: {
-    company: Companys,
+export function LetterInterview({ company, employee, letter }: {
     employee: EmployeeUserClient,
-    form: LetterForm
+    company: Companys,
+    letter: LetterForm
 }) {
     return (
         <div className=" bg-white text-black shadow-lg card w-[210mm] h-[297mm] ">
@@ -53,10 +53,10 @@ export function LetterInterview({ company, employee, form }: {
                         Saudara/i untuk mengikuti proses interview yang akan dilaksanakan pada:
                     </p>
                     <div className="pl-4">
-                        <p>Hari/Tanggal : { form.interviewDay }, { toDateIndo(form.interviewDate) }</p>
-                        <p>Waktu : { ( form.interviewTime ) }</p>
-                        <p>Tempat : { form.interviewLocation }</p>
-                        <p>Dress Code : { form.dressCode }</p>
+                        <p>Hari/Tanggal : { letter.interviewDay }, { toDateIndo(letter.interviewDate) }</p>
+                        <p>Waktu : { ( letter.interviewTime ) }</p>
+                        <p>Tempat : { letter.interviewLocation }</p>
+                        <p>Dress Code : { letter.dressCode }</p>
                     </div>
                     <p>Mohon untuk membawa dokumen berikut:</p>
                     <ul className="list-disc pl-8">
@@ -80,7 +80,7 @@ export function LetterInterview({ company, employee, form }: {
                 {/* Signature */ }
                 <div className="text-right">
                     <p className="mb-16">Hormat kami,</p>
-                    <p className="font-bold">{ form.signerName }</p>
+                    <p className="font-bold">{ letter.signerName }</p>
                     <p>HRD Manager</p>
                     <p>PT. { company.name }</p>
                 </div>

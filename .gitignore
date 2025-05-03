@@ -83,3 +83,4 @@ prisma/dev.db
 /prisma/dev_test.db
 *.db
 *.png
+/src/app/test/

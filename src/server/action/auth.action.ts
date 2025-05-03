@@ -83,7 +83,8 @@ export async function register(state: FormStateRegister, formData: FormData): Pr
     // 4. Create user session
     // await createSession(user.id)
     await _otpGenerate({
-        time: new Date(Date.now() + 60 * 60 * 1000),
+        time: new Date(Date.now() + 1 * 60 * 1000),
+        // time: new Date(Date.now() + 60 * 60 * 1000),
         email: user.email,
         reason: 'OTP'
     })

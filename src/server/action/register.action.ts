@@ -1,3 +1,4 @@
+'use server'
 import { FormStateReturn } from "@/schema/departement.valid";
 import { registrationSchema, RegistrationSchemaType } from "@/schema/inbox";
 import { prisma } from "@/config/prisma";
@@ -8,19 +9,18 @@ import { EmployeeUserClient } from "@/interface/entity/employee.model";
 
 export async function registerUpdateFormDataAdminAction(state: FormStateReturn<RegistrationSchemaType>, payload: FormData): Promise<FormStateReturn<RegistrationSchemaType>> {
     const defaultValue = Object.fromEntries(payload);
-    // console.log(defaultValue);
-    const validateData = registrationSchema.safeParse(defaultValue)
+    const { success, error, data } = registrationSchema.safeParse(defaultValue)
 
-    if (validateData.error) {
-        console.log(validateData.error.formErrors.fieldErrors)
+    if (!success) {
         return {
             value: defaultValue,
-            errors: validateData.error.formErrors.fieldErrors,
+            errors: error.formErrors.fieldErrors,
             message: "Validate False",
             success: false
         }
     }
-    const findEmployeeId = await prisma.employees.findUnique({ where: { id: validateData.data.id } });
+
+    const findEmployeeId = await prisma.employees.findUnique({ where: { id: data.id } });
     if (!findEmployeeId) {
         return {
             value: defaultValue,
@@ -28,23 +28,26 @@ export async function registerUpdateFormDataAdminAction(state: FormStateReturn<R
             success: false
         }
     }
+    const registration = [ 'Registration_Reject', 'Interview_Reject' ].includes(data.status)
     await prisma.employees.update({
-        where: { id: validateData.data.id },
+        where: { id: data.id },
         data: {
-            status: validateData.data.status,
-            notes: validateData.data.notes,
-            jobTitle: validateData.data.jobTitle,
-            salary: Number(validateData.data.salary),
-            position: validateData.data.position,
+            status: data.status,
+            notes: data.notes,
+            jobTitle: data.jobTitle,
+            salary: Number(data.salary),
+            position: data.position,
+            registration: !registration
         }
     })
     revalidatePath('/')
     return {
         message: "Success Update Data",
         success: true,
-        value: defaultValue
+        value: defaultValue,
     }
 }
+
 export const employeeRegistrationPaginationLoader = async (
     search: string,
     status: string[],
@@ -59,7 +62,6 @@ export const employeeRegistrationPaginationLoader = async (
             // name: { contains: search },
             status: { in: status },
             User: { name: { contains: search } },
-
             photoKtp: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
             photo3x4: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
             photoIjazah: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,

@@ -4,6 +4,8 @@ import React from "react";
 import { nodemailerSendRegister } from "@/server/action/nodemailer.action";
 import { sendDetailDeleteAction } from "@/server/action/send.action";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
+import { LetterForm } from "@/assets/letter";
+import { exampleCompany } from "@/assets/company";
 
 export function SendHeader() {
     return <div className="flex justify-between items-center">
@@ -30,7 +32,10 @@ export function SendHeader() {
     </div>;
 }
 
-export function SendHeaderDetail(props: { letter: any, employees: EmployeeUserClient[] }) {
+export function SendHeaderDetail(props: {
+    letter: LetterForm,
+    employees: EmployeeUserClient[]
+}) {
 
     return <div className="flex justify-between items-end">
         <h1 className={ "my-title" }>letter : { props.letter.id } </h1>
@@ -44,7 +49,11 @@ export function SendHeaderDetail(props: { letter: any, employees: EmployeeUserCl
                 </button>
                 : <button
                     className="btn btn-primary "
-                    onClick={ () => nodemailerSendRegister(props.employees) }
+                    onClick={ () => nodemailerSendRegister(
+                        props.employees,
+                        exampleCompany,
+                        props.letter
+                    ) }
                 >
                     Send
                 </button>

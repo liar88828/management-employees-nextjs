@@ -3,7 +3,7 @@ import Link from "next/link";
 import { login } from "@/server/action/auth.action";
 import { useActionState } from "react";
 import { useOtpStore } from "@/store/otp";
-import { FormError } from "@/app/components/form/action";
+import { MyInputEmail, MyInputPassword } from "@/app/components/form/action";
 import { useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
@@ -16,37 +16,17 @@ export default function LoginForm() {
             <form action={ action } className="card-body">
                 <h2 className="card-title">Login { message && <span className={ 'text-error' }>{ message }</span> }</h2>
                 {/* Email Input */ }
-                <div className="form-control w-full">
-                    <label htmlFor="email" className="label">
-                        <span className="label-text">Email</span>
-                    </label>
-                    <input
-                        onChange={ e => setData({ email: e.target.value }) }
-                        value={ store.email }
-                        id="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        className="input input-bordered w-full"
-                        // defaultValue={ state?.prev?.email ??''}
-                    />
-                    <FormError errors={ state?.errors?.email } title="must add:" />
-                </div>
+                <MyInputEmail
+                    error={ state?.errors?.email }
+                    defaultValue={ store.email }
+                    onChangeAction={ email => setData({ email }) }
+                />
 
-                {/* Password Input */ }
-                <div className="form-control w-full">
-                    <label htmlFor="password" className="label">
-                        <span className="label-text">Password</span>
-                    </label>
-                    <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="Enter your password"
-                        className="input input-bordered w-full"
-                        // defaultValue={ state?.prev?.password ??''}
-                    />
-                    <FormError errors={ state?.errors?.password } title="must Add:" />
-                </div>
+                <MyInputPassword
+                    title={ 'password' }
+                    errors={ state?.errors?.password }
+                />
+
                 { state?.message && (
                     <p className="text-red-500 text-sm mt-1">{ state.message }</p>
                 ) }

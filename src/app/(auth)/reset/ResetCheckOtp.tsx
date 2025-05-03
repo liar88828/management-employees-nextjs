@@ -53,17 +53,15 @@ export default function ResetCheckOtp() {
                 <div>
                     <div className="form-control w-full">
                         <input
-                            type="number"
+                            type="text"
                             value={ store.otp }
                             onChange={ (e) => setData({ otp: e.target.value }) }
                             className="input input-bordered w-full"
                             placeholder="Enter otp number ex: 123456"
                         />
-                        { messageError || store.errorOtp && <>
-                            <p className="text-error text-sm mt-1">{ store.errorOtp }</p>
-                            <p className="text-error text-sm mt-1">{ messageError }</p>
 
-                        </> }
+                        { store.errorOtp && <p className="text-red-500 text-sm mt-1">{ store.errorOtp }</p> }
+                        { messageError && <p className="text-error text-sm mt-1">{ messageError }</p> }
                     </div>
                     <div className=" space-y-10">
                         <button

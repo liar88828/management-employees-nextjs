@@ -23,13 +23,13 @@ export const FormError: React.FC<{
 export function MyInput({ title, error, defaultValue }: { defaultValue?: string | number, title: string, error: any }) {
     return (
         <div className="form-control w-full">
-            <label htmlFor={ `${ title }` } className="label">
+            <label htmlFor={ title } className="label">
                 <span className="label-text capitalize">{ title }</span>
             </label>
             <input
                 defaultValue={ defaultValue }
-                id={ `${ title }` }
-                name={ `${ title }` }
+                id={ title }
+                name={ title }
                 placeholder={ `Enter your ${ title }` }
                 className="input input-bordered w-full"
             />
@@ -57,15 +57,17 @@ export function MyInputTextArea({ title, error, defaultValue }: {
 }) {
     return (
         <div className="form-control w-full">
-            <label htmlFor={ `${ title }` } className="label">
+            <label htmlFor={ title } className="label">
                 <span className="label-text capitalize">{ title }</span>
             </label>
             <textarea
                 defaultValue={ defaultValue }
-                id={ `${ title }` }
-                name={ `${ title }` }
+                id={ title }
+                name={ title }
                 placeholder={ `Enter your ${ title }` }
                 className="textarea textarea-bordered w-full"
+                minLength={ 1 }
+                maxLength={ 99 }
             ></textarea>
             <FormError errors={ error } title="must add:" />
         </div>
@@ -95,21 +97,24 @@ export function MyInputNum({ title, error, defaultValue }: {
     );
 }
 
-export function MyInputEmail({ title, error, defaultValue }: {
+export function MyInputEmail({ title = 'email', error, defaultValue, onChangeAction }: {
     defaultValue?: string | number,
-    title: string,
-    error: any
+    title?: string,
+    error: any,
+    onChangeAction: (value: string) => void
 }) {
     return (
         <div className="form-control w-full">
-            <label htmlFor={ `${ title }` } className="label">
+            <label htmlFor={ title } className="label">
                 <span className="label-text capitalize">{ title }</span>
             </label>
             <input
+                onChange={ e => onChangeAction(e.target.value) }
+                value={ defaultValue }
+                // defaultValue={ defaultValue }
                 type="email"
-                defaultValue={ defaultValue }
-                id={ `${ title }` }
-                name={ `${ title }` }
+                id={ title }
+                name={ title }
                 placeholder={ `Enter your ${ title }` }
                 className="input input-bordered w-full"
             />
@@ -194,6 +199,47 @@ export function MyInputOption({ keys, lists, title, name }: {
                     <option key={ item }>{ item }</option>
                 )) }
             </select>
+        </div>
+    );
+}
+
+export function MyInputPassword(props: {
+    title: string,
+    errors?: string[]
+}) {
+    return <div className="form-control w-full">
+        <label htmlFor={ props.title } className="label">
+            <span className="label-text">{ props.title }</span>
+        </label>
+        <input
+            id={ props.title }
+            name={ props.title }
+            type="password"
+            placeholder={ `Enter your ${ props.title }` }
+            className="input input-bordered w-full"
+            // defaultValue={ state?.prev?.password ??''}
+        />
+        <FormError errors={ props.errors } title="must Add:" />
+    </div>;
+}
+
+export function MyInputPhone({ error, defaultValue, title }: {
+    defaultValue?: string,
+    error?: string[], title: string
+}) {
+    return (
+        <div className="form-control w-full">
+            <label htmlFor={ title } className="label">
+                <span className="label-text">{ title }</span>
+            </label>
+            <input
+                defaultValue={ defaultValue }
+                id={ title }
+                name={ title }
+                placeholder={ `Enter your ${ title } number` }
+                className="input input-bordered w-full"
+            />
+            <FormError errors={ error } title="must Add:" />
         </div>
     );
 }

@@ -1,5 +1,5 @@
 'use client'
-import { Companys } from "@/assets/company";
+import { exampleCompany } from "@/assets/company";
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { LetterForm } from "@/assets/letter";
 import { LetterInterview } from "@/app/components/Letter/Interview";
@@ -7,9 +7,8 @@ import React from "react";
 import { sendDetailEmployeeDeleteAction } from "@/server/action/send.action";
 
 export function SendDetailModal(
-    { keys, employee, company, letter }: {
+    { keys, employee, letter }: {
         keys: string,
-        company: Companys,
         employee: EmployeeUserClient,
         letter: LetterForm
     }) {
@@ -22,7 +21,7 @@ export function SendDetailModal(
             <dialog id={ `my_modal_latter_${ keys }` } className="modal ">
                 <div className="modal-box w-11/12 max-w-5xl bg-base-200/50">
                     <div className=" flex justify-center">
-                        <LetterInterview employee={ employee } company={ company } form={ letter } />
+                        <LetterInterview employee={ employee } company={ exampleCompany } letter={ letter } />
                     </div>
 
                     <div className="modal-action">
