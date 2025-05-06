@@ -20,21 +20,21 @@ export async function DashboardGridDataServerAdmin({ text, color, title }: {
 }
 
 export async function DashboardTopOrderServerAdmin() {
-    // const { data: orders } = await findTopOrderTotal()
+    // const { prevData: orders } = await findTopOrderTotal()
     return (
         <DashboardOrderPage orders={ [] } />
     );
 }
 
 export async function DashboardTopCustomersServerAdmin() {
-    // const { data: receivers } = await receiverAll({ filter: {}, pagination: { limit: 5 } })
+    // const { prevData: receivers } = await receiverAll({ filter: {}, pagination: { limit: 5 } })
     return (
         <DashboardCustomerPage customers={ [] } />
     );
 }
 
 export async function DashboardRecentProductServerAdmin() {
-    // const { data: products } = await productRecent()
+    // const { prevData: products } = await productRecent()
     return (
         <DashboardProductPage products={ [] } />
     );

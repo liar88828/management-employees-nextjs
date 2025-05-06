@@ -17,7 +17,7 @@ export default async function page(context: TContext,) {
             <EmployeeSearchClientAdmin search={ search } status={ status } />
             <EmployeeTableClientAdmin employees={ employees } />
             <PaginationComponent
-                page={ page }
+                currentPage={ page }
                 totalPages={ totalPages }
                 search={ search }
                 status={ status }

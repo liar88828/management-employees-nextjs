@@ -29,7 +29,7 @@ import {
 import { ErrorDatabase } from "@/utils/error/ErrorClass";
 
 export async function employeeCreateFormDataAdminAction({ img, ...data }: EmployeeCreateClientAdmin) {
-    // console.log('employeeCreateFormDataAdminAction', data);
+    // console.log('employeeCreateFormDataAdminAction', prevData);
     const formData = new FormData();
     formData.append('file', img[0]);
     formData.append('data', JSON.stringify(data));
@@ -101,7 +101,7 @@ export async function employeeOnConnectUser(userId: string, employeeId: string) 
         })
         if (found) {
             // await tx.employees.update({
-            //         data: { userId: null },
+            //         prevData: { userId: null },
             //         where: { userId }
             //     }
             // )
@@ -118,7 +118,7 @@ export async function employeeOnConnectUser(userId: string, employeeId: string) 
 // export const removeUserEmployee = async (employeeId: string) => {
 //     await prisma.employees.update({
 //         where: { id: employeeId },
-//         data: { userId: null }
+//         prevData: { userId: null }
 //     })
 // }
 
@@ -162,7 +162,6 @@ export const employeesFindNull = async () => await prisma.employees.findMany({
 })
 .then(item => {
     return item.filter(item => item !== null)
-
 })
 
 // : Promise<TEmployeeDB[]>
@@ -186,7 +185,7 @@ export const employeesFindValidLoader = async () => await prisma.employees.findM
 
 export const employeePageLoader = async (search: string, status: string, page: number) => {
     console.log({ search, status, page })
-    // const globalPageSize = 3; // You can adjust the page size
+    // const globalPageSize = 3; // You can adjust the currentPage size
 
     const totalEmployees = await prisma.employees.count({
         where: {
@@ -287,7 +286,7 @@ export async function onUpsertDataAdminAction(
     data: EmployeeCreateClientAdmin,
     idEmployee?: string,
 ) {
-    // await checkPositionPosition(data.positions);
+    // await checkPositionPosition(prevData.positions);
     // console.log(method, idEmployee)
     data.status = STATUS_EMPLOYEE.Registration
     if (method === "POST") {
@@ -296,7 +295,7 @@ export async function onUpsertDataAdminAction(
         // console.log('Execute ')
         return employeeUpdateAdminAction(data, idEmployee,)
     }
-    throw new Error('Invalid data');
+    throw new Error('Invalid prevData');
 }
 
 export async function changeUpdatePositionAction(idEmployee: string, position?: string): Promise<ActionResponse> {
@@ -307,13 +306,13 @@ export async function changeUpdatePositionAction(idEmployee: string, position?: 
         })
         revalidatePath('/')
         return {
-            success: true, data,
+            success: true, prevData: data,
             message: 'Successfully updated position'
         }
     } else {
         return {
             success: false,
-            data: null,
+            prevData: null,
             message: 'Failed to update position'
         }
     }
@@ -422,7 +421,7 @@ export async function createUserRepo(
             } ))
         })
         // const languageDB = await tx.languages.createMany({
-        //     data: languages.map(({ text }) => ( {
+        //     prevData: languages.map(({ text }) => ( {
         //         employeesId: employeeDB.id, text
         //     } ))
         // })
@@ -467,7 +466,7 @@ export async function updateUserRepo({
 
         // await tx.languages.deleteMany({ where: { employeesId: id } })
         // const languageDB = await tx.languages.createMany({
-        //     data: languages.map(({ text }) => ( {
+        //     prevData: languages.map(({ text }) => ( {
         //         employeesId: employeeDB.id, text,
         //     } ))
         // })

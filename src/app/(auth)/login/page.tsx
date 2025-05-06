@@ -1,14 +1,25 @@
 'use client';
 import Link from "next/link";
-import { login } from "@/server/action/auth.action";
-import { useActionState } from "react";
+import { loginAction } from "@/server/action/auth.action";
+import { useActionState, useEffect } from "react";
 import { useOtpStore } from "@/store/otp";
 import { MyInputEmail, MyInputPassword } from "@/app/components/form/action";
 import { useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
-    const { store, setData } = useOtpStore()
-    const [ state, action, pending ] = useActionState(login, undefined);
+    const { store, setData, reset } = useOtpStore()
+    const [ state, action, pending ] = useActionState(loginAction, undefined);
+    useEffect(() => {
+        if (state) {
+            if (typeof state.success === 'boolean' && !state.success) {
+            } else {
+                reset()
+            }
+            console.log('in State')
+        }
+        console.log('is Load')
+    }, [ state ]);
+
     const searchParam = useSearchParams()
     const message = searchParam.get('message')
     return (

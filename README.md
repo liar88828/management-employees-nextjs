@@ -30,7 +30,7 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/SkeletonCard.tsx`. The page auto-updates as you edit the
+You can start editing the currentPage by modifying `app/SkeletonCard.tsx`. The currentPage auto-updates as you edit the
 file.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to

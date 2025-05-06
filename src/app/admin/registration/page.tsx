@@ -22,7 +22,7 @@ async function Page(context: TContext) {
             STATUS_EMPLOYEE.Interview_Reject,
         ],
         page, status)
-    // const globalPageSize = 3; // You can adjust the page size
+    // const globalPageSize = 3; // You can adjust the currentPage size
     // const totalEmployees = await prisma.employees.count({
     //     where: {
     //         User: { name: { contains: search } },
@@ -35,7 +35,7 @@ async function Page(context: TContext) {
     //         User: { name: { contains: search } },
     //         status: STATUS_EMPLOYEE.Registration
     //     },
-    //     skip: ( page - 1 ) * globalPageSize,
+    //     skip: ( currentPage - 1 ) * globalPageSize,
     //     take: globalPageSize
     // });
     //
@@ -46,7 +46,7 @@ async function Page(context: TContext) {
             {/*{JSON.stringify(employees)}*/ }
             <RegistrationTable employees={ employees } />
             <PaginationComponent
-                page={ page }
+                currentPage={ page }
                 totalPages={ totalPages }
                 search={ search }
                 status={ status }

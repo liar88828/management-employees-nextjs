@@ -29,13 +29,13 @@ export function employeeCreateSanitizeUser(
     imagePath?: string,
 ): EmployeeRegistrationUserCreateServer {
     // if (imagePath) {
-    //     data.img = imagePath ?? ;
+    //     prevData.img = imagePath ?? ;
     // }
     // if (userId) {
-    //     data.userId = userId
+    //     prevData.userId = userId
     // }
-    // data.registration = false
-    // console.log(data)
+    // prevData.registration = false
+    // console.log(prevData)
     const validateData: EmployeeRegistrationUserCreateServer = {
         ...data,
         userId,
@@ -45,7 +45,7 @@ export function employeeCreateSanitizeUser(
         notes: "",
         status: STATUS_EMPLOYEE.Registration,
         hireDate: new Date(),
-        // userId: userId ? userId : data.userId,
+        // userId: userId ? userId : prevData.userId,
         img: imagePath ? imagePath : '/image/png'
     }
     return employeeRegistrationCreateServerUser.parse(validateData)
@@ -57,10 +57,10 @@ export function employeeSanitizeUpdateUser(
     imagePath?: string,
 ): EmployeeUpdateServerUser {
     // if (imagePath) {
-    //     data.img = imagePath ?? 'image/png';
+    //     prevData.img = imagePath ?? 'image/png';
     // }
     // if (userId) {
-    //     data.userId = userId
+    //     prevData.userId = userId
     // }
     const validData: EmployeeUpdateServerUser = {
         ...data,
@@ -68,18 +68,18 @@ export function employeeSanitizeUpdateUser(
         img: imagePath
 
     }
-    // data.registration = false
-    // console.log(data)
+    // prevData.registration = false
+    // console.log(prevData)
     return employeeUpdateServerUser.parse(validData)
 }
 
 // export function employeeSanitizeAction(
-//     data: EmployeeRegistrationUserCreateClient,
+//     prevData: EmployeeRegistrationUserCreateClient,
 //     imagePath: string,
 //     userId: string): EmployeeCreate {
-//     data.img = imagePath
-//     data.userId = userId
-//     return employeeRegistrationCreateServerUser.parse(data)
+//     prevData.img = imagePath
+//     prevData.userId = userId
+//     return employeeRegistrationCreateServerUser.parse(prevData)
 // }
 
 export function employeeCreateSanitizeAdmin(
@@ -88,13 +88,13 @@ export function employeeCreateSanitizeAdmin(
     imagePath?: string,
 ): EmployeeRegistrationUserCreateServer {
     // if (imagePath) {
-    //     data.img = imagePath ?? ;
+    //     prevData.img = imagePath ?? ;
     // }
     // if (userId) {
-    //     data.userId = userId
+    //     prevData.userId = userId
     // }
-    // data.registration = false
-    // console.log(data)
+    // prevData.registration = false
+    // console.log(prevData)
     const validateData: EmployeeRegistrationUserCreateServer = {
         ...data,
         registration: false,
@@ -117,7 +117,7 @@ export function employeeSanitizeUpdateAdmin(
     if (userId) {
         data.userId = userId
     }
-    // data.registration = false
-    // console.log(data)
+    // prevData.registration = false
+    // console.log(prevData)
     return employeeUpdateServer.parse(data)
 }

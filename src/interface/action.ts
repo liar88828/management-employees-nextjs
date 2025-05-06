@@ -1,6 +1,6 @@
-export type ActionResponse = {
-    data: any,
+export type ActionResponse<P = any, E = any> = {
+    prevData: P,
     success: boolean,
-    errors?: any,
+    errors?: E,
     message: string,
 }

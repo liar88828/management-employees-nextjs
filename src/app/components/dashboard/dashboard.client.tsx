@@ -100,7 +100,7 @@ export function EarningClient({ year_new, year_old }: { year_new: ResponseMonthD
         <div className="card card-compact md:card-normal bg-base-200/30    ">
             <div className="card-body ">
                 <h2 className="card-title">Earning</h2>
-                {/*<Line data={ data } options={ options } />*/ }
+                {/*<Line prevData={ prevData } options={ options } />*/ }
             </div>
         </div>
     );

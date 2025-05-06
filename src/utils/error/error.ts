@@ -1,5 +1,5 @@
 import { z } from "zod";
-const ERRORMESSAGE = {
+export const ERRORMESSAGE = {
     VALIDATION: 'ERROR VALIDATION',
     FETCH: "ERROR FETCH",
     DATABASE: "ERROR DATABASE",
@@ -27,7 +27,7 @@ export function catchErrorAPI(
 
             return {
                 message,
-                resolve: 'Please correct the data'
+                resolve: 'Please correct the prevData'
             }
         }
         if (e.message === ERRORMESSAGE.FETCH) {

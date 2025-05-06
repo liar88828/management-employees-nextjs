@@ -120,7 +120,7 @@ export default function ResetPassword() {
                         { store.loading ? "Resetting..." : "Reset" }
                     </button>
                     {/*<button onClick={ () => {*/ }
-                    {/*    reset()*/ }
+                    {/*    resetAction()*/ }
                     {/*} }*/ }
                     {/*>Reset*/ }
                     {/*</button>*/ }

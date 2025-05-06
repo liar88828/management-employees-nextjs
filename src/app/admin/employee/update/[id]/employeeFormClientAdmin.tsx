@@ -62,7 +62,7 @@ export function EmployeeFormClientAdmin({ positions, employee, method }: {
                     {/*    </label>*/ }
                     {/*    <input*/ }
                     {/*        type="text"*/ }
-                    {/*        { ...register('name') }*/ }
+                    {/*        { ...registerAction('name') }*/ }
                     {/*        className={ `input input-bordered ${ errors.name ? 'input-errors' : '' }` }*/ }
                     {/*        placeholder="Employee Name"*/ }
                     {/*    />*/ }
@@ -75,7 +75,7 @@ export function EmployeeFormClientAdmin({ positions, employee, method }: {
                     {/*    </label>*/ }
                     {/*    <input*/ }
                     {/*        type="email"*/ }
-                    {/*        { ...register('email') }*/ }
+                    {/*        { ...registerAction('email') }*/ }
                     {/*        className={ `input input-bordered ${ errors.email ? 'input-errors' : '' }` }*/ }
                     {/*        placeholder="employee@company.com"*/ }
                     {/*    />*/ }
@@ -88,7 +88,7 @@ export function EmployeeFormClientAdmin({ positions, employee, method }: {
                     {/*    </label>*/ }
                     {/*    <input*/ }
                     {/*        type="tel"*/ }
-                    {/*        { ...register('phone') }*/ }
+                    {/*        { ...registerAction('phone') }*/ }
                     {/*        className="input input-bordered"*/ }
                     {/*        placeholder="Phone Number"*/ }
                     {/*    />*/ }
@@ -188,7 +188,7 @@ export function EmployeeFormClientAdmin({ positions, employee, method }: {
                     {/*	</title>*/ }
                     {/*	<input*/ }
                     {/*		type="number"*/ }
-                    {/*		{...register('managerId', { valueAsNumber: true })}*/ }
+                    {/*		{...registerAction('managerId', { valueAsNumber: true })}*/ }
                     {/*		className="input input-bordered"*/ }
                     {/*		placeholder="Manager ID"*/ }
                     {/*	/>*/ }
@@ -281,7 +281,7 @@ export function EmployeeFormClientAdmin({ positions, employee, method }: {
                     {/*        <span className="title-text">Education</span>*/ }
                     {/*    </title>*/ }
                     {/*    <input*/ }
-                    {/*        { ...register('education') }*/ }
+                    {/*        { ...registerAction('education') }*/ }
                     {/*        className="input input-bordered"*/ }
                     {/*        placeholder="Additional notes"*/ }
                     {/*    />*/ }
@@ -302,7 +302,7 @@ export function EmployeeFormClientAdmin({ positions, employee, method }: {
                     {/*        type="file"*/ }
                     {/*        {*/ }
                     {/*            // @ts-ignore*/ }
-                    {/*            ...register('img') }*/ }
+                    {/*            ...registerAction('img') }*/ }
                     {/*        className="file-input file-input-bordered w-full"*/ }
                     {/*    />*/ }
                     {/*    {*/ }

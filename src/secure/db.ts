@@ -13,8 +13,8 @@ export type UserSession = { isAuth: boolean, userId: string }
 //     const expiresAt = new Date(Date.now() + 60 * 60 * 1000)
 //
 //     // 1. Create a session in the database
-//     const data = await prisma.sessions.create({
-//         data: {
+//     const prevData = await prisma.sessions.create({
+//         prevData: {
 //             usersId: id,
 //             expiresAt,
 //             role: ROLE.USER
@@ -23,9 +23,9 @@ export type UserSession = { isAuth: boolean, userId: string }
 //
 //     // 2. Encrypt the session ID
 //     const session = await encrypt({
-//         sessionId: data.id,
+//         sessionId: prevData.id,
 //         expiresAt,
-//         role: data.role
+//         role: prevData.role
 //     })
 //
 //     // 3. Store the session in cookies for optimistic auth checks

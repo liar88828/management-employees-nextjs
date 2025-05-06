@@ -58,7 +58,7 @@ export async function uploadFile(
 export const saveImageFormData = async (
     formData: FormData,
     pathImage: string,
-    key: string = 'file') => {// Get the image file from the form data
+    key: string = 'file') => {// Get the image file from the form prevData
     const imgFile = formData.get(key) as File;
     if (!imgFile) {
         throw new Error('Image is required')
@@ -88,7 +88,7 @@ export const saveImageFormData = async (
 export const saveImage = async (
     imageFile: File,
     pathImage: string,
-) => {// Get the image file from the form data
+) => {// Get the image file from the form prevData
     if (!imageFile) {
         throw new Error('Image is required')
     }
@@ -130,7 +130,7 @@ export const updateImageFormData = async (formData: FormData, imagePath: string,
     await deleteImage(imagePath)
     return saveImageFormData(formData, imagePath, key);
 }
-export const saveImageAction = async (imgFile: File, pathImage: string) => {// Get the image file from the form data
+export const saveImageAction = async (imgFile: File, pathImage: string) => {// Get the image file from the form prevData
 
     if (!imgFile) {
         throw new Error('Image is required',);
@@ -157,7 +157,7 @@ export const saveImageAction = async (imgFile: File, pathImage: string) => {// G
     fs.writeFileSync(filePath, buffer);
     return pathImage
 }
-export const pathImage = async (formData: FormData, isThrow?: boolean) => {// Get the image file from the form data
+export const pathImage = async (formData: FormData, isThrow?: boolean) => {// Get the image file from the form prevData
     const imgFile = formData.get('file') as File;
     // console.log(imgFile)
 
@@ -170,7 +170,7 @@ export const pathImage = async (formData: FormData, isThrow?: boolean) => {// Ge
     // `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.name }`
     return `/uploads/${ imgFile.name }`
 }
-export const setPathImage = async (imgFile: File) => {// Get the image file from the form data
+export const setPathImage = async (imgFile: File) => {// Get the image file from the form prevData
     if (!imgFile) {
         throw new ErrorResponse('Image is required', 401);
     }

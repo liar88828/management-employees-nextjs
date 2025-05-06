@@ -1,6 +1,6 @@
 'use client';
 
-import { forget } from "@/server/action/auth.action";
+import { _forget, } from "@/server/action/auth.action";
 import { useActionState } from "react";
 import Link from "next/link";
 import { useOtpStore } from "@/store/otp";
@@ -8,7 +8,7 @@ import { useOtpStore } from "@/store/otp";
 export default function Forget() {
     const { store, setData } = useOtpStore()
 
-    const [ state, action, pending ] = useActionState(forget, undefined);
+    const [ state, action, pending ] = useActionState(_forget, undefined);
     // console.log(state);
     return (
         <div className="card card-bordered bg-base-200   mt-10">
@@ -34,7 +34,6 @@ export default function Forget() {
                         <p className="text-red-500 text-sm mt-1">{ state.errors.email }</p>
                     ) }
                 </div>
-
 
                 { state?.message && (
                     <p className="text-red-500 text-sm mt-1">{ state.message }</p>

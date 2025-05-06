@@ -1,10 +1,10 @@
 'use client'
 import { Employees } from "@prisma/client";
 import { Position } from "@/interface/entity/position.model";
-import { useActionState, useEffect } from "react";
+import React, { useActionState, useEffect } from "react";
 import toast from "react-hot-toast";
 import Form from "next/form";
-import { MyInput, MyInputTextArea } from "@/app/components/form/action";
+import { MyInput, MyInputOption, MyInputTextArea } from "@/app/components/form/action";
 import { StatusEmployeeList } from "@/interface/enum";
 import { registerUpdateFormDataAdminAction } from "@/server/action/register.action";
 
@@ -21,17 +21,11 @@ export function RegistrationForm({ employee, positions }: { employee: Employees,
     }, [ employee.status, state ]);
 
     return (
-        <Form action={ action }
-              className={ 'card  max-w-4xl bg-base-200' }
-        >
+        <Form action={ action } className={ 'card  max-w-4xl bg-base-200' }>
             <div className="card-body ">
                 <h1 className={ 'card-title' }>Form Registration</h1>
-                <input type="hidden"
-                       value={ employee.id } name={ 'id' }
-                />
-                <input
-                    type={ "hidden" } value={ 0 } name={ 'salary' }
-                />
+                <input type="hidden" value={ employee.id } name={ 'id' } />
+                <input type={ "hidden" } value={ 0 } name={ 'salary' } />
                 <div className="grid grid-cols-2 gap-5">
 
                     <MyInput
@@ -40,45 +34,17 @@ export function RegistrationForm({ employee, positions }: { employee: Employees,
                         defaultValue={ state?.value.jobTitle ?? employee.jobTitle }
                     />
 
-                    {/*<MyInputNum*/ }
-                    {/*    title={ 'salary' }*/ }
-                    {/*    errors={ state?.errors?.salary }*/ }
-                    {/*    defaultValue={ state?.value.salary ?? employee.salary }*/ }
-                    {/*/>*/ }
+                    <MyInputOption
+                        name={ 'status' }
+                        keys={ state?.value.status || employee.status }
+                        lists={ StatusEmployeeList }
+                    />
 
-                    <div className="form-control w-full">
-                        <label htmlFor={ `status` } className="label">
-                            <span className="label-text capitalize"> status </span>
-                        </label>
-                        <select
-                            className="select select-bordered join-item"
-                            name="status"
-                            key={ state?.value.status || employee.status }
-                            defaultValue={ state?.value.status || employee.status }
-                        >
-                            <option disabled value="">Select Status</option>
-                            { StatusEmployeeList.map((item) => (
-                                <option key={ item }>{ item }</option>
-                            )) }
-                        </select>
-                    </div>
-
-                    <div className="form-control w-full">
-                        <label htmlFor={ `position` } className="label">
-                            <span className="label-text capitalize"> positions </span>
-                        </label>
-                        <select
-                            className="select select-bordered join-item"
-                            name="position"
-                            key={ state?.value.position || employee.position }
-                            defaultValue={ state?.value.position || employee.position }
-                        >
-                            <option disabled value="">Select positions</option>
-                            { positions.map((item) => (
-                                <option key={ item.id }>{ item.position }</option>
-                            )) }
-                        </select>
-                    </div>
+                    <MyInputOption
+                        name={ 'position' }
+                        keys={ state?.value.position || employee.position }
+                        lists={ positions.map(item => item.position) }
+                    />
 
                     <MyInputTextArea title={ 'notes' }
                                      error={ state?.errors?.notes }
@@ -92,25 +58,7 @@ export function RegistrationForm({ employee, positions }: { employee: Employees,
                     >
                         Send
                     </button>
-                    {/*{ employee.status === 'Interview' &&*/ }
-                    {/*    <button*/ }
-                    {/*        onClick={ () => {onSendEmailSingle()}}*/ }
-                    {/*        type="button"*/ }
-                    {/*        disabled={ pending }*/ }
-                    {/*        className={ 'btn btn-success' }*/ }
-                    {/*    >*/ }
-                    {/*        Send Email*/ }
-                    {/*    </button>*/ }
-                    {/*}*/ }
 
-                    {/*<button*/ }
-                    {/*    onClick={ () => {*/ }
-                    {/*    } }*/ }
-                    {/*    type={ 'button' }*/ }
-                    {/*    className={ 'btn btn-success' }*/ }
-                    {/*>*/ }
-                    {/*    Send Email*/ }
-                    {/*</button>*/ }
                 </div>
             </div>
 

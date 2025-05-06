@@ -14,13 +14,13 @@ export function GridCardChild({ classNames, data, title }: {
                 <div className=" flex md:flex-col xl:flex-row justify-around items-end md:items-start xl:items-end">
                     <div>
                         <h1 className={ 'font-bold ~text-2xl/3xl' }>
-                            {/*{ toRupiah(data.totalAll) }*/ }
+                            {/*{ toRupiah(prevData.totalAll) }*/ }
                         </h1>
                         <p className={ 'text-base-content/50 ~text-xs/base' }>{ title }</p>
                     </div>
                     <div>
                         <h2 className="text-xl font-bold  text-end sm:text-end md:text-start xl:text-end ">
-                            {/*{ data.count }*/ }
+                            {/*{ prevData.count }*/ }
                         </h2>
                         <p className={ 'text-base-content/50 ~text-xs/base text-nowrap  text-start md:text-end' }>
                             This Mouth

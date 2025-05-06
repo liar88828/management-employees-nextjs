@@ -1,8 +1,10 @@
+'use client'
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { usePrint } from "@/hook/usePrint";
 import { Printer } from "lucide-react";
 import React from "react";
 import { EmployeeCVGlobal } from "@/app/components/Letter/cv/EmployeeCVGlobal";
+
 export default function EmployeeInterviewCVUser({ employee }: { employee: TEmployeeDB }) {
     const { isPrinting, handlePrint, contentRef } = usePrint()
     return (

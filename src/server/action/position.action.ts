@@ -1,11 +1,12 @@
 'use server'
-import { FormStateAuth } from "@/schema/auth.valid";
+import { FormStateLogin } from "@/schema/auth.valid";
 import { prisma } from "@/config/prisma";
 import { PositionFormSchema, PositionFormState } from "@/schema/departement.valid";
 import { redirect } from "next/navigation";
 import { ErrorDatabase } from "@/utils/error/ErrorClass";
 import { ActionResponse } from "@/interface/action";
 import { revalidatePath } from "next/cache";
+import { globalPageSize } from "@/config/nextPublicBaseUrl";
 
 export type PositionUpdateActionType = { positionId: number, position: string };
 
@@ -22,7 +23,7 @@ export async function profileManagementFindAll(state: PositionFormState, formDat
 
 }
 
-export async function profileManagementFindById(state: FormStateAuth, formData: FormData) {
+export async function profileManagementFindById(state: FormStateLogin, formData: FormData) {
 
 }
 
@@ -125,7 +126,7 @@ export async function positionDeleteAction(positionId: number): Promise<ActionRe
         await checkPositionId(positionId);
         const data = await prisma.positions.delete({ where: { id: positionId } })
         return {
-            data,
+            prevData: data,
             success: true,
             message: "Successfully deleted "
         };
@@ -135,12 +136,12 @@ export async function positionDeleteAction(positionId: number): Promise<ActionRe
             return {
                 success: false,
                 message: e.message,
-                data: null,
+                prevData: null,
             }
         }
 
         return {
-            data: null,
+            prevData: null,
             success: false,
             message: 'positionDeleteAction : Something went wrong',
         }
@@ -192,17 +193,34 @@ export async function positionUpdateAction({ positionId, position }: PositionUpd
 
 export type PositionPosition = { id: number, position: string, count: number }
 
-export async function positionEmployeeLoader(): Promise<PositionPosition[]> {
+export async function positionEmployeeLoader(page: number): Promise<{
+    totalPages: number,
+    data: PositionPosition[]
+}> {
     return prisma.$transaction(async (tx) => {
-        const positions = await tx.positions.findMany()
+
+        const positionCount = await tx.positions.count()
+
+        const positions = await tx.positions.findMany({
+                skip: ( page - 1 ) * globalPageSize,
+                take: globalPageSize,
+            }
+        )
+
         const employee = await tx.employees.groupBy({
             by: [ 'position' ],
             _count: true,
         })
-        return positions.map(dept => ( {
-            id: dept.id,
-            position: dept.position,
-            count: employee.find(emp => emp.position === dept.position)?._count ?? 0
-        } ));
+        const totalPages = Math.ceil(positionCount / globalPageSize);
+
+        return {
+            data: positions.map(dept => ( {
+                id: dept.id,
+                position: dept.position,
+                count: employee.find(emp => emp.position === dept.position)?._count ?? 0
+            } )),
+
+            totalPages
+        };
     });
 }

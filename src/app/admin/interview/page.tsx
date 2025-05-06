@@ -10,11 +10,14 @@ import { employeeInterviewLoader } from "@/server/action/interview.action";
 
 async function Page(context: TContext) {
     const search = await getContextQuery(context, 'search')
-    const status = await getContextQuery(context, 'status')
-    const position = await getContextQuery(context, 'position')
+    const statusEmployee = await getContextQuery(context, 'status')
+    const positionEmployee = await getContextQuery(context, 'position')
     const page = Number(await getContextQuery(context, 'page')) || 1;
     const positions = await prisma.positions.findMany()
-    const { totalPages, employees } = await employeeInterviewLoader(search, STATUS_EMPLOYEE.Interview, page)
+    const {
+        totalPages,
+        employees
+    } = await employeeInterviewLoader(search, STATUS_EMPLOYEE.Interview, page, positionEmployee)
     // console.log(employees);
 
     return (
@@ -22,14 +25,14 @@ async function Page(context: TContext) {
             <InterviewSearch
                 search={ search }
                 positions={ positions }
-                position={ position }
+                position={ positionEmployee }
             />
             <InterviewTable employees={ employees } />
             <PaginationComponent
-                page={ page }
+                currentPage={ page }
                 totalPages={ totalPages }
                 search={ search }
-                status={ status }
+                status={ statusEmployee }
                 title={ 'interview' }
             />
         </div>

@@ -58,7 +58,7 @@ export const useOtpStore = create<OTPState>()(
         },
 
         {
-            name: 'reset-password', // name of the item in the storage (must be unique)
+            name: 'resetAction-password', // name of the item in the storage (must be unique)
             storage: createJSONStorage(() => sessionStorage),
         },
     )

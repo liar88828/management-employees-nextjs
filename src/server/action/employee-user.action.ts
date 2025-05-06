@@ -83,7 +83,7 @@ export async function onUpsertDataUserAction(
     userId: string,
     idEmployee?: string,
 ) {
-    // await checkPositionPosition(data.positions);
+    // await checkPositionPosition(prevData.positions);
     // console.log(method, idEmployee)
     if (method === "POST") {
         console.log('Execute Post')
@@ -92,7 +92,7 @@ export async function onUpsertDataUserAction(
         console.log('Execute Put')
         return employeeUpdateUserAction(data, idEmployee, userId)
     }
-    throw new Error('Invalid data');
+    throw new Error('Invalid prevData');
 }
 
 export async function etEmployeeByUserIdRedirect(userId: string): Promise<TEmployeeDB> {
@@ -143,7 +143,7 @@ export async function registrationFinishedAction({ userId }: { userId: string })
     revalidatePath("/");
 
     // return {
-    //     data,
+    //     prevData,
     //     success: true,
     //     message: "Success Update Data"
     // }

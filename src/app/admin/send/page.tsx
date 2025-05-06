@@ -19,7 +19,7 @@ export default async function Page(context: TContext) {
                 totalPages={ totalPages }
                 title={ 'send' }
                 search={ search }
-                page={ page }
+                currentPage={ page }
             />
         </div>
     );

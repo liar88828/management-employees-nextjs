@@ -19,7 +19,7 @@ export default async function Page(context: TContext) {
             <PositionDetailSearch position={ position } search={ search } />
             <PositionEmployeeTable employees={ employees } />
             <PaginationComponent
-                page={ page }
+                currentPage={ page }
                 totalPages={ totalPages }
                 search={ search }
                 status={ status }

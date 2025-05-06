@@ -15,6 +15,7 @@
     "starter"
   ],
   "dependencies": {
+    "@faker-js/faker": "^9.7.0",
     "@hookform/resolvers": "^3.10.0",
     "@prisma/client": "^6.3.1",
     "@types/bcrypt": "^5.0.2",

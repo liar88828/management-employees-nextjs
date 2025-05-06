@@ -2,19 +2,19 @@ import { exampleTestimonials } from "@/assets/exampleTestimonial";
 
 export async function OurProducts() {
 
-    // if (!products.data) {
+    // if (!products.prevData) {
     //     return <PageLoadingSpin/>
     // }
     //
-    // if (products.data.data.length === 0) {
-    //     return <PageEmptyData page={ 'Please Input Product' }/>
+    // if (products.prevData.prevData.length === 0) {
+    //     return <PageEmptyData currentPage={ 'Please Input Product' }/>
     // }
 
     // return (
     //     <section id="products" className='mt-20'>
     //         <h2 className="text-title">Our Products</h2>
     //         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
-    //             { products.data.data.map((product, index) => (
+    //             { products.prevData.prevData.map((product, index) => (
     //                 <div key={ index } className='card card-compact'>
     //                     <div className=" card-body">
     //                         {/* eslint-disable-next-line @next/next/no-img-element */ }

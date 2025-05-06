@@ -56,7 +56,7 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
                     {/*    </label>*/ }
                     {/*    <input*/ }
                     {/*        type="text"*/ }
-                    {/*        { ...register('name') }*/ }
+                    {/*        { ...registerAction('name') }*/ }
                     {/*        className={ `input input-bordered ${ errors.name ? 'input-errors' : '' }` }*/ }
                     {/*        placeholder="Employee Name"*/ }
                     {/*    />*/ }
@@ -69,7 +69,7 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
                     {/*    </label>*/ }
                     {/*    <input*/ }
                     {/*        type="email"*/ }
-                    {/*        { ...register('email') }*/ }
+                    {/*        { ...registerAction('email') }*/ }
                     {/*        className={ `input input-bordered ${ errors.email ? 'input-errors' : '' }` }*/ }
                     {/*        placeholder="employee@company.com"*/ }
                     {/*    />*/ }
@@ -82,7 +82,7 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
                     {/*    </label>*/ }
                     {/*    <input*/ }
                     {/*        type="tel"*/ }
-                    {/*        { ...register('phone') }*/ }
+                    {/*        { ...registerAction('phone') }*/ }
                     {/*        className="input input-bordered"*/ }
                     {/*        placeholder="Phone Number"*/ }
                     {/*    />*/ }
@@ -178,7 +178,7 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
                     {/*	</title>*/ }
                     {/*	<input*/ }
                     {/*		type="number"*/ }
-                    {/*		{...register('managerId', { valueAsNumber: true })}*/ }
+                    {/*		{...registerAction('managerId', { valueAsNumber: true })}*/ }
                     {/*		className="input input-bordered"*/ }
                     {/*		placeholder="Manager ID"*/ }
                     {/*	/>*/ }

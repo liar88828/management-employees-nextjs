@@ -24,11 +24,11 @@
 //             }
 //     });
 //
-//     const { register, handleSubmit, formState: { errors } } = methods
+//     const { registerAction, handleSubmit, formState: { errors } } = methods
 //
-//     const onSubmit = async (data: EmployeeRegistrationUserCreateClient) => {
+//     const onSubmit = async (prevData: EmployeeRegistrationUserCreateClient) => {
 //         await onAction(() => {
-//                 onUpsertDataUserAction(method, data, employee?.id,
+//                 onUpsertDataUserAction(method, prevData, employee?.id,
 //                     user)
 //             },
 //             'Success Create Data Employee')
@@ -38,19 +38,19 @@
 //         <div className="container mx-auto p-4 pb-20">
 //             <FormProvider { ...methods }>
 //                 <form onSubmit={ handleSubmit(onSubmit) } className="space-y-4">
-//                     <input type="hidden" { ...register('userId', {
+//                     <input type="hidden" { ...registerAction('userId', {
 //                         value: user.id
 //                     }) } />
-//                     <input type="hidden"{ ...register('status', {
+//                     <input type="hidden"{ ...registerAction('status', {
 //                         value: employee?.status ?? 'Pending'
 //                     }) } />
 //                     {/*// defaultValue={ new Date().toISOString().split('T')[0] }*/ }
 //                     {/*        // .toISOString().split('T')[0],*/ }
-//                     <input type="hidden"{ ...register('hireDate', {
+//                     <input type="hidden"{ ...registerAction('hireDate', {
 //                         value: employee?.hireDate ?? new Date(),
 //                         valueAsDate: true
 //                     }) } />
-//                     <input type="hidden"{ ...register('salary', {
+//                     <input type="hidden"{ ...registerAction('salary', {
 //                         valueAsNumber: true,
 //                         value: employee?.salary ?? 0
 //                     }) } />
@@ -62,7 +62,7 @@
 //                         <input
 //
 //                             type="text"
-//                             { ...register('name', {
+//                             { ...registerAction('name', {
 //                                 value: user.name,
 //                                 disabled: true
 //                             }) }
@@ -78,7 +78,7 @@
 //                         </title>
 //                         <input
 //                             type="email"
-//                             { ...register('email', {
+//                             { ...registerAction('email', {
 //                                     disabled: true
 //                                 }
 //                             ) }
@@ -94,7 +94,7 @@
 //                         </title>
 //                         <input
 //                             type="tel"
-//                             { ...register('phone', {
+//                             { ...registerAction('phone', {
 //                                     disabled: true
 //                                 }
 //                             ) }
@@ -110,7 +110,7 @@
 //                         </title>
 //
 //                         <select
-//                             { ...register('gender') }
+//                             { ...registerAction('gender') }
 //                             className={ `select select-bordered ${ errors.gender ? 'select-errors' : '' }` }
 //                         >
 //                             <option value="">Select Gender</option>
@@ -128,7 +128,7 @@
 //                         </title>
 //                         <input
 //                             type="date"
-//                             { ...register('dateOfBirth',
+//                             { ...registerAction('dateOfBirth',
 //                             ) }
 //                             className="input input-bordered"
 //                             defaultValue={ employee ? new Date(employee.dateOfBirth).toISOString().split('T')[0] : '' }
@@ -144,7 +144,7 @@
 //                     {/*    </title>*/ }
 //                     {/*    <input*/ }
 //                     {/*        type="date"*/ }
-//                     {/*        {...register('hireDate')}*/ }
+//                     {/*        {...registerAction('hireDate')}*/ }
 //                     {/*        className="input input-bordered"*/ }
 //                     {/*    />*/ }
 //                     {/*    {errors.hireDate && <p className="text-errors text-sm mt-1">{errors.hireDate.message}</p>}*/ }
@@ -156,7 +156,7 @@
 //                         </title>
 //                         <input
 //                             type="text"
-//                             { ...register('jobTitle') }
+//                             { ...registerAction('jobTitle') }
 //                             className={ `input input-bordered ${ errors.jobTitle ? 'input-errors' : '' }` }
 //                             placeholder="Job Title"
 //                         />
@@ -169,7 +169,7 @@
 //                         </title>
 //
 //                         <select
-//                             { ...register('positions') }
+//                             { ...registerAction('positions') }
 //                             className={ `select select-bordered ${ errors.gender ? 'select-errors' : '' }` }
 //                         >
 //                             <option value="">Select Position</option>
@@ -188,7 +188,7 @@
 //                     {/*    </title>*/ }
 //                     {/*    <input*/ }
 //                     {/*        type="number"*/ }
-//                     {/*        { ...register('salary', { valueAsNumber: true }) }*/ }
+//                     {/*        { ...registerAction('salary', { valueAsNumber: true }) }*/ }
 //                     {/*        className={ `input input-bordered ${ errors.salary ? 'input-errors' : '' }` }*/ }
 //                     {/*        placeholder="Salary"*/ }
 //                     {/*    />*/ }
@@ -201,7 +201,7 @@
 //                         </title>
 //                         <input
 //                             type="text"
-//                             { ...register('address',
+//                             { ...registerAction('address',
 //                             ) }
 //                             className="input input-bordered"
 //                             placeholder="Street Address"
@@ -216,7 +216,7 @@
 //                         </title>
 //                         <input
 //                             type="text"
-//                             { ...register('city') }
+//                             { ...registerAction('city') }
 //                             className="input input-bordered"
 //                             placeholder="City"
 //                         />
@@ -230,7 +230,7 @@
 //                         </title>
 //                         <input
 //                             type="text"
-//                             { ...register('postalCode') }
+//                             { ...registerAction('postalCode') }
 //                             className="input input-bordered"
 //                             placeholder="Postal Code"
 //                         />
@@ -243,7 +243,7 @@
 //                             <span className="title-text">Country</span>
 //                         </title>
 //                         <input
-//                             { ...register('country') }
+//                             { ...registerAction('country') }
 //                             className="input input-bordered"
 //                             placeholder="Additional notes"
 //                         />
@@ -254,7 +254,7 @@
 //                         <title className="title">
 //                             <span className="title-text">Work Time</span>
 //                         </title>
-//                         <select { ...register("workTime") } className="select select-bordered">
+//                         <select { ...registerAction("workTime") } className="select select-bordered">
 //                             <option value="">Select Type</option>
 //                             <option value="Full-Time">Full-Time</option>
 //                             <option value="Part-Time">Part-Time</option>
@@ -268,7 +268,7 @@
 //                             <span className="title-text">Notes</span>
 //                         </title>
 //                         <textarea
-//                             { ...register('notes') }
+//                             { ...registerAction('notes') }
 //                             className="textarea textarea-bordered"
 //                             placeholder="Additional notes"
 //                         ></textarea>
@@ -289,7 +289,7 @@
 //                             type="file"
 //                             {
 //                                 // @ts-ignore
-//                                 ...register('img') }
+//                                 ...registerAction('img') }
 //                             onChange={ handleImageChange } // Handle image preview
 //                             className="file-input file-input-bordered w-full"
 //                         />

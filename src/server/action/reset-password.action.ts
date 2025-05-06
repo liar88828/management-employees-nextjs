@@ -19,7 +19,7 @@ export async function checkEmailAction(json: OTPGenerate): Promise<ActionRespons
         return {
             errors: error.flatten().fieldErrors,
             success: false,
-            data: null,
+            prevData: null,
             message: 'Error Validate'
         }
     }
@@ -90,7 +90,7 @@ export async function checkEmailAction(json: OTPGenerate): Promise<ActionRespons
 
     return {
         message: "Success Generate Otp",
-        data: "Sorry OTP is not expose please check the email",
+        prevData: "Sorry OTP is not expose please check the email",
         success: true
     }
 
@@ -102,14 +102,14 @@ export async function checkOtpAction(json: OTPValid): Promise<ActionResponse> {
         return {
             errors: error.flatten().fieldErrors,
             success: false,
-            data: '',
+            prevData: '',
             message: 'Error Validate'
         }
     }
     const user = await prisma.users.findFirst({
         where: {
             email: data.email,
-            // otp: data.otp
+            // otp: prevData.otp
         }
     })
 
@@ -127,7 +127,7 @@ export async function checkOtpAction(json: OTPValid): Promise<ActionResponse> {
 
     return {
         message: "Success Validate Otp",
-        data: user.status,
+        prevData: user.status,
         success: true
     };
 }
@@ -147,7 +147,7 @@ export async function resetPasswordAction({ password, confirm, email, otp }: Res
             return {
                 errors: validatedFields.error.flatten().fieldErrors,
                 success: false,
-                data: '',
+                prevData: '',
                 message: 'Error Validate'
             }
         }
@@ -196,7 +196,7 @@ export async function resetPasswordAction({ password, confirm, email, otp }: Res
         if (e instanceof Error) {
             return {
                 success: false,
-                data: '',
+                prevData: '',
                 message: e.message,
                 // prev: { email, password }
             }
@@ -204,7 +204,7 @@ export async function resetPasswordAction({ password, confirm, email, otp }: Res
         return {
             message: 'An errors occurred while creating your account.',
             success: false,
-            data: '',
+            prevData: '',
             // prev: { email, password }
         }
     }

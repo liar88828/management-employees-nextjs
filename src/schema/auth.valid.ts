@@ -1,28 +1,7 @@
 import { z } from "zod";
 import { zodAddress, zodEmail, zodPassword, zodPhone } from "@/schema/zod.valid";
 import { PropertyMap } from "@/interface/types";
-
-export type FormStateRegister = {
-    prev: PropertyMap<FormFail>
-    errors?: {
-        address?: string[]
-        email?: string[]
-        name?: string[]
-        password?: string[]
-        phone?: string[]
-        confirm?: string[]
-    }
-    message: string
-} | undefined
-
-export type FormStateAuth = {
-    errors?: {
-        name?: string[]
-        email?: string[]
-        password?: string[]
-    }
-    message?: string
-} | undefined
+import { ActionResponse } from "@/interface/action";
 
 export const SignupFormSchema = z.object({
     address: zodAddress,
@@ -72,12 +51,37 @@ export const ResetPasswordFormSchema = z.object({
         path: [ "confirm" ],
     });
 
-export type FormFail = {
-    address: string
-    email: string
-    name: string
-    phone: string
-};
+export type FormStateRegister = ActionResponse<
+        PropertyMap<{
+            address: string
+            email: string
+            name: string
+            phone: string
+        }>,
+        {
+            address?: string[]
+            email?: string[]
+            name?: string[]
+            password?: string[]
+            phone?: string[]
+            confirm?: string[]
+        }
+    >
+    | undefined
+
+export type FormStateLogin =
+    ActionResponse<
+        PropertyMap<{
+            email: string
+            password: string
+        }>,
+        {
+            name?: string[]
+            email?: string[]
+            password?: string[]
+        }
+    >
+    | undefined
 
 export type SignUpFormSchemaType = z.infer<typeof SignupFormSchema>
 export type SignInFormSchemaType = z.infer<typeof SignInFormSchema>

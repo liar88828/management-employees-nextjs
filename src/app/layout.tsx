@@ -23,7 +23,7 @@ export default function RootLayout({ children }: {
             className={ inter.className }
         >
         <body className={ "min-h-screen " }
-            // data-theme={ (isDarkTheme || !isDarkTheme) ? "dark" : "light" }
+            // prevData-theme={ (isDarkTheme || !isDarkTheme) ? "dark" : "light" }
               data-theme={ "light" }
         >
         <ClientProvider>

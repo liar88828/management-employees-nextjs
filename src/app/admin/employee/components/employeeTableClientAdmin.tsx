@@ -1,14 +1,13 @@
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { toRupiah } from "@/utils/toRupiah";
 import Link from "next/link";
-import { BookUser } from "lucide-react";
 
 export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUserClient[] }) {
     return (
         <div>
             <div className="overflow-x-auto w-full">
                 <table
-                    // data-theme={ 'light' }
+                    // prevData-theme={ 'light' }
                     className="my-table"
                 >
                     {/* Table Head */ }
@@ -55,9 +54,9 @@ export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUse
                             <td>
                                 <Link
                                     href={ `/admin/employee/${ employee.id }` }
-                                    className={ 'btn btn-sm btn-info btn-square' }
+                                    className={ 'btn  btn-info ' }
                                 >
-                                    <BookUser />
+                                    Detail
                                 </Link>
                             </td>
                         </tr>

@@ -4,6 +4,7 @@ import { validSession } from "@/secure/db";
 import { InterviewShowCVGlobal } from "@/app/admin/interview/components/interviewShowCVGlobal";
 import { InterviewShowDocument } from "@/app/admin/interview/components/interviewShowDocument";
 import { employeeFindById } from "@/server/action/employee-admin.action";
+import Link from "next/link";
 
 async function Page() {
     const { userId } = await validSession()
@@ -14,7 +15,7 @@ async function Page() {
             {/*<h1 className={ 'text-xl font-bold' }>Welcome to employee-management</h1>*/ }
             <div className="card bg-base-200">
                 <div className="card-body ">
-                    <h1 className={ 'card-title' }>Register ID # { employee ? employee.id : 'Empty' }</h1>
+                    <h1 className={ 'card-title' }>ID # { employee ? employee.id : 'Empty' }</h1>
                     <p>Register At : { employee ? toDateIndo(employee.createdAt) : 'Empty' }</p>
                     <p>Status : { employee ? employee.status : '' }</p>
                     <div>
@@ -27,9 +28,9 @@ async function Page() {
                             ID-Card</p> }
                     </div>
                     <div className="card-actions">
-                        <button className={ `btn btn-primary ${ employee && 'btn-disabled' }` }>
-                            Register
-                        </button>
+                        <Link href={ '/registration' } className={ `btn btn-primary ${ employee && 'btn-disabled' }` }>
+                            Registration
+                        </Link>
 
                         {/*<button className={ `btn btn-primary ${ !employee && 'btn-disabled' }` }>*/ }
                         {/*    Print*/ }

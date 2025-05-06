@@ -1,35 +1,49 @@
 import Form from "next/form";
 import { StatusEmployeeList } from "@/interface/enum";
 import { Search } from "lucide-react";
+import React from "react";
+import Link from "next/link";
 
 export function EmployeeSearchClientAdmin({ search, status }: {
     search: string,
     status: string,
 }) {
     return (
-        <div className="flex gap-2 items-center flex-wrap">
-            <Form action={ '/admin/employee' } className="join w-full">
+        <div className="flex gap-2 items-center">
+            <Form action={ '/admin/employee' } className="join ">
                 <input
                     type="text"
-                    className={ 'input input-bordered join-item w-full' }
+                    className={ 'input input-bordered join-item ' }
                     name={ 'search' }
                     defaultValue={ search }
                     placeholder={ 'Employee Name .....' }
                 />
-                <select className="select select-bordered join-item w-fit"
-                        defaultValue={ status }
-                        name={ 'status' }
-                >
-                    <option disabled value={ '' }>Filter</option>
-                    {/*<option value={ '' }>All</option>*/ }
-                    { StatusEmployeeList.map(item => (
-                        <option key={ item }>{ item }</option>
-                    )) }
-                </select>
 
+                <input type="hidden"
+                       defaultValue={ status }
+                       name={ 'status' }
+                />
                 <button className={ 'btn join-item ' }><Search /></button>
-
             </Form>
+
+            <details className="dropdown">
+                <summary className="btn m-1">Select Status</summary>
+                <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow  overflow-y-auto h-64">
+                    <li>
+                        <Link href={ `/admin/employee?search=${ search }&status=` }>
+                            Select All
+                        </Link>
+                    </li>
+                    { StatusEmployeeList.map((item) => (
+                        <li key={ item }>
+                            <Link href={ `/admin/employee?search=${ search }&status=${ item }` }>
+                                { item }
+                            </Link>
+                        </li>
+                    )) }
+                </ul>
+            </details>
+
             {/*<Link href={ '/admin/employee/create' } className={ 'btn btn-square' }>*/ }
             {/*    <Plus />*/ }
             {/*</Link>*/ }

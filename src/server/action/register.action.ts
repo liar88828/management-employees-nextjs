@@ -55,8 +55,8 @@ export const employeeRegistrationPaginationLoader = async (
     complete: EmployeeCompletePhotoType,
 ) => {
 
-    // console.log( search, status, page, complete )
-    // const globalPageSize = 3; // You can adjust the page size
+    // console.log( search, status, currentPage, complete )
+    // const globalPageSize = 3; // You can adjust the currentPage size
     const totalEmployees = await prisma.employees.count({
         where: {
             // name: { contains: search },

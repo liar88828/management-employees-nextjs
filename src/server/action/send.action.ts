@@ -59,11 +59,11 @@ export async function _sendEmployeeFormDataAction(state: LetterFormState, formDa
         }
 
         await prisma.$transaction(async (tx) => {
-            // const { employeesId, ...data } = validatedFields.data
-            // const letterDB = await tx.letters.create({ data })
+            // const { employeesId, ...prevData } = validatedFields.prevData
+            // const letterDB = await tx.letters.create({ prevData })
 
             // await tx.letterEmployees.createMany({
-            //     data: employeesId.map(item => ( {
+            //     prevData: employeesId.map(item => ( {
             //         lettersId: letterDB.id,
             //         employeesId: item
             //     } ))
@@ -201,7 +201,7 @@ export async function sendEmployeeStoreAction(latter: LetterFormSchemaType, idEm
             return {
                 message: 'Please Select The Employees',
                 success: false,
-                data: null,
+                prevData: null,
                 errors: 'Store'
             }
 
@@ -226,7 +226,7 @@ export async function sendEmployeeStoreAction(latter: LetterFormSchemaType, idEm
         })
 
         return {
-            data,
+            prevData: data,
             success: true,
             message: "Employee created successfully."
         }
@@ -236,7 +236,7 @@ export async function sendEmployeeStoreAction(latter: LetterFormSchemaType, idEm
             message = e.message
         }
         return {
-            data: null,
+            prevData: null,
             success: false,
             message: "Employee created failed.",
             errors: message,

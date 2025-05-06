@@ -177,16 +177,15 @@ export function MyInputImage({ title, error, defaultValue }: {
     );
 }
 
-export function MyInputOption({ keys, lists, title, name }: {
+export function MyInputOption({ keys, lists, name }: {
     name: string,
-    title: string,
     keys: string,
     lists: string[]
 }) {
     return (
         <div className="form-control w-full">
             <label htmlFor={ name } className="label">
-                <span className="label-text capitalize"> { title }</span>
+                <span className="label-text capitalize"> { name }</span>
             </label>
             <select
                 className="select select-bordered join-item"

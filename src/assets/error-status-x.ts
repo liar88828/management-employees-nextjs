@@ -36,7 +36,7 @@ const errorStatusExample = {
                     status_code: 200,
                     name: "OK",
                     description:
-                        "The request was successful, and the server returned the requested data.",
+                        "The request was successful, and the server returned the requested prevData.",
                 },
                 {
                     status_code: 201,
@@ -65,7 +65,7 @@ const errorStatusExample = {
                 {
                     status_code: 205,
                     name: "Reset Content",
-                    description: "Informs the client to reset the view or UI.",
+                    description: "Informs the client to resetAction the view or UI.",
                 },
                 {
                     status_code: 206,
@@ -246,7 +246,7 @@ export const errorStatus = [
         status_code: 200,
         name: "OK",
         description:
-            "The request was successful, and the server returned the requested data.",
+            "The request was successful, and the server returned the requested prevData.",
     },
     {
         status_code: 201,
@@ -274,7 +274,7 @@ export const errorStatus = [
     {
         status_code: 205,
         name: "Reset Content",
-        description: "Informs the client to reset the view or UI.",
+        description: "Informs the client to resetAction the view or UI.",
     },
     {
         status_code: 206,
@@ -431,7 +431,7 @@ export const errorStatusx = [
         status_code: "200",
         name: "OK",
         description:
-            "The request was successful, and the server returned the requested data.",
+            "The request was successful, and the server returned the requested prevData.",
     },
     {
         status_code: "201",
@@ -459,7 +459,7 @@ export const errorStatusx = [
     {
         status_code: "205",
         name: "Reset Content",
-        description: "Informs the client to reset the view or UI.",
+        description: "Informs the client to resetAction the view or UI.",
     },
     {
         status_code: "206",

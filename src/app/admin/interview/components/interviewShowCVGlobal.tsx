@@ -7,7 +7,9 @@ import React from "react";
 export function InterviewShowCVGlobal({ employee }: { employee: TEmployeeDB }) {
     return (
         <>
-            <button className="btn btn-info" onClick={ () => {
+            <button
+                type={ 'button' }
+                className="btn btn-info" onClick={ () => {
                 const modal = document.getElementById('my_modal_cv');
                 if (modal instanceof HTMLDialogElement) {
                     modal.showModal();

@@ -49,16 +49,17 @@ export async function interviewUpdateAction(state: FormStateReturn<InterviewSche
         value: defaultValue
     }
 }
-export const employeeInterviewLoader = async (search: string, status: string, page: number) => {
-    // console.log({ search, status, page })
-    // const globalPageSize = 3; // You can adjust the page size
+export const employeeInterviewLoader = async (search: string, status: string, page: number, position: string) => {
+    // console.log({ search, status, currentPage })
+    // const globalPageSize = 3; // You can adjust the currentPage size
 
     const totalEmployees = await prisma.employees.count({
         where: {
             // name: { contains: search },
             status: status,
             registration: true,
-            User: { name: { contains: search } }
+            User: { name: { contains: search } },
+            position: { contains: position },
         }
     });
 
@@ -68,6 +69,8 @@ export const employeeInterviewLoader = async (search: string, status: string, pa
             status: status,
             registration: true,
             User: { name: { contains: search } },
+            position: { contains: position },
+
         },
         skip: ( page - 1 ) * globalPageSize,
         take: globalPageSize,

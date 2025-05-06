@@ -40,6 +40,7 @@ export function InputImage({ img, title, errorText }: { img?: string, title: str
         </div>
     );
 }
+
 export function InputTextDynamic({ title, keys }: { title: string, keys: string }) {
     const { register, control } = useFormContext()
     const { fields, append, remove } = useFieldArray({
@@ -81,7 +82,8 @@ export function InputTextDynamic({ title, keys }: { title: string, keys: string 
         </div>
     );
 }
-export function InputText({ keys, title }: { keys: string, title: string }) {
+
+export function InputText({ keys, title, isDisable = false }: { isDisable?: boolean, keys: string, title: string }) {
     const { register, formState: { errors } } = useFormContext()
 
     // @ts-ignore
@@ -90,10 +92,12 @@ export function InputText({ keys, title }: { keys: string, title: string }) {
     return (
         <div className="form-control">
             <label className="label">
-                <span className="label-text">{ title }</span>
+                <span className="label-text capitalize">{ title }</span>
             </label>
             <input
-                { ...register(keys) }
+                { ...register(keys,
+                    { disabled: isDisable }
+                ) }
                 className="input input-bordered"
                 placeholder={ `Add ${ title }...` }
             />
@@ -102,7 +106,7 @@ export function InputText({ keys, title }: { keys: string, title: string }) {
     );
 }
 
-export function InputDate({ keys, title, now }: { keys: string, title: string, now?: boolean }) {
+export function InputDate({ keys, title, now = false }: { keys: string, title: string, now?: boolean }) {
     const { register, formState: { errors } } = useFormContext()
 
     // @ts-ignore
@@ -123,6 +127,52 @@ export function InputDate({ keys, title, now }: { keys: string, title: string, n
                 className="input input-bordered"
                 placeholder={ `Add ${ title }...` }
             />
+            { errors[keys] && <p className="text-error text-sm mt-1">{ errors[keys].message as string }</p> }
+        </div>
+    );
+}
+
+export function InputTextArea({ keys, title }: { keys: string, title: string }) {
+    const { register, formState: { errors } } = useFormContext()
+
+    // @ts-ignore
+    // const errorMessage = errors[keys].message as string
+
+    return (
+        <div className="form-control">
+            <label className="label">
+                <span className="label-text capitalize">{ title }</span>
+            </label>
+            <textarea
+                { ...register(keys) }
+                className="textarea textarea-bordered"
+                placeholder={ `Add ${ title }...` }
+            ></textarea>
+            { errors[keys] && <p className="text-error text-sm mt-1">{ errors[keys].message as string }</p> }
+        </div>
+    );
+}
+
+export function InputSelect({ keys, title, array }: { keys: string, title: string, array: string[] }) {
+    const { register, formState: { errors } } = useFormContext()
+
+    // @ts-ignore
+    // const errorMessage = errors[keys].message as string
+
+    return (
+        <div className="form-control">
+            <label className="label">
+                <span className="label-text capitalize">{ title }</span>
+            </label>
+            <select
+                { ...register(keys) }
+                className="select select-bordered"
+            >
+                <option disabled>select { title }</option>
+                { array.map((item) => (
+                    <option>{ item }</option>
+                )) }
+            </select>
             { errors[keys] && <p className="text-error text-sm mt-1">{ errors[keys].message as string }</p> }
         </div>
     );

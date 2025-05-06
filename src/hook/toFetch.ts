@@ -61,7 +61,7 @@ export const toFetch = async <R>(
                 const data = await response.text()
                 console.info(data)
                 throw new Error(`HTTP error! status`)
-                // throw new Error(`HTTP errors! status: ${response.status} msg : ${data.msg}`)
+                // throw new Error(`HTTP errors! status: ${response.status} msg : ${prevData.msg}`)
             }
         }
 

@@ -26,7 +26,12 @@ async function Page() {
                 <div>
                     <div className="divider"></div>
                     <h1>Notes</h1>
-                    <p>{ employee.notes }</p>
+
+                    <textarea
+                        disabled
+                        className={ 'textarea textarea-bordered w-full' }
+                        defaultValue={ employee.notes }
+                    ></textarea>
                 </div>
             </div>
         </div>

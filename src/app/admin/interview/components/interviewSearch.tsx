@@ -29,12 +29,17 @@ export default function InterviewSearch(
 
             <details className="dropdown">
                 <summary className="btn m-1">Select Position</summary>
-                <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-
+                <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow  overflow-y-auto h-64">
+                    <li>
+                        <Link href={ `/admin/interview?search=${ search }&position=` }>
+                            Select All
+                        </Link>
+                    </li>
                     { positions.map((item) => (
                         <li key={ item.id }>
-                            <Link href={ `/admin/registration?search=${ search }&position=${ item }` }
-                            >{ item.position }</Link>
+                            <Link href={ `/admin/interview?search=${ search }&position=${ item.position }` }>
+                                { item.position }
+                            </Link>
                         </li>
                     )) }
                 </ul>

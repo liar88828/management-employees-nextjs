@@ -15,13 +15,13 @@ export const useEmail = () => {
 
     const onCheckOtp = async (data: OTPValid) => {
         return toAction(async () => {
-                // if (response.data === STATUS_USER.OTP) {
+                // if (response.prevData === STATUS_USER.OTP) {
                 //     console.log('otp')
                 //     route.push('/home')
                 // }
-                // if (response.data === STATUS_USER.RESET) {
-                //     console.log('reset')
-                //     route.push('/reset')
+                // if (response.prevData === STATUS_USER.RESET) {
+                //     console.log('resetAction')
+                //     route.push('/resetAction')
                 // }
                 return checkOtpAction(data)
             },
@@ -29,13 +29,13 @@ export const useEmail = () => {
     }
     const onReset = async (data: ResetPassword) => {
         return toAction(async () => {
-                // if (response.data === STATUS_USER.OTP) {
+                // if (response.prevData === STATUS_USER.OTP) {
                 //     console.log('otp')
                 //     route.push('/home')
                 // }
-                // if (response.data === STATUS_USER.RESET) {
-                //     console.log('reset')
-                //     route.push('/reset')
+                // if (response.prevData === STATUS_USER.RESET) {
+                //     console.log('resetAction')
+                //     route.push('/resetAction')
                 // }
                 return await resetPasswordAction(data)
             },
