@@ -170,7 +170,7 @@ export function InputSelect({ keys, title, array }: { keys: string, title: strin
             >
                 <option disabled>select { title }</option>
                 { array.map((item) => (
-                    <option>{ item }</option>
+                    <option key={ item }>{ item }</option>
                 )) }
             </select>
             { errors[keys] && <p className="text-error text-sm mt-1">{ errors[keys].message as string }</p> }

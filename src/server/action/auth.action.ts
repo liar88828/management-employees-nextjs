@@ -29,11 +29,13 @@ export async function registerAction(state: FormStateRegister, formData: FormDat
         phone: formData.get('phone'),
         confirm: formData.get('confirm'),
     }
+    // console.log(formDataRaw)
     const { confirm, password, ...formDataRawFail } = formDataRaw
-    const { data, success, error } = SignupFormSchema.safeParse({ formDataRaw })
-
+    const { data, success, error } = SignupFormSchema.safeParse(formDataRaw)
+    console.log(data)
     // If any form fields are invalid, return early
     if (!success) {
+        console.log("failed registered!");
         return {
             success: false,
             prevData: formDataRawFail,
@@ -53,7 +55,7 @@ export async function registerAction(state: FormStateRegister, formData: FormDat
     }
     // e.g. Hash the user's password before storing it
     const hashedPassword = await bcrypt.hash(data.password, 10)
-
+    console.log(hashedPassword)
     // 3. Insert the user into the database or call an Auth Library's API
     const user = await userCreateOne({
         name: data.name,

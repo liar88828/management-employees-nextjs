@@ -8,7 +8,7 @@ export const SignupFormSchema = z.object({
     confirm: z.string().min(2),
     email: zodEmail,
     id: z.string().uuid().optional(),
-    name: z.string().min(2, { message: 'Name must be at least 2 characters long.' }).trim(),
+    name: z.string().min(2, { message: 'Name must be at least 2 characters long.' }),//.trim()
     password: zodPassword,
     phone: zodPhone,
 
