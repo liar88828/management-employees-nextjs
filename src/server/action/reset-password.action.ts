@@ -17,6 +17,7 @@ export async function checkEmailAction(json: OTPGenerate): Promise<ResponseActio
     const { success, data, error } = otpValid.safeParse(json)
     if (!success) {
         return {
+            response: null,
             errors: error.flatten().fieldErrors,
             success: false,
             prevData: null,
@@ -89,6 +90,7 @@ export async function checkEmailAction(json: OTPGenerate): Promise<ResponseActio
     //     })
 
     return {
+        response: null,
         message: "Success Generate Otp",
         prevData: "Sorry OTP is not expose please check the email",
         success: true
@@ -100,6 +102,7 @@ export async function checkOtpAction(json: OTPValid): Promise<ResponseAction> {
     const { success, data, error } = validOtp.safeParse(json)
     if (!success) {
         return {
+            response: null,
             errors: error.flatten().fieldErrors,
             success: false,
             prevData: '',

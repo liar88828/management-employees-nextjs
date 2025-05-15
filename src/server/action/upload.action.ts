@@ -4,6 +4,7 @@ import { prisma } from "@/config/prisma";
 import path from "path";
 import fs from "fs";
 import { ErrorResponse } from "@/utils/error/ErrorClass";
+import { api_fastapi } from "@/config/nextPublicBaseUrl";
 
 export type TypeFile = 'KTP' | '3x4' | 'ijazah'
 
@@ -54,15 +55,15 @@ export async function uploadFileState(
         const formData = new FormData();
         formData.append("file", imageFile);
         formData.append("name", userName);
-        formData.append("userId", userId);
+        formData.append("user_id", userId);
+        formData.append("type_image", typeFile);
         // console.log(formData)
-
-        const response = await fetch("http://localhost:8000/images/", {
+        const response = await fetch(`${ api_fastapi }/images/`, {
             method: "POST",
             body: formData,
         })
         const data: ResponseUploadEncrypt = await response.json()
-        console.log(data, 'data')
+        // console.log(data, 'data')
         if (!data.success) {
             // throw new Error(`Error uploading file: ${ typeFile } : ${ data.detail }`)
             return {

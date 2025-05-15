@@ -5,7 +5,6 @@ import { UserDB } from "@/interface/entity/user.model";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registrationSanitizerUser } from "@/schema/employee.valid";
 import { onUpsertDataUserAction, registrationFinishedState } from "@/app/(user)/registration/registration-user.action";
 import {
     InputDate,
@@ -20,6 +19,7 @@ import { RegistrationError } from "@/app/components/error/registrationFirst";
 import { UploadDocument } from "@/app/components/employee/client/upload-document";
 import {
     registrationCreateClientUser,
+    registrationSanitizerUser,
     RegistrationUserCreateClient
 } from "@/app/(user)/registration/registration-user-sanitizer";
 

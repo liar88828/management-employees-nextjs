@@ -39,6 +39,7 @@ export async function registerAction(state: FormStateRegister, formData: FormDat
     if (!success) {
         console.log("failed registered!");
         return {
+            response: null,
             success: false,
             prevData: formDataRawFail,
             errors: error.flatten().fieldErrors,
@@ -69,6 +70,7 @@ export async function registerAction(state: FormStateRegister, formData: FormDat
 
     if (!user) {
         return {
+            response: null,
             success: false,
             prevData: formDataRawFail,
             message: 'An errors occurred while creating your account.',
@@ -134,11 +136,13 @@ export async function loginState(formDataRaw: LoginFormSchemaType): Promise<Resp
 
         if (e instanceof Error) {
             return {
+                response: null,
                 success: false,
                 message: e.message,
             }
         }
         return {
+            response: null,
             success: false,
             message: 'An errors occurred while creating your account.',
         }
@@ -159,6 +163,7 @@ export async function loginAction(state: FormStateLogin, formData: FormData): Pr
         // If any form fields are invalid, return early
         if (!validatedFields.success) {
             return {
+                response: null,
                 success: false,
                 message: "Validate Error",
                 prevData: formDataRaw,
@@ -206,6 +211,7 @@ export async function loginAction(state: FormStateLogin, formData: FormData): Pr
 
         if (e instanceof Error) {
             return {
+                response: null,
                 success: false,
                 prevData: formDataRaw,
                 message: e.message,
@@ -213,6 +219,7 @@ export async function loginAction(state: FormStateLogin, formData: FormData): Pr
             }
         }
         return {
+            response: null,
             success: false,
             prevData: formDataRaw,
             message: 'An errors occurred while creating your account.',
@@ -297,6 +304,7 @@ export async function _forget(state: FormStateLogin, formData: FormData): Promis
         // If any form fields are invalid, return early
         if (!validatedFields.success) {
             return {
+                response: null,
                 message: ERRORMESSAGE.VALIDATION_SCHEMA,
                 success: false,
                 prevData: {
@@ -334,6 +342,7 @@ export async function _forget(state: FormStateLogin, formData: FormData): Promis
 
         if (e instanceof Error) {
             return {
+                response: null,
                 success: false,
                 prevData: {
                     email: email,
@@ -345,6 +354,7 @@ export async function _forget(state: FormStateLogin, formData: FormData): Promis
         }
         return {
             success: false,
+            response: null,
             prevData: {
                 email: email,
                 password: '',

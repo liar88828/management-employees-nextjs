@@ -3,7 +3,6 @@ import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { XIcon } from "lucide-react";
 import React, { useState } from "react";
 import { StatusEmployeeList } from "@/interface/enum";
-import { changeUpdatePositionAction } from "@/server/action/employee-admin.action";
 
 export function EmployeeUpdateStatus({ employee }: { employee: TEmployeeDB }) {
 
@@ -44,7 +43,9 @@ export function EmployeeUpdateStatus({ employee }: { employee: TEmployeeDB }) {
                         </select>
                         <button
                             className={ 'btn btn-success ' }
-                            onClick={ () => changeUpdatePositionAction(employee.id, changePosition) }
+                            onClick={ () => {
+                                // changeUpdatePositionAction(employee.id, changePosition)
+                            } }
                         >Change
                         </button>
                     </div>

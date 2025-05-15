@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { ModalInput } from "../../modal";
 import { ImageIcon } from "lucide-react";
 import toast from "react-hot-toast";
+import { api_fastapi } from "@/config/nextPublicBaseUrl";
 
 export function UploadDocument(
     {
@@ -50,6 +51,7 @@ export function UploadDocument(
             });
             if (response.success) {
                 toast.success(response.message);
+                setImageFile(null)
             } else {
                 toast.error(response.message)
             }
@@ -67,6 +69,7 @@ export function UploadDocument(
             ? photoIjazah
             : photoKtp;
     // console.log(imageData)
+    const image_document = imageEmpty.replace('http://localhost:8000', api_fastapi)
     return (
         <form className="form-control" onSubmit={ onHandleSubmit }>
             <label className="label">
@@ -83,7 +86,7 @@ export function UploadDocument(
                 <ModalInput title={ title } buttonText={ <ImageIcon /> } active={ imageData !== null }>
                     <picture>
                         <img
-                            src={ imageEmpty }
+                            src={ image_document }
                             alt="Uploaded document"
                             className="w-full h-full mt-2 rounded-lg border object-cover"
                         />

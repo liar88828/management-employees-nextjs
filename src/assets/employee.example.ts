@@ -1,5 +1,4 @@
 import { Employees } from "@prisma/client";
-import { RegistrationUserCreateServer } from "@/app/(user)/registration/registration-user-sanitizer";
 
 export type EmployeeClientExample = Employees & {
     educations: { text: string } [],
@@ -38,8 +37,8 @@ export const _employeeClientExample = {
     //     { text: "Spanish" },
     // ],
 };
-
-export const employeeServerExample: RegistrationUserCreateServer & { status: 'Create' } = {
+// : RegistrationDatabaseCreateServer & { status: 'Create' }
+export const employeeServerExample = {
     userId: "",
     // userName: "Jane Doe",
     // email: "janedoe@example.com",

@@ -1,10 +1,11 @@
 'use server'
-import { EmployeeCreateClientAdmin } from "@/schema/employee.valid";
 import {
+    EmployeeCreateClientAdmin,
     employeeCreateSanitizeAdmin,
     employeeSanitizeFormData,
     employeeSanitizeUpdateAdmin
-} from "@/app/admin/registration/employe.sanitize";
+} from "@/schema/employee.valid";
+
 import { ZodError } from "zod";
 import { prisma } from "@/config/prisma";
 import { STATUS_EMPLOYEE } from "@/interface/enum";
@@ -19,7 +20,7 @@ import {
     updateImage,
     updateImageFormData
 } from "@/server/action/upload.action";
-import { createUserRepo, updateUserRepo } from "@/app/(user)/registration/registration-user.repo";
+import { registrationCreateRepo, registrationUpdateRepo } from "@/server/action/registration-database.action";
 
 export async function employeeCreateFormDataAdminAction({ img, ...data }: EmployeeCreateClientAdmin) {
     // console.log('employeeCreateFormDataAdminAction', prevData);
@@ -29,7 +30,7 @@ export async function employeeCreateFormDataAdminAction({ img, ...data }: Employ
 
     const filePath = await pathImage(formData)    // Save the image path to the database
     const employeeData = employeeSanitizeFormData(formData, filePath)
-    const response = await createUserRepo(employeeData,)
+    const response = await registrationCreateRepo(employeeData,)
     if (response) {
         await saveImageFormData(formData, filePath)
     }
@@ -48,7 +49,7 @@ export async function employeeUpdateFormDataAdminAction(
         const employeeData = employeeSanitizeFormData(formData, filePath, data.userId)
 
         // @ts-ignore
-        const response = await updateUserRepo(employeeData, employeeId,)
+        const response = await registrationUpdateRepo(employeeData, employeeId,)
         if (response && typeImage) {
             await updateImageFormData(formData, filePath)
         }
@@ -84,36 +85,6 @@ export async function employeeOnUpsertAdminAction(
     }
 }
 
-export async function employeeOnConnectUser(userId: string, employeeId: string) {
-
-    return prisma.$transaction(async (tx) => {
-        // null last value
-        const found = await tx.employees.findUnique({
-            where: { userId },
-            select: { userId: true }
-        })
-        if (found) {
-            // await tx.employees.update({
-            //         prevData: { userId: null },
-            //         where: { userId }
-            //     }
-            // )
-        }
-        // fill new Value
-        await tx.employees.update({
-                data: { userId },
-                where: { id: employeeId }
-            }
-        )
-    })
-}
-
-// export const removeUserEmployee = async (employeeId: string) => {
-//     await prisma.employees.update({
-//         where: { id: employeeId },
-//         prevData: { userId: null }
-//     })
-// }
 
 export async function userFindAvailableLoader(employeesValid: ( EmployeeUserClient | null )[]): Promise<Users[]> {
 
@@ -138,26 +109,6 @@ export async function userFindAvailableLoader(employeesValid: ( EmployeeUserClie
 
 }
 
-export const employeesFindNull = async () => await prisma.employees.findMany({
-    where: {
-        // userId: null,
-        // User: { role: "USER" }
-    },
-    include: {
-        User: {
-            omit: {
-                password: true,
-                otp: true,
-                otpExpired: true,
-            }
-        }
-    }
-})
-.then(item => {
-    return item.filter(item => item !== null)
-})
-
-// : Promise<TEmployeeDB[]>
 export const employeesFindValidLoader = async () => await prisma.employees.findMany({
     where: {
         // userId: { not: null },
@@ -225,7 +176,7 @@ export async function employeeCreateAdmin(
         const imageFile = img[0]
         const imagePath = await setPathImage(imageFile)    // Save the image path to the database
         const employeeData = employeeCreateSanitizeAdmin(data, data?.userId, imagePath,)
-        const response = await createUserRepo(employeeData,)
+        const response = await registrationCreateRepo(employeeData,)
         console.log('response : ', response)
         if (response && isImage && imagePath) {
             const pathImage = await saveImage(imageFile, imagePath)
@@ -246,9 +197,9 @@ export async function employeeUpdateAdminAction(
         const isImage = typeof img === 'object';
         const imageFile = img[0]
         const imagePath = await setPathImage(imageFile, false)    // Save the image path to the database
-        console.log('test')
+        // console.log('test')
         const employeeData = employeeSanitizeUpdateAdmin(data, imagePath,)
-        const response = await updateUserRepo(employeeData, employeeId,)
+        const response = await registrationUpdateRepo(employeeData, employeeId,)
         if (response && isImage && imagePath) {
             await updateImage(imageFile, imagePath)
         }
@@ -256,14 +207,7 @@ export async function employeeUpdateAdminAction(
     } catch (error) {
 
         if (error instanceof ZodError) {
-            // console.log(errors.flatten().fieldErrors);
-            // console.log('----');
-            // console.log(errors.flatten().fieldErrors);
-            // errors.flatten().fieldErrors.toString()
-            // throw {
-            //     errors: errors.flatten().fieldErrors,
-            //     from: "VALIDATION",
-            // }
+
             throw JSON.stringify(error.flatten().fieldErrors)
         }
         if (error instanceof Error) {
@@ -290,60 +234,6 @@ export async function onUpsertDataAdminAction(
     throw new Error('Invalid prevData');
 }
 
-export async function employeePositionsLoader(
-    { search, position, page }: { search: string, position: string, page: number }
-) {
-
-    const totalEmployees = await prisma.employees.count({
-        where: {
-            // userName: { contains: search },
-            User: { name: { contains: search } },
-            // position: { contains: position },
-            status: {
-                notIn: [
-                    STATUS_EMPLOYEE.Interview,
-                    STATUS_EMPLOYEE.Registration,
-                    STATUS_EMPLOYEE.Create,
-                ]
-            }
-        }
-    });
-
-    const employees = await prisma.employees.findMany({
-        skip: ( page - 1 ) * globalPageSize,
-        take: globalPageSize,
-        where: {
-            // userName: { contains: userName },
-            User: { name: { contains: search } },
-            // position: { contains: position },
-            status: {
-                notIn: [
-                    STATUS_EMPLOYEE.Interview,
-                    STATUS_EMPLOYEE.Registration,
-                    STATUS_EMPLOYEE.Create,
-                ]
-            }
-        },
-        include: {
-            User: {
-                omit: {
-                    password: true, otp: true, otpExpired: true
-                }
-            }
-        }
-    }).then((item): EmployeeUserClient[] => {
-        return item
-        .map((i) => {
-            if (i && i.User) return { ...i, User: i.User }
-            return null
-        })
-        .filter((i) => i !== null)
-    })
-
-    const totalPages = Math.ceil(totalEmployees / globalPageSize);
-
-    return { employees, totalPages }
-}
 
 export async function employeeFindById(
     { userId, employeeId }: { employeeId?: string, userId?: string }
@@ -364,27 +254,3 @@ export async function employeeFindById(
         },
     });
 }
-
-// export async function employeeFindById({ userId, employeeId }: {
-//     userId?: string,
-//     employeeId?: string
-// }): Promise<TEmployeeDB | undefined> {
-//     return prisma.employees.findUnique({
-//         where: { userId, id: employeeId },
-//         include: {
-//             User: {
-//                 omit: {
-//                     password: true,
-//                     otp: true,
-//                     otpExpired: true,
-//                 }
-//             },
-//             // languages: true,
-//             skills: true,
-//             educations: true
-//         }
-//     }).then(item => {
-//         if (!item) return undefined
-//         return item
-//     })
-// }

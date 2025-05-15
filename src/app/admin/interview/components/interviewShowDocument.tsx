@@ -7,6 +7,7 @@ import React from "react";
 export function InterviewShowDocument({ employee }: { employee: TEmployeeDB | null }) {
     if (!employee) {
         return <button
+            type={ 'button' }
             className="btn btn-info btn-disabled"
             onClick={ () => {
                 const modal = document.getElementById('my_modal_document')
@@ -19,7 +20,7 @@ export function InterviewShowDocument({ employee }: { employee: TEmployeeDB | nu
 
         </button>
     }
-    const disabledButton = employee.photoKtp !== null || employee.photoIjazah !== null;
+    const disabledButton = employee.photoKtp === null || employee.photoIjazah === null;
     return (
         <>
             <button

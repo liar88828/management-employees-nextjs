@@ -1,18 +1,18 @@
-import {
-    RegistrationUpdateServerUser,
-    RegistrationUserCreateServer
-} from "@/app/(user)/registration/registration-user-sanitizer";
 import { prisma } from "@/config/prisma";
 import { ErrorDatabase } from "@/utils/error/ErrorClass";
+import {
+    RegistrationDatabaseCreateServer,
+    RegistrationDatabaseUpdateServer
+} from "@/schema/registration-database-server";
 
-export async function createUserRepo(
+export async function registrationCreateRepo(
     {
         skills,
         educations,
         name,
         phone,
         ...employee
-    }: RegistrationUserCreateServer
+    }: RegistrationDatabaseCreateServer
 ) {
     // console.log(employee)
     return prisma.$transaction(async (tx) => {
@@ -56,14 +56,15 @@ export async function createUserRepo(
         };
     })
 }
-export async function updateUserRepo(
+
+export async function registrationUpdateRepo(
     {
         skills,
         educations,
         name,
         phone,
         ...employee
-    }: RegistrationUpdateServerUser,
+    }: RegistrationDatabaseUpdateServer,
     id: string,
 ) {
     return prisma.$transaction(async (tx) => {

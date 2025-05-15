@@ -14,15 +14,18 @@ export default function RegisterForm() {
             <form action={ action } className="card-body">
                 <h2 className="card-title">Register</h2>
                 <div className="grid grid-cols-2 gap-4">
-                    <MyInput title={ 'name' } error={ state?.errors?.name } defaultValue={ state?.prevData.name } />
+                    <MyInput title={ 'name' }
+                             error={ state?.errors?.name }
+                             defaultValue={ state?.prevData?.name }
+                    />
                     <MyInputEmail onChangeAction={ email => setData({ email }) }
                                   error={ state?.errors?.email }
                                   defaultValue={ store.email }
                     />
-                    <MyInputPhone error={ state?.errors?.phone } defaultValue={ state?.prevData.phone }
+                    <MyInputPhone error={ state?.errors?.phone } defaultValue={ state?.prevData?.phone }
                                   title={ 'phone' }
                     />
-                    <MyInputTextArea defaultValue={ state?.prevData.address } error={ state?.errors?.address }
+                    <MyInputTextArea defaultValue={ state?.prevData?.address } error={ state?.errors?.address }
                                      title={ 'address' }
                     />
                     <MyInputPassword title={ 'password' } errors={ state?.errors?.password } />

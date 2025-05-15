@@ -18,7 +18,7 @@ export default function LoginForm() {
             console.log('in State')
         }
         console.log('is Load')
-    }, [ state ]);
+    }, [ state, reset ]);
 
     const searchParam = useSearchParams()
     const message = searchParam.get('message')

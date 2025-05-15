@@ -1,6 +1,5 @@
 'use server'
 import { redirect } from "next/navigation";
-import { employeeCreateSanitizeUser, employeeSanitizeUpdateUser } from "@/app/admin/registration/employe.sanitize";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { prisma } from "@/config/prisma";
 import { STATUS_EMPLOYEE } from "@/interface/enum";
@@ -9,8 +8,12 @@ import { revalidatePath } from "next/cache";
 import { employeeFindById } from "@/server/action/employee-admin.action";
 import { saveImage, setPathImage, updateImage } from "@/server/action/upload.action";
 import { ResponseAction } from "@/interface/action";
-import { RegistrationUserCreateClient } from "@/app/(user)/registration/registration-user-sanitizer";
-import { createUserRepo, updateUserRepo } from "@/app/(user)/registration/registration-user.repo";
+import {
+    employeeCreateSanitizeUser,
+    employeeSanitizeUpdateUser,
+    RegistrationUserCreateClient
+} from "@/app/(user)/registration/registration-user-sanitizer";
+import { registrationCreateRepo, registrationUpdateRepo } from "@/server/action/registration-database.action";
 
 export async function employeeCreateUserAction(
     {
@@ -26,8 +29,8 @@ export async function employeeCreateUserAction(
         const imageFile = img[0]
         const imagePath = await setPathImage(imageFile, false)    // Save the image path to the database
         const employeeData = employeeCreateSanitizeUser(data, userId, imagePath)
-        const response = await createUserRepo(employeeData)
-        console.log('response : ', response)
+        const response = await registrationCreateRepo(employeeData)
+        // console.log('response : ', response)
         if (response && isImage && imagePath) {
             const pathImage = await saveImage(imageFile, imagePath)
             console.log('saveImage : ', pathImage)
@@ -64,7 +67,7 @@ export async function employeeUpdateUserAction(
         const imageFile = img[0]
         const imagePath = await setPathImage(imageFile, false)    // Save the image path to the database
         const employeeData = employeeSanitizeUpdateUser(data, userId, imagePath,)
-        const response = await updateUserRepo(employeeData, employeeId,)
+        const response = await registrationUpdateRepo(employeeData, employeeId,)
         if (response && isImage && imagePath) {
             await updateImage(imageFile, imagePath)
         }
@@ -101,7 +104,7 @@ export async function onUpsertDataUserAction(
 ): Promise<{
     message: string,
     success: boolean,
-    response: unknown,
+    response?: unknown,
 }> {
     try {
         if (method === "POST") {
