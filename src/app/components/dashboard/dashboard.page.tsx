@@ -59,7 +59,7 @@ export function DashboardOrderPage(props: { orders: Object[] }) {
                                         className={ 'rounded-2xl w-20' }
                                         src="https://picsum.photos/200" alt=
                                             { ''
-                                                // order.Customers.name
+                                                // order.Customers.userName
                                             }
                                     />
                                 </td>
@@ -71,7 +71,7 @@ export function DashboardOrderPage(props: { orders: Object[] }) {
                                         <p className={ '~text-xs/base' }>{ toDate() }</p>
                                     </div>
                                 </td>
-                                {/*<td>{ order.Customers.name }</td>*/ }
+                                {/*<td>{ order.Customers.userName }</td>*/ }
                                 {/*<td>{ order.Trolleys.reduce((total, item) => {*/ }
                                 {/*    return total + item.qty_at_buy*/ }
                                 {/*}, 0) }</td>*/ }
@@ -107,7 +107,7 @@ export function DashboardCustomerPage({ customers }: { customers: Object[] }) {
                             </div>
                             <div>
                                 <h2 className="font-bold ">
-                                    {/*{ customer.name }*/ }
+                                    {/*{ customer.userName }*/ }
                                 </h2>
                                 <p className={ 'text-base-content/50 text-nowrap' }>{ 20 } Purchase xxx</p>
                             </div>
@@ -146,7 +146,7 @@ export function DashboardProductPage({ products }: { products: Object[] }) {
                             </div>
                             <div>
                                 <h2 className="font-bold ">
-                                    {/*{ product.name }*/ }
+                                    {/*{ product.userName }*/ }
                                 </h2>
                                 <p className={ 'text-base-content/50' }>
                                     {/*{ product.type }*/ }

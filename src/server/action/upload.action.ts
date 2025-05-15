@@ -12,17 +12,105 @@ type UploadFileType = {
     id: string,
     from: string
 };
+export type ResponseUploadEncrypt = {
+    message: string
+    file_path: string
+    full_path: string
+    success: true
+    detail: string
+}
+// {
+//     message: 'File saved successfully',
+//     file_path: 'public\\ktp.jpg.enc',
+//     full_path: 'http://localhost:8000/images/ktp.jpg',
+//     success: true
+// }
 
-export async function uploadFile(
+export async function uploadFileState(
+    {
+        userId, from, typeFile, imageFile,
+        userName
+    }: {
+        typeFile: TypeFile,
+        userId: string,
+        from: string,
+        imageFile: File,
+        userName: string,
+
+    },
+): Promise<{ success: boolean, message: string }> {
+    try {
+        const employee = await prisma.employees.findUnique({
+            where: { userId },
+            select: { id: true }
+        })
+        if (!employee) {
+            // throw new Error('User Employee does not exist')
+            return {
+                message: 'Uploda File User Employee does not exist',
+                success: false
+            }
+        }
+        const formData = new FormData();
+        formData.append("file", imageFile);
+        formData.append("name", userName);
+        formData.append("userId", userId);
+        // console.log(formData)
+
+        const response = await fetch("http://localhost:8000/images/", {
+            method: "POST",
+            body: formData,
+        })
+        const data: ResponseUploadEncrypt = await response.json()
+        console.log(data, 'data')
+        if (!data.success) {
+            // throw new Error(`Error uploading file: ${ typeFile } : ${ data.detail }`)
+            return {
+                message: `Error uploading file: ${ typeFile } : ${ data.detail }`,
+                success: false
+            }
+        }
+        if (from === 'employee') {
+            await prisma.employees.update({
+                where: { userId: userId },
+                data: {
+                    photoKtp: typeFile === 'KTP' ? data.full_path : undefined,
+                    photoIjazah: typeFile === 'ijazah' ? data.full_path : undefined,
+                }
+            });
+        }
+        revalidatePath("/");
+        return {
+            message: `Success Upload ${ typeFile }`,
+            success: true
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(error.message);
+            // return errors.message
+            return {
+                message: `Fail Upload : ${ error.message }`,
+                success: false
+            }
+        }
+        return {
+            message: `Fail Upload : ${ typeFile }`,
+            success: false
+        }
+    }
+}
+
+export async function uploadFileAction(
     { id, from, typeFile }: UploadFileType,
-    formData: FormData) {
+    formData: FormData
+) {
     try {
 
         // const file = formData.get("file") as File;
         // const arrayBuffer = await file.arrayBuffer();
         // const buffer = new Uint8Array(arrayBuffer);
-        // const name = `/uploads/${ file.name }`
-        // await fs.writeFile(`./public${ name }`, buffer);
+        // const userName = `/uploads/${ file.userName }`
+        // await fs.writeFile(`./public${ userName }`, buffer);
         // console.log(typeFile);
 
         const response = await fetch("http://localhost:8000/images/", {
@@ -30,7 +118,6 @@ export async function uploadFile(
             body: formData,
         })
         const data = await response.json()
-        console.log(data, 'data')
         if (!data.success) {
             throw new Error(`Error uploading file: ${ id } : ${ data.detail }`)
         }
@@ -40,11 +127,9 @@ export async function uploadFile(
                 data:
                     typeFile === 'KTP'
                         ? { photoKtp: data.full_path }
-                        : typeFile === '3x4'
-                            ? { photo3x4: data.full_path }
-                            : typeFile === 'ijazah'
-                                ? { photoIjazah: data.full_path }
-                                : {},
+                        : typeFile === 'ijazah'
+                            ? { photoIjazah: data.full_path }
+                            : {},
             });
         }
         revalidatePath("/");
@@ -167,12 +252,20 @@ export const pathImage = async (formData: FormData, isThrow?: boolean) => {// Ge
 
     // Save the image file locally (You can also upload it to a cloud storage service like AWS S3, Cloudinary, etc.)
     // console.log(imagePath)
-    // `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.name }`
+    // `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.userName }`
     return `/uploads/${ imgFile.name }`
 }
-export const setPathImage = async (imgFile: File) => {// Get the image file from the form prevData
+export const setPathImage = async (
+    imgFile: File,
+    required: boolean = true
+) => {// Get the image file from the form prevData
+
     if (!imgFile) {
-        throw new ErrorResponse('Image is required', 401);
+        if (required) {
+            throw new ErrorResponse('Image is required', 401);
+        } else {
+            return undefined
+        }
     }
 
     // Save the image file locally (You can also upload it to a cloud storage service like AWS S3, Cloudinary, etc.)

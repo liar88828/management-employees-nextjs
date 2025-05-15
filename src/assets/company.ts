@@ -19,7 +19,7 @@ export const employeeData = {
     dateOfBirth: new Date('1990-05-15T00:00:00Z'),
     hireDate: new Date('2015-06-01T00:00:00Z'),
     jobTitle: 'Software Engineer',
-    position: 'Engineering',
+    // position: 'Engineering',
     salary: 80000,
     managerId: 2,
     status: 'Active',

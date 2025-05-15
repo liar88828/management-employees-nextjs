@@ -5,8 +5,11 @@ import { InterviewShowCVGlobal } from "@/app/admin/interview/components/intervie
 import { InterviewShowDocument } from "@/app/admin/interview/components/interviewShowDocument";
 import { employeeFindById } from "@/server/action/employee-admin.action";
 import Link from "next/link";
+import { TContext } from "@/interface/server/param";
+import { getContextQuery } from "@/utils/toRequest";
 
-async function Page() {
+async function Page(context: TContext) {
+    const message = await getContextQuery(context, 'message')
     const { userId } = await validSession()
     const employee = await employeeFindById({ userId })
     // console.log(employee)
@@ -20,12 +23,13 @@ async function Page() {
                     <p>Status : { employee ? employee.status : '' }</p>
                     <div>
                         <p className={ 'font-bold' }>Note : </p>
+                        { message && <p className={ 'text-error' }>{ message }</p> }
                         <p className={ 'text-xs text-base/50 italic' }>- Status is wait from admin</p>
                         { !employee &&
                             <p className={ 'text-xs text-errors italic' }>- Please Complete Register will Show CV</p> }
                         { !employee &&
                             <p className={ 'text-xs text-errors italic' }>- Please Complete Register will Show
-                            ID-Card</p> }
+                                ID-Card</p> }
                     </div>
                     <div className="card-actions">
                         <Link href={ '/registration' } className={ `btn btn-primary ${ employee && 'btn-disabled' }` }>
@@ -35,11 +39,8 @@ async function Page() {
                         {/*<button className={ `btn btn-primary ${ !employee && 'btn-disabled' }` }>*/ }
                         {/*    Print*/ }
                         {/*</button>*/ }
-                        { employee && <>
-                            <InterviewShowCVGlobal employee={ employee } />
-                            <InterviewShowDocument employee={ employee } />
-                        </>
-                        }
+                        <InterviewShowCVGlobal employee={ employee } />
+                        <InterviewShowDocument employee={ employee } />
                     </div>
                 </div>
             </div>

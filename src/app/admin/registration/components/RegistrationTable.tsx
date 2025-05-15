@@ -47,7 +47,7 @@ export function RegistrationTable({ employees }: {
                             <span className={ ' badge badge-neural text-nowrap' }>
 
                             {
-                                employee.photo3x4 === null ||
+                                // employee.photo3x4 === null ||
                                 employee.photoKtp === null ||
                                 employee.photoIjazah === null ? 'Not Complete' : 'Complete'
                             }

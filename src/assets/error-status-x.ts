@@ -402,7 +402,7 @@ export const errorStatus = [
     },
 ] as const
 
-export const errorStatusx = [
+export const errorStatus__ = [
     {
         status_code: "100",
         name: "Continue",
@@ -587,7 +587,7 @@ export const errorStatusx = [
     },
 ] as const
 
-export const errorStatusxxx = [
+export const errorStatus_ = [
     { "100": "Continue" },
     { "101": "Switching Protocols" },
     { "102": "Processing" },
@@ -627,7 +627,7 @@ export type ErrorStatus = {
     name: (typeof errorStatus)[number]["name"]
 }
 
-type ErrorStatusTypexxx = typeof errorStatus
+type ErrorStatusType_ = typeof errorStatus
 type ErrorStatusType = (typeof errorStatus)[number]
 type ErrorStatusCodeType = (typeof errorStatus)[number]["status_code"]
 type ErrorStatusNameType = (typeof errorStatus)[number]["name"]

@@ -6,10 +6,10 @@ import { constantGender, constantWorkTime } from "@/assets/constant";
 import { toArrayRange } from "@/utils/toArray";
 
 export async function GET() {
-    return NextResponse.json({ message: 'test succes' })
+    return NextResponse.json({ message: 'test success' })
 }
 export async function POST() {
-    console.log('Seeding test data...');
+    console.log('Seeding test response...');
 
     try {
         for (let _ of toArrayRange(100)) {
@@ -25,7 +25,7 @@ export async function POST() {
                     },
                 });
                 console.log(userDB, 'userDB');
-                const position: string[] = await tx.positions.findMany({}).then(data => data.map(item => item.position))
+                // const position: string[] = await tx.positions.findMany({}).then(response => response.map(item => item.position))
                 const employeeDB = await tx.employees.create({
                     data: {
                         address: faker.location.streetAddress(),
@@ -42,11 +42,11 @@ export async function POST() {
                         registration: faker.datatype.boolean(),
                         sendEmail: faker.number.int({ max: 1_000_000 }),
                         userId: userDB.id,
-                        photo3x4: null,
+                        // photo3x4: null,
                         photoKtp: null,
                         photoIjazah: null,
                         workTime: faker.helpers.arrayElement(constantWorkTime),
-                        position: faker.helpers.arrayElement(position),
+                        // position: faker.helpers.arrayElement(position),
                     },
                 });
                 console.log(employeeDB, 'employeeDB')
@@ -67,12 +67,12 @@ export async function POST() {
             });
         }
 
-        return NextResponse.json({ message: 'Test data seeded successfully' });
+        return NextResponse.json({ message: 'Test response seeded successfully' });
 
     } catch (error) {
-        console.log('Error seeding data:', error);
+        console.log('Error seeding response:', error);
         return NextResponse.json({
-            message: 'Failed to seed data',
+            message: 'Failed to seed response',
             error: error instanceof Error ? error.stack : String(error),
         }, { status: 500 });
     }

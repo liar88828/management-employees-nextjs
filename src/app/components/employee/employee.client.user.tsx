@@ -1,6 +1,6 @@
 'use client'
 //
-// export function EmployeeFormClientUser({ employee, method, user, positions }: {
+// export function RegistrationFormClientUser({ employee, method, user, positions }: {
 //     user: UserClient
 //     employee?: TEmployeeDB,
 //     positions: Positions[]
@@ -9,8 +9,8 @@
 //     const router = useRouter();
 //     const { pending } = useFormStatus()
 //     const { previewImage, handleImageChange } = useFormImage(employee?.img)
-//     const methods = useForm<EmployeeRegistrationUserCreateClient>({
-//         resolver: zodResolver(employeeRegistrationUserCreateClient),
+//     const methods = useForm<RegistrationUserCreateClient>({
+//         resolver: zodResolver(registrationCreateClientUser),
 //         defaultValues: employee
 //             ? {
 //                 ...employee,
@@ -18,7 +18,7 @@
 //                 hireDate: employee ? formDate(employee.hireDate) : formDate(new Date()),
 //                 dateOfBirth: employee ? formDate(employee.dateOfBirth) : formDate(new Date)
 //             } : {
-//                 name: user.name,
+//                 userName: user.userName,
 //                 email: user.email,
 //                 phone: user.phone,
 //             }
@@ -26,7 +26,7 @@
 //
 //     const { registerAction, handleSubmit, formState: { errors } } = methods
 //
-//     const onSubmit = async (prevData: EmployeeRegistrationUserCreateClient) => {
+//     const onSubmit = async (prevData: RegistrationUserCreateClient) => {
 //         await onAction(() => {
 //                 onUpsertDataUserAction(method, prevData, employee?.id,
 //                     user)
@@ -62,14 +62,14 @@
 //                         <input
 //
 //                             type="text"
-//                             { ...registerAction('name', {
-//                                 value: user.name,
+//                             { ...registerAction('userName', {
+//                                 value: user.userName,
 //                                 disabled: true
 //                             }) }
-//                             className={ `input input-bordered ${ errors.name ? 'input-errors' : '' }` }
+//                             className={ `input input-bordered ${ errors.userName ? 'input-errors' : '' }` }
 //                             placeholder="Employee Name"
 //                         />
-//                         { errors.name && <p className="text-errors text-sm mt-1">{ errors.name.message }</p> }
+//                         { errors.userName && <p className="text-errors text-sm mt-1">{ errors.userName.message }</p> }
 //                     </div>
 //
 //                     <div className="form-control">

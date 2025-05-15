@@ -1,6 +1,5 @@
 'use client'
 import { Employees } from "@prisma/client";
-import { Position } from "@/interface/entity/position.model";
 import React, { useActionState, useEffect } from "react";
 import toast from "react-hot-toast";
 import Form from "next/form";
@@ -8,7 +7,14 @@ import { MyInput, MyInputOption, MyInputTextArea } from "@/app/components/form/a
 import { StatusEmployeeList } from "@/interface/enum";
 import { registerUpdateFormDataAdminAction } from "@/server/action/register.action";
 
-export function RegistrationForm({ employee, positions }: { employee: Employees, positions: Position[] }) {
+export function RegistrationForm(
+    {
+        employee,
+        // positions
+    }: {
+        employee: Employees,
+        // positions: Position[]
+    }) {
     const [ state, action, pending ] = useActionState(registerUpdateFormDataAdminAction, undefined)
     useEffect(() => {
         if (state) {
@@ -40,11 +46,11 @@ export function RegistrationForm({ employee, positions }: { employee: Employees,
                         lists={ StatusEmployeeList }
                     />
 
-                    <MyInputOption
-                        name={ 'position' }
-                        keys={ state?.value.position || employee.position }
-                        lists={ positions.map(item => item.position) }
-                    />
+                    {/*<MyInputOption*/ }
+                    {/*    userName={ 'position' }*/ }
+                    {/*    keys={ state?.value.position || employee.position }*/ }
+                    {/*    lists={ positions.map(item => item.position) }*/ }
+                    {/*/>*/ }
 
                     <MyInputTextArea title={ 'notes' }
                                      error={ state?.errors?.notes }

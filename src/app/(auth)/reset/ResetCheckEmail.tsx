@@ -132,7 +132,7 @@ export const Countdown = () => {
     );
 };
 
-export function CheckEmailxxx() {
+export function CheckEmail_() {
     const { store, setData } = useOtpStore()
 
     // const [ state, action, pending ] = useActionState(checkEmailAction, undefined);

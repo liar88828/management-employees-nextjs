@@ -1,2 +1,2 @@
-import { Positions } from ".prisma/client";
-export type Position = Positions
+// import { Positions } from ".prisma/client";
+// export type Position = Positions

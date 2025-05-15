@@ -3,7 +3,7 @@
 // GET     /users/john              200     John
 // GET     /unknown-url-eager       404     Not Found
 // GET     /users/kyle              404     User Not found
-// GET     /users?name=kyle`        200     []
+// GET     /users?userName=kyle`        200     []
 // DELETE  /users/john              204     No Content
 
 export class ErrorResponse extends Error {

@@ -25,14 +25,14 @@ async function Page(context: TContext) {
     // const globalPageSize = 3; // You can adjust the currentPage size
     // const totalEmployees = await prisma.employees.count({
     //     where: {
-    //         User: { name: { contains: search } },
+    //         User: { userName: { contains: search } },
     //         status: STATUS_EMPLOYEE.Registration
     //     }
     // });
     //
     // const employees = await prisma.employees.findMany({
     //     where: {
-    //         User: { name: { contains: search } },
+    //         User: { userName: { contains: search } },
     //         status: STATUS_EMPLOYEE.Registration
     //     },
     //     skip: ( currentPage - 1 ) * globalPageSize,

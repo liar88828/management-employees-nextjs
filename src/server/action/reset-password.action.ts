@@ -8,11 +8,11 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { OTPGenerate, OTPValid, ResetPassword } from "@/interface/server/param";
 import { otpValid, validOtp } from "@/schema/otp.valid";
 import { toOtp } from "@/utils/toOtp";
-import { ActionResponse } from "@/interface/action";
+import { ResponseAction } from "@/interface/action";
 import { toDateIndoFull } from "@/utils/toDate";
 import { nodemailerSendOtp } from "@/server/action/nodemailer.action";
 
-export async function checkEmailAction(json: OTPGenerate): Promise<ActionResponse> {
+export async function checkEmailAction(json: OTPGenerate): Promise<ResponseAction> {
     // console.log(json)
     const { success, data, error } = otpValid.safeParse(json)
     if (!success) {
@@ -96,7 +96,7 @@ export async function checkEmailAction(json: OTPGenerate): Promise<ActionRespons
 
 }
 
-export async function checkOtpAction(json: OTPValid): Promise<ActionResponse> {
+export async function checkOtpAction(json: OTPValid): Promise<ResponseAction> {
     const { success, data, error } = validOtp.safeParse(json)
     if (!success) {
         return {
@@ -132,7 +132,7 @@ export async function checkOtpAction(json: OTPValid): Promise<ActionResponse> {
     };
 }
 
-export async function resetPasswordAction({ password, confirm, email, otp }: ResetPassword): Promise<ActionResponse> {
+export async function resetPasswordAction({ password, confirm, email, otp }: ResetPassword): Promise<ResponseAction> {
     try {
         // Validate form fields
         const validatedFields = ResetPasswordFormSchema.safeParse({

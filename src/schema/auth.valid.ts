@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { zodAddress, zodEmail, zodPassword, zodPhone } from "@/schema/zod.valid";
 import { PropertyMap } from "@/interface/types";
-import { ActionResponse } from "@/interface/action";
+import { ResponseAction } from "@/interface/action";
 
 export const SignupFormSchema = z.object({
     address: zodAddress,
@@ -18,11 +18,6 @@ export const SignupFormSchema = z.object({
         message: "Passwords don't match",
         path: [ "confirm" ],
     });
-
-export const SignInFormSchema = z.object({
-    email: zodEmail,
-    password: zodPassword,
-})
 
 export const ForgetFormSchema = z.object({
     email: zodEmail,
@@ -51,7 +46,7 @@ export const ResetPasswordFormSchema = z.object({
         path: [ "confirm" ],
     });
 
-export type FormStateRegister = ActionResponse<
+export type FormStateRegister = ResponseAction<
         PropertyMap<{
             address: string
             email: string
@@ -70,7 +65,7 @@ export type FormStateRegister = ActionResponse<
     | undefined
 
 export type FormStateLogin =
-    ActionResponse<
+    ResponseAction<
         PropertyMap<{
             email: string
             password: string
@@ -83,8 +78,13 @@ export type FormStateLogin =
     >
     | undefined
 
+export const loginFormSchema = z.object({
+    email: zodEmail,
+    password: zodPassword,
+})
+export type LoginFormSchemaType = z.infer<typeof loginFormSchema>
+
 export type SignUpFormSchemaType = z.infer<typeof SignupFormSchema>
-export type SignInFormSchemaType = z.infer<typeof SignInFormSchema>
 export type ForgetFormSchemaType = z.infer<typeof ForgetFormSchema>
 export type ResetPasswordFormSchemaType = z.infer<typeof ResetPasswordFormSchema>
 export type ResetFormSchemaType = z.infer<typeof ResetFormSchema>

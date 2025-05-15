@@ -8,14 +8,18 @@ import { employeeCreateClientAdmin, EmployeeCreateClientAdmin } from "@/schema/e
 import { zodResolver } from "@hookform/resolvers/zod";
 import { employeeOnUpsertAdminAction } from "@/server/action/employee-admin.action";
 import { EmployeeFormContextClientAdmin } from "@/app/components/employee/employee.client.admin";
-import { Position } from "@/interface/entity/position.model";
 
-export function EmployeeFormClientAdmin({ positions, employee, method }: {
-    userId?: string
-    employee?: TEmployeeDB,
-    method: "POST" | 'PUT',
-    positions: Position[]
-}) {
+export function EmployeeFormClientAdmin(
+    {
+        // positions,
+        employee,
+        method
+    }: {
+        userId?: string
+        employee?: TEmployeeDB,
+        method: "POST" | 'PUT',
+        // positions: Position[]
+    }) {
 
     const status = useFormStatus()
     const { previewImage, handleImageChange } = useFormImage(employee?.img)
@@ -23,7 +27,7 @@ export function EmployeeFormClientAdmin({ positions, employee, method }: {
         resolver: zodResolver(employeeCreateClientAdmin),
         defaultValues: ( {
             ...employee,
-            position: employee?.position ?? undefined,
+            // position: employee?.position ?? undefined,
             userId: undefined,
         } )
     });
@@ -38,7 +42,7 @@ export function EmployeeFormClientAdmin({ positions, employee, method }: {
             if (e instanceof Error) {
                 toast.error(e.message)
             }
-            console.log(e)
+            // console.log(e)
         } finally {
             toast.dismiss(toastId)
         }
@@ -62,11 +66,11 @@ export function EmployeeFormClientAdmin({ positions, employee, method }: {
                     {/*    </label>*/ }
                     {/*    <input*/ }
                     {/*        type="text"*/ }
-                    {/*        { ...registerAction('name') }*/ }
-                    {/*        className={ `input input-bordered ${ errors.name ? 'input-errors' : '' }` }*/ }
+                    {/*        { ...registerAction('userName') }*/ }
+                    {/*        className={ `input input-bordered ${ errors.userName ? 'input-errors' : '' }` }*/ }
                     {/*        placeholder="Employee Name"*/ }
                     {/*    />*/ }
-                    {/*    { errors.name && <p className="text-errors text-sm mt-1">{ errors.name.message }</p> }*/ }
+                    {/*    { errors.userName && <p className="text-errors text-sm mt-1">{ errors.userName.message }</p> }*/ }
                     {/*</div>*/ }
 
                     {/*<div className="form-control">*/ }
@@ -150,24 +154,24 @@ export function EmployeeFormClientAdmin({ positions, employee, method }: {
                         { errors.jobTitle && <p className="text-error text-sm mt-1">{ errors.jobTitle.message }</p> }
                     </div>
 
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Position</span>
-                        </label>
+                    {/*<div className="form-control">*/ }
+                    {/*    <label className="label">*/ }
+                    {/*        <span className="label-text">Position</span>*/ }
+                    {/*    </label>*/ }
 
-                        <select
-                            { ...register('position') }
-                            className={ `select select-bordered ${ errors.gender ? 'select-error' : '' }` }
-                        >
-                            <option value="">Select Position</option>
-                            { positions.map(item => (
-                                <option key={ item.id } value={ item.position }>{ item.position }</option>
-                            )) }
-                        </select>
+                    {/*    <select*/ }
+                    {/*        { ...register('position') }*/ }
+                    {/*        className={ `select select-bordered ${ errors.gender ? 'select-error' : '' }` }*/ }
+                    {/*    >*/ }
+                    {/*        <option value="">Select Position</option>*/ }
+                    {/*        { positions.map(item => (*/ }
+                    {/*            <option key={ item.id } value={ item.position }>{ item.position }</option>*/ }
+                    {/*        )) }*/ }
+                    {/*    </select>*/ }
 
-                        { errors.position
-                            && <p className="text-error text-sm mt-1">{ errors.position.message }</p> }
-                    </div>
+                    {/*    { errors.position*/ }
+                    {/*        && <p className="text-error text-sm mt-1">{ errors.position.message }</p> }*/ }
+                    {/*</div>*/ }
 
                     <div className="form-control">
                         <label className="label">
@@ -325,11 +329,13 @@ export function EmployeeFormClientAdmin({ positions, employee, method }: {
                         />{
                         // @ts-ignore
                         errors.img && <p className="text-error text-sm mt-1">{ errors.img.message }</p> }
-                        {/*@next/next/no-img-element*/ }
-                        <img src={ previewImage }
-                             alt="Image Employee"
-                             className="size-40 mt-2 rounded-lg border"
-                        />
+                        <picture>
+                            {/*@next/next/no-img-element*/ }
+                            <img src={ previewImage }
+                                 alt="Image Employee"
+                                 className="size-40 mt-2 rounded-lg border"
+                            />
+                        </picture>
                     </div>
 
                     <div className="form-control mt-6">

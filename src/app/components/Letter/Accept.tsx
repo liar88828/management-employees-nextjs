@@ -43,7 +43,7 @@ const SuratPanggilanDiterimaKerja: React.FC<{
                         diterima untuk
                         bergabung dengan PT. { company.name } sebagai:
                     </p>
-                    <p className="mt-2 font-bold">Posisi: { employee.position }</p>
+                    {/*<p className="mt-2 font-bold">Posisi: { employee.position }</p>*/ }
                     <p className="mt-4">Kami mengundang Anda untuk hadir pada:</p>
                     <div className="mt-2 pl-4">
                         <p>Hari/Tanggal : { form.interviewDay }, { form.interviewDate }</p>

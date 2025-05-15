@@ -1,5 +1,5 @@
 import { TypeFile } from "@/server/action/upload.action";
-import { i3x4, ktp, TEmployeeDB } from "@/interface/entity/employee.model";
+import { photoKtp, TEmployeeDB } from "@/interface/entity/employee.model";
 import React from "react";
 
 function ShowImage({ imagePreview, type, employee }: {
@@ -21,8 +21,8 @@ function ShowImage({ imagePreview, type, employee }: {
     if (type === "KTP") {
         return <>
             {/* eslint-disable-next-line @next/next/no-img-element */ }
-            <img src={ employee.photoKtp ?? ktp }
-                 alt="image ktp"
+            <img src={ employee.photoKtp ?? photoKtp }
+                 alt="image photoKtp"
                  className={ "aspect-[4/3] " }
             />
         </>
@@ -32,23 +32,23 @@ function ShowImage({ imagePreview, type, employee }: {
         return (
             <>
                 {/* eslint-disable-next-line @next/next/no-img-element */ }
-                <img src={ employee.photoIjazah ?? ktp }
-                     alt="image ktp"
+                <img src={ employee.photoIjazah ?? photoKtp }
+                     alt="image photoKtp"
                      className={ "aspect-[4/3] " }
                 />
             </>
         )
 
-    if (type === "3x4")
-        return (
-            <>
-                {/* eslint-disable-next-line @next/next/no-img-element */ }
-                <img src={ employee.photo3x4 ?? i3x4 }
-                     alt="image 4x3"
-                     className={ "aspect-[3/4] " }
-                />
-            </>
-        )
+    // if (type === "3x4")
+    //     return (
+    //         <>
+    //             {/* eslint-disable-next-line @next/next/no-img-element */ }
+    //             <img src={ employee.photo3x4 ?? i3x4 }
+    //                  alt="image 4x3"
+    //                  className={ "aspect-[3/4] " }
+    //             />
+    //         </>
+    //     )
 }
 
 export function EmployeePhotoPageAdmin(

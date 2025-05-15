@@ -6,7 +6,7 @@ export const interviewSchema = z.object({
     salary: z.string().min(1),
     status: z.string().min(2).max(50),
     notes: z.string().min(1).max(100),
-    position: z.string().min(1).max(100),
+    // position: z.string().min(1).max(100),
 
 })
 export type InterviewSchemaType = z.infer<typeof interviewSchema>
@@ -17,7 +17,7 @@ export const registrationSchema = z.object({
     salary: z.string().min(1),
     status: z.string().min(2).max(50),
     notes: z.string().min(1).max(100),
-    position: z.string().min(1).max(100),
+    // position: z.string().min(1).max(100),
 
 })
 export type RegistrationSchemaType = z.infer<typeof registrationSchema>

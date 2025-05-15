@@ -1,4 +1,4 @@
-import { Educations, Employees, LetterEmployees, Skills } from "@prisma/client";
+import { Educations, Employees, Skills } from "@prisma/client";
 import { STATUS_EMPLOYEE } from "@/interface/Utils";
 import { UserClient } from "@/interface/entity/user.model";
 import { ParamsApi } from "@/interface/server/InterfaceRepository";
@@ -23,9 +23,9 @@ export type EmployeeCreate =
     }
 
 export const imageDefault = 'https://dummyimage.com/300x300/000/ffffff.jpg';
-export const ktp = 'https://dummyimage.com/400x300/000/ffffff.jpg';
+export const photoKtp = 'https://dummyimage.com/400x300/000/ffffff.jpg';
 export const i3x4 = 'https://dummyimage.com/300x400/000/ffffff.jpg';
-export const ijazah = 'https://dummyimage.com/297x210/000/ffffff.jpg';
+export const photoIjazah = 'https://dummyimage.com/297x210/000/ffffff.jpg';
 
 type EmployeeClient = Employees & UserClient
 
@@ -33,14 +33,14 @@ export type EmployeeUserClient = Employees & { User: UserClient }
 
 export type EmployeeUserClientLatter = Employees & {
     User: UserClient
-    LetterEmployees: LetterEmployees[]
+    // LetterEmployees: LetterEmployees[]
 }
 
 export type TEmployeeDB = EmployeeUserClient & {
     status: string | STATUS_EMPLOYEE;
-    skills: Skills[];
+    Skills: Skills[];
+    Educations: Educations[];
     // languages: Languages[];
-    educations: Educations[];
     createdAt: Date;
     updatedAt: Date;
 }

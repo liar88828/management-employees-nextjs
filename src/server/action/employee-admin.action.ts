@@ -1,23 +1,16 @@
 'use server'
-import {
-    EmployeeCreateClientAdmin,
-    EmployeeRegistrationUserCreateServer,
-    EmployeeUpdateServerUser
-} from "@/schema/employee.valid";
+import { EmployeeCreateClientAdmin } from "@/schema/employee.valid";
 import {
     employeeCreateSanitizeAdmin,
     employeeSanitizeFormData,
     employeeSanitizeUpdateAdmin
-} from "@/sanitize/employe.sanitize";
+} from "@/app/admin/registration/employe.sanitize";
 import { ZodError } from "zod";
 import { prisma } from "@/config/prisma";
-import { checkPositionPosition } from "@/server/action/position.action";
 import { STATUS_EMPLOYEE } from "@/interface/enum";
 import { EmployeeUserClient, TEmployeeDB } from "@/interface/entity/employee.model";
 import { Users } from ".prisma/client";
-import { revalidatePath } from "next/cache";
 import { globalPageSize } from "@/config/nextPublicBaseUrl";
-import { ActionResponse } from "@/interface/action";
 import {
     pathImage,
     saveImage,
@@ -26,7 +19,7 @@ import {
     updateImage,
     updateImageFormData
 } from "@/server/action/upload.action";
-import { ErrorDatabase } from "@/utils/error/ErrorClass";
+import { createUserRepo, updateUserRepo } from "@/app/(user)/registration/registration-user.repo";
 
 export async function employeeCreateFormDataAdminAction({ img, ...data }: EmployeeCreateClientAdmin) {
     // console.log('employeeCreateFormDataAdminAction', prevData);
@@ -72,7 +65,7 @@ export async function employeeOnUpsertAdminAction(
     data: EmployeeCreateClientAdmin,
     id?: string) {
     try {
-        await checkPositionPosition(data.position);
+        // await checkPositionPosition(response.position);
         if (method === "POST") {
             data.status = STATUS_EMPLOYEE.Registration
             return employeeCreateFormDataAdminAction(data)
@@ -252,11 +245,10 @@ export async function employeeUpdateAdminAction(
     try {
         const isImage = typeof img === 'object';
         const imageFile = img[0]
-        const imagePath = await setPathImage(imageFile)    // Save the image path to the database
-        // console.log('imageFile',imageFile)
-        const employeeData = employeeSanitizeUpdateAdmin(data, imagePath, data?.userId)
+        const imagePath = await setPathImage(imageFile, false)    // Save the image path to the database
+        console.log('test')
+        const employeeData = employeeSanitizeUpdateAdmin(data, imagePath,)
         const response = await updateUserRepo(employeeData, employeeId,)
-        // console.log('isImage, response',isImage, response)
         if (response && isImage && imagePath) {
             await updateImage(imageFile, imagePath)
         }
@@ -293,29 +285,9 @@ export async function onUpsertDataAdminAction(
         return employeeCreateAdmin(data,)
     } else if (method === "PUT" && idEmployee) {
         // console.log('Execute ')
-        return employeeUpdateAdminAction(data, idEmployee,)
+        return employeeUpdateAdminAction(data, idEmployee)
     }
     throw new Error('Invalid prevData');
-}
-
-export async function changeUpdatePositionAction(idEmployee: string, position?: string): Promise<ActionResponse> {
-    if (position) {
-        const data = await prisma.employees.update({
-            where: { id: idEmployee },
-            data: { status: position }
-        })
-        revalidatePath('/')
-        return {
-            success: true, prevData: data,
-            message: 'Successfully updated position'
-        }
-    } else {
-        return {
-            success: false,
-            prevData: null,
-            message: 'Failed to update position'
-        }
-    }
 }
 
 export async function employeePositionsLoader(
@@ -324,9 +296,9 @@ export async function employeePositionsLoader(
 
     const totalEmployees = await prisma.employees.count({
         where: {
-            // name: { contains: search },
+            // userName: { contains: search },
             User: { name: { contains: search } },
-            position: { contains: position },
+            // position: { contains: position },
             status: {
                 notIn: [
                     STATUS_EMPLOYEE.Interview,
@@ -341,9 +313,9 @@ export async function employeePositionsLoader(
         skip: ( page - 1 ) * globalPageSize,
         take: globalPageSize,
         where: {
-            // name: { contains: name },
+            // userName: { contains: userName },
             User: { name: { contains: search } },
-            position: { contains: position },
+            // position: { contains: position },
             status: {
                 notIn: [
                     STATUS_EMPLOYEE.Interview,
@@ -387,102 +359,10 @@ export async function employeeFindById(
                 }
             },
             // languages: true,
-            skills: true,
-            educations: true,
+            Skills: true,
+            Educations: true,
         },
     });
-}
-
-export async function createUserRepo(
-    {
-        skills,
-        // languages,
-        educations, ...employees
-    }: EmployeeRegistrationUserCreateServer,
-) {
-    // console.log(employees)
-    return prisma.$transaction(async (tx) => {
-        // const foundUser = await tx.users.findUnique(
-        //     {
-        //         select: { email: true },
-        //         where: { email: user.email }
-        //     }
-        // );
-        // if (foundUser) {
-        //     throw new ErrorDatabase("Employee already exists", 404);
-        // }
-        const employeeDB = await tx.employees.create({
-            data: { ...employees }
-        });
-
-        const skillDB = await tx.skills.createMany({
-            data: skills.map(({ text }) => ( {
-                employeesId: employeeDB.id, text
-            } ))
-        })
-        // const languageDB = await tx.languages.createMany({
-        //     prevData: languages.map(({ text }) => ( {
-        //         employeesId: employeeDB.id, text
-        //     } ))
-        // })
-        const educationDB = await tx.educations.createMany({
-            data: educations.map(({ text }) => ( {
-                employeesId: employeeDB.id, text
-            } ))
-        })
-        return {
-            employeeDB, skillDB,
-            // languageDB,
-            educationDB
-        };
-    })
-}
-
-export async function updateUserRepo({
-                                         skills,
-                                         // languages,
-                                         educations, ...employees
-                                     }: EmployeeUpdateServerUser,
-                                     id: string,
-) {
-    return prisma.$transaction(async (tx) => {
-
-        const foundEmployee = await tx.employees.findFirst({
-            where: { userId: employees.userId }
-        });
-        if (!foundEmployee) {
-            // 404
-            throw new ErrorDatabase("Is Not Found");
-        }
-        const employeeDB = await tx.employees.update({
-            where: { id }, data: { ...employees }
-        });
-        await tx.skills.deleteMany({ where: { employeesId: id } })
-        const skillDB = await tx.skills.createMany({
-            data: skills.map(({ text }) => ( {
-                employeesId: employeeDB.id, text
-            } ))
-        })
-
-        // await tx.languages.deleteMany({ where: { employeesId: id } })
-        // const languageDB = await tx.languages.createMany({
-        //     prevData: languages.map(({ text }) => ( {
-        //         employeesId: employeeDB.id, text,
-        //     } ))
-        // })
-
-        await tx.educations.deleteMany({ where: { employeesId: id } })
-        const educationDB = await tx.educations.createMany({
-            data: educations.map(({ text }) => ( {
-                employeesId: employeeDB.id, text
-            } ))
-        })
-        return {
-            employeeDB, skillDB,
-            // languageDB,
-            educationDB
-        };
-    })
 }
 
 // export async function employeeFindById({ userId, employeeId }: {

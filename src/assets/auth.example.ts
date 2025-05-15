@@ -1,7 +1,7 @@
 import {
     ForgetFormSchemaType,
+    LoginFormSchemaType,
     ResetFormSchemaType,
-    SignInFormSchemaType,
     SignUpFormSchemaType
 } from "@/schema/auth.valid";
 
@@ -15,7 +15,7 @@ export const signUpExample: SignUpFormSchemaType = {
     phone: "+62-234-567-8901",
 }
 
-export const signInExample: SignInFormSchemaType = {
+export const signInExample: LoginFormSchemaType = {
     email: "user@example.com",
     password: "securePassword123",
 }
@@ -29,5 +29,3 @@ export const resetExample: ResetFormSchemaType = {
     password: 'password12345',
     confirm: 'password12345'
 }
-
-

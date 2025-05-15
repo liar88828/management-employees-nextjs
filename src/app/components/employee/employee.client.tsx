@@ -3,7 +3,7 @@ import Form from "next/form";
 import Link from "next/link";
 import React, { Fragment, useState } from "react";
 import { Plus } from "lucide-react";
-import { TypeFile, uploadFile } from "@/server/action/upload.action";
+import { TypeFile, uploadFileAction } from "@/server/action/upload.action";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { EmployeePhotoPageAdmin } from "@/app/components/employee/employeePhotoPageAdmin";
 
@@ -22,7 +22,7 @@ export function EmployeePhotosUploadClientAdmin({ employee, type }: EmployeeCVPr
             setImagePreview(previewURL);
         }
     };
-    const uploadImage = uploadFile.bind(null, {
+    const uploadImage = uploadFileAction.bind(null, {
         id: employee.id,
         from: 'employee',
         typeFile: type

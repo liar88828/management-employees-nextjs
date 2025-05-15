@@ -8,7 +8,7 @@ export type SessionPayload = {
 	sessionId: string
     expiresAt: Date,
     role: string
-	// name: string,
+    // userName: string,
 	// email: string,
 }
 

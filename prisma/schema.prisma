@@ -10,7 +10,7 @@ datasource db {
 
 model Users {
   id         String     @id @default(uuid())
-  name       String
+  userName   String
   phone      String     @unique
   email      String     @unique
   password   String
@@ -34,7 +34,7 @@ model Users {
 
 model Employees {
   id           String       @id @default(uuid()) // Primary key with auto-increment
-  // name            String
+  // userName            String
   // email           String            @unique
   // phone           String
   gender       String // Gender (e.g., "Male", "Female", "Other")
@@ -56,21 +56,14 @@ model Employees {
   // country        String
   Educations   Educations[]
   Skills       Skills[] // Stored as an array of strings
-  // languages      Languages[] // Stored as an array of strings
   //
   photoKtp     String?
-  photo3x4     String?
   photoIjazah  String?
   User         Users        @relation(fields: [userId], references: [id])
   userId       String       @unique
-  // Letters        Letters[]
-  // LetterEmployees LetterEmployees[]
-
   //
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  LetterEmployees LetterEmployees[]
-  position        String? // Position where the employee works
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 }
 
 model Educations {
@@ -86,70 +79,3 @@ model Skills {
   Employees   Employees @relation(fields: [employeesId], references: [id])
   employeesId String
 }
-
-// model Languages {
-//   id          Int       @id @default(autoincrement())
-//   text        String
-//   Employees   Employees @relation(fields: [employeesId], references: [id])
-//   employeesId String
-// }
-
-model Positions {
-  id       Int    @id @default(autoincrement())
-  position String @unique
-}
-
-model LetterEmployees {
-  id          String    @id @default(uuid())
-  Employees   Employees @relation(fields: [employeesId], references: [id])
-  employeesId String
-  Letters     Letters   @relation(fields: [lettersId], references: [id])
-  lettersId   String
-}
-
-model Letters {
-  id                String            @id @default(uuid())
-  interviewDate     DateTime
-  interviewLocation String
-  dressCode         String
-  signerName        String
-  // option            String
-  // Employees         Employees        @relation(fields: [employeesId], references: [id])
-  // employeesId       String
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  LetterEmployees   LetterEmployees[]
-}
-
-// model Companys {
-//   id      Int     @id @default(autoincrement())
-//   name    String
-//   address String
-//   phone   String
-//   email   String
-//   img     String?
-//   Misi    Misi[]
-//   Visi    Visi[]
-// }
-
-// model Visi {
-//   id         Int      @id @default(autoincrement())
-//   text       String
-//   Companys   Companys @relation(fields: [companysId], references: [id])
-//   companysId Int
-// }
-//
-// model Misi {
-//   id         Int      @id @default(autoincrement())
-//   text       String
-//   Companys   Companys @relation(fields: [companysId], references: [id])
-//   companysId Int
-// }
-
-// model Testimonials {
-//   id     Int    @id @default(autoincrement())
-//   name   String
-//   desc   String
-//   social String
-//   jobs   String
-// }

@@ -7,8 +7,9 @@ import {
     ForgetFormSchema,
     FormStateLogin,
     FormStateRegister,
+    loginFormSchema,
+    LoginFormSchemaType,
     ResetFormSchema,
-    SignInFormSchema,
     SignupFormSchema
 } from "@/schema/auth.valid";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
@@ -17,6 +18,7 @@ import { ROLE, STATUS_USER } from "@/interface/enum";
 import { _otpGenerate } from "@/server/action/otp.action";
 import { userCreateOne, userFindByIdValid, userUpdateOne } from "@/server/action/user.action";
 import { ERRORMESSAGE } from "@/utils/error/error";
+import { ResponseAction } from "@/interface/action";
 
 export async function registerAction(state: FormStateRegister, formData: FormData): Promise<FormStateRegister> {
     // Validate form fields
@@ -76,7 +78,7 @@ export async function registerAction(state: FormStateRegister, formData: FormDat
     // 4. Create user session
     // await createSession(user.id)
     await _otpGenerate({
-        time: new Date(Date.now() + 1 * 60 * 1000),
+        time: new Date(Date.now() + 60 * 1000),
         // time: new Date(Date.now() + 60 * 60 * 1000),
         email: user.email,
         reason: 'OTP'
@@ -84,6 +86,63 @@ export async function registerAction(state: FormStateRegister, formData: FormDat
 
     // 5. Redirect user
     redirect('/otp')
+
+}
+
+export async function loginState(formDataRaw: LoginFormSchemaType): Promise<ResponseAction> {
+
+    try {
+        const validatedFields = loginFormSchema.safeParse(formDataRaw)
+        if (!validatedFields.success) {
+            return {
+                success: false,
+                message: "Validate Error",
+                errors: validatedFields.error.flatten().fieldErrors,
+                response: null
+            }
+        }
+
+        const valid = validatedFields.data
+        const user = await prisma.users.findFirst(
+            { where: { email: valid.email } }
+        )
+
+        if (!user) {
+            throw new Error('User not exists!')
+        }
+        if (user.status === STATUS_USER.OTP) {
+            redirect('/otp')
+        }
+
+        const validPassword = await bcrypt.compare(valid.password, user.password)
+
+        if (!validPassword) {
+            throw new Error('Password is incorrect')
+        }
+        // 4. Create user session
+        await createSession(user)
+
+        return {
+            success: true,
+            message: "Login Successful!",
+            response: user
+        }
+    } catch (e) {
+        if (isRedirectError(e)) {
+            throw e
+        }
+
+        if (e instanceof Error) {
+            return {
+                success: false,
+                message: e.message,
+            }
+        }
+        return {
+            success: false,
+            message: 'An errors occurred while creating your account.',
+        }
+    }
 
 }
 
@@ -95,7 +154,7 @@ export async function loginAction(state: FormStateLogin, formData: FormData): Pr
 
     try {
         // Validate form fields
-        const validatedFields = SignInFormSchema.safeParse(formDataRaw)
+        const validatedFields = loginFormSchema.safeParse(formDataRaw)
 
         // If any form fields are invalid, return early
         if (!validatedFields.success) {

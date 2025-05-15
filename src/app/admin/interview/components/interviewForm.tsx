@@ -1,14 +1,20 @@
 'use client'
-import { Position } from "@/interface/entity/position.model";
-import { TEmployeeDB } from "@/interface/entity/employee.model";
 import React, { useActionState, useEffect } from "react";
 import toast from "react-hot-toast";
 import Form from "next/form";
 import { MyInput, MyInputNum, MyInputOption, MyInputTextArea } from "@/app/components/form/action";
 import { StatusEmployeeList } from "@/interface/enum";
 import { interviewUpdateAction } from "@/server/action/interview.action";
+import { TEmployeeDB } from "@/interface/entity/employee.model";
 
-export function InterviewForm({ employee, positions }: { positions: Position[], employee: TEmployeeDB }) {
+export function InterviewForm(
+    {
+        employee,
+        // positions
+    }: {
+        // positions: Position[],
+        employee: TEmployeeDB
+    }) {
     const [ state, action, pending ] = useActionState(interviewUpdateAction, undefined)
     useEffect(() => {
         if (state) {
@@ -45,11 +51,11 @@ export function InterviewForm({ employee, positions }: { positions: Position[], 
                         lists={ StatusEmployeeList }
                     />
 
-                    <MyInputOption
-                        name={ 'position' }
-                        keys={ state?.value.position || employee.position }
-                        lists={ positions.map(item => item.position) }
-                    />
+                    {/*<MyInputOption*/ }
+                    {/*    userName={ 'position' }*/ }
+                    {/*    keys={ state?.value.position || employee.position }*/ }
+                    {/*    lists={ positions.map(item => item.position) }*/ }
+                    {/*/>*/ }
 
                     <MyInputTextArea
                         title={ 'notes' }

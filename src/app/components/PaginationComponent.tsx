@@ -156,7 +156,7 @@ export function PaginationComponent(
     );
 }
 
-async function PaginationComponentx() {
+async function PaginationComponent_() {
     const data = await prisma.employees.findMany()
     return (
         <div>

@@ -1,12 +1,9 @@
 import React from 'react';
 import { redirect } from "next/navigation";
-import { EmployeeFormClientUser } from "@/app/(user)/registration/components/registration.client";
+import { RegistrationFormClientUser } from "@/app/(user)/registration/registration.client";
 import { getUserPage } from "@/secure/db";
 import { getContextQuery } from "@/utils/toRequest";
 import { TContext } from "@/interface/server/param";
-import { RegistrationError } from "@/app/components/error/registrationFirst";
-import { EmployeeImageForm } from "@/app/(user)/registration/components/employeeImageForm";
-import { registrationFinishedAction } from "@/server/action/employee-user.action";
 import { employeeFindById } from "@/server/action/employee-admin.action";
 
 export default async function Page(context: TContext) {
@@ -21,27 +18,12 @@ export default async function Page(context: TContext) {
         redirect('/home');
     }
 
-    const actionRegistrationFinished = registrationFinishedAction.bind(null, { userId: user.id })
-    return (
-        <div className="flex flex-col gap-5">
-            { error && type === 'form' && <RegistrationError error={ error } /> }
-            <EmployeeFormClientUser
-                employee={ employee }
-                // positions={ positions }
-                method={ employee ? "PUT" : 'POST' }
-                user={ user }
-            />
-            <EmployeeImageForm
-                employee={ employee }
-                error={ error }
-                type={ type }
-            />
-            <form action={ actionRegistrationFinished }>
-                <button className={ 'btn btn-success btn-block' }>
-                    Finish
-                </button>
-            </form>
-        </div>
-
+    return ( <RegistrationFormClientUser
+            employee={ employee }
+            method={ employee ? "PUT" : 'POST' }
+            user={ user }
+            type={ type }
+            error={ error }
+        />
     );
 }

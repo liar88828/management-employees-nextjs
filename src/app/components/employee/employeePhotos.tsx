@@ -1,4 +1,4 @@
-import { i3x4, ijazah, ktp, TEmployeeDB } from "@/interface/entity/employee.model";
+import { photoIjazah, photoKtp, TEmployeeDB } from "@/interface/entity/employee.model";
 import Image from "next/image";
 import React from "react";
 
@@ -9,29 +9,29 @@ export function EmployeePhotos({ employee }: { employee: TEmployeeDB }) {
 
                 <section>
                     <h3 className="font-semibold mb-2">Ktp</h3>
-                    <Image src={ employee?.photoKtp ?? ktp }
-                           alt="image ktp"
+                    <Image src={ employee?.photoKtp ?? photoKtp }
+                           alt="image photoKtp"
                            width={ 300 }
                            height={ 400 }
                         // className={ "aspect-[4/3] " }
                     />
                 </section>
 
-                <section>
-                    <h3 className="font-semibold mb-2">Photo 4x6</h3>
-                    <Image src={ employee.photo3x4 ?? i3x4 }
-                           alt=""
-                           width={ 300 }
-                           height={ 400 }
-                        // className={ "aspect-[4/6] " }
-                    />
-                </section>
+                {/*<section>*/ }
+                {/*    <h3 className="font-semibold mb-2">Photo 4x6</h3>*/ }
+                {/*    <Image src={ employee.photo3x4 ?? i3x4 }*/ }
+                {/*           alt=""*/ }
+                {/*           width={ 300 }*/ }
+                {/*           height={ 400 }*/ }
+                {/*        // className={ "aspect-[4/6] " }*/ }
+                {/*    />*/ }
+                {/*</section>*/ }
 
                 <section>
                     <h3 className="font-semibold mb-2">Ijazah</h3>
                     <Image
-                        src={ employee?.photoIjazah ?? ijazah }
-                        alt="image ktp"
+                        src={ employee?.photoIjazah ?? photoIjazah }
+                        alt="image photoKtp"
                         width={ 3000 }
                         height={ 4000 }
                         // className={

@@ -30,11 +30,14 @@ export default function IDCardEmployeeGlobal(
                     <div className="p-6">
                         {/* Photo and Edit Button */ }
                         <div className="flex justify-center items-center mb-6">
-                            <img
-                                src={ employee.img }
-                                alt="Profile"
-                                className="w-32 h-32 rounded-lg object-cover border-2 border-gray-300"
-                            />
+                            {/*@next/next/no-img-element*/ }
+                            <picture>
+                                <img
+                                    src={ employee.img }
+                                    alt="Profile"
+                                    className="w-32 h-32 rounded-lg object-cover border-2 border-gray-300"
+                                />
+                            </picture>
                         </div>
 
                         <div className="space-y-4">

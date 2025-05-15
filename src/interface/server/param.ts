@@ -10,7 +10,7 @@ export type TContext = {
         type: string,
         complete: string,
         name: string
-        position: string,
+        // position: string,
         message: string,
     }>,
     params: Promise<{ id: string, search: string, route: string }>

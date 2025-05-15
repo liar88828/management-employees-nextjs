@@ -1,86 +1,71 @@
 'use client';
+import React from "react";
 import Link from "next/link";
-import { loginAction } from "@/server/action/auth.action";
-import { useActionState, useEffect } from "react";
-import { useOtpStore } from "@/store/otp";
-import { MyInputEmail, MyInputPassword } from "@/app/components/form/action";
-import { useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
+import useFormPersist from "react-hook-form-persist";
+import { loginState } from "@/server/action/auth.action";
+import { redirect, useSearchParams } from "next/navigation";
+import { InputEmail, InputPassword } from "@/app/components/form/state";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginFormSchema, LoginFormSchemaType } from "@/schema/auth.valid";
 
 export default function LoginForm() {
-    const { store, setData, reset } = useOtpStore()
-    const [ state, action, pending ] = useActionState(loginAction, undefined);
-    useEffect(() => {
-        if (state) {
-            if (typeof state.success === 'boolean' && !state.success) {
-            } else {
-                reset()
-            }
-            console.log('in State')
-        }
-        console.log('is Load')
-    }, [ state ]);
-
+    const methods = useForm<LoginFormSchemaType>({
+        resolver: zodResolver(loginFormSchema),
+    });
+    const { handleSubmit, formState: { errors, isLoading }, watch, setValue, reset } = methods
+    const { clear } = useFormPersist("auth-login", { watch, setValue, exclude: [ 'password' ] });
     const searchParam = useSearchParams()
     const message = searchParam.get('message')
+    const onSubmit = async (data: any) => {
+        const response = await loginState(data);
+        if (response.success) {
+            clear()
+            reset()
+            toast.success(response.message);
+            if (response.response.role === 'ADMIN') {
+                redirect('/admin')
+            } else if (response.response.role === 'USER') {
+                redirect('/home')
+            }
+        } else {
+            toast.error(response.message);
+        }
+    }
+    console.log(errors)
     return (
         <div className="card bg-base-200 max-w-xl mt-10">
-            <form action={ action } className="card-body">
-                <h2 className="card-title">Login { message && <span className={ 'text-error' }>{ message }</span> }</h2>
-                {/* Email Input */ }
-                <MyInputEmail
-                    error={ state?.errors?.email }
-                    defaultValue={ store.email }
-                    onChangeAction={ email => setData({ email }) }
-                />
+            <FormProvider { ...methods }>
+                <form onSubmit={ handleSubmit(onSubmit) } className="card-body">
+                    <h2 className="card-title">Login { message &&
+                        <span className={ 'text-error' }>{ message }</span> }</h2>
 
-                <MyInputPassword
-                    title={ 'password' }
-                    errors={ state?.errors?.password }
-                />
+                    <InputEmail title={ 'email' } keys={ 'email' } />
+                    <InputPassword title={ 'password' } keys={ 'password' } />
 
-                { state?.message && (
-                    <p className="text-red-500 text-sm mt-1">{ state.message }</p>
-                ) }
-                {/* Submit Button */ }
-                <div className="card-actions">
-                    <button
-                        onClick={ () => setData({
-                            time: null,
-                            reason: "OTP"
-                        }) }
-                        disabled={ pending }
-                        type="submit"
-                        className={ `btn btn-primary w-full ${ pending ? "btn-disabled" : "" } mt-5` }
-                    >
-                        { pending ? "Login..." : "Login" }
-                    </button>
+                    <div className="card-actions">
+                        <button
+                            disabled={ isLoading }
+                            className={ `btn btn-primary w-full ${ isLoading ? "btn-disabled" : "" } mt-5` }
+                            type="submit"
+                        >
+                            { isLoading ? "Login..." : "Login" }
+                        </button>
 
-                    <div className="flex sm:justify-between w-full flex-col sm:flex-row">
-
-                        <div>
-                            Dont Have Account
-                            <Link
-                                href="/register"
-                                className={ `btn btn-link mx-0.5 px-0.5` }
-                            >
-                                Register
-                            </Link>
-                            Now!
-                        </div>
-
-                        <div>
-                            Forget Password
-                            <Link
-                                href="/reset"
-                                className={ `btn btn-link mx-0.5 px-0.5` }
-                            >
-                                Reset
-                            </Link>
-                            Now!
+                        <div className="flex sm:justify-between w-full flex-col sm:flex-row">
+                            <div>
+                                Dont Have Account
+                                <Link href="/register" className={ `btn btn-link mx-0.5 px-0.5` }>Register</Link>Now!
+                            </div>
+                            <div>
+                                Forget Password
+                                <Link href="/reset" className={ `btn btn-link mx-0.5 px-0.5` }>Reset</Link>Now!
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </FormProvider>
         </div>
     );
 }

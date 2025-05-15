@@ -3,7 +3,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { Minus, Plus } from "lucide-react";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { useState } from "react";
-import { TypeFile, uploadFile } from "@/server/action/upload.action";
+import { TypeFile, uploadFileAction } from "@/server/action/upload.action";
 import { EmployeePhotoPageAdmin } from "@/app/components/employee/employeePhotoPageAdmin";
 
 export function EmployeeFormContextClientAdmin({ title, keys }: { title: string, keys: string }) {
@@ -59,7 +59,7 @@ export function EmployeePhotosUploadClientAdmin({ employee, type }: { employee: 
             setImagePreview(previewURL);
         }
     };
-    const uploadImage = uploadFile.bind(null, {
+    const uploadImage = uploadFileAction.bind(null, {
         id: employee.id,
         from: 'employee',
         typeFile: type

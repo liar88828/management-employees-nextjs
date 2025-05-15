@@ -36,7 +36,7 @@ export async function registerUpdateFormDataAdminAction(state: FormStateReturn<R
             notes: data.notes,
             jobTitle: data.jobTitle,
             salary: Number(data.salary),
-            position: data.position,
+            // position: response.position,
             registration: !registration
         }
     })
@@ -59,11 +59,11 @@ export const employeeRegistrationPaginationLoader = async (
     // const globalPageSize = 3; // You can adjust the currentPage size
     const totalEmployees = await prisma.employees.count({
         where: {
-            // name: { contains: search },
+            // userName: { contains: search },
             status: { in: status },
             User: { name: { contains: search } },
             photoKtp: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-            photo3x4: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
+            // photo3x4: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
             photoIjazah: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
         }
     });
@@ -74,7 +74,7 @@ export const employeeRegistrationPaginationLoader = async (
             User: { name: { contains: search } },
 
             photoKtp: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
-            photo3x4: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
+            // photo3x4: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
             photoIjazah: complete === 'Complete' ? { not: null } : complete === 'Not Completed' ? null : undefined,
             // photoIjazah: complete === 'SelectAll' ? undefined : complete === 'Complete' ? { not: null } : undefined,
 

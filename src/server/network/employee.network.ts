@@ -1,9 +1,9 @@
 import { toFetch } from "@/hook/toFetch";
 import { ResponseAll } from "@/interface/server/param";
 import { EmployeeParams, TEmployeeDB } from "@/interface/entity/employee.model";
-import { EmployeeRegistrationUserCreateClient } from "@/schema/employee.valid";
 import { toUrl } from "@/utils/toUrl";
 import { ErrorFetch } from "@/utils/error/ErrorClass";
+import { RegistrationUserCreateClient } from "@/app/(user)/registration/registration-user-sanitizer";
 
 export const employeeAll = async ({ filter, pagination }: EmployeeParams) => {
     const url = toUrl('employee', { ...filter, ...pagination })
@@ -22,7 +22,7 @@ export const employeeFindByUserId = async (userId: string) => {
     })
 };
 
-export const employeeCreate = async ({ img, ...data }: EmployeeRegistrationUserCreateClient) => {
+export const employeeCreate = async ({ img, ...data }: RegistrationUserCreateClient) => {
     try {
         const formData = new FormData();
 
@@ -51,7 +51,7 @@ export const employeeCreate = async ({ img, ...data }: EmployeeRegistrationUserC
     }
 };
 
-export const employeeUpdate = async ({ img, ...data }: EmployeeRegistrationUserCreateClient, id: string) => {
+export const employeeUpdate = async ({ img, ...data }: RegistrationUserCreateClient, id: string) => {
     try {
         const formData = new FormData();
 
@@ -78,7 +78,7 @@ export const employeeUpdate = async ({ img, ...data }: EmployeeRegistrationUserC
     }
 };
 
-export async function onUpsertData(method: "POST" | "PUT", data: EmployeeRegistrationUserCreateClient, id?: string) {
+export async function onUpsertData(method: "POST" | "PUT", data: RegistrationUserCreateClient, id?: string) {
     if (method === "POST") {
         return employeeCreate(data)
     } else if (method === "PUT" && id) {
@@ -86,7 +86,7 @@ export async function onUpsertData(method: "POST" | "PUT", data: EmployeeRegistr
     }
 }
 
-export const _employeeCreateUserApi = async ({ img, ...data }: EmployeeRegistrationUserCreateClient) => {
+export const _employeeCreateUserApi = async ({ img, ...data }: RegistrationUserCreateClient) => {
     const formData = new FormData();
     formData.append('file', img[0]);
     formData.append('data', JSON.stringify(data));

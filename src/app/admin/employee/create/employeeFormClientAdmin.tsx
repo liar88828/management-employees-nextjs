@@ -20,7 +20,7 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
         defaultValues: employee ? {
             ...employee,
             userId,
-            position: employee.position ?? undefined,
+            // position: employee.position ?? undefined,
         } : undefined
     });
 
@@ -56,11 +56,11 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
                     {/*    </label>*/ }
                     {/*    <input*/ }
                     {/*        type="text"*/ }
-                    {/*        { ...registerAction('name') }*/ }
-                    {/*        className={ `input input-bordered ${ errors.name ? 'input-errors' : '' }` }*/ }
+                    {/*        { ...registerAction('userName') }*/ }
+                    {/*        className={ `input input-bordered ${ errors.userName ? 'input-errors' : '' }` }*/ }
                     {/*        placeholder="Employee Name"*/ }
                     {/*    />*/ }
-                    {/*    { errors.name && <p className="text-errors text-sm mt-1">{ errors.name.message }</p> }*/ }
+                    {/*    { errors.userName && <p className="text-errors text-sm mt-1">{ errors.userName.message }</p> }*/ }
                     {/*</div>*/ }
 
                     {/*<div className="form-control">*/ }
@@ -145,19 +145,19 @@ export function EmployeeFormClientAdmin({ employee, method, userId, }: {
                         { errors.jobTitle && <p className="text-error text-sm mt-1">{ errors.jobTitle.message }</p> }
                     </div>
 
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Position</span>
-                        </label>
-                        <input
-                            type="text"
-                            { ...register('position') }
-                            className="input input-bordered"
-                            placeholder="Position"
-                        />
-                        { errors.position &&
-                            <p className="text-error text-sm mt-1">{ errors.position.message }</p> }
-                    </div>
+                    {/*<div className="form-control">*/ }
+                    {/*    <label className="label">*/ }
+                    {/*        <span className="label-text">Position</span>*/ }
+                    {/*    </label>*/ }
+                    {/*    <input*/ }
+                    {/*        type="text"*/ }
+                    {/*        { ...register('position') }*/ }
+                    {/*        className="input input-bordered"*/ }
+                    {/*        placeholder="Position"*/ }
+                    {/*    />*/ }
+                    {/*    { errors.position &&*/ }
+                    {/*        <p className="text-error text-sm mt-1">{ errors.position.message }</p> }*/ }
+                    {/*</div>*/ }
 
                     <div className="form-control">
                         <label className="label">

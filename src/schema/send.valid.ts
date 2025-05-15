@@ -1,13 +1,12 @@
 import { z } from "zod";
 import { zodDate } from "@/schema/zod.valid";
-import { Letters } from "@prisma/client";
-import { FlagsOptionals, FlagsRequired } from "@/interface/generic";
+// import { Letters } from "@prisma/client";
 
-export type LetterDB = Omit<Letters, 'id' | 'updatedAt' | 'createdAt'> & { id?: string }
+// export type LetterDB = Omit<Letters, 'id' | 'updatedAt' | 'createdAt'> & { id?: string }
 
 export type LetterFormState = {
-    value: FlagsRequired<LetterDB, any> | { [p: string]: FormDataEntryValue }
-    errors?: FlagsOptionals<LetterDB & { id?: string }, string[]>
+    // value: FlagsRequired<LetterDB, any> | { [p: string]: FormDataEntryValue }
+    // errors?: FlagsOptionals<LetterDB & { id?: string }, string[]>
     message?: string
     success: boolean
 } | undefined

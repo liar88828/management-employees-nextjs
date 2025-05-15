@@ -4,7 +4,21 @@ import { XIcon } from "lucide-react";
 import { EmployeeCV } from "@/app/components/Letter/cv/employeeCV";
 import React from "react";
 
-export function InterviewShowCVGlobal({ employee }: { employee: TEmployeeDB }) {
+export function InterviewShowCVGlobal({ employee }: { employee: TEmployeeDB | null }) {
+    if (!employee) {
+        return <button
+            type={ 'button' }
+            className="btn btn-info btn-disabled"
+            onClick={ () => {
+                const modal = document.getElementById('my_modal_cv');
+                if (modal instanceof HTMLDialogElement) {
+                    modal.showModal();
+                }
+            } }
+        >
+            Show CV
+        </button>
+    }
     return (
         <>
             <button

@@ -1,5 +1,4 @@
-import { Employees, LetterEmployees } from "@prisma/client";
-import { EmployeeUserClient } from "@/interface/entity/employee.model";
+// import { Employees, LetterEmployees } from "@prisma/client";
 
 export const exampleData = {
     company: {
@@ -32,13 +31,13 @@ export type LetterForm = {
     dressCode: string
     signerName: string
     createdAt: Date
-    LetterEmployees: LetterEmployees[]
+    // LetterEmployees: LetterEmployees[]
 }
 
-export type LetterEmployee = Omit<LetterForm, 'LetterEmployees'> & { Employees: Employees[] };
-export type CombineLatterEmployees = LetterForm & {
-    LetterEmployees: ( LetterEmployees & {
-        employee: EmployeeUserClient | undefined
-
-    } )[]
-}
+// export type LetterEmployee = Omit<LetterForm, 'LetterEmployees'> & { Employees: Employees[] };
+// export type CombineLatterEmployees = LetterForm & {
+//     LetterEmployees: ( LetterEmployees & {
+//         employee: EmployeeUserClient | undefined
+//
+//     } )[]
+// }

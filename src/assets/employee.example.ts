@@ -1,5 +1,5 @@
-import { EmployeeRegistrationUserCreateServer } from "@/schema/employee.valid";
 import { Employees } from "@prisma/client";
+import { RegistrationUserCreateServer } from "@/app/(user)/registration/registration-user-sanitizer";
 
 export type EmployeeClientExample = Employees & {
     educations: { text: string } [],
@@ -7,14 +7,14 @@ export type EmployeeClientExample = Employees & {
 };
 export const _employeeClientExample = {
     userId: "",
-    // name: "John Doe",
+    // userName: "John Doe",
     // email: "johndoe@example.com",
     // phone: "+1-123-456-7890",
     gender: "Male",
     dateOfBirth: new Date("1990-01-15"),
     hireDate: new Date("2022-06-01"),
     jobTitle: "Software Engineer",
-    position: "IT",
+    // position: "IT",
     salary: 75000,
     // managerId: 101,
     status: "Active",
@@ -39,16 +39,16 @@ export const _employeeClientExample = {
     // ],
 };
 
-export const employeeServerExample: EmployeeRegistrationUserCreateServer & { status: 'Create' } = {
+export const employeeServerExample: RegistrationUserCreateServer & { status: 'Create' } = {
     userId: "",
-    // name: "Jane Doe",
+    // userName: "Jane Doe",
     // email: "janedoe@example.com",
     // phone: "082-987-654-3210",
     gender: "Female", // Example gender value
     dateOfBirth: new Date("1988-03-25"),
     hireDate: new Date("2023-01-15"),
     jobTitle: "Senior Developer",
-    position: "Engineering",
+    // position: "Engineering",
     salary: 95000,
     status: "Create", // Must be one of: 'Fail', 'Complete', 'Pending', 'Active', 'Disabled'
     address: "456 Oak Avenue",

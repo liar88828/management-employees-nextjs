@@ -20,10 +20,10 @@ export async function OurProducts() {
     //                         {/* eslint-disable-next-line @next/next/no-img-element */ }
     //                         <img
     //                             src={ `https://picsum.photos/300/200?random=${ index }` }
-    //                             alt={ product.name }
+    //                             alt={ product.userName }
     //                             className="rounded-md object-cover w-full"
     //                         />
-    //                         <h3 className="card-title">{ product.name }</h3>
+    //                         <h3 className="card-title">{ product.userName }</h3>
     //                         <p >
     //                             { product.desc }
     //                         </p>

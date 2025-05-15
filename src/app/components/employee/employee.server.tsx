@@ -3,8 +3,7 @@ import { EmployeePhotoAdmin } from "@/app/components/employee/employee.page";
 import { employeeFindByUserId, employeeId } from "@/server/network/employee.network";
 import { EmptyData } from "@/app/components/PageErrorData";
 import { validSession } from "@/secure/db";
-import { employeeByUserIdForIDCardLoader } from "@/server/action/employee-user.action";
-import { positionGetAllPage } from "@/server/action/position.action";
+import { employeeByUserIdForIDCardLoader } from "@/app/(user)/registration/registration-user.action";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { EmployeeFormClientAdmin } from "@/app/admin/employee/create/employeeFormClientAdmin";
 import { EmployeeCVAdmin } from "@/app/components/employee/client/employeeCVAdmin";
@@ -55,7 +54,7 @@ export async function EmployeeDetailServerClient() {
 
 export async function EmployeeFormServerAdmin({ idEmployee }: { idEmployee: string }) {
     const employee = await employeeId(idEmployee)
-    const positions = await positionGetAllPage()
+    // const positions = await positionGetAllPage()
 
     if (!employee) {
         return <EmptyData page={ `Employee Detail ${ idEmployee }` }/>

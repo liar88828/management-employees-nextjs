@@ -15,12 +15,15 @@ export function LetterInterview({ company, employee, letter }: {
                 {/* Company Letterhead */ }
                 <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center">
-                        <img
-                            width={ 100 }
-                            height={ 100 }
-                            src={ company.img ?? imageDefault } alt="logo"
-                            className={ ' m-2' }
-                        />
+                        <picture>
+                            {/*@next/next/no-img-element*/ }
+                            <img
+                                width={ 100 }
+                                height={ 100 }
+                                src={ company.img ?? imageDefault } alt="logo"
+                                className={ ' m-2' }
+                            />
+                        </picture>
                         <div>
                             <h1 className="text-2xl font-bold">{ company.name }</h1>
                             <p className="text-sm ">{ company.address }</p>

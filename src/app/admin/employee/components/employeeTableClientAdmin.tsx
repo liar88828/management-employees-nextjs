@@ -40,7 +40,7 @@ export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUse
                             {/*<td>{ employee.gender || "-" }</td>*/ }
                             <td>{ new Date(employee.hireDate).toLocaleDateString() }</td>
                             <td>{ employee.jobTitle }</td>
-                            <td>{ employee.position || "-" }</td>
+                            {/*<td>{ employee.position || "-" }</td>*/ }
                             <td>{ toRupiah(employee.salary) }</td>
                             <td>{ employee.workTime }</td>
                             <td>

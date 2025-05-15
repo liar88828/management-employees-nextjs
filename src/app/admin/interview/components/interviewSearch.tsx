@@ -2,10 +2,17 @@ import Form from "next/form";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import { Position } from "@/interface/entity/position.model";
+// import { Position } from "@/interface/entity/position.model";
 
 export default function InterviewSearch(
-    { search, positions, position }: { search: string, position: string, positions: Position[] }
+    {
+        search,
+        // positions,
+        // position
+    }: {
+        search: string,
+        // position: string, positions: Position[]
+    }
 ) {
     return (
         <div className="flex gap-2 items-center">
@@ -20,10 +27,10 @@ export default function InterviewSearch(
                        placeholder={ 'Employee Name .....' }
 
                 />
-                <input type="hidden"
-                       defaultValue={ position }
-                       name={ 'position' }
-                />
+                {/*<input type="hidden"*/ }
+                {/*       defaultValue={ position }*/ }
+                {/*       userName={ 'position' }*/ }
+                {/*/>*/ }
                 <button className={ 'btn join-item ' }><Search /></button>
             </Form>
 
@@ -35,13 +42,13 @@ export default function InterviewSearch(
                             Select All
                         </Link>
                     </li>
-                    { positions.map((item) => (
-                        <li key={ item.id }>
-                            <Link href={ `/admin/interview?search=${ search }&position=${ item.position }` }>
-                                { item.position }
-                            </Link>
-                        </li>
-                    )) }
+                    {/*{ positions.map((item) => (*/ }
+                    {/*    <li key={ item.id }>*/ }
+                    {/*        <Link href={ `/admin/interview?search=${ search }&position=${ item.position }` }>*/ }
+                    {/*            { item.position }*/ }
+                    {/*        </Link>*/ }
+                    {/*    </li>*/ }
+                    {/*)) }*/ }
                 </ul>
             </details>
 
