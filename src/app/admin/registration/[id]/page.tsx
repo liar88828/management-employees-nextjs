@@ -2,8 +2,8 @@ import React from 'react';
 import { TContext } from "@/interface/server/param";
 import { getContextParam } from "@/utils/toRequest";
 import { EmptyData } from "@/app/components/PageErrorData";
-import { InterviewShowCVGlobal } from "@/app/admin/interview/components/interviewShowCVGlobal";
-import { InterviewShowDocument } from "@/app/admin/interview/components/interviewShowDocument";
+import { InterviewShowCVGlobal } from "@/app/components/Letter/interviewShowCVGlobal";
+import { InterviewShowDocument } from "@/app/components/Letter/interviewShowDocument";
 import { RegistrationForm } from "@/app/admin/registration/components/RegistrationForm";
 import { employeeFindById } from "@/server/action/employee-admin.action";
 

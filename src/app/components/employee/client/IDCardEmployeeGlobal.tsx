@@ -8,17 +8,20 @@ import { Companys } from "@/assets/company";
 
 export default function IDCardEmployeeGlobal(
     { employee, company }:
-    { employee: TEmployeeDB, company: Companys }
+    Readonly<{ employee: TEmployeeDB, company: Companys }>
 ) {
     const { isPrinting, handlePrint, contentRef } = usePrint()
     return (
         <div>
             <p>12cm x 9.5cm</p>
-            <div ref={ contentRef }
+            <div
                  className="p-2 space-y-2"
             >
                 <div
-                    className="h-[12cm] w-[9.5cm] print:h-[12cm] print:w-[9.5cm] bg-white rounded-lg shadow-lg overflow-hidden"
+                    ref={ contentRef }
+                    className=" w-[9.5cm] print:h-[12cm] print:w-[9.5cm]
+                     print:shadow-none
+                     bg-white rounded-lg shadow-lg overflow-hidden"
                 >
                     {/* Card Header */ }
                     <div className="bg-blue-600 p-4 text-center">
@@ -58,7 +61,6 @@ export default function IDCardEmployeeGlobal(
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     {/*/!* Card Footer *!/*/ }

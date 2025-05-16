@@ -21,6 +21,33 @@ import {
     updateImageFormData
 } from "@/server/action/upload.action";
 import { registrationCreateRepo, registrationUpdateRepo } from "@/server/action/registration-database.action";
+import { ResponseAction } from "@/interface/action";
+
+export async function updateStatus(employee: TEmployeeDB, status?: string): Promise<ResponseAction> {
+    const findEmployee = await prisma.employees.findUnique({
+        where: { id: employee.id },
+    })
+
+    if (!findEmployee || !status) {
+        return {
+            success: false,
+            message: "Failed to update status",
+        }
+    }
+
+    const data = await prisma.employees.update({
+        where: { id: employee.id },
+        data: { status }
+    })
+
+    return {
+        response: data,
+        success: true,
+        message: 'Successfully updated status'
+
+    }
+
+}
 
 export async function employeeCreateFormDataAdminAction({ img, ...data }: EmployeeCreateClientAdmin) {
     // console.log('employeeCreateFormDataAdminAction', prevData);
@@ -85,7 +112,6 @@ export async function employeeOnUpsertAdminAction(
     }
 }
 
-
 export async function userFindAvailableLoader(employeesValid: ( EmployeeUserClient | null )[]): Promise<Users[]> {
 
     const employeeValid = employeesValid
@@ -128,7 +154,7 @@ export const employeesFindValidLoader = async () => await prisma.employees.findM
 })
 
 export const employeePageLoader = async (search: string, status: string, page: number) => {
-    console.log({ search, status, page })
+    // console.log({ search, status, page })
     // const globalPageSize = 3; // You can adjust the currentPage size
 
     const totalEmployees = await prisma.employees.count({
@@ -233,7 +259,6 @@ export async function onUpsertDataAdminAction(
     }
     throw new Error('Invalid prevData');
 }
-
 
 export async function employeeFindById(
     { userId, employeeId }: { employeeId?: string, userId?: string }

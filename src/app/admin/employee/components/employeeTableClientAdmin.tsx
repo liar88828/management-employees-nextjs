@@ -1,6 +1,7 @@
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { toRupiah } from "@/utils/toRupiah";
 import Link from "next/link";
+import { toDateIndo } from "@/utils/toDate";
 
 export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUserClient[] }) {
     return (
@@ -15,15 +16,15 @@ export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUse
                     <tr>
                         <th>No</th>
                         <th>Name</th>
-                        <th>Email</th>
-                        <th className={ 'text-nowrap' }>Phone</th>
+                        <th>Contact</th>
+                        {/*<th>Email</th>*/ }
+                        {/*<th className={ 'text-nowrap' }>Phone</th>*/ }
                         {/*<th>Gender</th>*/ }
-                        <th>Hire Date</th>
+                        <th>Status Registered</th>
                         <th>Job Title</th>
-                        <th>Position</th>
                         <th>Salary</th>
                         <th>Work Time</th>
-                        <th>Status</th>
+                        {/*<th>Status</th>*/ }
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -35,22 +36,19 @@ export function EmployeeTableClientAdmin({ employees }: { employees: EmployeeUse
                             {/*<td>{ employee.id }</td>*/ }
                             <td>{ i + 1 }</td>
                             <td>{ employee.User.name }</td>
-                            <td>{ employee.User.email }</td>
-                            <td className={ 'text-nowrap' }>{ employee.User.phone || "-" }</td>
+                            <td>
+                                <p>{ employee.User.email }</p>
+                                <p>{ employee.User.phone || "-" }</p>
+                            </td>
                             {/*<td>{ employee.gender || "-" }</td>*/ }
-                            <td>{ new Date(employee.hireDate).toLocaleDateString() }</td>
+                            <td>
+                                <p>{ toDateIndo(employee.hireDate) }</p>
+                                <p className={ 'badge badge-info' }>{ employee.status }</p>
+                            </td>
                             <td>{ employee.jobTitle }</td>
-                            {/*<td>{ employee.position || "-" }</td>*/ }
                             <td>{ toRupiah(employee.salary) }</td>
                             <td>{ employee.workTime }</td>
-                            <td>
-                                <p className={ 'badge badge-info' }
-                                    // className={ `badge ${
-                                    //     employee.status === "Active" ? "badge-success" : "badge-error"
-                                    // }` }
-                                >
-                                    { employee.status }
-                                </p></td>
+
                             <td>
                                 <Link
                                     href={ `/admin/employee/${ employee.id }` }

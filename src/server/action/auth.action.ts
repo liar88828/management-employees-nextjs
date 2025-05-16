@@ -24,7 +24,7 @@ export async function registerAction(state: FormStateRegister, formData: FormDat
     // Validate form fields
 
     const formDataRaw = {
-        address: formData.get('address'),
+        // address: formData.get('address'),
         email: formData.get('email'),
         name: formData.get('name'),
         password: formData.get('password'),
@@ -387,9 +387,12 @@ export async function _changeProfile(state: FormStateLogin, formData: FormData) 
     }
 
     // 2. Prepare prevData for insertion into database
-    const { name, email, password, phone, address, id } = validatedFields.data
+    const {
+        name, email, password, phone,
+        //address, id
+    } = validatedFields.data
 
-    const userDB = await userFindByIdValid(id)
+    const userDB = await userFindByIdValid("id")
 
     await checkPassword(password, userDB.password)
 

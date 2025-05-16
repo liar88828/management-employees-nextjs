@@ -2,15 +2,12 @@ import {
     Apple,
     CakeSlice,
     Clipboard,
-    Factory,
     GlassWater,
     GraduationCap,
     HomeIcon,
     Inbox,
     LucidePackageSearch,
     PcCase,
-    SendHorizontal,
-    Speech,
     User,
     UserIcon,
 } from "lucide-react";
@@ -80,23 +77,23 @@ export const linkAdmin: TMenuList[] = [
         label: 'Registration',
     },
 
-    {
-        href: '/admin/send',
-        icon: <SendHorizontal className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' } />,
-        label: 'Send Email',
-    },
+    // {
+    //     href: '/admin/send',
+    //     icon: <SendHorizontal className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' } />,
+    //     label: 'Send Email',
+    // },
 
-    {
-        href: '/admin/interview',
-        icon: <Speech className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
-        label: 'Interview',
-    },
+    // {
+    //     href: '/admin/interview',
+    //     icon: <Speech className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+    //     label: 'Interview',
+    // },
 
-    {
-        href: '/admin/position',
-        icon: <Factory className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
-        label: 'Position',
-    },
+    // {
+    //     href: '/admin/position',
+    //     icon: <Factory className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+    //     label: 'Position',
+    // },
 
     // {
     //     href: '/admin/account',

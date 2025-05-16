@@ -18,14 +18,15 @@ export function RegistrationTable({ employees }: {
                 <tr className="text-left">
                     <th>No</th>
                     <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
+                    <th>Contact</th>
+                    {/*<th>Phone</th>*/ }
                     {/*<th >Gender</th>*/ }
                     {/*<th >Job Title</th>*/ }
                     {/*<th >Position</th>*/ }
                     {/*<th >Work Time</th>*/ }
-                    <th>Hire Date</th>
-                    <th>Complete</th>
+                    <th>Status Register</th>
+                    {/*<th>Hire Date</th>*/ }
+                    {/*<th>Complete</th>*/ }
                     {/*<th >Salary</th>*/ }
                     {/*<th >Status</th>*/ }
                     <th>Action</th>
@@ -36,22 +37,24 @@ export function RegistrationTable({ employees }: {
                     <tr key={ employee.id } className="hover:bg-gray-100/20">
                         <td>{ index + 1 }</td>
                         <td>{ employee.User.name }</td>
-                        <td>{ employee.User.email }</td>
-                        <td className="text-nowrap">{ employee.User.phone }</td>
+                        <td>
+                            <p>{ employee.User.email }</p>
+                            <p>{ employee.User.phone }</p>
+                        </td>
                         {/*<td >{ employee.gender }</td>*/ }
                         {/*<td >{ employee.jobTitle }</td>*/ }
                         {/*<td >{ employee.positions }</td>*/ }
                         {/*<td >{ employee.workTime }</td>*/ }
-                        <td>{ toDateIndo(employee.hireDate) }</td>
                         <td>
-                            <span className={ ' badge badge-neural text-nowrap' }>
+                            <p>{ toDateIndo(employee.hireDate) }</p>
+                            <p className={ ' badge badge-info  text-nowrap' }>
 
-                            {
-                                // employee.photo3x4 === null ||
-                                employee.photoKtp === null ||
-                                employee.photoIjazah === null ? 'Not Complete' : 'Complete'
-                            }
-                            </span>
+                                {
+                                    // employee.photo3x4 === null ||
+                                    employee.photoKtp === null ||
+                                    employee.photoIjazah === null ? 'Not Complete' : 'Complete'
+                                }
+                            </p>
                         </td>
                         {/*<td >{ employee.salary }</td>*/ }
                         {/*<td >{ employee.status }</td>*/ }

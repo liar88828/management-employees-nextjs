@@ -1,51 +1,52 @@
 'use client'
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { XIcon } from "lucide-react";
-import { EmployeeCV } from "@/app/components/Letter/cv/employeeCV";
+import { EmployeePhotos } from "@/app/components/employee/employeePhotos";
 import React from "react";
 
-export function InterviewShowCVGlobal({ employee }: { employee: TEmployeeDB | null }) {
+export function InterviewShowDocument({ employee }: { employee: TEmployeeDB | null }) {
     if (!employee) {
         return <button
             type={ 'button' }
             className="btn btn-info btn-disabled"
             onClick={ () => {
-                const modal = document.getElementById('my_modal_cv');
+                const modal = document.getElementById('my_modal_document_print')
                 if (modal instanceof HTMLDialogElement) {
                     modal.showModal();
                 }
             } }
         >
-            Show CV
+            Show Document
         </button>
     }
+    const disabledButton = employee.photoKtp === null || employee.photoIjazah === null;
     return (
         <>
             <button
-                type={ 'button' }
-                className="btn btn-info" onClick={ () => {
-                const modal = document.getElementById('my_modal_cv');
-                if (modal instanceof HTMLDialogElement) {
-                    modal.showModal();
-                }
-            } }
-            >Show CV
+                disabled={ disabledButton }
+                className="btn btn-info"
+                onClick={ () => {
+                    const modal = document.getElementById('my_modal_document_print')
+                    if (modal instanceof HTMLDialogElement) {
+                        modal.showModal();
+                    }
+                } }
+            >
+                Show Document
             </button>
-            <dialog id="my_modal_cv" className="modal">
+            <dialog id="my_modal_document_print" className="modal">
                 <div className="modal-box w-11/12 max-w-4xl bg-base-200/50">
-                    <div className="flex justify-between mb-4">
-                        <h1></h1>
+                    <div className="flex justify-end mb-4">
                         <form method="dialog">
                             <button className="btn btn-sm btn-circle btn-ghost "><XIcon /></button>
                         </form>
                     </div>
-                    <EmployeeCV employee={ employee } />
-
+                    <EmployeePhotos employee={ employee } />
                 </div>
                 <form method="dialog" className="modal-backdrop">
                     <button>close</button>
                 </form>
             </dialog>
-        </ >
+        </>
     );
 }

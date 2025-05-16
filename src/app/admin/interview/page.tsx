@@ -2,7 +2,6 @@ import React from "react";
 import InterviewSearch from "@/app/admin/interview/components/interviewSearch";
 import { TContext } from "@/interface/server/param";
 import { getContextQuery } from "@/utils/toRequest";
-import { STATUS_EMPLOYEE } from "@/interface/enum";
 import { PaginationComponent } from "@/app/components/PaginationComponent";
 import { InterviewTable } from "@/app/admin/interview/components/interviewTable";
 import { employeeInterviewLoader } from "@/server/action/interview.action";
@@ -18,7 +17,7 @@ async function Page(context: TContext) {
         employees
     } = await employeeInterviewLoader(
         search,
-        STATUS_EMPLOYEE.Interview,
+        'STATUS_EMPLOYEE.Interview',
         page,
         // positionEmployee
     )

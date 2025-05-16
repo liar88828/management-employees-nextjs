@@ -1,10 +1,20 @@
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { toDate } from "@/utils/toDate";
 import React from "react";
+import { nextPublicBaseUrl } from "@/config/nextPublicBaseUrl";
 
-export function EmployeeCVGlobal({ employee }: { employee: TEmployeeDB }) {
+export function EmployeeCVGlobal(
+    {
+        employee, ref
+    }: {
+        employee: TEmployeeDB,
+        ref: React.Ref<HTMLDivElement>
+    }) {
     return (
-        <div className="card w-full max-w-3xl  bg-white card-bordered shadow-lg">
+        <div
+            ref={ ref }
+            className="card w-full max-w-3xl  bg-white   shadow-lg print:shadow-none"
+        >
             {/*mx-auto*/ }
 
             <div className="card-body">
@@ -12,14 +22,15 @@ export function EmployeeCVGlobal({ employee }: { employee: TEmployeeDB }) {
                 <div className="flex ">
                     <div className="flex items-center space-x-4">
                         <div className="w-20 h-20 avatar">
-                            {/* eslint-disable-next-line @next/next/no-img-element */ }
-                            <img
-                                className="rounded-full"
-                                // src={ `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.userName }` }
-                                src={ employee.img }
-                                alt={ employee.User.name }
-                            />
-                            {/*<p>{ employee.userName.split(' ').map(n => n[0]).join('') }</p>*/ }
+                            <picture>
+                                <img
+                                    loading="eager"
+                                    className="rounded-full"
+                                    // src={ `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.userName }` }
+                                    src={ `${ nextPublicBaseUrl }${ employee.img }` }
+                                    alt={ employee.User.name }
+                                />
+                            </picture>
                         </div>
                         <div>
                             <div className="card-title text-2xl">{ employee.User.name }</div>
@@ -40,14 +51,12 @@ export function EmployeeCVGlobal({ employee }: { employee: TEmployeeDB }) {
 
                             <p><strong>Address:</strong> { employee.address }</p>
                             <p><strong>City:</strong> { employee.city }</p>
-                            {/*<p><strong>Country:</strong> { employee.country }</p>*/ }
                         </div>
                     </section>
 
                     <section>
                         <h3 className="font-semibold mb-2">Professional Details</h3>
                         <div className="grid grid-cols-2 gap-2 text-sm">
-                            {/*<p><strong>Position:</strong> { employee.position }</p>*/ }
                             <p><strong>Hire Date:</strong> { toDate(employee.hireDate) }</p>
                             <p><strong>Employee ID:</strong> { employee.id }</p>
                         </div>
@@ -55,9 +64,7 @@ export function EmployeeCVGlobal({ employee }: { employee: TEmployeeDB }) {
                     </section>
                 </div>
                 <div className="divider my-1 "></div>
-
                 <div className="grid grid-cols-2 ">
-
                     <section>
                         <h3 className="font-semibold mb-2">Education</h3>
                         <ul className="list-disc list-inside text-sm">
@@ -73,41 +80,7 @@ export function EmployeeCVGlobal({ employee }: { employee: TEmployeeDB }) {
                                 <li key={ index }>{ text }</li>
                             )) }
                         </ul>
-                        {/*<div className="flex flex-wrap gap-2">*/ }
-                        {/*    { employee.skills && employee.skills.map(({ text }, index) => (*/ }
-                        {/*        <div className="badge badge-neutral badge-outline" key={ index }>*/ }
-                        {/*            { text }*/ }
-                        {/*        </div>*/ }
-                        {/*    )) }*/ }
-                        {/*</div>*/ }
                     </section>
-
-                    {/*<section>*/ }
-                    {/*    <h3 className="font-semibold mb-2">Languages</h3>*/ }
-                    {/*    <ul className="list-disc list-inside text-sm">*/ }
-                    {/*        { employee.languages && employee.languages.map(({ text }, index) => (*/ }
-                    {/*            <li key={ index }>{ text }</li>*/ }
-                    {/*        )) }*/ }
-                    {/*    </ul>*/ }
-                    {/*</section>*/ }
-
-                    {/*<section>*/ }
-                    {/*    <h3 className="font-semibold mb-2">Certifications</h3>*/ }
-                    {/*    <ul className="list-disc list-inside text-sm">*/ }
-                    {/*        { employee.certifications && employee.certifications.map(({ text: cert }, index) => (*/ }
-                    {/*            <li key={ index }>{ cert }</li>*/ }
-                    {/*        )) }*/ }
-                    {/*    </ul>*/ }
-                    {/*</section>*/ }
-
-                    {/*<section>*/ }
-                    {/*    <h3 className="font-semibold mb-2">Projects</h3>*/ }
-                    {/*    <ul className="list-disc list-inside text-sm">*/ }
-                    {/*        { employee.projects && employee.projects.map(({ text: project }, index) => (*/ }
-                    {/*            <li key={ index }>{ project }</li>*/ }
-                    {/*        )) }*/ }
-                    {/*    </ul>*/ }
-                    {/*</section>*/ }
                 </div>
 
             </div>

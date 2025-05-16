@@ -1,17 +1,20 @@
 import { z } from "zod";
-import { zodAddress, zodEmail, zodPassword, zodPhone } from "@/schema/zod.valid";
+import { zodEmail, zodPassword, zodPhone } from "@/schema/zod.valid";
 import { PropertyMap } from "@/interface/types";
 import { ResponseAction } from "@/interface/action";
+import { Users } from "@prisma/client";
 
-export const SignupFormSchema = z.object({
-    address: zodAddress,
+export const SignupFormSchema: z.ZodType<
+    Pick<Users, 'name' | 'email' | 'phone'>
+    & { password: string, confirm: string }
+> = z.object({
+    // address: zodAddress,
     confirm: z.string().min(2),
     email: zodEmail,
-    id: z.string().uuid().optional(),
+    // id: z.string().uuid().optional(),
     name: z.string().min(2, { message: 'Name must be at least 2 characters long.' }),//.trim()
     password: zodPassword,
     phone: zodPhone,
-
 })
 .refine((data) => data.password === data.confirm,
     {
@@ -45,16 +48,14 @@ export const ResetPasswordFormSchema = z.object({
         message: "Passwords don't match",
         path: [ "confirm" ],
     });
-
+// address: string
+// email: string
+// name: string
+// phone: string
 export type FormStateRegister = ResponseAction<
-        PropertyMap<{
-            address: string
-            email: string
-            name: string
-            phone: string
-        }>,
+        PropertyMap<Pick<Users, 'name' | 'email' | 'phone'>>,
         {
-            address?: string[]
+            // address?: string[]
             email?: string[]
             name?: string[]
             password?: string[]
@@ -66,10 +67,7 @@ export type FormStateRegister = ResponseAction<
 
 export type FormStateLogin =
     ResponseAction<
-        PropertyMap<{
-            email: string
-            password: string
-        }>,
+        PropertyMap<Pick<Users, 'email' | 'password'>>,
         {
             name?: string[]
             email?: string[]

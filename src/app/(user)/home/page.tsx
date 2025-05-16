@@ -1,8 +1,8 @@
 import React from 'react';
 import { toDateIndo } from "@/utils/toDate";
 import { validSession } from "@/secure/db";
-import { InterviewShowCVGlobal } from "@/app/admin/interview/components/interviewShowCVGlobal";
-import { InterviewShowDocument } from "@/app/admin/interview/components/interviewShowDocument";
+import { InterviewShowCVGlobal } from "@/app/components/Letter/interviewShowCVGlobal";
+import { InterviewShowDocument } from "@/app/components/Letter/interviewShowDocument";
 import { employeeFindById } from "@/server/action/employee-admin.action";
 import Link from "next/link";
 import { TContext } from "@/interface/server/param";

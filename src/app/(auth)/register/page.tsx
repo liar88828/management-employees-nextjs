@@ -4,7 +4,7 @@ import { registerAction } from "@/server/action/auth.action";
 import { useActionState } from "react";
 import Link from "next/link";
 import { useOtpStore } from "@/store/otp";
-import { MyInput, MyInputEmail, MyInputPassword, MyInputPhone, MyInputTextArea } from "@/app/components/form/action";
+import { MyInput, MyInputEmail, MyInputPassword, MyInputPhone } from "@/app/components/form/action";
 
 export default function RegisterForm() {
     const [ state, action, pending ] = useActionState(registerAction, undefined);
@@ -18,6 +18,7 @@ export default function RegisterForm() {
                              error={ state?.errors?.name }
                              defaultValue={ state?.prevData?.name }
                     />
+
                     <MyInputEmail onChangeAction={ email => setData({ email }) }
                                   error={ state?.errors?.email }
                                   defaultValue={ store.email }
@@ -25,9 +26,10 @@ export default function RegisterForm() {
                     <MyInputPhone error={ state?.errors?.phone } defaultValue={ state?.prevData?.phone }
                                   title={ 'phone' }
                     />
-                    <MyInputTextArea defaultValue={ state?.prevData?.address } error={ state?.errors?.address }
-                                     title={ 'address' }
-                    />
+                    <div className=""></div>
+                    {/*<MyInputTextArea defaultValue={ state?.prevData?.address } error={ state?.errors?.address }*/ }
+                    {/*                 title={ 'address' }*/ }
+                    {/*/>*/ }
                     <MyInputPassword title={ 'password' } errors={ state?.errors?.password } />
                     <MyInputPassword title={ 'confirm' } errors={ state?.errors?.confirm } />
                 </div>

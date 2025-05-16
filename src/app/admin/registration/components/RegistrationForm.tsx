@@ -3,17 +3,15 @@ import { Employees } from "@prisma/client";
 import React, { useActionState, useEffect } from "react";
 import toast from "react-hot-toast";
 import Form from "next/form";
-import { MyInput, MyInputOption, MyInputTextArea } from "@/app/components/form/action";
+import { MyInput, MyInputNum, MyInputOption, MyInputTextArea } from "@/app/components/form/action";
 import { StatusEmployeeList } from "@/interface/enum";
 import { registerUpdateFormDataAdminAction } from "@/server/action/register.action";
 
 export function RegistrationForm(
     {
         employee,
-        // positions
     }: {
         employee: Employees,
-        // positions: Position[]
     }) {
     const [ state, action, pending ] = useActionState(registerUpdateFormDataAdminAction, undefined)
     useEffect(() => {
@@ -27,11 +25,11 @@ export function RegistrationForm(
     }, [ employee.status, state ]);
 
     return (
-        <Form action={ action } className={ 'card  max-w-4xl bg-base-200' }>
+        <Form action={ action } className={ 'card max-w-4xl bg-base-200' }>
             <div className="card-body ">
                 <h1 className={ 'card-title' }>Form Registration</h1>
                 <input type="hidden" value={ employee.id } name={ 'id' } />
-                <input type={ "hidden" } value={ 0 } name={ 'salary' } />
+                {/*<input type={ "hidden" } value={ 0 } name={ 'salary' } />*/ }
                 <div className="grid grid-cols-2 gap-5">
 
                     <MyInput
@@ -45,6 +43,11 @@ export function RegistrationForm(
                         keys={ state?.value.status || employee.status }
                         lists={ StatusEmployeeList }
                     />
+                    <MyInputNum
+                        title={ "salary" }
+                        error={ state?.errors?.salary }
+                        defaultValue={ state?.value.salary ?? employee.salary }
+                    />
 
                     {/*<MyInputOption*/ }
                     {/*    userName={ 'position' }*/ }
@@ -54,15 +57,16 @@ export function RegistrationForm(
 
                     <MyInputTextArea title={ 'notes' }
                                      error={ state?.errors?.notes }
-                                     defaultValue={ state?.value.notes ?? employee.notes }
+                                     defaultValue={ state?.value.notes ?? employee.notes ?? '-' }
                     />
                 </div>
                 <div className="card-actions">
                     <button
+                        type="submit"
                         disabled={ pending }
                         className={ 'btn btn-info btn-block' }
                     >
-                        Send
+                        Submit
                     </button>
 
                 </div>

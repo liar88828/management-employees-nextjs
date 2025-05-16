@@ -1,7 +1,7 @@
 import { TContext } from "@/interface/server/param";
 import { EmptyData } from "@/app/components/PageErrorData";
-import { InterviewShowCVGlobal } from "@/app/admin/interview/components/interviewShowCVGlobal";
-import { InterviewShowDocument } from "@/app/admin/interview/components/interviewShowDocument";
+import { InterviewShowCVGlobal } from "@/app/components/Letter/interviewShowCVGlobal";
+import { InterviewShowDocument } from "@/app/components/Letter/interviewShowDocument";
 import { InterviewForm } from "@/app/admin/interview/components/interviewForm";
 import { employeeFindById } from "@/server/action/employee-admin.action";
 import { getContextParam } from "@/utils/toRequest";

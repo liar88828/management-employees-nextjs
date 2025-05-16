@@ -9,11 +9,8 @@ import { employeeFindById } from "@/server/action/employee-admin.action";
 export default async function Page(context: TContext) {
     const employeeId = await getId(context);
     const employee = await employeeFindById({ employeeId })
-    if (!employee) {
-        return <EmptyData page={ `Employee Detail ${ employeeId }` } />
-    }
-    return (
-        <EmployeeCVAdmin employee={ employee } />
-        // <EmployeeDetailServerAdminNew employee={ employee } />
-    )
+    if (!employee) return <EmptyData page={ `Employee Detail ${ employeeId }` } />
+    return <EmployeeCVAdmin employee={ employee } />
+    // <EmployeeDetailServerAdminNew employee={ employee } />
+
 }

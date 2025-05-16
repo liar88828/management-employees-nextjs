@@ -12,25 +12,28 @@ export enum STATUS_USER {
 export enum STATUS_EMPLOYEE {
     Create = 'Create',
     Registration = 'Registration',
-    Registration_Reject = 'Registration_Reject',
-    Interview = 'Interview',
+    Reject = 'Reject',
+    Accept = 'Accept',
+    // Interview = 'Interview',
     // Interview_Accept = 'Interview_Accept',
-    Interview_Reject = 'Interview_Reject',
-    Active = 'Active',
-    Disabled = 'Disabled',
-    Resign = 'Resign',
+    // Interview_Reject = 'Interview_Reject',
+    // Active = 'Active',
+    // Disabled = 'Disabled',
+    // Resign = 'Resign',
 }
 
 // export const employeeList = [ 'Pending', 'Fail', 'Complete', 'Active', 'Disabled' ]
 export const StatusEmployeeList = [
     'Registration',
-    'Registration_Reject',
-    'Interview',
+    'Reject',
+    'Accept',
+    // 'Interview',
     // 'Interview_Accept',
-    'Interview_Reject',
-    'Active',
-    'Disabled',
-    'Resign', ];
+    // 'Interview_Reject',
+    // 'Active',
+    // 'Disabled',
+    // 'Resign',
+];
 
 export const EmployeeCompletePhoto =
     {

@@ -28,7 +28,7 @@ export async function registerUpdateFormDataAdminAction(state: FormStateReturn<R
             success: false
         }
     }
-    const registration = [ 'Registration_Reject', 'Interview_Reject' ].includes(data.status)
+    const registration = [ 'Reject' ].includes(data.status)
     await prisma.employees.update({
         where: { id: data.id },
         data: {
@@ -42,7 +42,7 @@ export async function registerUpdateFormDataAdminAction(state: FormStateReturn<R
     })
     revalidatePath('/')
     return {
-        message: "Success Update Data",
+        message: "Success Update Status Employee Data",
         success: true,
         value: defaultValue,
     }

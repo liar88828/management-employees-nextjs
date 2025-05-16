@@ -84,3 +84,5 @@ prisma/dev.db
 *.db
 *.png
 /src/app/test/
+
+.qodo

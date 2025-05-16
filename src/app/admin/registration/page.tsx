@@ -17,9 +17,9 @@ async function Page(context: TContext) {
     } = await employeeRegistrationPaginationLoader(search,
         [
             STATUS_EMPLOYEE.Registration,
-            STATUS_EMPLOYEE.Registration_Reject,
-            STATUS_EMPLOYEE.Interview,
-            STATUS_EMPLOYEE.Interview_Reject,
+            STATUS_EMPLOYEE.Reject,
+            // STATUS_EMPLOYEE.Interview,
+            // STATUS_EMPLOYEE.Interview_Reject,
         ],
         page, status)
     // const globalPageSize = 3; // You can adjust the currentPage size

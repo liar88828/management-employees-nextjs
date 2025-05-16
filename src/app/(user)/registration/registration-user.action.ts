@@ -2,7 +2,6 @@
 import { redirect } from "next/navigation";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { prisma } from "@/config/prisma";
-import { STATUS_EMPLOYEE } from "@/interface/enum";
 import { ZodError } from "zod";
 import { revalidatePath } from "next/cache";
 import { employeeFindById } from "@/server/action/employee-admin.action";
@@ -136,9 +135,9 @@ export async function etEmployeeByUserIdRedirect(userId: string): Promise<TEmplo
     })
 }
 
-export async function employeeByUserIdForIDCardLoader(userId: string) {
+export async function _employeeByUserIdForIDCardLoader(userId: string) {
     return prisma.employees.findUnique({
-        where: { userId, status: STATUS_EMPLOYEE.Active },
+        where: { userId, status: 'STATUS_EMPLOYEE.Active' },
         include: {
             Skills: true,
             Educations: true

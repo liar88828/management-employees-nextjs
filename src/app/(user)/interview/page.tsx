@@ -11,5 +11,5 @@ export default async function Page() {
     const employee = await employeeFindById({ userId })
     if (!employee) return <EmployeeNotFound />
     if (employee.status === STATUS_EMPLOYEE.Registration) redirect('/home?message=Please Complete Registration');
-    return ( <InterviewPage employee={ employee } /> )
+    return <InterviewPage employee={ employee } />
 }
