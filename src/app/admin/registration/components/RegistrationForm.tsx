@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import Form from "next/form";
 import { MyInput, MyInputNum, MyInputOption, MyInputTextArea } from "@/app/components/form/action";
 import { StatusEmployeeList } from "@/interface/enum";
-import { registerUpdateFormDataAdminAction } from "@/server/action/register.action";
+import { registerUpdateFormDataAdminAction } from "@/app/admin/registration/register.action";
 
 export function RegistrationForm(
     {

@@ -4,8 +4,8 @@ import { Search } from "lucide-react";
 import React from "react";
 import Link from "next/link";
 
-export function EmployeeSearchClientAdmin({ search, status }: {
-    search: string,
+export function EmployeeSearchClientAdmin({ name, status }: {
+    name: string,
     status: string,
 }) {
     return (
@@ -15,7 +15,7 @@ export function EmployeeSearchClientAdmin({ search, status }: {
                     type="text"
                     className={ 'input input-bordered join-item ' }
                     name={ 'search' }
-                    defaultValue={ search }
+                    defaultValue={ name }
                     placeholder={ 'Employee Name .....' }
                 />
 
@@ -28,15 +28,15 @@ export function EmployeeSearchClientAdmin({ search, status }: {
 
             <details className="dropdown">
                 <summary className="btn m-1">Select Status</summary>
-                <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow  overflow-y-auto h-64">
+                <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] p-2 shadow  overflow-y-auto ">
                     <li>
-                        <Link href={ `/admin/employee?search=${ search }&status=` }>
+                        <Link href={ `/admin/employee?name=${ name }&status=` }>
                             Select All
                         </Link>
                     </li>
                     { StatusEmployeeList.map((item) => (
                         <li key={ item }>
-                            <Link href={ `/admin/employee?search=${ search }&status=${ item }` }>
+                            <Link href={ `/admin/employee?name=${ name }&status=${ item }` }>
                                 { item }
                             </Link>
                         </li>

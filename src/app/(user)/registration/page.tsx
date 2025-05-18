@@ -1,10 +1,9 @@
 import React from 'react';
-import { redirect } from "next/navigation";
 import { RegistrationFormClientUser } from "@/app/(user)/registration/registration.client";
 import { getUserPage } from "@/secure/db";
 import { getContextQuery } from "@/utils/toRequest";
 import { TContext } from "@/interface/server/param";
-import { employeeFindById } from "@/server/action/employee-admin.action";
+import { employeeFindById } from "@/app/admin/employee/employee-admin.action";
 
 export default async function Page(context: TContext) {
     const error = await getContextQuery(context, 'error')
@@ -14,9 +13,9 @@ export default async function Page(context: TContext) {
     // const position: Position[] = await prisma.positions.findMany()
     const employee = await employeeFindById({ userId: user.id })
 
-    if (employee && employee.registration === true) {
-        redirect('/home');
-    }
+    // if (employee && employee.registration === true) {
+    //     redirect('/user');
+    // }
 
     return ( <RegistrationFormClientUser
             employee={ employee }

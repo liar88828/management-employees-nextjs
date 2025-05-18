@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import React, { ReactNode } from 'react';
-import ClientProvider from "@/app/components/Layout/clientProvider";
+import ClientProvider from "@/app/layout/clientProvider";
 // If loading a variable font, you don't need to specify the font weight
 const inter = Inter({
     subsets: [ 'latin' ],

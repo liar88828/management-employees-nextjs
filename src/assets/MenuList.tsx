@@ -1,56 +1,6 @@
-import {
-    Apple,
-    CakeSlice,
-    Clipboard,
-    GlassWater,
-    GraduationCap,
-    HomeIcon,
-    Inbox,
-    LucidePackageSearch,
-    PcCase,
-    User,
-    UserIcon,
-} from "lucide-react";
+import { Clipboard, HomeIcon, Inbox, User, } from "lucide-react";
 import React from "react";
 
-export const categoryData = [
-    {title: 'Drink', icon: <GlassWater/>},
-    {title: 'Fruit', icon: <Apple/>},
-    {title: 'Cake', icon: <CakeSlice/>},
-    {title: 'Electronic', icon: <PcCase/>},
-    {title: 'School', icon: <GraduationCap/>},
-]
-
-export const menuData = [
-    {
-        title: 'Product',
-        icon: <LucidePackageSearch/>,
-        href: '/product'
-    },
-    {
-        title: 'Profile',
-        icon: <UserIcon/>,
-        href: '/profile',
-    },
-]
-
-export const menuUser = [
-    {
-        title: 'Home',
-        icon: <HomeIcon/>,
-        href: '/home'
-    },
-    {
-        title: 'Product',
-        icon: <LucidePackageSearch/>,
-        href: '/product'
-    },
-    {
-        title: 'Profile',
-        icon: <UserIcon/>,
-        href: '/profile',
-    },
-]
 export type TMenuList = {
     href: string,
     icon: React.JSX.Element,
@@ -67,13 +17,13 @@ export const linkAdmin: TMenuList[] = [
     // },
     {
         href: '/admin/employee',
-        icon: <User className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
+        icon: <User className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' } />,
         label: 'Employee',
     },
 
     {
         href: '/admin/registration',
-        icon: <Inbox className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        icon: <Inbox className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' } />,
         label: 'Registration',
     },
 
@@ -101,7 +51,6 @@ export const linkAdmin: TMenuList[] = [
     //     title: 'Account',
     // },
 
-
     // {
     //     href: '/admin/positions',
     //     icon: <Waypoints className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
@@ -117,21 +66,20 @@ export const linkAdmin: TMenuList[] = [
 
 export const linkUser: TMenuList[] = [
     {
-        href: '/home',
-        icon: <HomeIcon className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
+        href: '/user',
+        icon: <HomeIcon className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' } />,
         label: 'Home',
     },
 
-
     {
         href: '/registration',
-        icon: <User className={'flex-shrink-0 w-5 h-5  transition duration-75 '}/>,
+        icon: <User className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' } />,
         label: 'Registration',
     },
 
     {
         href: '/interview',
-        icon: <Clipboard className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' }/>,
+        icon: <Clipboard className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' } />,
         label: 'Interview',
     },
 

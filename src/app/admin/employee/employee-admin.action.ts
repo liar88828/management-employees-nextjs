@@ -8,9 +8,8 @@ import {
 
 import { ZodError } from "zod";
 import { prisma } from "@/config/prisma";
-import { STATUS_EMPLOYEE } from "@/interface/enum";
+import { ROLE, STATUS_EMPLOYEE } from "@/interface/enum";
 import { EmployeeUserClient, TEmployeeDB } from "@/interface/entity/employee.model";
-import { Users } from ".prisma/client";
 import { globalPageSize } from "@/config/nextPublicBaseUrl";
 import {
     pathImage,
@@ -27,7 +26,7 @@ export async function updateStatus(employee: TEmployeeDB, status?: string): Prom
     const findEmployee = await prisma.employees.findUnique({
         where: { id: employee.id },
     })
-
+// console.log(status)
     if (!findEmployee || !status) {
         return {
             success: false,
@@ -37,7 +36,14 @@ export async function updateStatus(employee: TEmployeeDB, status?: string): Prom
 
     const data = await prisma.employees.update({
         where: { id: employee.id },
-        data: { status }
+        data: {
+            status,
+            registration: ![
+                "Registration",
+                "Reject",
+            ].includes(status)
+
+        }
     })
 
     return {
@@ -112,62 +118,27 @@ export async function employeeOnUpsertAdminAction(
     }
 }
 
-export async function userFindAvailableLoader(employeesValid: ( EmployeeUserClient | null )[]): Promise<Users[]> {
-
-    const employeeValid = employeesValid
-    // .filter(item => item !== null)
-    .map(item => {
-        if (!item) return null
-        return item.userId
-    })
-    .filter(item => item !== null)
-
-    return prisma.users.findMany({
-        where: {
-            id: { notIn: employeeValid },
-            role: "USER",
-            // Employees: {
-            //     userId: null
-            // },
-        },
-
-    })
-
-}
-
-export const employeesFindValidLoader = async () => await prisma.employees.findMany({
-    where: {
-        // userId: { not: null },
-        User: { role: "USER" },
-    },
-    include: {
-        User: {
-            omit: {
-                password: true,
-                otp: true,
-                otpExpired: true,
-            }
-        }
-    }
-}).then(item => {
-    return item.filter(item => item !== null)
-})
-
-export const employeePageLoader = async (search: string, status: string, page: number) => {
-    // console.log({ search, status, page })
+export const employeePageLoader = async (name: string, status: string, page: number) => {
+    // console.log({ name, status, page })
     // const globalPageSize = 3; // You can adjust the currentPage size
 
     const totalEmployees = await prisma.employees.count({
         where: {
             status: { contains: status },
-            User: { name: { contains: search } }
+            User: {
+                name: { contains: name, },
+                role: ROLE.USER,
+            }
         }
     });
 
     const employees = await prisma.employees.findMany({
         where: {
             status: { contains: status },
-            User: { name: { contains: search } },
+            User: {
+                name: { contains: name },
+                role: ROLE.USER,
+            },
         },
         skip: ( page - 1 ) * globalPageSize,
         take: globalPageSize,
@@ -203,10 +174,10 @@ export async function employeeCreateAdmin(
         const imagePath = await setPathImage(imageFile)    // Save the image path to the database
         const employeeData = employeeCreateSanitizeAdmin(data, data?.userId, imagePath,)
         const response = await registrationCreateRepo(employeeData,)
-        console.log('response : ', response)
+        // console.log('response : ', response)
         if (response && isImage && imagePath) {
             const pathImage = await saveImage(imageFile, imagePath)
-            console.log('saveImage : ', pathImage)
+            // console.log('saveImage : ', pathImage)
         }
         return response
     } catch (error) {
@@ -250,6 +221,7 @@ export async function onUpsertDataAdminAction(
 ) {
     // await checkPositionPosition(prevData.positions);
     // console.log(method, idEmployee)
+
     data.status = STATUS_EMPLOYEE.Registration
     if (method === "POST") {
         return employeeCreateAdmin(data,)

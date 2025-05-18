@@ -1,9 +1,6 @@
 import { Metadata } from "next";
 import React, { ReactNode } from "react";
 import { getSession } from "@/secure/db";
-import { StatusIncomingCount } from "@/app/components/Layout/admin.server";
-import { STATUS } from "@/app/components/toStatus";
-import { Ban, BookMarked, LucideClock } from "lucide-react";
 import { BaseLayoutAdmin } from "@/app/layout/baseLayoutAdmin";
 
 export const metadata: Metadata = {
@@ -18,12 +15,12 @@ export default async function Layout({ children }: { children: ReactNode }) {
     return (
         <BaseLayoutAdmin
             isLogin={ isLogin }
-            notification={
-                <div className={ 'flex gap-4' }>
-                    <StatusIncomingCount status={ STATUS.PENDING } icon={ <LucideClock /> } />
-                    <StatusIncomingCount status={ STATUS.COMPLETE } icon={ <BookMarked /> } />
-                    <StatusIncomingCount status={ STATUS.FAIL } icon={ <Ban /> } />
-                </div>
+            notification={ <></>
+                // <div className={ 'flex gap-4' }>
+                //     <StatusIncomingCount status={ STATUS.PENDING } icon={ <LucideClock /> } />
+                //     <StatusIncomingCount status={ STATUS.COMPLETE } icon={ <BookMarked /> } />
+                //     <StatusIncomingCount status={ STATUS.FAIL } icon={ <Ban /> } />
+                // </div>
             }
         >
             { children }

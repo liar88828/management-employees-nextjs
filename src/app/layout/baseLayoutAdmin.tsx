@@ -54,6 +54,7 @@ export function DockAdmin({ showBottomNav, path }: {
     if (path.includes("create")) {
         return null
     }
+
     return ( <div
             className={ `btm-nav z-50 sm:hidden bg-base-200/50 fixed bottom-0 w-full transition-transform duration-300 ${
                 showBottomNav ? 'translate-y-0' : 'translate-y-full'
@@ -96,7 +97,7 @@ export function SidebarAdmin(
                             {/* eslint-disable-next-line @next/next/no-img-element */ }
                             <img
                                 alt={ 'avatar' }
-                                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                                src={ "/person_default.webp" }
                             />
                         </div>
                     </div>

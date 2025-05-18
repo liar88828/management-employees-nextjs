@@ -1,16 +1,16 @@
 'use client'
 import { EmployeeUserClient } from "@/interface/entity/employee.model";
 
-// export function Pagination({ totalPages, search, status, currentPage }: {
+// export function Pagination({ totalPages, name, status, currentPage }: {
 //     totalPages: number,
-//     search: string,
+//     name: string,
 //     status: string,
 //     currentPage: number
 // }) {
 //     return (
 //         <div className="flex justify-center mt-4 space-x-2">
 //             { Array.from({ length: totalPages }, (_, i) => (
-//                 <Link key={ i + 1 } href={ `/admin/inbox?search=${ search }&status=${ status }&currentPage=${ i + 1 }` }
+//                 <Link key={ i + 1 } href={ `/admin/inbox?name=${ name }&status=${ status }&currentPage=${ i + 1 }` }
 //                       className={ `btn ${ currentPage === i + 1 ? 'btn-primary' : 'btn-outline' }` }
 //                 >
 //                     { i + 1 }

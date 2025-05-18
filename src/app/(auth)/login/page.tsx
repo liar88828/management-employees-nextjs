@@ -27,7 +27,7 @@ export default function LoginForm() {
             if (response.response.role === 'ADMIN') {
                 redirect('/admin')
             } else if (response.response.role === 'USER') {
-                redirect('/home')
+                redirect('/user')
             }
         } else {
             toast.error(response.message);

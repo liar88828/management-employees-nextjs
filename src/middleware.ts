@@ -4,50 +4,46 @@ import { decrypt } from "@/secure/jwt";
 import { updateSession } from "@/secure/db";
 
 // 1. Specify protected and public routes
-const protectedRoutes = ['/dashboard', '/admin', '/trolley', '/invoice', '/checkout']
-const publicRoutes = ['/login', '/register']
-// const adminRoutes = [ '/login', '/register'  ]
-// const userRoutes = [ '/login', '/register'  ]
+const adminRoute = [ '/admin/employee', '/admin/registration' ]
+const userRoute = [ '/user', '/interview', '/registration' ]
+const publicRoutes = [ '/login', '/register' ]
 
 export default async function middleware(req: NextRequest) {
     // 2. Check if the current route is protected or public
     const path = req.nextUrl.pathname
-    const isProtectedRoute = protectedRoutes.includes(path)
+    const isProtectedRoute = adminRoute.includes(path)
+    const isUserOnly = userRoute.includes(path)
+    const isAdminOnly = adminRoute.includes(path)
     const isPublicRoute = publicRoutes.includes(path)
 
     // 3. Decrypt the session from the cookie
-    const cookie = (await cookies()).get('session')?.value
+    const cookie = ( await cookies() ).get('session')?.value
     const session = await decrypt(cookie)
-    // consoleLog("middleware cookie", cookie)
-    // console.log(session)
+
     // 4. Redirect to /loginAction if the user is not authenticated
     if (isProtectedRoute && !session?.sessionId) {
         return NextResponse.redirect(new URL('/login', req.nextUrl))
     }
 
-    if (path.includes('admin') && session?.role !== 'ADMIN') {
-        return NextResponse.redirect(new URL('/home', req.nextUrl))
-    }
-
-    // 5. Redirect to /dashboard if the user is authenticated
+    // console.log(isAdminOnly, `isAdminOnly : ${ session?.role }`)
     if (
-        isPublicRoute
-        && session?.sessionId
-        // && !req.nextUrl.pathname.startsWith('/home')
-    ) {
-        // console.log(session?.sessionId)
-        // return NextResponse.redirect(new URL('/home', req.nextUrl))
+        path.includes('admin') &&
+        // isAdminOnly &&
+        session?.role !== 'ADMIN') {
+        // console.log('is admin')
+        return NextResponse.redirect(new URL('/user', req.nextUrl))
     }
-    // console.log(path)
-    // if (path.includes('/api')) {
-    //     console.log('is true')
-    // }
 
-    // await updateSession()
-    // return NextResponse.next()
+    // console.log(session?.role)
+    // console.log(isUserOnly,'isUserOnly')
+    if (isUserOnly && session?.role !== 'USER') {
+        // console.log('is user')
+        return NextResponse.redirect(new URL('/admin', req.nextUrl))
+    }
+
     return await updateSession(req)
 }
 // Routes Middleware should not run on
 export const config = {
-    matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+    matcher: [ '/((?!api|_next/static|_next/image|.*\\.png$).*)' ],
 }

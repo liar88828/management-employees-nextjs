@@ -4,7 +4,7 @@ import { prisma } from "@/config/prisma";
 import path from "path";
 import fs from "fs";
 import { ErrorResponse } from "@/utils/error/ErrorClass";
-import { api_fastapi } from "@/config/nextPublicBaseUrl";
+import { url_fastapi } from "@/config/nextPublicBaseUrl";
 
 export type TypeFile = 'KTP' | '3x4' | 'ijazah'
 
@@ -58,7 +58,7 @@ export async function uploadFileState(
         formData.append("user_id", userId);
         formData.append("type_image", typeFile);
         // console.log(formData)
-        const response = await fetch(`${ api_fastapi }/images/`, {
+        const response = await fetch(`${ url_fastapi }/images/`, {
             method: "POST",
             body: formData,
         })

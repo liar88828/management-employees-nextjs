@@ -27,14 +27,8 @@ export const photoKtp = 'https://dummyimage.com/400x300/000/ffffff.jpg';
 export const i3x4 = 'https://dummyimage.com/300x400/000/ffffff.jpg';
 export const photoIjazah = 'https://dummyimage.com/297x210/000/ffffff.jpg';
 
-type EmployeeClient = Employees & UserClient
 
 export type EmployeeUserClient = Employees & { User: UserClient }
-
-export type EmployeeUserClientLatter = Employees & {
-    User: UserClient
-    // LetterEmployees: LetterEmployees[]
-}
 
 export type TEmployeeDB = EmployeeUserClient & {
     status: string | STATUS_EMPLOYEE;

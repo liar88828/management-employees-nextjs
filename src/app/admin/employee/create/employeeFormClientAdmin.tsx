@@ -1,12 +1,12 @@
 'use client'
+import React from "react";
+import toast from "react-hot-toast";
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { FormProvider, useForm } from "react-hook-form";
 import { employeeCreateClientAdmin, EmployeeCreateClientAdmin } from "@/schema/employee.valid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
-import { onUpsertDataAdminAction } from "@/server/action/employee-admin.action";
+import { onUpsertDataAdminAction } from "@/app/admin/employee/employee-admin.action";
 import { InputTextDynamic } from "@/app/components/form/state";
-import React from "react";
 
 export function EmployeeFormClientAdmin({ employee, method, userId, }: {
     userId: string,

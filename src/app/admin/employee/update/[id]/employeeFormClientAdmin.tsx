@@ -1,13 +1,13 @@
 'use client'
 import toast from "react-hot-toast";
-import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { useFormStatus } from "react-dom";
+import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { useFormImage } from "@/hook/useFormImage";
 import { FormProvider, useForm } from "react-hook-form";
 import { employeeCreateClientAdmin, EmployeeCreateClientAdmin } from "@/schema/employee.valid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { employeeOnUpsertAdminAction } from "@/server/action/employee-admin.action";
-import { EmployeeFormContextClientAdmin } from "@/app/components/employee/employee.client.admin";
+import { employeeOnUpsertAdminAction } from "@/app/admin/employee/employee-admin.action";
+import { EmployeeFormContextClientAdmin } from "@/app/admin/employee/update/employeeFormContextClientAdmin";
 
 export function EmployeeFormClientAdmin(
     {

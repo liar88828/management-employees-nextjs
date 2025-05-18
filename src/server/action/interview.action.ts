@@ -55,12 +55,12 @@ export const employeeInterviewLoader = async (
     page: number,
     // position: string
 ) => {
-    // console.log({ search, status, currentPage })
+    // console.log({ name, status, currentPage })
     // const globalPageSize = 3; // You can adjust the currentPage size
 
     const totalEmployees = await prisma.employees.count({
         where: {
-            // userName: { contains: search },
+            // userName: { contains: name },
             status: status,
             registration: true,
             User: { name: { contains: search } },

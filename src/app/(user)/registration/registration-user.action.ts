@@ -1,10 +1,7 @@
 'use server'
-import { redirect } from "next/navigation";
-import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { prisma } from "@/config/prisma";
 import { ZodError } from "zod";
 import { revalidatePath } from "next/cache";
-import { employeeFindById } from "@/server/action/employee-admin.action";
 import { saveImage, setPathImage, updateImage } from "@/server/action/upload.action";
 import { ResponseAction } from "@/interface/action";
 import {
@@ -128,13 +125,6 @@ export async function onUpsertDataUserAction(
     }
 }
 
-export async function etEmployeeByUserIdRedirect(userId: string): Promise<TEmployeeDB> {
-    return employeeFindById({ userId }).then(data => {
-        if (!data) redirect('/home')
-        return data
-    })
-}
-
 export async function _employeeByUserIdForIDCardLoader(userId: string) {
     return prisma.employees.findUnique({
         where: { userId, status: 'STATUS_EMPLOYEE.Active' },
@@ -143,31 +133,6 @@ export async function _employeeByUserIdForIDCardLoader(userId: string) {
             Educations: true
         },
     })
-
-}
-
-export async function registrationFinishedAction({ userId }: { userId: string }) {
-    const employeeDB = await prisma.employees.findUnique({
-        where: { userId },
-        select: {
-            photoKtp: true,
-            photoIjazah: true,
-        }
-    })
-    if (!employeeDB) {
-        redirect('/registration?error=Please complete the employee&type=form')
-    }
-    if (!employeeDB.photoKtp) {
-        redirect('/registration?error=Please complete the photo Ktp&type=photoKtp')
-    }
-    if (!employeeDB.photoIjazah) {
-        redirect('/registration?error=Please complete the photo Ijazah&type=photoIjazah')
-    }
-    const data = await prisma.employees.update({
-        where: { userId },
-        data: { registration: true }
-    })
-    revalidatePath("/home");
 
 }
 

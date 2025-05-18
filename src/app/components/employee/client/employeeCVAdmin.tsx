@@ -4,7 +4,7 @@ import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { usePrint } from "@/hook/usePrint";
 import { Printer } from "lucide-react";
 import { EmployeeUpdateStatus } from "@/app/admin/employee/components/EmployeeUpdateStatus";
-import { InterviewShowDocument } from "@/app/components/Letter/interviewShowDocument";
+import { EmployeeShowDocument } from "@/app/components/Letter/employeeShowDocument";
 import { EmployeeCVGlobal } from "@/app/components/Letter/cv/EmployeeCVGlobal";
 
 export function EmployeeCVAdmin({ employee }: { employee: TEmployeeDB }) {
@@ -20,7 +20,7 @@ export function EmployeeCVAdmin({ employee }: { employee: TEmployeeDB }) {
                 >
                     { isPrinting ? 'Printing...' : <Printer /> }
                 </button>
-                <InterviewShowDocument employee={ employee } />
+                <EmployeeShowDocument employee={ employee } />
                 <EmployeeUpdateStatus employee={ employee } />
             </div>
         </>

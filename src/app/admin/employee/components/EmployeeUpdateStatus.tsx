@@ -3,12 +3,12 @@ import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { XIcon } from "lucide-react";
 import React, { useState } from "react";
 import { StatusEmployeeList } from "@/interface/enum";
-import { updateStatus } from "@/server/action/employee-admin.action";
+import { updateStatus } from "@/app/admin/employee/employee-admin.action";
 import toast from "react-hot-toast";
 
 export function EmployeeUpdateStatus({ employee }: { employee: TEmployeeDB }) {
 
-    const [ changePosition, setChangePosition ] = useState<string>()
+    const [ changePosition, setChangePosition ] = useState<string>(employee.status)
 
     const onSubmit = async () => {
         const response = await updateStatus(employee, changePosition)
@@ -32,7 +32,7 @@ export function EmployeeUpdateStatus({ employee }: { employee: TEmployeeDB }) {
             <dialog id="my_modal_position" className="modal">
                 <div className="modal-box w-11/12 max-w-4xl">
                     <div className="flex justify-between mb-4">
-                        <h1 className={ 'card-title' }>Change Status Employee</h1>
+                        <h1 className={ 'card-title' }>Change Status Employee : { changePosition }</h1>
                         <form method="dialog">
                             <button className="btn btn-sm btn-circle btn-ghost "><XIcon /></button>
                         </form>

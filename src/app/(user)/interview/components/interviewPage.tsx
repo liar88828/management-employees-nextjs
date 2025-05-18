@@ -15,7 +15,7 @@ export function InterviewPage({ employee }: {
 
     if (employee.status === STATUS_EMPLOYEE.Registration) {
         toast.error('Please Complete Registration');
-        router.push('/home')
+        router.push('/user')
         return <h1>
 
         </h1>

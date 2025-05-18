@@ -2,8 +2,8 @@ import React from 'react';
 import { toDateIndo } from "@/utils/toDate";
 import { validSession } from "@/secure/db";
 import { InterviewShowCVGlobal } from "@/app/components/Letter/interviewShowCVGlobal";
-import { InterviewShowDocument } from "@/app/components/Letter/interviewShowDocument";
-import { employeeFindById } from "@/server/action/employee-admin.action";
+import { EmployeeShowDocument } from "@/app/components/Letter/employeeShowDocument";
+import { employeeFindById } from "@/app/admin/employee/employee-admin.action";
 import Link from "next/link";
 import { TContext } from "@/interface/server/param";
 import { getContextQuery } from "@/utils/toRequest";
@@ -40,7 +40,7 @@ async function Page(context: TContext) {
                         {/*    Print*/ }
                         {/*</button>*/ }
                         <InterviewShowCVGlobal employee={ employee } />
-                        <InterviewShowDocument employee={ employee } />
+                        <EmployeeShowDocument employee={ employee } />
                     </div>
                 </div>
             </div>

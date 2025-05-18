@@ -63,7 +63,7 @@ export function Hero() {
                     Order Now
                 </Link>
                 <Link
-                    href={ '/home' }
+                    href={ '/user' }
                     className="btn btn-outline">
                     Learn More
                 </Link>

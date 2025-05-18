@@ -3,9 +3,9 @@ import { TContext } from "@/interface/server/param";
 import { getContextParam } from "@/utils/toRequest";
 import { EmptyData } from "@/app/components/PageErrorData";
 import { InterviewShowCVGlobal } from "@/app/components/Letter/interviewShowCVGlobal";
-import { InterviewShowDocument } from "@/app/components/Letter/interviewShowDocument";
+import { EmployeeShowDocument } from "@/app/components/Letter/employeeShowDocument";
 import { RegistrationForm } from "@/app/admin/registration/components/RegistrationForm";
-import { employeeFindById } from "@/server/action/employee-admin.action";
+import { employeeFindById } from "@/app/admin/employee/employee-admin.action";
 
 export default async function Page(context: TContext) {
     const employeeId = await getContextParam(context, 'id')
@@ -23,7 +23,7 @@ export default async function Page(context: TContext) {
             />
             <div className="space-x-4">
                 <InterviewShowCVGlobal employee={ employee } />
-                <InterviewShowDocument employee={ employee } />
+                <EmployeeShowDocument employee={ employee } />
             </div>
         </div>
     );

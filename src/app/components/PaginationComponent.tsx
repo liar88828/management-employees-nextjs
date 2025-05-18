@@ -35,7 +35,7 @@ export function _getPaginationPages(currentPage: number, totalPages: number): ( 
 
 export function __getPaginationPages(currentPage: number, totalPages: number): ( number | string )[] {
     const pageNumbers: ( number | string )[] = [];
-    console.log(totalPages)
+    // console.log(totalPages)
     for (let i = 1; i <= totalPages; i++) {
         if (
             i <= 3 || // always show first 3
@@ -51,7 +51,7 @@ export function __getPaginationPages(currentPage: number, totalPages: number): (
 }
 export function getPaginationPages(currentPage: number, totalPages: number): ( number | string )[] {
     const pageNumbers: ( number | string )[] = [];
-    console.log(totalPages)
+    // console.log(totalPages)
 
     for (let i = 1; i <= totalPages; i++) {
 
@@ -124,7 +124,7 @@ export function PaginationComponent(
             {/*        key={ i + 1 }*/ }
             {/*        href={*/ }
             {/*            newURL(`/admin/${ title }`, {*/ }
-            {/*                search,*/ }
+            {/*                name,*/ }
             {/*                status,*/ }
             {/*                page: i + 1,*/ }
             {/*                position*/ }

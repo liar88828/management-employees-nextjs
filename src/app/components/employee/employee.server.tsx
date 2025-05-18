@@ -28,7 +28,7 @@ export async function EmployeeDetailServerAdminNew({ employee }: { employee: TEm
         <div className="pb-20 space-y-5">
             <EmployeeCVAdmin employee={ employee } />
             {/*<EmployeePhotoAdmin employee={ employee}/>*/ }
-            {/*<InterviewShowDocument employee={ employee } />*/ }
+            {/*<EmployeeShowDocument employee={ employee } />*/ }
             {/*<EmployeePhotos employee={ employee } />*/ }
 
         </div>

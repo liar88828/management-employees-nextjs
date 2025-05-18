@@ -4,7 +4,7 @@ import { getId } from "@/utils/toRequest";
 import { EmptyData } from "@/app/components/PageErrorData";
 
 import { EmployeeCVAdmin } from "@/app/components/employee/client/employeeCVAdmin";
-import { employeeFindById } from "@/server/action/employee-admin.action";
+import { employeeFindById } from "@/app/admin/employee/employee-admin.action";
 
 export default async function Page(context: TContext) {
     const employeeId = await getId(context);

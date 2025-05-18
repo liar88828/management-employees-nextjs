@@ -5,7 +5,7 @@ import { EmployeeCompletePhotoType, STATUS_EMPLOYEE } from "@/interface/enum";
 import { PaginationComponent } from "@/app/components/PaginationComponent";
 import { RegistrationTable } from "@/app/admin/registration/components/RegistrationTable";
 import RegistrationSearch from "@/app/admin/registration/components/registrationSearch";
-import { employeeRegistrationPaginationLoader } from "@/server/action/register.action";
+import { employeeRegistrationPaginationLoader } from "@/app/admin/registration/register.action";
 
 async function Page(context: TContext) {
     const search = await getContextQuery(context, 'search')
@@ -25,14 +25,14 @@ async function Page(context: TContext) {
     // const globalPageSize = 3; // You can adjust the currentPage size
     // const totalEmployees = await prisma.employees.count({
     //     where: {
-    //         User: { userName: { contains: search } },
+    //         User: { userName: { contains: name } },
     //         status: STATUS_EMPLOYEE.Registration
     //     }
     // });
     //
     // const employees = await prisma.employees.findMany({
     //     where: {
-    //         User: { userName: { contains: search } },
+    //         User: { userName: { contains: name } },
     //         status: STATUS_EMPLOYEE.Registration
     //     },
     //     skip: ( currentPage - 1 ) * globalPageSize,
@@ -42,7 +42,7 @@ async function Page(context: TContext) {
     // const totalPages = Math.ceil(totalEmployees / globalPageSize);
     return (
         <div className="space-y-2">
-            <RegistrationSearch search={ search } status={ status } />
+            <RegistrationSearch name={ search } status={ status } />
             {/*{JSON.stringify(employees)}*/ }
             <RegistrationTable employees={ employees } />
             <PaginationComponent

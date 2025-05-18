@@ -4,7 +4,7 @@ import { XIcon } from "lucide-react";
 import { EmployeePhotos } from "@/app/components/employee/employeePhotos";
 import React from "react";
 
-export function InterviewShowDocument({ employee }: { employee: TEmployeeDB | null }) {
+export function EmployeeShowDocument({ employee }: { employee: TEmployeeDB | null }) {
     if (!employee) {
         return <button
             type={ 'button' }
