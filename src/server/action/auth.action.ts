@@ -22,7 +22,6 @@ import { ResponseAction } from "@/interface/action";
 
 export async function registerAction(state: FormStateRegister, formData: FormData): Promise<FormStateRegister> {
     // Validate form fields
-
     const formDataRaw = {
         // address: formData.get('address'),
         email: formData.get('email'),
@@ -31,68 +30,106 @@ export async function registerAction(state: FormStateRegister, formData: FormDat
         phone: formData.get('phone'),
         confirm: formData.get('confirm'),
     }
-    // console.log(formDataRaw)
-    const { confirm, password, ...formDataRawFail } = formDataRaw
-    const { data, success, error } = SignupFormSchema.safeParse(formDataRaw)
-    console.log(data)
-    // If any form fields are invalid, return early
-    if (!success) {
-        console.log("failed registered!");
-        return {
-            response: null,
-            success: false,
-            prevData: formDataRawFail,
-            errors: error.flatten().fieldErrors,
-            message: "Fail Register Please Complete Your Form"
+    try {
+
+        // console.log(formDataRaw);
+        // console.log(formDataRaw)
+        const { confirm, password, ...formDataRawFail } = formDataRaw
+        const { data, success, error } = SignupFormSchema.safeParse(formDataRaw)
+        // console.log(data)
+        // If any form fields are invalid, return early
+        if (!success) {
+            console.log("failed registered!");
+            return {
+                response: null,
+                success: false,
+                prevData: formDataRawFail,
+                errors: error.flatten().fieldErrors,
+                message: "Fail Register Please Complete Your Form"
+            }
         }
-    }
 
-    // Call the provider or db to create a user...
-    // 2. Prepare prevData for insertion into database
+        // Call the provider or db to create a user...
+        // 2. Prepare prevData for insertion into database
 
-    const userDB = await prisma.users.findUnique({
-        where: { email: data.email }
-    })
-    if (userDB) {
-        redirect('/login?message=User already exists!')
-    }
-    // e.g. Hash the user's password before storing it
-    const hashedPassword = await bcrypt.hash(data.password, 10)
-    console.log(hashedPassword)
-    // 3. Insert the user into the database or call an Auth Library's API
-    const user = await userCreateOne({
-        name: data.name,
-        email: data.email,
-        password: hashedPassword,
-        phone: data.phone,
-        role: ROLE.USER,
-    })
+        const userDB = await prisma.users.findUnique({
+            where: { email: data.email }
+        })
 
-    if (!user) {
-        return {
-            response: null,
-            success: false,
-            prevData: formDataRawFail,
-            message: 'An errors occurred while creating your account.',
+        if (userDB) {
+            return {
+                prevData: formDataRawFail,
+                message: "User Email is already exists!",
+                success: false
+
+            }
+            // redirect('/login?message=User already exists!')
         }
+
+        const userPhone = await prisma.users.findUnique({
+            where: { phone: data.phone }
+        })
+
+        if (userPhone) {
+            return {
+                prevData: formDataRawFail,
+                message: "User Phone is already exists!",
+                success: false
+
+            }
+            // redirect('/login?message=User already exists!')
+        }
+
+        // e.g. Hash the user's password before storing it
+        const hashedPassword = await bcrypt.hash(data.password, 10)
+        // console.log(hashedPassword)
+        // 3. Insert the user into the database or call an Auth Library's API
+        const user = await userCreateOne({
+            name: data.name,
+            email: data.email,
+            password: hashedPassword,
+            phone: data.phone,
+            role: ROLE.USER,
+        })
+
+        if (!user) {
+            return {
+                response: null,
+                success: false,
+                prevData: formDataRawFail,
+                message: 'An errors occurred while creating your account.',
+            }
+        }
+
+        // 4. Create user session
+        // await createSession(user.id)
+        await _otpGenerate({
+            time: new Date(Date.now() + 60 * 1000),
+            // time: new Date(Date.now() + 60 * 60 * 1000),
+            email: user.email,
+            reason: 'OTP'
+        })
+
+        // 5. Redirect user
+        // redirect('/otp')
+
+        return {
+            success: true,
+            message: "Successfully registered!",
+        }
+    } catch (e) {
+        console.log(e)
+        return {
+            success: false,
+            message: "Something went wrong",
+            prevData: formDataRaw,
+
+        }
+
     }
-
-    // 4. Create user session
-    // await createSession(user.id)
-    await _otpGenerate({
-        time: new Date(Date.now() + 60 * 1000),
-        // time: new Date(Date.now() + 60 * 60 * 1000),
-        email: user.email,
-        reason: 'OTP'
-    })
-
-    // 5. Redirect user
-    redirect('/otp')
-
 }
 
 export async function loginState(formDataRaw: LoginFormSchemaType): Promise<ResponseAction> {
-
     try {
         const validatedFields = loginFormSchema.safeParse(formDataRaw)
         if (!validatedFields.success) {
@@ -141,6 +178,7 @@ export async function loginState(formDataRaw: LoginFormSchemaType): Promise<Resp
                 message: e.message,
             }
         }
+
         return {
             response: null,
             success: false,

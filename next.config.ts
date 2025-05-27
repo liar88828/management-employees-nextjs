@@ -30,7 +30,7 @@ const nextConfig: NextConfig = {
     experimental: {
         // dynamicIO: true,
         serverActions: {
-            bodySizeLimit: '2mb',
+            bodySizeLimit: '3mb',
             allowedOrigins: [
                 'localhost',
                 'localhost:3000',

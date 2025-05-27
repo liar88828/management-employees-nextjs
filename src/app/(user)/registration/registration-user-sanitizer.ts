@@ -24,10 +24,10 @@ export const registrationCreateClientUser = z.object({
     workTime: z.string().min(5),
     img: zodImage(true),
     skills: z.array(z.object({
-        text: z.string().min(5, "Skills must be at least 2 characters"),
+        text: z.string().min(2, "Skills must be at least 2 characters"),
     })).min(2),
     educations: z.array(z.object({
-        text: z.string().min(5, "Educations must be at least 2 characters"),
+        text: z.string().min(2, "Educations must be at least 2 characters"),
     })).min(3),
 });
 export type RegistrationUserCreateClient = z.infer<typeof registrationCreateClientUser>;

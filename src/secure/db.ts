@@ -3,9 +3,10 @@ import { prisma } from "@/config/prisma";
 import { cookies } from "next/headers";
 import { cache } from "react";
 import { redirect } from "next/navigation";
-import { decrypt, encrypt } from "@/secure/jwt";
+import { decrypt, encrypt, SessionPayload } from "@/secure/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { UserDB } from "@/interface/entity/user.model";
+import { deleteSession } from "@/secure/cookies";
 
 export type UserSession = { isAuth: boolean, userId: string }
 
@@ -40,8 +41,20 @@ export type UserSession = { isAuth: boolean, userId: string }
 // }
 
 export const getSession = async () => {
-    const cookie = (await cookies()).get('session')?.value
+    const cookie = ( await cookies() ).get('session')?.value
     return await decrypt(cookie)
+}
+
+export const checkSession = async (session: SessionPayload) => {
+    const foundUser = await prisma.users.findUnique({
+        where: {
+            id: session.sessionId,
+        }
+    })
+    if (!foundUser) {
+        console.log("No user found");
+        await deleteSession()
+    }
 }
 
 export const updateSession = async (request: NextRequest) => {
@@ -50,6 +63,12 @@ export const updateSession = async (request: NextRequest) => {
     if (!session) return
 
     const parsed = await decrypt(session)
+
+    if (!parsed) {
+        await deleteSession()
+        return
+    }
+
     parsed.expiresAt = new Date(Date.now() + 60 * 60 * 1000)
     const res = NextResponse.next()
     res.cookies.set({
@@ -90,9 +109,9 @@ export const getUser = cache(async () => {
     if (!session) return null
     try {
         const user = await prisma.users.findUniqueOrThrow({
-            where: {id: session.userId}
+            where: { id: session.userId }
         })
-        const {password, ...data} = user
+        const { password, ...data } = user
 
         return data as UserDB
     } catch (error) {

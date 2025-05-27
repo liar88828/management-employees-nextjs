@@ -1,18 +1,33 @@
 'use client';
 
 import { registerAction } from "@/server/action/auth.action";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import Link from "next/link";
 import { useOtpStore } from "@/store/otp";
 import { MyInput, MyInputEmail, MyInputPassword, MyInputPhone } from "@/app/components/form/action";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function RegisterForm() {
+    const router = useRouter();
     const [ state, action, pending ] = useActionState(registerAction, undefined);
     const { store, setData } = useOtpStore()
+
+    useEffect(() => {
+        if (state) {
+            if (state.success) {
+                toast.success(state.message)
+                router.push('/otp')
+            } else {
+                toast.error(state.message)
+            }
+        }
+    }, [ state ])
     return (
         <div className="card bg-base-200 max-w-2xl mt-10 w-full">
             <form action={ action } className="card-body">
-                <h2 className="card-title">Register</h2>
+                <h2 className="card-title">Register : <span className={ 'text-error' }>{ state?.message ?? '' }</span>
+                </h2>
                 <div className="grid grid-cols-2 gap-4">
                     <MyInput title={ 'name' }
                              error={ state?.errors?.name }

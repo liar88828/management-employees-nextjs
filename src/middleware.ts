@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
-import { decrypt } from "@/secure/jwt";
-import { updateSession } from "@/secure/db";
+import { getSession, updateSession } from "@/secure/db";
 
 // 1. Specify protected and public routes
 const adminRoute = [ '/admin/employee', '/admin/registration' ]
@@ -17,26 +15,32 @@ export default async function middleware(req: NextRequest) {
     const isPublicRoute = publicRoutes.includes(path)
 
     // 3. Decrypt the session from the cookie
-    const cookie = ( await cookies() ).get('session')?.value
-    const session = await decrypt(cookie)
-
+    // const cookie = ( await cookies() ).get('session')?.value
+    // const session = await decrypt(cookie)
+    const session = await getSession()
+    // await checkSession(session)
     // 4. Redirect to /loginAction if the user is not authenticated
-    if (isProtectedRoute && !session?.sessionId) {
+    if (isProtectedRoute && !session?.sessionId && !session) {
         return NextResponse.redirect(new URL('/login', req.nextUrl))
     }
-
+// console.log(session)
+//     if (!session) {
+//         return NextResponse.redirect(new URL('/login', req.nextUrl))
+//
+//     }
     // console.log(isAdminOnly, `isAdminOnly : ${ session?.role }`)
     if (
         path.includes('admin') &&
         // isAdminOnly &&
-        session?.role !== 'ADMIN') {
+        session?.role !== 'ADMIN' &&
+        session) {
         // console.log('is admin')
         return NextResponse.redirect(new URL('/user', req.nextUrl))
     }
 
     // console.log(session?.role)
     // console.log(isUserOnly,'isUserOnly')
-    if (isUserOnly && session?.role !== 'USER') {
+    if (isUserOnly && session?.role !== 'USER' && session) {
         // console.log('is user')
         return NextResponse.redirect(new URL('/admin', req.nextUrl))
     }

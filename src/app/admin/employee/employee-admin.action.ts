@@ -126,7 +126,7 @@ export const employeePageLoader = async (name: string, status: string, page: num
         where: {
             status: { contains: status },
             User: {
-                name: { contains: name, },
+                name: { contains: name },
                 role: ROLE.USER,
             }
         }

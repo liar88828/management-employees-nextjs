@@ -14,7 +14,7 @@ export function EmployeeSearchClientAdmin({ name, status }: {
                 <input
                     type="text"
                     className={ 'input input-bordered join-item ' }
-                    name={ 'search' }
+                    name={ 'name' }
                     defaultValue={ name }
                     placeholder={ 'Employee Name .....' }
                 />

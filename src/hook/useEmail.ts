@@ -10,7 +10,7 @@ export const useEmail = () => {
 
     const onCheckEmail = async (data: OTPGenerate) => {
         return toAction(async () => checkEmailAction(data),
-            'Success Generate Otp Please Check the Your Email Address')
+            'Success Validate Generate Otp')
     }
 
     const onCheckOtp = async (data: OTPValid) => {
@@ -39,7 +39,7 @@ export const useEmail = () => {
                 // }
                 return await resetPasswordAction(data)
             },
-            'Success Generate Otp Please Check the Your Email Address')
+            'Success Reset Password')
     }
     return {
         onCheckEmail,

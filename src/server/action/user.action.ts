@@ -49,7 +49,15 @@ export async function userFindByIdValid(id?: string) {
 }
 
 export async function userCreateOne(data: TUserCreate): Promise<Users> {
-    return prisma.users.create({ data: { ...data } });
+    return prisma.users.create({
+        data: {
+            password: data.password,
+            email: data.email,
+            name: data.name,
+            phone: data.phone,
+            role: data.role,
+        }
+    });
 }
 
 export async function userUpdateOne(data: TUserCreate, id: string): Promise<any> {

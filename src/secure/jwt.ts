@@ -21,18 +21,18 @@ export async function encrypt(payload: SessionPayload) {
     .sign(encodedKey)
 }
 
-// @ts-expect-errors
-export async function decrypt(session: string | undefined = ''): Promise<SessionPayload> {
+export async function decrypt(session: string | undefined = ''): Promise<SessionPayload | null> {
     try {
         const data = await jwtVerify(session, encodedKey, {
             algorithms: [ 'HS256' ],
         })
         if (!data) {
-            throw new Error('Unable to decrypt session')
+            // throw new Error('Unable to decrypt session')
+            return null
         }
         return data.payload as SessionPayload
     } catch (error) {
-        // console.log('Failed to verify session')
-
+        console.log('Failed to verify session')
+        return null
     }
 }

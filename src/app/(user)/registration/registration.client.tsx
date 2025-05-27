@@ -39,6 +39,7 @@ export function RegistrationFormClientUser({ employee, method, user, type, error
         defaultValues: registrationSanitizerUser(employee, user)
     });
     const { handleSubmit, formState: { errors, isLoading }, watch, setValue, reset } = methods
+    console.log("registrationFormClientUser", errors)
     // const { clear } = useFormPersist("form-registration-user", { watch, setValue });
     const onSubmit = async (data: any) => {
         setErrorImage(undefined)

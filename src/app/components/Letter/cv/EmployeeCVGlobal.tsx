@@ -24,7 +24,7 @@ export function EmployeeCVGlobal(
                         <div className="w-20 h-20 avatar">
                             <picture>
                                 <img
-                                    loading="eager"
+                                    loading="lazy"
                                     className="rounded-full"
                                     // src={ `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.userName }` }
                                     src={ `${ nextPublicBaseUrl }${ employee.img }` }

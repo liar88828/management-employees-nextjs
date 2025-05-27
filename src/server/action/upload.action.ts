@@ -6,7 +6,11 @@ import fs from "fs";
 import { ErrorResponse } from "@/utils/error/ErrorClass";
 import { url_fastapi } from "@/config/nextPublicBaseUrl";
 
-export type TypeFile = 'KTP' | '3x4' | 'ijazah'
+export type TypeFile = 'KTP' | 'ijazah'
+const allowedExtensions = [ 'jpg', 'jpeg', 'png' ];
+// Validate file size (e.g., max 5 MB)
+const maxSizeInMB = 3;
+const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
 
 type UploadFileType = {
     typeFile: TypeFile,
@@ -52,6 +56,23 @@ export async function uploadFileState(
                 success: false
             }
         }
+
+        // Validate file extension
+        const fileExtension = imageFile.name.split('.').pop()?.toLowerCase();
+        if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+            return {
+                message: `Invalid file type. Allowed types: ${ allowedExtensions.join(', ') }`,
+                success: false
+            };
+        }
+
+        if (imageFile.size > maxSizeInBytes) {
+            return {
+                message: `File size exceeds ${ maxSizeInMB } MB limit.`,
+                success: false
+            };
+        }
+
         const formData = new FormData();
         formData.append("file", imageFile);
         formData.append("name", userName);

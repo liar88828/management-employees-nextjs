@@ -6,7 +6,8 @@ export function EmployeeCV({ employee }: { employee: TEmployeeDB }) {
     return (
         <div
             // w-[210mm]
-            className=" bg-white text-black print:shadow-none shadow-lg card h-[297mm]  max-w-4xl print:h-screen print:w-screen"
+            // h-[297mm]
+            className=" bg-white text-black print:shadow-none shadow-lg card max-w-4xl print:h-screen print:w-screen"
         >
             <div className="card-body">
                 <div className="flex justify-between items-center">

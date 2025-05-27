@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, { useState } from 'react';
 
 export function Modal(
     {
@@ -50,6 +50,8 @@ export function ModalInput(
         title: string
     }) {
     // console.log(title,active)
+
+    const [ open, setOpen ] = useState(false)
     return (
         <>
             <button
@@ -57,6 +59,7 @@ export function ModalInput(
                 className={ `btn join-item  ${ active ? ' btn-info ' : '' } ` }
                 onClick={ () => {
                     onModalOpen(title);
+                    setOpen(true)
                 } }
             >
                 { buttonText }
@@ -66,13 +69,14 @@ export function ModalInput(
             >
                 <div className="modal-box w-11/12 max-w-5xl">
                     <h3 className="capitalize font-bold text-lg">{ title.replaceAll('_', ' ') }</h3>
-                    { children }
+                    { open && children }
                     <div className="modal-action">
                         <button
                             type={ `button` }
                             className="btn "
                             onClick={ () => {
                                 onModalClose(title);
+                                setOpen(false)
                             } }
                         >Close
                         </button>

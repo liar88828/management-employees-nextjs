@@ -115,7 +115,8 @@ export function InputTextDynamic(
             { errors[keys] && <p className="text-error text-sm mt-1">{ errors[keys].message as string }</p> }
             { errors[keys] && <p className="text-error text-sm mt-1">{
                 // @ts-ignore
-                errors[keys].root.message as string }</p> }
+                errors[keys].root.message as string }</p>
+            }
         </div>
     );
 }
