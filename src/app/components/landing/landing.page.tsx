@@ -4,19 +4,20 @@ import { SessionPayload } from "@/secure/jwt";
 
 export function Header(
     { isLogin }:
-    { isLogin: SessionPayload }
+    { isLogin: SessionPayload | null }
 ) {
     return <header className="navbar bg-base-300 ">
         <div className="flex justify-between  w-full">
             <Link href="/">
-                <Image src="/my-logo.png" alt="Tahu Bakso Logo" width={ 100 } height={ 100 }/>
+                <Image src="/my-logo.png" alt="Tahu Bakso Logo" width={ 100 } height={ 100 } />
                 {/* <span className="hidden font-bold sm:inline-block">Tahu Bakso Delights</span> */ }
             </Link>
             <div className="flex gap-2 sm:gap-5">
 
                 <nav className="flex items-center  space-x-2 text-sm font-medium">
                     <a
-                        className="transition-colors hover:text-foreground/80 text-foreground/60" href="#about">
+                        className="transition-colors hover:text-foreground/80 text-foreground/60" href="#about"
+                    >
                         About
                     </a>
 
@@ -25,7 +26,8 @@ export function Header(
                     </a>
 
                     <a className="transition-colors hover:text-foreground/80 text-foreground/60"
-                       href="#testimonials">
+                       href="#testimonials"
+                    >
                         Testimonials
                     </a>
 
@@ -36,7 +38,8 @@ export function Header(
 
                 <Link
                     href={ "/admin" }
-                    className="btn btn-outline btn-sm">
+                    className="btn btn-outline btn-sm"
+                >
                     { isLogin ? 'Home' : 'Login' }
                 </Link>
             </div>
@@ -59,12 +62,14 @@ export function Hero() {
             <div className="space-x-4 my-4">
                 <Link
                     href={ '/product' }
-                    className="btn ">
+                    className="btn "
+                >
                     Order Now
                 </Link>
                 <Link
                     href={ '/user' }
-                    className="btn btn-outline">
+                    className="btn btn-outline"
+                >
                     Learn More
                 </Link>
             </div>
@@ -98,22 +103,26 @@ export function ContactUs() {
                     <div>
                         <input
                             className="input input-bordered w-full"
-                            placeholder="Your Name"/>
+                            placeholder="Your Name"
+                        />
                     </div>
                     <div>
                         <input
                             className="input input-bordered w-full"
-                            placeholder="Your Email"/>
+                            placeholder="Your Email"
+                        />
                     </div>
                     <div>
                         <textarea
                             className="textarea textarea-bordered w-full"
-                            placeholder="Your Message">
+                            placeholder="Your Message"
+                        >
                         </textarea>
                     </div>
 
                     <button type="submit"
-                            className="w-full btn btn-outline">
+                            className="w-full btn btn-outline"
+                    >
                         Send Message
                     </button>
                 </form>
@@ -142,11 +151,13 @@ export function Footer() {
                 </p>
                 <nav className="flex gap-4">
                     <a className="text-sm"
-                       href="#">
+                       href="#"
+                    >
                         Privacy Policy
                     </a>
                     <a className="text-sm"
-                       href="#">
+                       href="#"
+                    >
                         Terms of Service
                     </a>
                 </nav>

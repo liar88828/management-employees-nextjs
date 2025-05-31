@@ -7,38 +7,49 @@ import { employeeFindById } from "@/app/admin/employee/employee-admin.action";
 import Link from "next/link";
 import { TContext } from "@/interface/server/param";
 import { getContextQuery } from "@/utils/toRequest";
+import { statusEmployee } from "@/utils/statusEmployee";
 
 async function Page(context: TContext) {
-    const message = await getContextQuery(context, 'message')
-    const { userId } = await validSession()
-    const employee = await employeeFindById({ userId })
-    // console.log(employee)
+    const message = await getContextQuery(context, 'message');
+    const { userId } = await validSession();
+    const employee = await employeeFindById({ userId });
+
+    const hasEmployee = Boolean(employee);
+    const employeeStatus = statusEmployee(employee);
+
+    const errorArray: { message: string }[] = [
+        { message: message || '' },
+        { message: employeeStatus || '' },
+        { message: !hasEmployee ? 'Please Complete Register will Show' : '' }
+    ].filter(e => e.message); // remove empty messages
+
     return (
         <div>
-            {/*<h1 className={ 'text-xl font-bold' }>Welcome to employee-management</h1>*/ }
             <div className="card bg-base-200">
-                <div className="card-body ">
-                    <h1 className={ 'card-title' }>ID # { employee ? employee.id : 'Empty' }</h1>
-                    <p>Register At : { employee ? toDateIndo(employee.createdAt) : 'Empty' }</p>
-                    <p>Status : { employee ? employee.status : '' }</p>
+                <div className="card-body">
+                    <h1 className="card-title">
+                        ID # { employee?.id || 'Empty' }
+                    </h1>
+                    <p>Register At: { employee ? toDateIndo(employee.createdAt) : 'Empty' }</p>
+                    <p>Status: { employeeStatus }</p>
+
                     <div>
-                        <p className={ 'font-bold' }>Note : </p>
-                        { message && <p className={ 'text-error' }>{ message }</p> }
-                        <p className={ 'text-xs text-base/50 italic' }>- Status is wait from admin</p>
-                        { !employee &&
-                            <p className={ 'text-xs text-errors italic' }>- Please Complete Register will Show CV</p> }
-                        { !employee &&
-                            <p className={ 'text-xs text-errors italic' }>- Please Complete Register will Show
-                                ID-Card</p> }
+                        <p className="font-bold">Note:</p>
+                        { errorArray.map((err, index) => (
+                            <p key={ index } className="text-error text-xs  italic">
+                                - { err.message }
+                            </p>
+                        )) }
                     </div>
+
                     <div className="card-actions">
-                        <Link href={ '/registration' } className={ `btn btn-primary ${ employee && 'btn-disabled' }` }>
+                        <Link
+                            href="/registration"
+                            className={ `btn btn-primary ${ hasEmployee ? 'btn-disabled' : '' }` }
+                        >
                             Registration
                         </Link>
 
-                        {/*<button className={ `btn btn-primary ${ !employee && 'btn-disabled' }` }>*/ }
-                        {/*    Print*/ }
-                        {/*</button>*/ }
                         <InterviewShowCVGlobal employee={ employee } />
                         <EmployeeShowDocument employee={ employee } />
                     </div>

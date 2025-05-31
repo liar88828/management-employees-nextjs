@@ -22,6 +22,7 @@ import {
     registrationSanitizerUser,
     RegistrationUserCreateClient
 } from "@/app/(user)/registration/registration-user-sanitizer";
+import { statusEmployee } from "@/utils/statusEmployee";
 
 export function RegistrationFormClientUser({ employee, method, user, type, error }: {
     user: UserDB,
@@ -111,8 +112,9 @@ export function RegistrationFormClientUser({ employee, method, user, type, error
                     }
                 } }
                 className={ 'btn btn-success btn-block' }
+                disabled={ employee?.registration }
             >
-                Finish
+                { statusEmployee(employee) }
             </button>
 
         </div>

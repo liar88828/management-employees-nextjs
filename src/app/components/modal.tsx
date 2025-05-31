@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react';
+import { XIcon } from "lucide-react";
 
 export function Modal(
     {
@@ -68,7 +69,18 @@ export function ModalInput(
                     className="modal"
             >
                 <div className="modal-box w-11/12 max-w-5xl">
-                    <h3 className="capitalize font-bold text-lg">{ title.replaceAll('_', ' ') }</h3>
+                    <div className="flex justify-between">
+                        <h3 className="capitalize font-bold text-lg">{ title.replaceAll('_', ' ') }</h3>
+                        <button
+                            type="button"
+                            className={ `btn btn-circle` }
+                            onClick={ () => {
+                                onModalClose(title);
+                                setOpen(false)
+                            } }
+                        ><XIcon />
+                        </button>
+                    </div>
                     { open && children }
                     <div className="modal-action">
                         <button

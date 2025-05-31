@@ -1,5 +1,5 @@
 'use client'
-import { photoIjazah, photoKtp, TEmployeeDB } from "@/interface/entity/employee.model";
+import { photoIjazah, photoKtp } from "@/interface/entity/employee.model";
 import { TypeFile, uploadFileState } from "@/server/action/upload.action";
 import { UserDB } from "@/interface/entity/user.model";
 import React, { useState } from "react";
@@ -7,6 +7,8 @@ import { ModalInput } from "../../modal";
 import { ImageIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import { url_fastapi } from "@/config/nextPublicBaseUrl";
+import { ImageStream } from "@/app/components/imageStream";
+import { LoadingSpin } from "@/app/components/LoadingData";
 
 export function UploadDocument(
     {
@@ -83,12 +85,16 @@ export function UploadDocument(
                     onChange={ handleFileChange }
                 />
                 <ModalInput title={ title } buttonText={ <ImageIcon /> } active={ imageData !== null }>
-                    <picture>
-                        <img
-                            src={ image_document }
-                            alt="Uploaded document"
-                            className="w-full h-full mt-2 rounded-lg border object-cover"
+                    <picture className={ 'flex  justify-center' }>
+                        <ImageStream
+                            filename={ image_document }
+                            classNames={ 'w-96 h-auto  mt-2 rounded-lg border object-cover' }
                         />
+                        {/*<img*/ }
+                        {/*    src={ image_document }*/ }
+                        {/*    alt="Uploaded document"*/ }
+                        {/*    className="w-96 h-auto  mt-2 rounded-lg border object-cover"*/ }
+                        {/*/>*/ }
                     </picture>
                 </ModalInput>
             </div>
@@ -102,59 +108,10 @@ export function UploadDocument(
                         disabled={ loading }
                         className="btn btn-info mt-4" type="submit"
                     >
-                        Submit
+                        { loading ? <LoadingSpin /> : <div>Submit</div> }
                     </button>
                 )
             }
         </form>
     );
-}
-
-export function ShowImage({ imagePreview, type, employee }: {
-    imagePreview: string | null,
-    type: TypeFile,
-    employee?: TEmployeeDB,
-}) {
-    if (imagePreview) {
-        return (
-            <>
-                {/* eslint-disable-next-line @next/next/no-img-element */ }
-                <img src={ imagePreview } alt="Selected file"
-                     className="w-40 h-40 object-cover rounded-md border"
-                />
-            </>
-
-        )
-    }
-    if (type === "KTP") {
-        return <>
-            {/* eslint-disable-next-line @next/next/no-img-element */ }
-            {/*<img src={ employee.photoKtp ?? photoKtp }*/ }
-            {/*     alt="image photoKtp"*/ }
-            {/*     className={ "aspect-[4/3] " }*/ }
-            {/*/>*/ }
-        </>
-    }
-
-    if (type === "ijazah")
-        return (
-            <>
-                {/* eslint-disable-next-line @next/next/no-img-element */ }
-                {/*<img src={ employee.photoIjazah ?? photoKtp }*/ }
-                {/*     alt="image photoKtp"*/ }
-                {/*     className={ "aspect-[4/3] " }*/ }
-                {/*/>*/ }
-            </>
-        )
-
-    // if (type === "3x4")
-    //     return (
-    //         <>
-    //             {/* eslint-disable-next-line @next/next/no-img-element */ }
-    //             <img src={ employee.photo3x4 ?? i3x4 }
-    //                  alt="image 4x3"
-    //                  className={ "aspect-[3/4] " }
-    //             />
-    //         </>
-    //     )
 }
