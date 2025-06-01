@@ -4,25 +4,23 @@ import { XIcon } from "lucide-react";
 import { EmployeePhotos } from "@/app/components/employee/employeePhotos";
 import React, { useState } from "react";
 import { url_fastapi } from "@/config/nextPublicBaseUrl";
-import Image from "next/image";
+import { ImageStream } from "@/app/components/imageStream";
+import { onModalClose, onModalOpen } from "@/app/components/modal";
 
-export function EmployeeShowDocumentSingle({ imageUrl, title }: { imageUrl?: string | null, title: string }) {
+export function EmployeeShowDocumentSingle(
+    { imageUrl, title, buttonText }
+    : { imageUrl?: string | null, title: string, buttonText: string }) {
     const [ open, setOpen ] = useState(false)
-    const [ loading, setLoading ] = useState(true)
+    // const [loading, setLoading] = useState(true)
     const isPhotoData = imageUrl ? `${ url_fastapi }${ imageUrl }` : photoKtp
 
     if (!imageUrl) {
         return <button
             type={ 'button' }
             className="btn btn-info btn-disabled"
-            onClick={ () => {
-                const modal = document.getElementById(`my_modal_document_${ title }`)
-                if (modal instanceof HTMLDialogElement) {
-                    modal.showModal();
-                }
-            } }
+            onClick={ () => onModalOpen(`my_modal_document_${ title }`) }
         >
-            { title }
+            { buttonText }
         </button>
     }
 
@@ -31,19 +29,17 @@ export function EmployeeShowDocumentSingle({ imageUrl, title }: { imageUrl?: str
             <button
                 className="btn btn-info"
                 onClick={ () => {
-                    const modal = document.getElementById(`my_modal_document_${ title }`)
-                    if (modal instanceof HTMLDialogElement) {
-
-                        modal.showModal();
-                        setOpen(true)
-                    }
+                    onModalOpen(`my_modal_document_${ title }`)
+                    setOpen(true)
                 } }
             >
-                { title }
+                { buttonText }
+
             </button>
             <dialog id={ `my_modal_document_${ title }` } className="modal">
-                <div className="modal-box w-11/12 max-w-4xl bg-base-200/50">
-                    <div className="flex justify-end mb-4">
+                <div className="modal-box w-11/12 max-w-4xl space-y-4">
+                    <div className="flex justify-between">
+                        <h3 className="card-title">{ title }</h3>
                         <button
                             type="button"
                             onClick={ () => {
@@ -54,38 +50,50 @@ export function EmployeeShowDocumentSingle({ imageUrl, title }: { imageUrl?: str
                                     setOpen(false)
                                 }
                             } }
-                            className="btn btn-sm btn-circle btn-ghost "
-                        ><XIcon /></button>
+                            className="btn btn-sm btn-circle "
+                        ><XIcon />
+                        </button>
                     </div>
-                    <div className="card card-body  bg-white items-center sm:items-start max-w-4xl">
-                        <h3 className="card-title">{ title }</h3>
-                        <div className="flex justify-center">
-                            { open &&
-                                <picture>
-                                    <Image
-                                        // decoding="async"
-                                        unoptimized
-                                        quality={ 80 }
-                                        loading={ 'lazy' }
-                                        // priority={true}
-                                        onLoad={ () => setLoading(false) }
-                                        src={ isPhotoData }
-                                        alt={ `image ${ title }` }
-                                        width={ 300 }
-                                        height={ 400 }
-                                        // placeholder="blur"
-                                        // className={ 'w-full h-auto' }
-                                        style={ {
-                                            width: '100%',
-                                            height: 'auto',
-                                        } }
-                                    />
-                                    { loading && <span>Loading...</span> }
-                                </picture>
-                            }
-                        </div>
+
+                    <div className="flex justify-center">
+                        { open &&
+                            <picture>
+                                <ImageStream filename={ isPhotoData } classNames={ 'w-full h-auto' } />
+                                {/*<Image*/ }
+                                {/*    // decoding="async"*/ }
+                                {/*    unoptimized*/ }
+                                {/*    quality={80}*/ }
+                                {/*    loading={'lazy'}*/ }
+                                {/*    // priority={true}*/ }
+                                {/*    onLoad={() => setLoading(false)}*/ }
+                                {/*    src={isPhotoData}*/ }
+                                {/*    alt={`image ${title}`}*/ }
+                                {/*    width={300}*/ }
+                                {/*    height={400}*/ }
+                                {/*    // placeholder="blur"*/ }
+                                {/*    // className={ 'w-full h-auto' }*/ }
+                                {/*    style={{*/ }
+                                {/*        width: '100%',*/ }
+                                {/*        height: 'auto',*/ }
+                                {/*    }}*/ }
+                                {/*/>*/ }
+                                {/*{loading && <span>Loading...</span>}*/ }
+                            </picture>
+                        }
+                    </div>
+                    <div className="flex justify-end">
+                        <button
+                            type="button"
+                            onClick={ () => {
+                                onModalClose(`my_modal_document_${ title }`)
+                                setOpen(false)
+                            } }
+                            className="btn   "
+                        >Close
+                        </button>
                     </div>
                 </div>
+
                 {/*<form method="dialog" className="modal-backdrop">*/ }
                 {/*    <button>close</button>*/ }
                 {/*</form>*/ }
@@ -96,8 +104,15 @@ export function EmployeeShowDocumentSingle({ imageUrl, title }: { imageUrl?: str
 
 export function EmployeeShowDocument({ employee }: { employee: TEmployeeDB | null }) {
     return ( <>
-            <EmployeeShowDocumentSingle imageUrl={ employee?.photoKtp } title={ 'Open KTP' } />
-            <EmployeeShowDocumentSingle imageUrl={ employee?.photoIjazah } title={ 'Open Ijazah' } />
+            <EmployeeShowDocumentSingle imageUrl={ employee?.photoKtp }
+                                        title={ `KTP ${ employee?.User.name }` }
+                                        buttonText={ 'Open KTP' }
+            />
+
+            <EmployeeShowDocumentSingle imageUrl={ employee?.photoIjazah }
+                                        title={ `Ijazah ${ employee?.User.name }` }
+                                        buttonText={ 'Open Ijazah' }
+            />
         </>
     )
 }

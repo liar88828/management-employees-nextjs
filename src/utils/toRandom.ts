@@ -4,7 +4,7 @@ type OtpOptions = {
     includeAlphabets?: boolean; // Include alphabetic characters
 };
 
-export function toOtp(options: OtpOptions): string {
+export function toRandom(options: OtpOptions): string {
     const { length, includeDigits = true, includeAlphabets = false } = options;
 
     if (!includeDigits && !includeAlphabets) {

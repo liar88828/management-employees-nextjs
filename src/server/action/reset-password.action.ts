@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { OTPGenerate, OTPValid, ResetPassword } from "@/interface/server/param";
 import { otpValid, validOtp } from "@/schema/otp.valid";
-import { toOtp } from "@/utils/toOtp";
+import { toRandom } from "@/utils/toRandom";
 import { ResponseAction } from "@/interface/action";
 import { toDateIndoFull } from "@/utils/toDate";
 import { nodemailerSendOtp } from "@/server/action/nodemailer.action";
@@ -25,7 +25,7 @@ export async function checkEmailAction(json: OTPGenerate): Promise<ResponseActio
         }
     }
 
-    const otp = toOtp({ length: 6 })
+    const otp = toRandom({ length: 6 })
     // const otpValid = new Date(Date.now() + 60 * 60 * 1000)// Invalid Date
     // console.log(otpValid)
     await prisma.$transaction(async (tx) => {

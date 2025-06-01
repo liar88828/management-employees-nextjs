@@ -47,7 +47,9 @@ export async function uploadFileState(
     try {
         const employee = await prisma.employees.findUnique({
             where: { userId },
-            select: { id: true }
+            select: {
+                id: true,
+            }
         })
         if (!employee) {
             // throw new Error('User Employee does not exist')
@@ -56,7 +58,6 @@ export async function uploadFileState(
                 success: false
             }
         }
-
         // Validate file extension
         const fileExtension = imageFile.name.split('.').pop()?.toLowerCase();
         if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
@@ -78,13 +79,19 @@ export async function uploadFileState(
         formData.append("name", userName);
         formData.append("user_id", userId);
         formData.append("type_image", typeFile);
+        // formData.append("iv", toRandom({
+        //     length: 8,
+        //     includeAlphabets: true,
+        //     includeDigits: true
+        // }));
+
         // console.log(formData)
         const response = await fetch(`${ url_fastapi }/images/`, {
             method: "POST",
             body: formData,
         })
         const data: ResponseUploadEncrypt = await response.json()
-        // console.log(data, 'data')
+        console.log(data, 'data')
         if (!data.success) {
             // throw new Error(`Error uploading file: ${ typeFile } : ${ data.detail }`)
             return {

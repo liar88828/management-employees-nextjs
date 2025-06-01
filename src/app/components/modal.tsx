@@ -30,12 +30,12 @@ export function Modal(
     );
 }
 
-function onModalOpen(title: string) {
-    ( document.getElementById(`my_modal_${ title }`) as HTMLDialogElement ).showModal()
+export function onModalOpen(title: string) {
+    ( document.getElementById(title) as HTMLDialogElement ).showModal()
 }
 
-function onModalClose(title: string) {
-    ( document.getElementById(`my_modal_${ title }`) as HTMLDialogElement ).close()
+export function onModalClose(title: string) {
+    ( document.getElementById(title) as HTMLDialogElement ).close()
 }
 
 export function ModalInput(

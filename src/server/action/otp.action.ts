@@ -2,7 +2,7 @@
 import { OTPGenerate, OTPValid } from "@/interface/server/param";
 import { otpValid, validOtp } from "@/schema/otp.valid";
 import { prisma } from "@/config/prisma";
-import { toOtp } from "@/utils/toOtp";
+import { toRandom } from "@/utils/toRandom";
 import { createSession } from "@/secure/cookies";
 import { ResponseData } from "@/interface/server/TResponse";
 import { STATUS_USER } from "@/interface/enum";
@@ -24,7 +24,7 @@ export async function _otpGenerate(json: OTPGenerate): Promise<ResponseData> {
         throw new Error("Please Wait until OTP date is end ")
     }
 
-    const otp = toOtp({ length: 6 })
+    const otp = toRandom({ length: 6 })
     // const otpValid = new Date(Date.now() + 60 * 60 * 1000)// Invalid Date
     // console.log(otpValid)
     await prisma.$transaction(async (tx) => {

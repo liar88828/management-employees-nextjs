@@ -59,12 +59,23 @@ model Employees {
   //
   photoKtp     String?
   photoIjazah  String?
+  photo_iv     String?
   User         Users        @relation(fields: [userId], references: [id])
   userId       String       @unique
   //
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+  // ImageAES     ImageAES     @relation(fields: [imageAESId], references: [id])
+  // imageAESId   Int          @unique
 }
+
+// model ImageAES {
+//   id          Int        @id() @default(autoincrement())
+//   photoKtp    String?
+//   photoIjazah String?
+//   iv          String?
+//   Employees   Employees?
+// }
 
 model Educations {
   id          Int       @id @default(autoincrement())

@@ -1,6 +1,6 @@
 'use client'
 import { useFormImage } from "@/hook/useFormImage";
-import React from "react";
+import React, { useState } from "react";
 
 export const FormError: React.FC<{
     errors?: string[]; // Array of errors messages
@@ -74,23 +74,54 @@ export function MyInputTextArea({ title, error, defaultValue }: {
     );
 }
 
-export function MyInputNum({ title, error, defaultValue }: {
+function formatRupiah(value: number) {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+    }).format(value);
+}
+
+export function MyInputNum({
+                               title, error, defaultValue,
+                               // onChangeAction
+                           }: {
     defaultValue?: string | number,
     title: string,
-    error: any
+    error: any,
+    // onChangeAction: (value: number) => void,
 }) {
+    const [ displayValue, setDisplayValue ] = useState(formatRupiah(0));
+    const [ rawValue, setRawValue ] = useState(defaultValue);
+
+    function parseRupiah(value: string) {
+        return Number(value.replace(/[^0-9]/g, ""));
+    }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const input = e.target.value;
+        const numericValue = parseRupiah(input);
+        setRawValue(numericValue);
+        setDisplayValue(formatRupiah(numericValue));
+    };
+
     return (
         <div className="form-control w-full">
             <label htmlFor={ `${ title }` } className="label">
                 <span className="label-text capitalize">{ title }</span>
             </label>
             <input
-                type="number"
-                defaultValue={ defaultValue }
-                id={ `${ title }` }
-                name={ `${ title }` }
+                type="text"
+                value={ displayValue }
+                onChange={ handleChange }
                 placeholder={ `Enter your ${ title }` }
                 className="input input-bordered w-full"
+            />
+            <input
+                defaultValue={ rawValue }
+                hidden
+                id={ `${ title }` }
+                name={ `${ title }` }
             />
             <FormError errors={ error } title="must add:" />
         </div>

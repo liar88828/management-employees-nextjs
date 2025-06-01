@@ -6,6 +6,7 @@ import { InterviewShowCVGlobal } from "@/app/components/Letter/interviewShowCVGl
 import { EmployeeShowDocument } from "@/app/components/Letter/employeeShowDocument";
 import { RegistrationForm } from "@/app/admin/registration/components/RegistrationForm";
 import { employeeFindById } from "@/app/admin/employee/employee-admin.action";
+import Link from "next/link";
 
 export default async function Page(context: TContext) {
     const employeeId = await getContextParam(context, 'id')
@@ -22,6 +23,7 @@ export default async function Page(context: TContext) {
                 // positions={ positions }
             />
             <div className="space-x-4">
+                <Link href={ '/admin/registration' } className={ 'btn' }>Back</Link>
                 <InterviewShowCVGlobal employee={ employee } />
                 <EmployeeShowDocument employee={ employee } />
             </div>

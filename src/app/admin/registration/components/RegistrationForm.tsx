@@ -7,13 +7,10 @@ import { MyInput, MyInputNum, MyInputOption, MyInputTextArea } from "@/app/compo
 import { StatusEmployeeList } from "@/interface/enum";
 import { registerUpdateFormDataAdminAction } from "@/app/admin/registration/register.action";
 
-export function RegistrationForm(
-    {
-        employee,
-    }: {
-        employee: Employees,
-    }) {
+export function RegistrationForm({ employee, }: { employee: Employees, }) {
+
     const [ state, action, pending ] = useActionState(registerUpdateFormDataAdminAction, undefined)
+
     useEffect(() => {
         if (state) {
             if (state.success) {
@@ -43,7 +40,9 @@ export function RegistrationForm(
                         keys={ state?.value.status || employee.status }
                         lists={ StatusEmployeeList }
                     />
+
                     <MyInputNum
+                        // onChangeAction={(value) => setSetSalary(value)}
                         title={ "salary" }
                         error={ state?.errors?.salary }
                         defaultValue={ state?.value.salary ?? employee.salary }
