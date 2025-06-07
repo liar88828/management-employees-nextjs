@@ -18,7 +18,7 @@ interface StateSend {
     // removeSelectEmployee: (idEmployee: string) => void
 }
 
-export const useSendStore = create<StateSend>()(
+create<StateSend>()(
     (set, get) => ( {
         message: null,
         setMessage: (message: string | null) => set({ message }),
@@ -66,4 +66,4 @@ export const useSendStore = create<StateSend>()(
             } ))
         },
     } ),
-)
+);

@@ -1,13 +1,13 @@
 import { z } from "zod";
 import { zodAddress, zodPhone } from "@/schema/zod.valid";
 export const registrationDatabaseCreateServer = z.object({
-    name: z.string().min(2).max(100),
-    phone: zodPhone,
+    userName: z.string().min(2).max(100),
+    userPhone: zodPhone,
     gender: z.string().min(2).max(100),
     dateOfBirth: z.coerce.date(),
     hireDate: z.coerce.date(),
     jobTitle: z.string().min(2, "Job Title must be at least 2 characters"),
-    status: z.string(),//z.enum(['Fail', 'Complete', 'Pending', 'Active', 'Disabled']),
+    statusEmployee: z.string(),//z.enum(['Fail', 'Complete', 'Pending', 'Active', 'Disabled']),
     address: zodAddress,
     city: z.string().min(2).max(100),
     postalCode: z.string().min(2).max(100),
@@ -24,11 +24,11 @@ export const registrationDatabaseCreateServer = z.object({
     userId: z.string(),
     img: z.string().min(2),
 })
-
 export type RegistrationDatabaseCreateServer = z.infer<typeof registrationDatabaseCreateServer>;
+
 export const registrationDatabaseUpdateServer = z.object({
-    name: z.string().min(2).max(100),
-    phone: zodPhone,
+    userName: z.string().min(2).max(100),
+    userPhone: zodPhone,
     gender: z.string().min(2).max(100),
     dateOfBirth: z.coerce.date(),
     jobTitle: z.string().min(2, "Job Title must be at least 2 characters"),

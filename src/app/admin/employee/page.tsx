@@ -1,21 +1,21 @@
 import React from 'react';
 import { TContext } from "@/interface/server/param";
 import { getContextQuery, getContextQueryNum } from "@/utils/toRequest";
-import { employeePageLoader } from "@/app/admin/employee/employee-admin.action";
-import { EmployeeSearchClientAdmin } from "@/app/admin/employee/components/employeeSearchClientAdmin";
-import { PaginationComponent } from "@/app/components/PaginationComponent";
+import { AdminEmployeePage } from "@/app/components/AdminEmployeePage";
+import { PaginationComponent } from "@/app/components/ui/PaginationComponent";
+import { adminEmployeePageLoader } from "@/action/admin-employee-action";
 
 export default async function page(context: TContext,) {
     const name = await getContextQuery(context, 'name')
     const status = await getContextQuery(context, 'status')
     const page = await getContextQueryNum(context, 'page')
     // const limit = await getContextQuery(context, 'limit')
-    const { totalPages, employees } = await employeePageLoader(name, status, page)
+    const { totalPages, employees } = await adminEmployeePageLoader(name, status, page)
     return (
         <div className={ 'space-y-2' }>
-            <EmployeeSearchClientAdmin employees={ employees }
-                                       name={ name }
-                                       status={ status }
+            <AdminEmployeePage employees={ employees }
+                               name={ name }
+                               status={ status }
             />
 
             <PaginationComponent currentPage={ page }

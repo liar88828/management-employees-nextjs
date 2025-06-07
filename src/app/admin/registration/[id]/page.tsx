@@ -1,16 +1,13 @@
 import React from 'react';
 import { TContext } from "@/interface/server/param";
 import { getContextParam } from "@/utils/toRequest";
-import { EmptyData } from "@/app/components/PageErrorData";
-import { InterviewShowCVGlobal } from "@/app/components/Letter/interviewShowCVGlobal";
-import { EmployeeShowDocument } from "@/app/components/Letter/employeeShowDocument";
-import { RegistrationForm } from "@/app/admin/registration/components/RegistrationForm";
-import { employeeFindById } from "@/app/admin/employee/employee-admin.action";
-import Link from "next/link";
+import { EmptyData } from "@/app/components/ui/PageErrorData";
+import { AdminRegistrationDetailPage } from "@/app/components/AdminRegistrationDetailPage";
+import { adminEmployeeDetailLoader } from "@/action/admin-employee-action";
 
 export default async function Page(context: TContext) {
     const employeeId = await getContextParam(context, 'id')
-    const employee = await employeeFindById({ employeeId })
+    const employee = await adminEmployeeDetailLoader({ employeeId })
     // const positions: Positions[] = await prisma.positions.findMany()
 
     if (!employee) {
@@ -18,15 +15,6 @@ export default async function Page(context: TContext) {
     }
 
     return (
-        <div className={ 'space-y-4' }>
-            <RegistrationForm employee={ employee }
-                // positions={ positions }
-            />
-            <div className="space-x-4">
-                <Link href={ '/admin/registration' } className={ 'btn' }>Back</Link>
-                <InterviewShowCVGlobal employee={ employee } />
-                <EmployeeShowDocument employee={ employee } />
-            </div>
-        </div>
+        <AdminRegistrationDetailPage employee={ employee } />
     );
 }

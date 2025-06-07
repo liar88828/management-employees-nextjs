@@ -20,7 +20,7 @@ type StoreOTP = {
     // error: boolean,
 };
 
-interface OTPState {
+export type OTPState = {
     store: StoreOTP
     setData: (data: Partial<StoreOTP>) => void
     reset: () => boolean

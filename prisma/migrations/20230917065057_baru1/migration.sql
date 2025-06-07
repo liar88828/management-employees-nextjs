@@ -36,7 +36,10 @@ CREATE TABLE `Orderans`
     `typePembayaran` VARCHAR(100) NOT NULL,
     `totalBayar`     MEDIUMINT    NOT NULL,
     `totalPenjualan` MEDIUMINT    NOT NULL,
-    `status`         VARCHAR(20)  NOT NULL,
+    ` statusEmployee ` VARCHAR
+(
+    20
+) NOT NULL,
     `created_at`     DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at`     DATETIME(3)  NOT NULL,
 

@@ -13,20 +13,6 @@ export class ErrorResponse extends Error {
     }
 }
 
-export class ErrorOTP extends Error {
-    constructor(public msg: string, public code: number) {
-        super(msg);
-        Object.setPrototypeOf(this, ErrorOTP.prototype);
-    }
-}
-
-export class ErrorFetch extends Error {
-    constructor(public msg: string) {
-        super(msg);
-        Object.setPrototypeOf(this, ErrorFetch.prototype);
-    }
-}
-
 export class ErrorDatabase extends Error {
     constructor(
         public msg: string,
@@ -35,31 +21,4 @@ export class ErrorDatabase extends Error {
         super(msg);
         Object.setPrototypeOf(this, ErrorDatabase.prototype);
     }
-}
-
-export class ErrorAction extends Error {
-    constructor(public msg: string) {
-        super(msg);
-        Object.setPrototypeOf(this, ErrorAction.prototype);
-    }
-}
-
-export class ErrorCheck extends Error {
-    constructor(public msg: string, public from: string) {
-        super(msg);
-        this.name = "ErrorCheck";
-        Object.setPrototypeOf(this, ErrorCheck.prototype);
-    }
-}
-
-export class ErrorValidation extends Error {
-    constructor(public msg: string) {
-        super(msg);
-        Object.setPrototypeOf(this, ErrorValidation.prototype);
-    }
-}
-
-export type ThrowErrorType = {
-    error: any,
-    from: string,
 }

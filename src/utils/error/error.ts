@@ -65,12 +65,3 @@ export function catchErrorZod(e: z.ZodError, from?: string): ErrorType {
         errors: e.flatten().fieldErrors,
     }
 }
-
-export function catchErrorAction(
-    e: unknown,
-    message: string = 'Something went wrong',
-    from?: string
-) {
-
-    return catchErrorAPI(e, message, from)
-}

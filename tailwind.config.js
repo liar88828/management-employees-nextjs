@@ -1,4 +1,4 @@
-import fluid, {extract, fontSize, screens} from 'fluid-tailwind'
+import fluid, { extract, fontSize, screens } from 'fluid-tailwind';
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
 		extract
 	},
 	daisyui: {
-		// themes   : true, // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
+        // themes   : true, // false: only light + dark | true: all themes | lists: specific themes like this ["light", "dark", "cupcake"]
 		// darkTheme: ["dark" | 'light'], // name of one of the included themes for dark mode
 		// base     : true, // applies background color and foreground color for root element by default
 		// styled   : true, // include daisyUI colors and design decisions for all components

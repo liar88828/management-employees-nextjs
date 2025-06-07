@@ -1,15 +1,17 @@
 import React from 'react';
 import { validSession } from "@/secure/db";
-import { EmployeeNotFound } from "@/app/components/error/registrationFirst";
 import { STATUS_EMPLOYEE } from "@/interface/enum";
 import { redirect } from "next/navigation";
-import { employeeFindById } from "@/app/admin/employee/employee-admin.action";
-import { InterviewPage } from "@/app/(user)/interview/components/interviewPage";
+
+import { UserInterviewPage } from "@/app/components/UserInterviewPage";
+import { userEmployeeDetailLoader } from "@/action/user-registration-action";
+import { EmployeeNotFound } from "@/app/components/ui/ErrorComponent";
 
 export default async function Page() {
     const { userId } = await validSession()
-    const employee = await employeeFindById({ userId })
+    const employee = await userEmployeeDetailLoader({ userId })
     if (!employee) return <EmployeeNotFound />
-    if (employee.status === STATUS_EMPLOYEE.Registration) redirect('/user?message=Please Complete Registration');
-    return <InterviewPage employee={ employee } />
+    if (employee.statusEmployee === STATUS_EMPLOYEE.Registration) redirect('/user?message=Please Complete Registration');
+
+    return <UserInterviewPage employee={ employee } />
 }

@@ -15,13 +15,6 @@ export type TContext = {
     }>,
     params: Promise<{ id: string, search: string, route: string }>
 }
-export type FetchResponse<R> = Promise<{ msg: string; data: R; code: number }>
-
-export type ResponseAll<T> = {
-    data: T[],
-    page: number,
-    limit: number
-}
 
 export type OTPGenerate = {
     email: string,

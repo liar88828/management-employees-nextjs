@@ -58,3 +58,5 @@ prisma/dev.db
 
 .qodo
 !/src/app/test/
+!/prisma/dev.db-journal
+/prisma/dev.db-journal

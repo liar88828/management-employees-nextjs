@@ -4,25 +4,49 @@ generator client {
 }
 
 datasource db {
-  // provider = "sqlite"
-  provider = "mysql"
+  provider = "sqlite"
+  // provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
+generator zod {
+  provider = "zod-prisma"
+  output   = "../src/generate/zod" // (default) the directory where generated zod schemas will be saved
+
+  relationModel = true // (default) Create and export both plain and related models.
+  // relationModel         = "default" // Do not export model without relations.
+  // relationModel         = false // Do not generate related model
+
+  modelCase = "PascalCase" // (default) Output models using pascal case (ex. UserModel, PostModel)
+  // modelCase             = "camelCase" // Output models using camel case (ex. userModel, postModel)
+
+  modelSuffix = "Model" // (default) Suffix to apply to your prisma models when naming Zod schemas
+
+  // useDecimalJs          = false // (default) represent the prisma Decimal type using as a JS number
+  useDecimalJs = true // represent the prisma Decimal type using Decimal.js (as Prisma does)
+
+  // imports                  = null // (default) will import the referenced file in generated schemas to be used via imports.someExportedVariable
+
+  // https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-by-null-values
+  prismaJsonNullability = true // (default) uses prisma's scheme for JSON field nullability
+  // prismaJsonNullability = false // allows null assignment to optional JSON fields
+}
+
 model Users {
-  id         String     @id @default(uuid())
-  name       String
-  phone      String     @unique
-  email      String     @unique
-  password   String
-  role       String
-  otp        String?
-  otpExpired DateTime   @default(now())
+  id             String     @id @default(uuid()) /// @zod.uuid()
+  name           String /// @zod.min(1)
+  phone          String     @unique /// @zod.min(1)
+  email          String     @unique /// @zod.email()
+  password       String /// @zod.min(1)
+  role           String /// @zod.min(1)
+  otp            String? /// @zod.min(1)
+  otpExpired     DateTime   @default(now())
+  imgPass        String /// @zod.min(1)
   // otpRegenerate DateTime   @default(now())
   // otpCount      Int        @default(0)
-  status     String     @default("OTP")
+  statusEmployee String     @default("OTP")
   // Session    Sessions?
-  Employees  Employees?
+  Employees      Employees?
 }
 
 // model Sessions {
@@ -34,38 +58,47 @@ model Users {
 // }
 
 model Employees {
-  id           String       @id @default(uuid()) // Primary key with auto-increment
+  id             String       @id @default(uuid()) // Primary key with auto-increment
   // userName            String
   // email           String            @unique
   // phone           String
-  gender       String // Gender (e.g., "Male", "Female", "Other")
-  dateOfBirth  DateTime
-  hireDate     DateTime
-  jobTitle     String // Employee's job position
-  salary       Int // Employee's salary
+  /// @zod.min(1)
+  gender         String // Gender (e.g., "Male", "Female", "Other")
+  dateOfBirth    DateTime
+  hireDate       DateTime
+  /// @zod.min(1)
+  jobTitle       String // Employee's job position
+  /// @zod.min(1)
+  salary         Int // Employee's salary
   // managerId      Int? // Foreign key referencing the manager
-  status       String       @default("Create") // Employment status
-  registration Boolean      @default(false) // Employment status
-  address      String
-  city         String // City where the employee lives
-  postalCode   String // Postal/ZIP code
-  workTime     String // Work Time (e.g., "Full-Time", "Part-Time")
-  notes        String // Additional notes about the employee
-  img          String
-  sendEmail    Int          @default(0)
+  /// @zod.min(1)
+  statusEmployee String       @default("Create") // Employment statusEmployee
+  registration   Boolean      @default(false) // Employment statusEmployee
+  /// @zod.min(1)
+  address        String
+  /// @zod.min(1)
+  city           String // City where the employee lives
+  /// @zod.min(1)
+  postalCode     String // Postal/ZIP code
+  /// @zod.min(1)
+  workTime       String // Work Time (e.g., "Full-Time", "Part-Time")
+  /// @zod.min(1)
+  notes          String // Additional notes about the employee
+  /// @zod.min(1)
+  img            String
+  sendEmail      Int          @default(0)
   //
   // country        String
-  Educations   Educations[]
-  Skills       Skills[] // Stored as an array of strings
+  Educations     Educations[]
+  Skills         Skills[] // Stored as an lists of strings
   //
-  photoKtp     String?
-  photoIjazah  String?
-  photo_iv     String?
-  User         Users        @relation(fields: [userId], references: [id])
-  userId       String       @unique
+  photoKtp       String?
+  photoIjazah    String?
+  User           Users        @relation(fields: [userId], references: [id])
+  userId         String       @unique
   //
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
   // ImageAES     ImageAES     @relation(fields: [imageAESId], references: [id])
   // imageAESId   Int          @unique
 }
@@ -79,15 +112,19 @@ model Employees {
 // }
 
 model Educations {
-  id          Int       @id @default(autoincrement())
-  text        String
-  Employees   Employees @relation(fields: [employeesId], references: [id])
-  employeesId String
+  id         Int       @id @default(autoincrement())
+  /// @zod.min(1)
+  text       String
+  /// @zod.min(1)
+  employeeId String
+  Employees  Employees @relation(fields: [employeeId], references: [id])
 }
 
 model Skills {
-  id          Int       @id @default(autoincrement())
-  text        String
-  Employees   Employees @relation(fields: [employeesId], references: [id])
-  employeesId String
+  id         Int       @id @default(autoincrement())
+  /// @zod.min(1)
+  text       String
+  /// @zod.min(1)
+  employeeId String
+  Employees  Employees @relation(fields: [employeeId], references: [id])
 }

@@ -3,7 +3,7 @@ import React, { ReactNode, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useScrollVisibility } from "@/hook/UseScrollVisibility";
-import { BackButton } from "@/app/components/backButton";
+import { BackButton } from "@/app/components/ui/backButton";
 import { LogOut, Menu } from "lucide-react";
 import { logout } from "@/secure/cookies";
 import { linkAdmin, TMenuList, } from "@/assets/MenuList";

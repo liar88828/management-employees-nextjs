@@ -1,16 +1,4 @@
 import { z } from "zod";
-import { PropertyMap } from "@/interface/types";
-
-export type TestimonialFormState = {
-    prev: PropertyMap<TestimonialInput>
-    errors?: {
-        name?: string[]
-        desc?: string[]
-        social?: string[]
-        jobs?: string[]
-    }
-    message: string
-} | undefined
 
 export const testimonialSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),

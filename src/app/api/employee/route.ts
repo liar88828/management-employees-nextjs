@@ -20,8 +20,9 @@ export async function POST() {
                         email: faker.internet.email(),
                         name: faker.person.fullName(),
                         phone: faker.phone.number(),
-                        status: 'COMPLETED',
+                        statusEmployee: 'COMPLETED',
                         role: ROLE.USER,
+                        imgPass: faker.internet.password({ length: 10 }),
                     },
                 });
                 console.log(userDB, 'userDB');
@@ -29,7 +30,7 @@ export async function POST() {
                 const employeeDB = await tx.employees.create({
                     data: {
                         address: faker.location.streetAddress(),
-                        status: faker.helpers.arrayElement(StatusEmployeeList),
+                        statusEmployee: faker.helpers.arrayElement(StatusEmployeeList),
                         img: faker.image.avatar(),
                         city: faker.location.city(),
                         jobTitle: faker.person.jobTitle(),
@@ -53,14 +54,14 @@ export async function POST() {
                 await tx.skills.create({
                     data: {
                         text: faker.person.jobType(),
-                        employeesId: employeeDB.id,
+                        employeeId: employeeDB.id,
                     },
                 });
 
                 await tx.educations.create({
                     data: {
                         text: faker.company.name(),
-                        employeesId: employeeDB.id,
+                        employeeId: employeeDB.id,
                     },
                 });
 

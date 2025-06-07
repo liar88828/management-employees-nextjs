@@ -1,9 +1,7 @@
 export function setDateForm(date: Date | undefined) {
     if (!date) {
-        return undefined;
+        return new Date(new Date()).toISOString().split('T')[0]
     }
-    const myDate = new Date(date).toISOString().split('T')[0];
-    // console.log(myDate);//2001-05-08
 
-    return myDate
+    return new Date(date).toISOString().split('T')[0]
 }

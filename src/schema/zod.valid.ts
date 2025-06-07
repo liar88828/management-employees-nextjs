@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { z } from "zod";
 
 export const zodPhone = z

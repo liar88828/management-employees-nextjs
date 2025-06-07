@@ -1,8 +1,8 @@
 import type React from "react"
 import { LetterForm } from "@/assets/letter";
 import { toDateIndo } from "@/utils/toDate";
-import { EmployeeUserClient } from "@/interface/entity/employee.model";
 import { Companys } from "@/assets/company";
+import { EmployeeUserClient } from "@/interface/model";
 
 const SuratPanggilanDiterimaKerja: React.FC<{
 

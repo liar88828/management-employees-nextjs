@@ -2,18 +2,17 @@ import React from 'react';
 import { TContext } from "@/interface/server/param";
 import { getContextQuery } from "@/utils/toRequest";
 import { EmployeeCompletePhotoType, STATUS_EMPLOYEE } from "@/interface/enum";
-import { PaginationComponent } from "@/app/components/PaginationComponent";
-import RegistrationSearch from "@/app/admin/registration/components/registrationSearch";
-import { employeeRegistrationPaginationLoader } from "@/app/admin/registration/register.action";
+import { adminRegistrationPageLoader } from "@/action/admin-registration-action";
+import { AdminRegistrationPage } from "@/app/components/AdminRegistrationPage";
 
-async function Page(context: TContext) {
-    const search = await getContextQuery(context, 'search')
+export default async function Page(context: TContext) {
+    const name = await getContextQuery(context, 'search')
     const status = await getContextQuery(context, 'status') as EmployeeCompletePhotoType
     const page = Number(await getContextQuery(context, 'page')) || 1;
     const {
         totalPages,
         employees
-    } = await employeeRegistrationPaginationLoader(search,
+    } = await adminRegistrationPageLoader(name,
         [
             STATUS_EMPLOYEE.Registration,
             STATUS_EMPLOYEE.Reject,
@@ -21,38 +20,14 @@ async function Page(context: TContext) {
             // STATUS_EMPLOYEE.Interview_Reject,
         ],
         page, status)
-    // const globalPageSize = 3; // You can adjust the currentPage size
-    // const totalEmployees = await prisma.employees.count({
-    //     where: {
-    //         User: { userName: { contains: name } },
-    //         status: STATUS_EMPLOYEE.Registration
-    //     }
-    // });
-    //
-    // const employees = await prisma.employees.findMany({
-    //     where: {
-    //         User: { userName: { contains: name } },
-    //         status: STATUS_EMPLOYEE.Registration
-    //     },
-    //     skip: ( currentPage - 1 ) * globalPageSize,
-    //     take: globalPageSize
-    // });
-    //
-    // const totalPages = Math.ceil(totalEmployees / globalPageSize);
-    return (
-        <div className="space-y-2">
-            <RegistrationSearch name={ search }
-                                status={ status }
-                                employees={ employees }
-            />
-            <PaginationComponent currentPage={ page }
-                                 totalPages={ totalPages }
-                                 search={ search }
-                                 status={ status }
-                                 title={ 'registration' }
-            />
-        </div>
+
+    return ( <AdminRegistrationPage name={ name }
+                                    page={ page }
+                                    status={ status }
+                                    employees={ employees }
+                                    totalPages={ totalPages }
+
+        />
+
     );
 }
-
-export default Page;

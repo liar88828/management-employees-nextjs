@@ -53,7 +53,8 @@
   "devDependencies": {
     "daisyui": "4.12.22",
     "fluid-tailwind": "^1.0.4",
-    "prisma": "^6.3.1"
+    "prisma": "^6.3.1",
+    "zod-prisma": "^0.5.4"
   },
   "overrides": {
     "@types/react": "19.0.8",

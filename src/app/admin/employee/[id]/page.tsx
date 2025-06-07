@@ -1,16 +1,13 @@
 import React from 'react';
 import { TContext } from "@/interface/server/param";
 import { getId } from "@/utils/toRequest";
-import { EmptyData } from "@/app/components/PageErrorData";
-
-import { EmployeeCVAdmin } from "@/app/components/employee/client/employeeCVAdmin";
-import { employeeFindById } from "@/app/admin/employee/employee-admin.action";
+import { EmptyData } from "@/app/components/ui/PageErrorData";
+import { AdminEmployeeDetailPage } from "@/app/components/AdminEmployeeDetailPage";
+import { adminEmployeeDetailLoader } from "@/action/admin-employee-action";
 
 export default async function Page(context: TContext) {
     const employeeId = await getId(context);
-    const employee = await employeeFindById({ employeeId })
+    const employee = await adminEmployeeDetailLoader({ employeeId })
     if (!employee) return <EmptyData page={ `Employee Detail ${ employeeId }` } />
-    return <EmployeeCVAdmin employee={ employee } />
-    // <EmployeeDetailServerAdminNew employee={ employee } />
-
+    return <AdminEmployeeDetailPage employee={ employee } />
 }

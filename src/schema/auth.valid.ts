@@ -1,35 +1,16 @@
 import { z } from "zod";
 import { zodEmail, zodPassword, zodPhone } from "@/schema/zod.valid";
-import { PropertyMap } from "@/interface/types";
-import { ResponseAction } from "@/interface/action";
 import { Users } from "@prisma/client";
 
-export const SignupFormSchema: z.ZodType<
+export const registerFormSchema: z.ZodType<
     Pick<Users, 'name' | 'email' | 'phone'>
     & { password: string, confirm: string }
 > = z.object({
-    // address: zodAddress,
     confirm: z.string().min(2),
     email: zodEmail,
-    // id: z.string().uuid().optional(),
     name: z.string().min(2, { message: 'Name must be at least 2 characters long.' }),//.trim()
     password: zodPassword,
     phone: zodPhone,
-})
-.refine((data) => data.password === data.confirm,
-    {
-        message: "Passwords don't match",
-        path: [ "confirm" ],
-    });
-
-export const ForgetFormSchema = z.object({
-    email: zodEmail,
-})
-
-export const ResetFormSchema = z.object({
-    confirm: z.string().min(2),
-    email: zodEmail,
-    password: zodPassword,
 })
 .refine((data) => data.password === data.confirm,
     {
@@ -48,33 +29,6 @@ export const ResetPasswordFormSchema = z.object({
         message: "Passwords don't match",
         path: [ "confirm" ],
     });
-// address: string
-// email: string
-// name: string
-// phone: string
-export type FormStateRegister = ResponseAction<
-        PropertyMap<Pick<Users, 'name' | 'email' | 'phone'>>,
-        {
-            // address?: string[]
-            email?: string[]
-            name?: string[]
-            password?: string[]
-            phone?: string[]
-            confirm?: string[]
-        }
-    >
-    | undefined
-
-export type FormStateLogin =
-    ResponseAction<
-        PropertyMap<Pick<Users, 'email' | 'password'>>,
-        {
-            name?: string[]
-            email?: string[]
-            password?: string[]
-        }
-    >
-    | undefined
 
 export const loginFormSchema = z.object({
     email: zodEmail,
@@ -82,7 +36,4 @@ export const loginFormSchema = z.object({
 })
 export type LoginFormSchemaType = z.infer<typeof loginFormSchema>
 
-export type SignUpFormSchemaType = z.infer<typeof SignupFormSchema>
-export type ForgetFormSchemaType = z.infer<typeof ForgetFormSchema>
-export type ResetPasswordFormSchemaType = z.infer<typeof ResetPasswordFormSchema>
-export type ResetFormSchemaType = z.infer<typeof ResetFormSchema>
+export type RegisterFormSchemaType = z.infer<typeof registerFormSchema>

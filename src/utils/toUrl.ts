@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 type QueryParams = Record<string, string | number | boolean | null | undefined>;
 
 export function toParams<T extends QueryParams>(params: T): string {
@@ -11,8 +13,4 @@ export function toParams<T extends QueryParams>(params: T): string {
     }
 
     return `?${ searchParams.toString() }`;
-}
-
-export function toUrl<T extends QueryParams>(endPoint: string, params: T): string {
-    return `${ endPoint }${ toParams(params) }`;
 }

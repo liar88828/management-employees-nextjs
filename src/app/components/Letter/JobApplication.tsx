@@ -1,6 +1,6 @@
-import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { toDateIndo } from "@/utils/toDate";
 import { Companys } from "@/assets/company";
+import { TEmployeeDB } from "@/interface/model";
 
 export default function JobApplication({ employee, company }: { employee: TEmployeeDB, company: Companys }) {
     return (

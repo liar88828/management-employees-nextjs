@@ -5,8 +5,8 @@ import { cache } from "react";
 import { redirect } from "next/navigation";
 import { decrypt, encrypt, SessionPayload } from "@/secure/jwt";
 import { NextRequest, NextResponse } from "next/server";
-import { UserDB } from "@/interface/entity/user.model";
 import { deleteSession } from "@/secure/cookies";
+import { UserDB } from "@/interface/model";
 
 export type UserSession = { isAuth: boolean, userId: string }
 
@@ -109,7 +109,7 @@ export const getUser = cache(async () => {
     if (!session) return null
     try {
         const user = await prisma.users.findUniqueOrThrow({
-            where: { id: session.userId }
+            where: { id: session.userId, }
         })
         const { password, ...data } = user
 

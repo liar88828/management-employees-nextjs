@@ -15,13 +15,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
     return (
         <BaseLayoutAdmin
             isLogin={ isLogin }
-            notification={ <></>
-                // <div className={ 'flex gap-4' }>
-                //     <StatusIncomingCount status={ STATUS.PENDING } icon={ <LucideClock /> } />
-                //     <StatusIncomingCount status={ STATUS.COMPLETE } icon={ <BookMarked /> } />
-                //     <StatusIncomingCount status={ STATUS.FAIL } icon={ <Ban /> } />
-                // </div>
-            }
+            notification={ <></> }
         >
             { children }
         </BaseLayoutAdmin>

@@ -1,15 +1,12 @@
 'use client'
 import React, { useState } from 'react';
-import { useEmail } from "@/hook/useEmail";
 import { useOtpStore } from "@/store/otp";
-import { validUserByOtpAction } from "@/server/action/reset-password.action";
+import { checkEmailAction, checkOtpAction, validOtpAction } from "@/action/reset-password.action";
 import { useRouter } from "next/navigation";
 
 export default function useOtpInput() {
     const router = useRouter();
-    const { onCheckOtp, onCheckEmail } = useEmail()
     const { store, setData, reset } = useOtpStore()
-    // const [ otp, setOtp ] = useState('')
     const [ error, setError ] = useState<string | null>();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,11 +18,11 @@ export default function useOtpInput() {
         if (store.otp.length !== 6) {
             setError("Please enter a 6-digit OTP.");
         } else {
-            const response = await onCheckOtp({ email: store.email, otp: store.otp });
+            const response = await checkOtpAction({ email: store.email, otp: store.otp });
             if (response.success) {
                 setData({ successOtp: true });
                 setError(null);
-                await validUserByOtpAction(store.email)
+                await validOtpAction(store.email)
                 reset()
                 router.push('/login')
             } else {
@@ -38,7 +35,7 @@ export default function useOtpInput() {
         // let myTime = store.time ?? 0
         let moreTime = Date.now() + 62 * 1000
         setData({ time: moreTime })
-        await onCheckEmail({
+        await checkEmailAction({
             email: store.email,
             time: new Date(moreTime),
             reason: store.reason

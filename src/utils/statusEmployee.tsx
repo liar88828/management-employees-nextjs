@@ -1,8 +1,8 @@
-import { TEmployeeDB } from "@/interface/entity/employee.model";
+import { TEmployeeDB } from "@/interface/model";
 export const statusEmployee = (datas: TEmployeeDB | null) => {
     if (!datas) {
         return ''
     }
 
-    return datas.registration ? datas.status : 'Wait Validation From Admin'
+    return datas.registration ? datas.statusEmployee : 'Wait Validation From Admin'
 }

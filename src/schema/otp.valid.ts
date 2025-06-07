@@ -12,6 +12,3 @@ export const validOtp: z.ZodType<OTPValid> = z.object({
     otp: z.string().min(6,).max(6),
     // reason: z.enum([ 'RESET', 'OTP' ]),
 })
-
-export type ValidGenerateOtpType = z.infer<typeof otpValid>
-export type ValidOtpType = z.infer<typeof validOtp>
