@@ -65,7 +65,7 @@ export function ModalInput(
             >
                 { buttonText }
             </button>
-            <dialog id={ `my_modal_${ title }` }
+            <dialog id={ title }
                     className="modal"
             >
                 <div className="modal-box w-11/12 max-w-5xl">

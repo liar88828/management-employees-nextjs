@@ -1,11 +1,16 @@
 import React, { HTMLAttributes, useEffect, useState } from "react";
 import { LoadingSpin } from "@/app/components/LoadingData";
 import Image from "next/image";
+import { TEmployeeDB } from "@/interface/entity/employee.model";
 
 export const ImageStream: React.FC<{
     filename: string;
-    classNames: HTMLAttributes<string>['className']
-}> = ({ filename, classNames }) => {
+    classNames: HTMLAttributes<string>['className'],
+    employee: TEmployeeDB
+}> = ({
+          filename, classNames,
+          employee
+      }) => {
 
     const [ imageSrc, setImageSrc ] = useState<string | null>(null);
     const [ error, setError ] = useState<string | null>(null);

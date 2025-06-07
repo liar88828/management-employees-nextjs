@@ -25,7 +25,7 @@ export enum STATUS_EMPLOYEE {
 // export const employeeList = [ 'Pending', 'Fail', 'Complete', 'Active', 'Disabled' ]
 export const StatusEmployeeList = [
     'Registration',
-    'Reject',
+    // 'Reject',
     'Accept',
     // 'Interview',
     // 'Interview_Accept',

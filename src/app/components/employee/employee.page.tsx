@@ -7,7 +7,7 @@ export function EmployeePhotoAdmin({ employee }: { employee: TEmployeeDB }) {
     return (
         <div className="grid grid-cols-2 gap-2">
             <EmployeePhotosUploadClientAdmin employee={ employee } type={ 'KTP' } />
-            <EmployeePhotosUploadClientAdmin employee={ employee } type={ "3x4" } />
+            <EmployeePhotosUploadClientAdmin employee={ employee } type={ "Ijazah" } />
         </div>
     );
 }

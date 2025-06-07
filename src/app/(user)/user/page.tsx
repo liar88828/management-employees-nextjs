@@ -35,11 +35,13 @@ async function Page(context: TContext) {
 
                     <div>
                         <p className="font-bold">Note:</p>
-                        { errorArray.map((err, index) => (
-                            <p key={ index } className="text-error text-xs  italic">
-                                - { err.message }
-                            </p>
-                        )) }
+                        {
+                            !employee?.status.includes('Accept') &&
+                            errorArray.map((err, index) => (
+                                <p key={ index } className="text-error text-xs  italic">
+                                    - { err.message }
+                                </p>
+                            )) }
                     </div>
 
                     <div className="card-actions">

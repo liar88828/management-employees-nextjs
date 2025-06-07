@@ -1,5 +1,5 @@
 'use client'
-import { photoIjazah, photoKtp } from "@/interface/entity/employee.model";
+import { photoIjazah, photoKtp, TEmployeeDB } from "@/interface/entity/employee.model";
 import { TypeFile, uploadFileState } from "@/server/action/upload.action";
 import { UserDB } from "@/interface/entity/user.model";
 import React, { useState } from "react";
@@ -15,7 +15,9 @@ export function UploadDocument(
         user,
         imageData,
         title,
+        employee
     }: {
+        employee: TEmployeeDB,
         user: UserDB;
         imageData: string | null;
         title: TypeFile;
@@ -66,7 +68,7 @@ export function UploadDocument(
     };
     const imageEmpty = imageData
         ? imageData
-        : title === 'ijazah'
+        : title === 'Ijazah'
             ? photoIjazah
             : photoKtp;
     // console.log(imageData)
@@ -87,6 +89,7 @@ export function UploadDocument(
                 <ModalInput title={ title } buttonText={ <ImageIcon /> } active={ imageData !== null }>
                     <picture className={ 'flex  justify-center' }>
                         <ImageStream
+                            employee={ employee }
                             filename={ image_document }
                             classNames={ 'w-96 h-auto  mt-2 rounded-lg border object-cover' }
                         />

@@ -8,13 +8,13 @@ import { ImageStream } from "@/app/components/imageStream";
 import { onModalClose, onModalOpen } from "@/app/components/modal";
 
 export function EmployeeShowDocumentSingle(
-    { imageUrl, title, buttonText }
-    : { imageUrl?: string | null, title: string, buttonText: string }) {
+    { imageUrl, title, buttonText, employee }
+    : { imageUrl?: string | null, title: string, buttonText: string, employee: TEmployeeDB | null }) {
     const [ open, setOpen ] = useState(false)
     // const [loading, setLoading] = useState(true)
     const isPhotoData = imageUrl ? `${ url_fastapi }${ imageUrl }` : photoKtp
 
-    if (!imageUrl) {
+    if (!imageUrl || !employee) {
         return <button
             type={ 'button' }
             className="btn btn-info btn-disabled"
@@ -58,7 +58,11 @@ export function EmployeeShowDocumentSingle(
                     <div className="flex justify-center">
                         { open &&
                             <picture>
-                                <ImageStream filename={ isPhotoData } classNames={ 'w-full h-auto' } />
+                                <ImageStream
+                                    employee={ employee }
+                                    filename={ isPhotoData }
+                                    classNames={ 'w-full h-auto' }
+                                />
                                 {/*<Image*/ }
                                 {/*    // decoding="async"*/ }
                                 {/*    unoptimized*/ }
@@ -103,13 +107,16 @@ export function EmployeeShowDocumentSingle(
 }
 
 export function EmployeeShowDocument({ employee }: { employee: TEmployeeDB | null }) {
+
     return ( <>
-            <EmployeeShowDocumentSingle imageUrl={ employee?.photoKtp }
+            <EmployeeShowDocumentSingle employee={ employee }
+                                        imageUrl={ employee?.photoKtp }
                                         title={ `KTP ${ employee?.User.name }` }
                                         buttonText={ 'Open KTP' }
             />
 
-            <EmployeeShowDocumentSingle imageUrl={ employee?.photoIjazah }
+            <EmployeeShowDocumentSingle employee={ employee }
+                                        imageUrl={ employee?.photoIjazah }
                                         title={ `Ijazah ${ employee?.User.name }` }
                                         buttonText={ 'Open Ijazah' }
             />

@@ -86,12 +86,12 @@ export function MyInputNum({
                                title, error, defaultValue,
                                // onChangeAction
                            }: {
-    defaultValue?: string | number,
+    defaultValue?: number,
     title: string,
     error: any,
     // onChangeAction: (value: number) => void,
 }) {
-    const [ displayValue, setDisplayValue ] = useState(formatRupiah(0));
+    const [ displayValue, setDisplayValue ] = useState(formatRupiah(defaultValue ?? 0));
     const [ rawValue, setRawValue ] = useState(defaultValue);
 
     function parseRupiah(value: string) {

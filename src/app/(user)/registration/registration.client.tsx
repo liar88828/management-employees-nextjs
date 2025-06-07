@@ -22,7 +22,6 @@ import {
     registrationSanitizerUser,
     RegistrationUserCreateClient
 } from "@/app/(user)/registration/registration-user-sanitizer";
-import { statusEmployee } from "@/utils/statusEmployee";
 
 export function RegistrationFormClientUser({ employee, method, user, type, error }: {
     user: UserDB,
@@ -40,7 +39,7 @@ export function RegistrationFormClientUser({ employee, method, user, type, error
         defaultValues: registrationSanitizerUser(employee, user)
     });
     const { handleSubmit, formState: { errors, isLoading }, watch, setValue, reset } = methods
-    console.log("registrationFormClientUser", errors)
+    // console.log("registrationFormClientUser", errors)
     // const { clear } = useFormPersist("form-registration-user", { watch, setValue });
     const onSubmit = async (data: any) => {
         setErrorImage(undefined)
@@ -88,18 +87,22 @@ export function RegistrationFormClientUser({ employee, method, user, type, error
                     </div>
                 </form>
             </FormProvider>
-            { error && type === "ktp" && <RegistrationError error={ error } /> }
-            <UploadDocument
-                user={ user }
-                imageData={ employee?.photoKtp ?? null }
-                title={ 'KTP' }
-            />
-            { error && type === "ijazah" && <RegistrationError error={ error } /> }
-            <UploadDocument
-                user={ user }
-                imageData={ employee?.photoIjazah ?? null }
-                title={ 'ijazah' }
-            />
+            { employee && <>
+                { error && type === "ktp" && <RegistrationError error={ error } /> }
+                <UploadDocument
+                    employee={ employee }
+                    user={ user }
+                    imageData={ employee?.photoKtp }
+                    title={ 'KTP' }
+                />
+                { error && type === "ijazah" && <RegistrationError error={ error } /> }
+                <UploadDocument
+                    employee={ employee }
+                    user={ user }
+                    imageData={ employee?.photoIjazah }
+                    title={ 'Ijazah' }
+                />
+            </> }
 
             <button
                 type="button"
@@ -114,7 +117,11 @@ export function RegistrationFormClientUser({ employee, method, user, type, error
                 className={ 'btn btn-success btn-block' }
                 disabled={ employee?.registration }
             >
-                { statusEmployee(employee) }
+                { employee?.registration && employee.status === 'Accept' ?
+                    'Accept'
+                    : employee?.registration ? 'Wait Validation From Admin'
+                        : 'Submit'
+                }
             </button>
 
         </div>

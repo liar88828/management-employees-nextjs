@@ -19,7 +19,7 @@ export async function fromRequest(request: NextRequest,) {
 export async function authApi(request: NextRequest, isAdmin: boolean = false) {
     let session = await getSession() || await fromRequest(request);
 
-    if (isAdmin && session.role !== ROLE.ADMIN) {
+    if (isAdmin && session?.role !== ROLE.ADMIN) {
         throw new ErrorResponse('is Secure Admin Only', 401)
     }
 

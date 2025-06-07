@@ -137,7 +137,6 @@ export async function loginState(formDataRaw: LoginFormSchemaType): Promise<Resp
                 success: false,
                 message: "Validate Error",
                 errors: validatedFields.error.flatten().fieldErrors,
-                response: null
             }
         }
 
@@ -147,16 +146,23 @@ export async function loginState(formDataRaw: LoginFormSchemaType): Promise<Resp
         )
 
         if (!user) {
-            throw new Error('User not exists!')
+            // throw new Error('User not exists!')
+            return {
+                message: 'User not exists!',
+                success: false
+            }
         }
         if (user.status === STATUS_USER.OTP) {
             redirect('/otp')
         }
 
         const validPassword = await bcrypt.compare(valid.password, user.password)
-
         if (!validPassword) {
-            throw new Error('Password is incorrect')
+            // throw new Error('Password is incorrect')
+            return {
+                message: 'Password is incorrect',
+                success: false
+            }
         }
         // 4. Create user session
         await createSession(user)

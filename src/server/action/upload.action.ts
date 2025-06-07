@@ -5,8 +5,9 @@ import path from "path";
 import fs from "fs";
 import { ErrorResponse } from "@/utils/error/ErrorClass";
 import { url_fastapi } from "@/config/nextPublicBaseUrl";
+import { toRandom } from "@/utils/toRandom";
 
-export type TypeFile = 'KTP' | 'ijazah'
+export type TypeFile = 'KTP' | 'Ijazah'
 const allowedExtensions = [ 'jpg', 'jpeg', 'png' ];
 // Validate file size (e.g., max 5 MB)
 const maxSizeInMB = 3;
@@ -49,6 +50,7 @@ export async function uploadFileState(
             where: { userId },
             select: {
                 id: true,
+                photo_iv: true
             }
         })
         if (!employee) {
@@ -58,6 +60,34 @@ export async function uploadFileState(
                 success: false
             }
         }
+        // Ensure we get a guaranteed `string` value for photo_iv
+        let photoIv: string;
+
+        if (!employee.photo_iv) {
+            const updated = await prisma.employees.update({
+                where: { userId },
+                data: {
+                    photo_iv: toRandom({
+                        length: 16,
+                        includeAlphabets: true,
+                        includeDigits: true
+                    })
+                },
+                select: { photo_iv: true }
+            });
+
+            if (!updated.photo_iv) {
+                return {
+                    message: 'Failed to generate image encryption IV.',
+                    success: false
+                };
+            }
+
+            photoIv = updated.photo_iv;
+        } else {
+            photoIv = employee.photo_iv;
+        }
+
         // Validate file extension
         const fileExtension = imageFile.name.split('.').pop()?.toLowerCase();
         if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
@@ -79,6 +109,7 @@ export async function uploadFileState(
         formData.append("name", userName);
         formData.append("user_id", userId);
         formData.append("type_image", typeFile);
+        formData.append("iv", photoIv); // now safely set
         // formData.append("iv", toRandom({
         //     length: 8,
         //     includeAlphabets: true,
@@ -104,7 +135,7 @@ export async function uploadFileState(
                 where: { userId: userId },
                 data: {
                     photoKtp: typeFile === 'KTP' ? data.full_path : undefined,
-                    photoIjazah: typeFile === 'ijazah' ? data.full_path : undefined,
+                    photoIjazah: typeFile === 'Ijazah' ? data.full_path : undefined,
                 }
             });
         }
@@ -156,7 +187,7 @@ export async function uploadFileAction(
                 data:
                     typeFile === 'KTP'
                         ? { photoKtp: data.full_path }
-                        : typeFile === 'ijazah'
+                        : typeFile === 'Ijazah'
                             ? { photoIjazah: data.full_path }
                             : {},
             });

@@ -1,5 +1,5 @@
 'use client';
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import useFormPersist from "react-hook-form-persist";
@@ -11,19 +11,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginFormSchema, LoginFormSchemaType } from "@/schema/auth.valid";
 
 export default function LoginForm() {
+    const searchParam = useSearchParams()
+    const message = searchParam.get('message') ?? ''
+
+    const [ getMessage, setGetMessage ] = useState('')
     const methods = useForm<LoginFormSchemaType>({
         resolver: zodResolver(loginFormSchema),
     });
     const { handleSubmit, formState: { errors, isLoading }, watch, setValue, reset } = methods
     const { clear } = useFormPersist("auth-login", { watch, setValue, exclude: [ 'password' ] });
-    const searchParam = useSearchParams()
-    const message = searchParam.get('message')
+
     const onSubmit = async (data: any) => {
         const response = await loginState(data);
         if (response.success) {
             clear()
             reset()
             toast.success(response.message);
+            setGetMessage(response.message)
             if (response.response.role === 'ADMIN') {
                 redirect('/admin')
             } else if (response.response.role === 'USER') {
@@ -31,6 +35,8 @@ export default function LoginForm() {
             }
         } else {
             toast.error(response.message);
+            setGetMessage(response.message)
+
         }
     }
     console.log(errors)
@@ -38,12 +44,13 @@ export default function LoginForm() {
         <div className="card bg-base-200 max-w-xl mt-10">
             <FormProvider { ...methods }>
                 <form onSubmit={ handleSubmit(onSubmit) } className="card-body">
-                    <h2 className="card-title">Login { message &&
-                        <span className={ 'text-error' }>{ message }</span> }</h2>
-
+                    <div className="">
+                        <h2 className="card-title">Login </h2>
+                        <p className={ 'text-error' }>{ message }</p>
+                        <p className={ 'text-error' }>{ getMessage }</p>
+                    </div>
                     <InputEmail title={ 'email' } keys={ 'email' } />
                     <InputPassword title={ 'password' } keys={ 'password' } />
-
                     <div className="card-actions">
                         <button
                             disabled={ isLoading }

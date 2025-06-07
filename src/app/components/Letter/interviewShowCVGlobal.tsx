@@ -1,8 +1,8 @@
 'use client'
 import { TEmployeeDB } from "@/interface/entity/employee.model";
 import { XIcon } from "lucide-react";
-import { EmployeeCV } from "@/app/components/Letter/cv/employeeCV";
 import React from "react";
+import { EmployeeCV } from "@/app/components/Letter/cv/EmployeeCVGlobal";
 
 export function InterviewShowCVGlobal({ employee }: { employee: TEmployeeDB | null }) {
     if (!employee) {

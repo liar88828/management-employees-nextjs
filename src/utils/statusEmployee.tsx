@@ -3,5 +3,6 @@ export const statusEmployee = (datas: TEmployeeDB | null) => {
     if (!datas) {
         return ''
     }
-    return datas.registration ? 'Wait Validation From Admin' : datas.status
+
+    return datas.registration ? datas.status : 'Wait Validation From Admin'
 }

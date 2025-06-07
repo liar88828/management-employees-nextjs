@@ -1,4 +1,5 @@
 import { Employees } from "@prisma/client";
+import { TEmployeeDB } from "@/interface/entity/employee.model";
 
 export type EmployeeClientExample = Employees & {
     educations: { text: string } [],
@@ -38,7 +39,7 @@ export const _employeeClientExample = {
     // ],
 };
 // : RegistrationDatabaseCreateServer & { status: 'Create' }
-export const employeeServerExample = {
+export const employeeServerExample: TEmployeeDB = {
     userId: "",
     // userName: "Jane Doe",
     // email: "janedoe@example.com",
@@ -58,13 +59,44 @@ export const employeeServerExample = {
     img: "https://example.com/images/janedoe.jpg",
     // country: "USA",
     registration: false,
-    educations: [
-        { text: "Master's Degree in Software Engineering", },
+    photo_iv: "",
+    id: "",
+    photoKtp: "",
+    photoIjazah: "",
+    createdAt: new Date(),
+    sendEmail: 123,
+    updatedAt: new Date(),
+    User: {
+        id: "",
+        status: "",
+        phone: "",
+        role: "",
+        name: "",
+        email: "",
+    },
+    Educations: [
+        {
+            text: "",
+            id: 1,
+            employeesId: ""
+        },
     ],
-    skills: [
-        { text: "Python" },
-        { text: "Machine Learning" },
-        { text: "Data Analysis" },
+    Skills: [
+        {
+            text: "Python",
+            employeesId: "",
+            id: 1,
+        },
+        {
+            text: "Machine Learning",
+            employeesId: "",
+            id: 1,
+        },
+        {
+            text: "Data Analysis",
+            employeesId: "",
+            id: 1,
+        },
     ],
     // languages: [
     //     { text: "English" },

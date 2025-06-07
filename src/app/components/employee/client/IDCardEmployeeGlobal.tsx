@@ -19,11 +19,13 @@ export default function IDCardEmployeeGlobal(
             >
                 <div
                     ref={ contentRef }
-                    className=" w-[9.5cm] print:h-[12cm] print:w-[9.5cm]
+                    // border border-black
+                    className=" w-[9.5cm] print:h-[13cm] print:w-[9.5cm]
                      print:shadow-none
                      bg-white rounded-lg shadow-lg overflow-hidden"
                 >
-                    {/* Card Header */ }
+
+                {/* Card Header */ }
                     <div className="bg-blue-600 p-4 text-center">
                         <h1 className="text-white text-2xl font-bold">{ company.name }</h1>
                         <p className="text-blue-100">Employee Interview</p>

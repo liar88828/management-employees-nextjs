@@ -28,7 +28,7 @@ function ShowImage({ imagePreview, type, employee }: {
         </>
     }
 
-    if (type === "ijazah")
+    if (type === "Ijazah")
         return (
             <>
                 {/* eslint-disable-next-line @next/next/no-img-element */ }
