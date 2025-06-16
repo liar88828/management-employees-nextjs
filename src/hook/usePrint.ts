@@ -2,6 +2,7 @@
 import { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 
+
 export function usePrint() {
 	const [ isPrinting, setIsPrinting ] = useState(false)
 	const contentRef = useRef<HTMLDivElement>(null);
@@ -50,16 +51,16 @@ export function usePrint() {
 // }
 
 // Fungsi untuk menunggu semua gambar dalam container selesai dimuat
-async function waitForImagesToLoad(container: HTMLElement | null): Promise<void> {
-    if (!container) return;
-
-    const images = container.querySelectorAll("img");
-    const promises = Array.from(images).map((img) => {
-        if (img.complete) return Promise.resolve();
-        return new Promise<void>((resolve) => {
-            img.onload = () => resolve();
-            img.onerror = () => resolve(); // Tetap resolve walaupun error agar tidak hang
-        });
-    });
-    await Promise.all(promises);
-}
+// async function waitForImagesToLoad(container: HTMLElement | null): Promise<void> {
+//     if (!container) return;
+//
+//     const images = container.querySelectorAll("imageData");
+//     const promises = Array.from(images).map((img) => {
+//         if (img.complete) return Promise.resolve();
+//         return new Promise<void>((resolve) => {
+//             img.onload = () => resolve();
+//             img.onerror = () => resolve(); // Tetap resolve walaupun error agar tidak hang
+//         });
+//     });
+//     await Promise.all(promises);
+// }

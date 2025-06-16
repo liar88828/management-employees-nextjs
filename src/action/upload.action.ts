@@ -1,9 +1,10 @@
 "use server";
-import { revalidatePath } from "next/cache";
-import { prisma } from "@/config/prisma";
-import path from "path";
-import fs from "fs";
 import { url_fastapi } from "@/config/nextPublicBaseUrl";
+import { prisma } from "@/config/prisma";
+import fs from "fs";
+import { revalidatePath } from "next/cache";
+import path from "path";
+
 
 export type TypeFile = 'KTP' | 'Ijazah'
 const allowedExtensions = [ 'jpg', 'jpeg', 'png' ];
@@ -11,11 +12,11 @@ const allowedExtensions = [ 'jpg', 'jpeg', 'png' ];
 const maxSizeInMB = 3;
 const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
 export type ResponseUploadEncrypt = {
-    message: string
-    file_path: string
-    full_path: string
-    success: true
-    detail: string
+	message: string
+	file_path: string
+	full_path: string
+	success: true
+	detail: string
 }
 // {
 //     message: 'File saved successfully',
@@ -25,136 +26,208 @@ export type ResponseUploadEncrypt = {
 // }
 
 export async function uploadFileState({ userId, from, typeFile, imageFile, userName }: {
-    typeFile: TypeFile,
-    userId: string,
-    from: string,
-    imageFile: File,
-    userName: string,
+	typeFile: TypeFile,
+	userId: string,
+	from: string,
+	imageFile: File,
+	userName: string,
 }): Promise<{ success: boolean, message: string }> {
-    try {
-        const UserDb = await prisma.users.findUnique({
-            where: { id: userId },
-            select: { imgPass: true }
-        })
+	try {
+		const UserDB = await prisma.users.findUnique({
+			where: { id: userId },
+			select: {
+				imgPass: true,
+				Employees: {
+					select: {
+						id: true,
+						ImageEmployee: true
+					}
+				}
+			}
+		})
 
-        if (!UserDb) {
-            // throw new Error('User Employee does not exist')
-            return {
-                message: 'Upload File User Employee does not exist',
-                success: false
-            }
-        }
+		if (!UserDB || !UserDB?.Employees || !UserDB?.Employees.ImageEmployee) {
+			// throw new Error('User Employee does not exist')
+			return {
+				message: 'Upload File User Employee does not exist',
+				success: false
+			}
+		}
 
-        // Validate file extension
-        const fileExtension = imageFile.name.split('.').pop()?.toLowerCase();
-        if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
-            return {
-                message: `Invalid file type. Allowed types: ${ allowedExtensions.join(', ') }`,
-                success: false
-            };
-        }
+		// Validate file extension
+		const fileExtension = imageFile.name.split('.').pop()?.toLowerCase();
+		if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+			return {
+				message: `Invalid file type. Allowed types: ${ allowedExtensions.join(', ') }`,
+				success: false
+			};
+		}
 
-        if (imageFile.size > maxSizeInBytes) {
-            return {
-                message: `File size exceeds ${ maxSizeInMB } MB limit.`,
-                success: false
-            };
-        }
+		if (imageFile.size > maxSizeInBytes) {
+			return {
+				message: `File size exceeds ${ maxSizeInMB } MB limit.`,
+				success: false
+			};
+		}
 
-        const formData = new FormData();
-        formData.append("file", imageFile);
-        formData.append("name", userName);
-        formData.append("user_id", userId);
-        formData.append("type_image", typeFile);
-        formData.append("password_image", UserDb.imgPass); // now safely set
-        // formData.append("iv", toRandom({
-        //     length: 8,
-        //     includeAlphabets: true,
-        //     includeDigits: true
-        // }));
+		const formData = new FormData();
+		formData.append("file", imageFile);
+		formData.append("name", userName);
+		formData.append("user_id", userId);
+		formData.append("type_image", typeFile);
+		formData.append("password_image", UserDB.imgPass); // now safely set
+		// formData.append("iv", toRandom({
+		//     length: 8,
+		//     includeAlphabets: true,
+		//     includeDigits: true
+		// }));
 
-        // console.log(formData)
-        const response = await fetch(`${ url_fastapi }/images/`, {
-            method: "POST",
-            body: formData,
-        })
-        const data: ResponseUploadEncrypt = await response.json()
-        console.log(data, 'data')
-        if (!data.success) {
-            // throw new Error(`Error uploading file: ${ typeFile } : ${ data.detail }`)
-            return {
-                message: `Error uploading file: ${ typeFile } : ${ data.detail }`,
-                success: false
-            }
-        }
-        if (from === 'employee') {
-            await prisma.employees.update({
-                where: { userId: userId },
-                data: {
-                    photoKtp: typeFile === 'KTP' ? data.full_path : undefined,
-                    photoIjazah: typeFile === 'Ijazah' ? data.full_path : undefined,
-                }
-            });
-        }
-        revalidatePath("/");
-        return {
-            message: `Success Upload ${ typeFile }`,
-            success: true
-        }
-    } catch (error) {
-        if (error instanceof Error) {
-            console.log(error.message);
-            // return errors.message
-            return {
-                message: `Fail Upload : ${ error.message }`,
-                success: false
-            }
-        }
-        return {
-            message: `Fail Upload : ${ typeFile }`,
-            success: false
-        }
-    }
+		// console.log(formData)
+		const response = await fetch(`${ url_fastapi }/images/`, {
+			method: "POST",
+			body: formData,
+		})
+		const data: ResponseUploadEncrypt = await response.json()
+		// console.log(data, 'data')
+		if (!data.success) {
+			// throw new Error(`Error uploading file: ${ typeFile } : ${ data.detail }`)
+			return {
+				message: `Error uploading file: ${ typeFile } : ${ data.detail }`,
+				success: false
+			}
+		}
+		if (from === 'employee') {
+			await prisma.imageEmployee.update({
+				where: { id: UserDB?.Employees?.ImageEmployee.id },
+				data: {
+					photoKtp: typeFile === 'KTP' ? data.full_path : undefined,
+					photoIjazah: typeFile === 'Ijazah' ? data.full_path : undefined,
+				}
+			});
+		}
+		revalidatePath("/");
+		return {
+			message: `Success Upload ${ typeFile }`,
+			success: true
+		}
+	} catch (error) {
+		if (error instanceof Error) {
+			console.log(error.message);
+			// return errors.message
+			return {
+				message: `Fail Upload : ${ error.message }`,
+				success: false
+			}
+		}
+		return {
+			message: `Fail Upload : ${ typeFile }`,
+			success: false
+		}
+	}
 }
 
 export const saveImage = async (
-    imageFile: File,
-    pathImage: string,
+	imageFile: File,
+	pathImage: string,
 ) => {// Get the image file from the form prevData
-    if (!imageFile) {
-        throw new Error('Image is required')
-    }
+	if (!imageFile) {
+		throw new Error('Image is required')
+	}
 
-    // Save the image file locally (You can also upload it to a cloud storage service like AWS S3, Cloudinary, etc.)
-    const filePath = path.join(process.cwd(), 'public', pathImage);
+	// Save the image file locally (You can also upload it to a cloud storage service like AWS S3, Cloudinary, etc.)
+	const filePath = path.join(process.cwd(), 'public', pathImage);
 
-    // Ensure the 'uploads' directory exists
-    if (!fs.existsSync(path.dirname(filePath))) {
-        fs.mkdirSync(path.dirname(filePath), { recursive: true });
-    }
+	// Ensure the 'uploads' directory exists
+	if (!fs.existsSync(path.dirname(filePath))) {
+		fs.mkdirSync(path.dirname(filePath), { recursive: true });
+	}
 
-    // Save the image file to the local filesystem
-    const buffer = Buffer.from(await imageFile.arrayBuffer());
-    fs.writeFileSync(filePath, buffer);
-    return pathImage
+	// Save the image file to the local filesystem
+	const buffer = Buffer.from(await imageFile.arrayBuffer());
+	fs.writeFileSync(filePath, buffer);
+	return pathImage
 }
 export const deleteImage = async (imagePath: string) => {
-    // Get the absolute file path
-    const filePath = path.join(process.cwd(), 'public', imagePath);
+	// Get the absolute file path
+	const filePath = path.join(process.cwd(), 'public', imagePath);
 
-    // Check if the file exists
-    if (fs.existsSync(filePath)) {
-        // Delete the file
-        fs.unlinkSync(filePath);
-        console.log(`File ${ imagePath } deleted successfully.`);
-    }
-    // else {
-    //     throw new Error(`File ${ imagePath } not found.`);
-    // }
+	// Check if the file exists
+	if (fs.existsSync(filePath)) {
+		// Delete the file
+		fs.unlinkSync(filePath);
+		console.log(`File ${ imagePath } deleted successfully.`);
+	}
+	// else {
+	//     throw new Error(`File ${ imagePath } not found.`);
+	// }
 };
 export const updateImage = async (imageFile: File, imagePath: string, oldImagePath?: string | null) => {
-    if (oldImagePath) {
-        await deleteImage(oldImagePath)
-    }
-    return saveImage(imageFile, imagePath);
+	if (oldImagePath) {
+		await deleteImage(oldImagePath)
+	}
+	return saveImage(imageFile, imagePath);
+}
+
+export async function uploadImageEmployeeProfile(
+	idUser: string,
+	imageFile: File,
+	method: string,) {
+	try {
+		const extension = imageFile?.name.split('.').pop(); // get file extension
+		const isImage = typeof imageFile === 'object'
+		const imagePath = imageFile ? `/uploads/user_profile_${ idUser }.${ extension }` : null
+		if (!imagePath || !isImage) {
+			return {
+				message: 'Please Add Image',
+				success: false
+			}
+		}
+		// console.log('will execute database employee')
+		const employeeDB = await prisma.employees.findUnique({ where: { userId: idUser } })
+		if (!employeeDB) {
+			return {
+				message: `Employee profile does not exist`,
+				success: false
+			}
+		}
+		// console.log('will execute database image')
+		const uploadEmployee = await prisma.imageEmployee.upsert({
+			where: { employeeId: employeeDB.id },
+			create: {
+				employeeId: employeeDB.id,
+				photoProfile: imagePath
+			},
+			update: {
+				photoProfile: imagePath
+			}
+		})
+		revalidatePath("/");
+		if (!uploadEmployee) {
+			return {
+				message: 'Fail uploading image',
+				success: false
+			}
+		}
+		const pathImage = await saveImage(imageFile, imagePath)
+		// } else {
+		// 	await updateImage(imageFile, imagePath)
+		return {
+			// data: { path: pathImage },
+			message: 'Successfully uploaded image',
+			success: true
+		}
+
+	} catch (e) {
+		if (e instanceof Error) {
+			console.log(e)
+			return {
+				message: 'Something wrong ',
+				success: false
+			}
+		}
+		return {
+			message: 'Something wrong server',
+			success: false
+		}
+	}
 }

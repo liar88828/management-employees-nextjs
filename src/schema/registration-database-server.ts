@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { zodAddress, zodPhone } from "@/schema/zod.valid";
+
+
 export const registrationDatabaseCreateServer = z.object({
     userName: z.string().min(2).max(100),
     userPhone: zodPhone,
@@ -12,17 +14,17 @@ export const registrationDatabaseCreateServer = z.object({
     city: z.string().min(2).max(100),
     postalCode: z.string().min(2).max(100),
     workTime: z.string().min(2),//[ "Full-Time", "Part-Time" ]
-    skills: z.array(z.object({
-        text: z.string().min(2).max(100),
-    })),
-    educations: z.array(z.object({
-        text: z.string().min(2).max(100),
-    })),
+	// skills: z.array(z.object({
+	//     text: z.string().min(2).max(100),
+	// })),
+	// educations: z.array(z.object({
+	//     text: z.string().min(2).max(100),
+	// })),
     registration: z.boolean(),
     salary: z.number(),
     notes: z.string(),
     userId: z.string(),
-    img: z.string().min(2),
+	// img: z.string().min(2),
 })
 export type RegistrationDatabaseCreateServer = z.infer<typeof registrationDatabaseCreateServer>;
 
@@ -43,6 +45,6 @@ export const registrationDatabaseUpdateServer = z.object({
         text: z.string().min(2).max(100),
     })),
     userId: z.string(),
-    img: z.string().min(2).optional(),
+	// imageData: z.string().min(2).optional(),
 })
 export type RegistrationDatabaseUpdateServer = z.infer<typeof registrationDatabaseUpdateServer>;

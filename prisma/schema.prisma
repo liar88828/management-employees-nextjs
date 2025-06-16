@@ -33,7 +33,7 @@ generator zod {
 }
 
 model Users {
-  id             String     @id @default(uuid()) /// @zod.uuid()
+  id             String     @id @default(uuid()) /// @zod.uuid().optional()
   name           String /// @zod.min(1)
   phone          String     @unique /// @zod.min(1)
   email          String     @unique /// @zod.email()
@@ -42,10 +42,7 @@ model Users {
   otp            String? /// @zod.min(1)
   otpExpired     DateTime   @default(now())
   imgPass        String /// @zod.min(1)
-  // otpRegenerate DateTime   @default(now())
-  // otpCount      Int        @default(0)
   statusEmployee String     @default("OTP")
-  // Session    Sessions?
   Employees      Employees?
 }
 
@@ -58,60 +55,52 @@ model Users {
 // }
 
 model Employees {
-  id             String       @id @default(uuid()) // Primary key with auto-increment
-  // userName            String
-  // email           String            @unique
-  // phone           String
+  id          String   @id @default(uuid()) /// @zod.uuid().optional()
   /// @zod.min(1)
-  gender         String // Gender (e.g., "Male", "Female", "Other")
-  dateOfBirth    DateTime
-  hireDate       DateTime
+  gender      String // Gender (e.g., "Male", "Female", "Other")
+  dateOfBirth DateTime
+  hireDate    DateTime
   /// @zod.min(1)
-  jobTitle       String // Employee's job position
-  /// @zod.min(1)
-  salary         Int // Employee's salary
-  // managerId      Int? // Foreign key referencing the manager
+  jobTitle    String // Employee's job position
+
   /// @zod.min(1)
   statusEmployee String       @default("Create") // Employment statusEmployee
   registration   Boolean      @default(false) // Employment statusEmployee
-  /// @zod.min(1)
-  address        String
-  /// @zod.min(1)
-  city           String // City where the employee lives
-  /// @zod.min(1)
-  postalCode     String // Postal/ZIP code
+  address        String /// @zod.min(1)
+  city           String /// @zod.min(1)
+  postalCode     String /// @zod.min(1)
   /// @zod.min(1)
   workTime       String // Work Time (e.g., "Full-Time", "Part-Time")
-  /// @zod.min(1)
+  /// @zod.min(0)
   notes          String // Additional notes about the employee
-  /// @zod.min(1)
-  img            String
-  sendEmail      Int          @default(0)
+  /// @zod.min(0)
+  salary         Int
   //
-  // country        String
   Educations     Educations[]
   Skills         Skills[] // Stored as an lists of strings
   //
-  photoKtp       String?
-  photoIjazah    String?
   User           Users        @relation(fields: [userId], references: [id])
   userId         String       @unique
+
+  ImageEmployee ImageEmployee?
   //
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  // ImageAES     ImageAES     @relation(fields: [imageAESId], references: [id])
-  // imageAESId   Int          @unique
+  createdAt     DateTime       @default(now()) /// @zod.optional()
+  updatedAt     DateTime       @updatedAt /// @zod.optional()
 }
 
-// model ImageAES {
-//   id          Int        @id() @default(autoincrement())
-//   photoKtp    String?
-//   photoIjazah String?
-//   iv          String?
-//   Employees   Employees?
-// }
+model ImageEmployee {
+  /// @zod.optional()
+  id             Int       @id() @default(autoincrement())
+  photoProfile   String?
+  photoSignature String?
+  photoKtp       String?
+  photoIjazah    String?
+  Employees      Employees @relation(fields: [employeeId], references: [id])
+  employeeId     String    @unique
+}
 
 model Educations {
+  /// @zod.optional()
   id         Int       @id @default(autoincrement())
   /// @zod.min(1)
   text       String
@@ -121,6 +110,7 @@ model Educations {
 }
 
 model Skills {
+  /// @zod.optional()
   id         Int       @id @default(autoincrement())
   /// @zod.min(1)
   text       String

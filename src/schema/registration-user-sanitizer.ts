@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { zodAddress, zodPhone } from "@/schema/zod.valid";
-import { zodImage } from "@/schema/image";
+
+
 export const registrationCreateClientUser = z.object({
     email: z.string().email("Invalid email address"),
     name: z.string().min(2).max(100),
@@ -12,7 +13,7 @@ export const registrationCreateClientUser = z.object({
     city: z.string().min(5),
     postalCode: z.string().min(5),
     workTime: z.string().min(5),
-    img: zodImage(true),
+	// imageData: zodImage(true),
     skills: z.array(z.object({
         text: z.string().min(2, "Skills must be at least 2 characters"),
     })).min(2),

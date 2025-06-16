@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "open": "next dev & open http://localhost:3000",
-    "migration": "bunx prisma db push"
+    "migration": "bunx prisma db push --force-reset"
   },
   "keywords": [
     "react",
@@ -38,7 +38,6 @@
     "nodemailer": "^6.10.0",
     "postcss": "8.4.49",
     "react": "19.0.0",
-    "react-chartjs-2": "^5.3.0",
     "react-dom": "19.0.0",
     "react-hook-form": "^7.54.2",
     "react-hook-form-persist": "^3.0.0",
@@ -47,6 +46,7 @@
     "server-only": "^0.0.1",
     "tailwindcss": "3.4.17",
     "typescript": "5.7.2",
+    "uuid": "^11.1.0",
     "zod": "^3.24.2",
     "zustand": "^5.0.3"
   },

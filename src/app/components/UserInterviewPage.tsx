@@ -2,11 +2,10 @@
 import { useRouter } from "next/navigation";
 import { STATUS_EMPLOYEE } from "@/interface/enum";
 import toast from "react-hot-toast";
-import IDCardEmployeeGlobal from "@/app/components/IDCardEmployeeGlobal";
-import { exampleCompany } from "@/assets/company";
-import { CVEmployeeModal } from "@/app/components/Letter/cv/EmployeeCVGlobal";
+import { CVEmployeeUser } from "@/app/components/Letter/cv/EmployeeCVGlobal";
 import React from "react";
 import { TEmployeeDB } from "@/interface/model";
+
 
 export function UserInterviewPage({ employee }: {
     employee: TEmployeeDB,
@@ -25,8 +24,8 @@ export function UserInterviewPage({ employee }: {
             <div>
                 {/*bg-base-200/50*/ }
                 <div className="flex flex-col md:flex-row gap-2    ">
-                    <IDCardEmployeeGlobal employee={ employee } company={ exampleCompany } />
-                    <CVEmployeeModal employee={ employee } />
+	                {/*<EmployeeIDCardGlobal employee={ employee } />*/ }
+	                <CVEmployeeUser employee={ employee } />
                 </div>
                 <div>
                     <div className="divider"></div>

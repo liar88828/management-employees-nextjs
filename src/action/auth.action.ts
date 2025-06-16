@@ -9,6 +9,8 @@ import { ROLE, STATUS_USER } from "@/interface/enum";
 import { toRandom } from "@/utils/toRandom";
 import { nodemailerSendOtp } from "@/action/nodemailer.action";
 import { ResponseAction } from "@/interface/model";
+import { revalidatePath } from "next/cache";
+
 
 export async function authRegisterAction(formDataRaw: RegisterFormSchemaType): Promise<ResponseAction> {
 
@@ -73,19 +75,7 @@ export async function authRegisterAction(formDataRaw: RegisterFormSchemaType): P
         })
 
         await nodemailerSendOtp(sendOtp, data.email)
-
-        // 4. Create user session
-        // await createSession(user.id)
-        // await _otpGenerate({
-        //     time: new Date(Date.now() + 60 * 1000),
-        //     // time: new Date(Date.now() + 60 * 60 * 1000),
-        //     email: user.email,
-        //     reason: 'OTP'
-        // })
-
-        // 5. Redirect user
-        // redirect('/sendOtp')
-
+	    revalidatePath('/')
         return {
             success: true,
             message: "Successfully registered!",

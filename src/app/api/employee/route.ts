@@ -5,6 +5,7 @@ import { ROLE, StatusEmployeeList } from "@/interface/enum";
 import { constantGender, constantWorkTime } from "@/assets/constant";
 import { toArrayRange } from "@/utils/toArray";
 
+
 export async function GET() {
     return NextResponse.json({ message: 'test success' })
 }
@@ -31,7 +32,6 @@ export async function POST() {
                     data: {
                         address: faker.location.streetAddress(),
                         statusEmployee: faker.helpers.arrayElement(StatusEmployeeList),
-                        img: faker.image.avatar(),
                         city: faker.location.city(),
                         jobTitle: faker.person.jobTitle(),
                         gender: faker.helpers.arrayElement(constantGender),
@@ -43,11 +43,7 @@ export async function POST() {
                         registration: faker.datatype.boolean(),
                         sendEmail: faker.number.int({ max: 1_000_000 }),
                         userId: userDB.id,
-                        // photo3x4: null,
-                        photoKtp: null,
-                        photoIjazah: null,
                         workTime: faker.helpers.arrayElement(constantWorkTime),
-                        // position: faker.helpers.arrayElement(position),
                     },
                 });
                 console.log(employeeDB, 'employeeDB')

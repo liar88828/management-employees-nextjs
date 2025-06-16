@@ -1,4 +1,5 @@
 export * from "./users"
 export * from "./employees"
+export * from "./imageemployee"
 export * from "./educations"
 export * from "./skills"

@@ -4,7 +4,8 @@ import { revalidatePath } from "next/cache";
 import { ROLE } from "@/interface/enum";
 import { globalPageSize } from "@/config/nextPublicBaseUrl";
 import { adminRegistrationSchema, AdminRegistrationSchemaType } from "@/schema/admin-registration-schema";
-import { EmployeeUserClient, ResponseAction } from "@/interface/model";
+import { EmployeeUserPhotoClient, ResponseAction } from "@/interface/model";
+
 
 export async function adminRegistrationUpdateAction(defaultValue: AdminRegistrationSchemaType): Promise<ResponseAction> {
     try {
@@ -69,25 +70,29 @@ export async function adminRegistrationPageLoader(
                 role: ROLE.USER,
                 name: { contains: search }
             },
-            photoKtp: isComplete,
-            photoIjazah: isComplete,
+	        ImageEmployee: {
+		        photoKtp: isComplete,
+		        photoIjazah: isComplete
+	        }
         }
     });
 
-    const employees = await prisma.employees.findMany({
+	const employees: EmployeeUserPhotoClient[] = await prisma.employees.findMany({
         where: {
             statusEmployee: { in: status },
             User: {
                 role: ROLE.USER,
                 name: { contains: search }
             },
-            photoKtp: isComplete,
-            photoIjazah: isComplete,
-
+	        ImageEmployee: {
+		        photoKtp: isComplete,
+		        photoIjazah: isComplete,
+	        },
         },
         skip: ( page - 1 ) * globalPageSize,
         take: globalPageSize,
         include: {
+	        ImageEmployee: true,
             User: {
                 omit: {
                     password: true,
@@ -97,15 +102,15 @@ export async function adminRegistrationPageLoader(
             }
         }
     })
-    // : EmployeeUserClient[]
-    .then((item): EmployeeUserClient[] => {
-        return item
-        // .map((i) => {
-        //     if (i && i.User) return { ...i, User: i.User }
-        //     return null
-        // })
-        // .filter((i) => i !== null)
-    })
+	// // : EmployeeUserClient[]
+	// .then((item): EmployeeUserClient[] => {
+	//     return item
+	//     // .map((i) => {
+	//     //     if (i && i.User) return { ...i, User: i.User }
+	//     //     return null
+	//     // })
+	//     // .filter((i) => i !== null)
+	// })
 
     const totalPages = Math.ceil(totalEmployees / globalPageSize);
     // console.log( totalPages,'totalPages')

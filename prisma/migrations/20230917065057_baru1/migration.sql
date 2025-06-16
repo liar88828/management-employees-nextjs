@@ -7,7 +7,10 @@ CREATE TABLE `SemuaProducts`
     `jenis`      VARCHAR(100) NOT NULL,
     `harga`      MEDIUMINT    NOT NULL,
     `jumlah`     MEDIUMINT    NOT NULL,
-    `img`        VARCHAR(191) NOT NULL,
+    ` imageData ` VARCHAR
+(
+    191
+) NOT NULL,
     `keterangan` TEXT         NOT NULL,
     `created_at` DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3)  NOT NULL,
@@ -54,7 +57,10 @@ CREATE TABLE `Products`
     `nama`       VARCHAR(100) NOT NULL,
     `lokasi`     VARCHAR(100) NOT NULL,
     `jenis`      VARCHAR(100) NOT NULL,
-    `img`        VARCHAR(100) NOT NULL,
+    ` imageData ` VARCHAR
+(
+    100
+) NOT NULL,
     `harga`      MEDIUMINT    NOT NULL,
     `jumlah`     MEDIUMINT    NOT NULL,
     `keterangan` TEXT         NOT NULL,
@@ -74,7 +80,10 @@ CREATE TABLE `Travels`
     `lokasi`     VARCHAR(191) NOT NULL,
     `jenis`      VARCHAR(191) NOT NULL,
     `harga`      MEDIUMINT    NOT NULL,
-    `img`        VARCHAR(191) NOT NULL,
+    ` imageData ` VARCHAR
+(
+    191
+) NOT NULL,
     `keterangan` TEXT         NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -90,7 +99,7 @@ CREATE TABLE `Banks`
     `no`         VARCHAR(191) NOT NULL,
     `lokasi`     VARCHAR(191) NOT NULL,
     `jenis`      VARCHAR(191) NOT NULL,
-    `img`        TEXT         NOT NULL,
+    ` imageData ` TEXT NOT NULL,
     `keterangan` TEXT         NOT NULL,
 
     PRIMARY KEY (`id`)
