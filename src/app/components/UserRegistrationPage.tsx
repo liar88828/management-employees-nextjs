@@ -13,7 +13,7 @@ import {
 	InputTextArea,
 	InputTextDynamic
 } from "@/app/components/ui/FormComponent";
-import { constantGender, constantWorkTime } from "@/assets/constant";
+import { constantGenderIndo, constantWorkTimeIndo } from "@/assets/constant";
 import { UploadDocument } from "@/app/components/ui/upload-document";
 import { employeeUpsertUserAction, registrationFinishedState } from "@/action/user-registration-action";
 import { RegistrationError } from "@/app/components/ui/ErrorComponent";
@@ -43,10 +43,10 @@ export function UserRegistrationPage({ employee, method, user, type, error }: {
 		defaultValues: {
 			address: employee?.address ?? '',
 			city: employee?.city ?? '',
-			gender: employee?.gender ?? 'Male',
+			gender: employee?.gender ?? 'Laki-laki',
 			jobTitle: employee?.jobTitle ?? '',
 			postalCode: employee?.postalCode ?? '',
-			workTime: employee?.workTime ?? 'Part-Time',
+			workTime: employee?.workTime ?? 'Paruh Waktu',
 			skills: employee?.Skills.map((item) => ( { text: item.text ?? '' } )) ?? [ { text: '' } ],
 			educations: employee?.Educations.map((item) => ( { text: item.text ?? '' } )) ?? [ { text: '(2007 - 2014) SDN Ngijo 1 ' } ],
 			experiences: employee?.Experiences.map((item) => ( { text: item.text ?? '' } )) ?? [ { text: '(2020 - 2021) Bekerja di PT...' } ],
@@ -95,31 +95,31 @@ export function UserRegistrationPage({ employee, method, user, type, error }: {
 	}
 
 	return (
-		<div className={ 'card bg-base-200' }>
-			<div className="card-body ">
-				<div className="">
-					<h1 className={ 'card-title' }>Registration User </h1>
-					<p className={ 'text-error text-sm' }>{ errorMessage }</p>
-					{/*<p className={ 'text-success text-sm' }>{ message }</p>*/ }
+		<div className="card bg-base-200">
+			<div className="card-body">
+				<div>
+					<h1 className="card-title">Registrasi Karyawan</h1>
+					<p className="text-error text-sm">{ errorMessage }</p>
+					{/*<p className="text-success text-sm">{message}</p>*/ }
 				</div>
 				<div className="flex flex-col gap-5">
 					{ error && type === 'form' && <RegistrationError error={ error } /> }
 					<FormProvider { ...methods }>
 						<form onSubmit={ handleSubmit(onSubmit) } className="space-y-4">
 							<div className="grid grid-cols-2 gap-4">
-								<InputText title={ 'name' } keys={ 'name' } isDisable={ false } />
-								<InputText title={ 'email' } keys={ 'email' } isDisable={ true } />
-								<InputText title={ 'phone' } keys={ 'phone' } isDisable={ false } />
-								<InputSelect keys={ 'gender' } title={ 'gender' } lists={ constantGender } />
-								<InputDate keys={ 'dateOfBirth' } title={ 'Date Birth' } />
-								<InputText title={ 'Job Title' } keys={ 'jobTitle' } />
-								<InputTextArea title={ 'address' } keys={ 'address' } />
-								<InputText title={ 'city' } keys={ 'city' } />
-								<InputText title={ 'postal code' } keys={ 'postalCode' } />
-								<InputSelect keys={ 'workTime' } title={ 'Work Time' } lists={ constantWorkTime } />
-								<InputTextDynamic keys={ 'educations' } title={ 'Educations' } />
-								<InputTextDynamic keys={ 'skills' } title={ 'Skills' } />
-								<InputTextDynamic keys={ 'experiences' } title={ 'Experiences' } />
+								<InputText title="Nama" keys="name" isDisable={ false } />
+								<InputText title="Email" keys="email" isDisable={ true } />
+								<InputText title="No. Telepon" keys="phone" isDisable={ false } />
+								<InputSelect keys="gender" title="Jenis Kelamin" lists={ constantGenderIndo } />
+								<InputDate keys="dateOfBirth" title="Tanggal Lahir" />
+								<InputText title="Posisi/Jabatan" keys="jobTitle" />
+								<InputTextArea title="Alamat" keys="address" />
+								<InputText title="Kota" keys="city" />
+								<InputText title="Kode Pos" keys="postalCode" />
+								<InputSelect keys="workTime" title="Waktu Kerja" lists={ constantWorkTimeIndo } />
+								<InputTextDynamic keys="educations" title="Pendidikan" />
+								<InputTextDynamic keys="skills" title="Keahlian" />
+								<InputTextDynamic keys="experiences" title="Pengalaman" />
 							</div>
 
 							<div className="form-control mt-6">
@@ -128,40 +128,46 @@ export function UserRegistrationPage({ employee, method, user, type, error }: {
 									className="btn btn-primary"
 									disabled={ isLoading || loading }
 								>
-									{ method === 'POST' ? 'Create' : 'Update' } Employee
+									{ method === 'POST' ? 'Buat' : 'Perbarui' } Karyawan
 								</button>
 							</div>
 						</form>
 					</FormProvider>
-					{ ( employee ) && <>
-						<InputImage imageData={ employee?.ImageEmployee?.photoProfile } title={ 'Image Profile' }
-									idUser={ employee.userId } method={ 'POST' }
-						/>
 
-						{ error && type === "ktp" && <RegistrationError error={ error } /> }
-						<UploadDocument user={ user } imageData={ employee?.ImageEmployee?.photoKtp } title={ 'KTP' } />
+					{ employee && (
+						<>
+							<InputImage
+								imageData={ employee?.ImageEmployee?.photoProfile }
+								title="Foto Profil"
+								idUser={ employee.userId }
+								method="POST"
+							/>
 
-						{ error && type === "ijazah" && <RegistrationError error={ error } /> }
-						<UploadDocument user={ user } imageData={ employee?.ImageEmployee?.photoIjazah }
-										title={ 'Ijazah' }
-						/>
-					</> }
+							{ error && type === 'ktp' && <RegistrationError error={ error } /> }
+							<UploadDocument user={ user } imageData={ employee?.ImageEmployee?.photoKtp } title="KTP" />
+
+							{ error && type === 'ijazah' && <RegistrationError error={ error } /> }
+							<UploadDocument user={ user } imageData={ employee?.ImageEmployee?.photoIjazah }
+							                title="Ijazah"
+							/>
+						</>
+					) }
 
 					<button
 						type="button"
 						onClick={ onComplete }
-						className={ 'btn btn-success btn-block' }
+						className="btn btn-success btn-block"
 						disabled={ employee?.registration }
 					>
-						{ employee?.registration && employee.statusEmployee === 'Accept' ?
-							'Accept'
-							: employee?.registration ? 'Wait Validation From Admin'
-								: 'Submit'
-						}
+						{ employee?.registration && employee.statusEmployee === 'Accept'
+							? 'Diterima'
+							: employee?.registration
+								? 'Menunggu Validasi Admin'
+								: 'Kirim' }
 					</button>
-
 				</div>
 			</div>
 		</div>
+
 	);
 }

@@ -1,11 +1,11 @@
-import { JobApplicationLetter } from "@/app/components/Letter/JobApplication";
+import { JobApplicationLetter_x } from "@/app/components/Letter/JobApplication";
 import React from 'react';
 
 
 function Page() {
 	return (
 		<div>
-			<JobApplicationLetter />
+			<JobApplicationLetter_x />
 		</div>
 	);
 }

@@ -16,18 +16,16 @@ export function CVEmployeeBase(
 ) {
 	const imageProfile = `${ nextPublicBaseUrl }${ employee?.ImageEmployee?.photoProfile }`;
 	return (
-		<div ref={ ref } className="card w-full max-w-3xl bg-white shadow-lg print:shadow-none ">
+		<div ref={ ref } className="card w-full max-w-3xl bg-white shadow-lg print:shadow-none">
 			<div className="card-body">
 				<div className="p-6">
-					{/*justify-between items-center*/ }
-					<div className="flex ">
+					<div className="flex">
 						<div className="flex items-center space-x-4">
 							<div className="w-20 h-20 avatar">
 								<picture>
 									<img
 										loading="lazy"
 										className="rounded-full"
-										// src={ `https://api.dicebear.com/6.x/initials/svg?seed=${ employee.userName }` }
 										src={ imageProfile }
 										alt={ employee.User.name }
 									/>
@@ -35,49 +33,48 @@ export function CVEmployeeBase(
 							</div>
 							<div>
 								<div className="card-title sm:text-2xl text-xl">{ employee.User.name }</div>
-								{/*<p className={ 'sm:text-sm text-xs text-muted-foreground' }>{ employee.id }</p>*/ }
-
+								{/* <p className="sm:text-sm text-xs text-muted-foreground">{employee.id}</p> */ }
 							</div>
 						</div>
-
 					</div>
-					<div className="divider my-1 "></div>
 
-					<div className=" grid gap-6 mt-2">
+					<div className="divider my-4"></div>
+
+					<div className="grid gap-6 mt-2">
 						<section>
-							<h3 className="font-semibold mb-2">Contact Information</h3>
-							{/*grid sm:grid-cols-2*/ }
+							<h3 className="font-semibold mb-2">Informasi Kontak</h3>
 							<div className="grid gap-2 text-sm">
 								<p><strong>Email:</strong> { employee.User.email }</p>
-								<p><strong>Phone:</strong> { toPhone(employee.User.phone) }</p>
-								<p><strong>Birth Date:</strong> { toDateIndo(employee.dateOfBirth) }</p>
-								<p><strong>Address:</strong> { employee.address }</p>
-								<p><strong>City:</strong> { employee.city }</p>
+								<p><strong>No. Telepon:</strong> { toPhone(employee.User.phone) }</p>
+								<p><strong>Tanggal Lahir:</strong> { toDateIndo(employee.dateOfBirth) }</p>
+								<p><strong>Alamat:</strong> { employee.address }</p>
+								<p><strong>Kota:</strong> { employee.city }</p>
 							</div>
 						</section>
 
-						{/*<section>*/ }
-						{/*	<h3 className="font-semibold mb-2 ">Professional Details</h3>*/ }
-						{/*	<div className="grid sm:grid-cols-2 gap-2 text-sm">*/ }
-						{/*		<p><strong>Hire Date :</strong> { toDateIndo(employee.hireDate) }</p>*/ }
-						{/*		<p><strong>Job Title :</strong> { employee.jobTitle }</p>*/ }
-						{/*	</div>*/ }
-
-						{/*</section>*/ }
+						{/* <section>
+          <h3 className="font-semibold mb-2">Detail Profesional</h3>
+          <div className="grid sm:grid-cols-2 gap-2 text-sm">
+            <p><strong>Tanggal Masuk:</strong> {toDateIndo(employee.hireDate)}</p>
+            <p><strong>Posisi/Jabatan:</strong> {employee.jobTitle}</p>
+          </div>
+        </section> */ }
 					</div>
-					<div className="divider my-1 "></div>
-					{/*sm:grid-cols-2*/ }
-					<div className="grid gap-4">
+
+					{/*<div className="divider my-1"></div>*/ }
+
+					<div className="grid gap-4 mt-5">
 						<section>
-							<h3 className="font-semibold mb-2">Education</h3>
+							<h3 className="font-semibold mb-2">Riwayat Pendidikan</h3>
 							<ul className="list-decimal list-inside text-sm space-y-1">
 								{ employee.Educations && employee.Educations.map(({ text }, index) => (
 									<li key={ index }>{ text }</li>
 								)) }
 							</ul>
 						</section>
-						<section className={ ' mt-2 sm:mt-0' }>
-							<h3 className="font-semibold mb-2">Skills</h3>
+
+						<section className="mt-2">
+							<h3 className="font-semibold mb-2">Keahlian Kerja</h3>
 							<ul className="list-decimal list-inside text-sm space-y-1">
 								{ employee.Skills && employee.Skills.map(({ text }, index) => (
 									<li key={ index }>{ text }</li>
@@ -85,8 +82,8 @@ export function CVEmployeeBase(
 							</ul>
 						</section>
 
-						<section>
-							<h3 className="font-semibold mb-2">Experiences</h3>
+						<section className="mt-2">
+							<h3 className="font-semibold mb-2">Pengalaman Kerja</h3>
 							<ul className="list-decimal list-inside text-sm space-y-1">
 								{ employee.Experiences && employee.Experiences.map(({ text }, index) => (
 									<li key={ index }>{ text }</li>
@@ -94,7 +91,6 @@ export function CVEmployeeBase(
 							</ul>
 						</section>
 					</div>
-
 				</div>
 			</div>
 		</div>
@@ -164,7 +160,7 @@ export function UserEmployeeCVModal({ employee }: { employee: TEmployeeDB | null
 	);
 }
 
-export function CVEmployeeUser({ employee }: { employee: TEmployeeDB }) {
+export function CVEmployeePrint({ employee }: { employee: TEmployeeDB }) {
 	const { isPrinting, handlePrint, contentRef } = usePrint()
 	return (
 		<div>

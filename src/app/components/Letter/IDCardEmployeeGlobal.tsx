@@ -19,31 +19,25 @@ export default function EmployeeIDCardGlobal(
 	return (
 		<div>
 			<p>12cm x 9.5cm</p>
-			<div
-				className="p-2 space-y-2"
-			>
+			<div className="p-2 space-y-2">
 				<div
 					ref={ contentRef }
-					// border border-black
-					className=" w-[9.5cm] print:h-[13cm] print:w-[9.5cm]
-                     print:shadow-none
-                     bg-white rounded-lg shadow-lg overflow-hidden"
+					className="w-[9.5cm] print:h-[13cm] print:w-[9.5cm] print:shadow-none bg-white rounded-lg shadow-lg overflow-hidden"
 				>
-
-					{/* Card Header */ }
+					{/* Header Kartu */ }
 					<div className="bg-blue-600 p-4 text-center">
 						<h1 className="text-white text-2xl font-bold">{ company.name }</h1>
-						<p className="text-blue-100">Employee Interview</p>
+						<p className="text-blue-100">Wawancara Karyawan</p>
 					</div>
 
-					{/* Card Body */ }
+					{/* Isi Kartu */ }
 					<div className="p-6">
-						{/* Photo and Edit Button */ }
+						{/* Foto dan Tombol Edit */ }
 						<div className="flex justify-center items-center mb-6">
 							<picture>
 								<img
 									src={ imageProfile }
-									alt="Profile"
+									alt="Foto Profil"
 									className="w-32 h-32 rounded-lg object-cover border-2 border-gray-300"
 								/>
 							</picture>
@@ -51,42 +45,62 @@ export default function EmployeeIDCardGlobal(
 
 						<div className="space-y-4">
 							<div className="text-4xl font-bold text-center">{ employee.User.name }</div>
-							{/*<div className="text-gray-600">{employee.role}</div>*/ }
+							{/* <div className="text-gray-600">{employee.role}</div> */ }
 							<div className="border-t border-b border-gray-200 py-3 space-y-2">
-								{/*<div className="flex justify-between">*/ }
-								{/*    <span className="text-gray-500">ID:</span>*/ }
-								{/*    <span className="font-medium">{employee.id}</span>*/ }
-								{/*</div>*/ }
+								{/* <div className="flex justify-between">
+              <span className="text-gray-500">ID:</span>
+              <span className="font-medium">{employee.id}</span>
+            </div> */ }
 								<div className="flex justify-between">
-									<span className="text-gray-500">Job:</span>
+									<span className="text-gray-500">Pekerjaan:</span>
 									<span className="font-medium">{ employee.jobTitle }</span>
 								</div>
 								<div className="flex justify-between">
-									<span className="text-gray-500">Join :</span>
+									<span className="text-gray-500">Bergabung:</span>
 									<span className="font-medium">{ toDateIndo(employee.createdAt) }</span>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					{/*/!* Card Footer *!/*/ }
-					{/*<div className="bg-gray-50 p-4 text-center border-t border-gray-200">*/ }
-					{/*    <div className="text-sm text-gray-500">*/ }
-					{/*        This ID card is the property of Company Name.<br/>*/ }
-					{/*        If found, please return to 123 Company Street.*/ }
-					{/*    </div>*/ }
-					{/*</div>*/ }
+					{/* Footer Kartu */ }
+					{/* <div className="bg-gray-50 p-4 text-center border-t border-gray-200">
+        <div className="text-sm text-gray-500">
+          Kartu identitas ini adalah milik {company.name}.<br />
+          Jika ditemukan, harap kembalikan ke alamat perusahaan.
+        </div>
+      </div> */ }
 				</div>
-				{/*<button*/ }
-				{/*	onClick={ handlePrint }*/ }
-				{/*	disabled={ isPrinting }*/ }
-				{/*	className={ 'btn btn-info' }*/ }
-				{/*>*/ }
-				{/*	{ isPrinting ? 'Printing...' : <Printer /> }*/ }
-				{/*</button>*/ }
+
+				{/* Tombol Cetak */ }
+				{/* <button
+      onClick={handlePrint}
+      disabled={isPrinting}
+      className="btn btn-info"
+    >
+      {isPrinting ? 'Mencetak...' : <Printer />}
+    </button> */ }
 			</div>
 		</div>
 
+	);
+}
+
+export function IDCardEmployeePrint({ employee }: { employee: TEmployeeDB }) {
+	const { isPrinting, handlePrint, contentRef } = usePrint()
+	return (
+		<div>
+			<EmployeeIDCardGlobal employee={ employee } contentRef={ contentRef } />
+			<div className=" print:hidden gap-2 mt-2 flex items-center">
+				<button
+					onClick={ handlePrint }
+					disabled={ isPrinting }
+					className={ 'btn btn-info' }
+				>
+					{ isPrinting ? 'Printing...' : <Printer /> }
+				</button>
+			</div>
+		</div>
 	);
 }
 

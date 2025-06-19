@@ -53,11 +53,12 @@ export default function JobApplication(
 							</p>
 							<ol className="list-decimal list-inside mt-2 ml-6">
 								{/*<li>Daftar Riwayat Hidup</li>*/ }
-								<li>Surat lamaran pekerjaan;</li>
-								<li>Daftar Riwayat hidup;</li>
-								<li>Fotokopi ijazah</li>
-								<li>Fotokopi sertifikat kursus/pelatihan</li>
-								<li>Fotokopi SKCK;</li>
+								<li>Surat lamaran pekerjaan</li>
+								<li>Surat Riwayat hidup/CV</li>
+								{/*<li>Daftar Riwayat hidup;</li>*/ }
+								<li>Fotokopi Ijazah</li>
+								<li>Fotokopi KTP</li>
+								{/*<li>Fotokopi SKCK;</li>*/ }
 								<li>Pas foto berukuran 3x4.</li>
 							</ol>
 						</div>
@@ -76,7 +77,7 @@ export default function JobApplication(
 	);
 }
 
-export function JobApplicationLetter() {
+export function JobApplicationLetter_x() {
 	return (
 		<div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-2xl text-gray-800">
 			<div className="text-right mb-4">Tangerang, 7 Agustus 2023</div>
@@ -120,7 +121,7 @@ export function JobApplicationLetter() {
 					<li>daftar Riwayat hidup;</li>
 					<li>fotokopi KTP;</li>
 					<li>fotokopi ijazah;</li>
-					<li>fotokopi SKCK;</li>
+					{/*<li>fotokopi SKCK;</li>*/ }
 					<li>pasfoto berukuran 3x4.</li>
 				</ol>
 			</div>

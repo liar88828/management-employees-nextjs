@@ -1,8 +1,5 @@
 'use client'
-import {
-	employeeUpsertUserAction,
-	registrationFinishedState
-} from "@/action/user-registration-action";
+import { employeeUpsertUserAction, registrationFinishedState } from "@/action/user-registration-action";
 import { RegistrationError } from "@/app/components/ui/ErrorComponent";
 import {
 	InputDate,
@@ -83,6 +80,8 @@ export function AdminRegistrationPage({ employee, user, type, error }: {
 		setLoading(false);
 	}
 
+	const statusUser = employee?.registration && employee.statusEmployee === 'Accept' ? 'Accept' : employee?.registration ? 'Wait Validation From Admin' : 'Submit';
+
 	return ( <div className="flex flex-col gap-5">
 			{ error && type === 'form' && <RegistrationError error={ error } /> }
 			<FormProvider { ...methods }>
@@ -133,11 +132,7 @@ export function AdminRegistrationPage({ employee, user, type, error }: {
 				className={ 'btn btn-success btn-block' }
 				disabled={ employee?.registration }
 			>
-				{ employee?.registration && employee.statusEmployee === 'Accept' ?
-					'Accept'
-					: employee?.registration ? 'Wait Validation From Admin'
-						: 'Submit'
-				}
+				{ statusUser }
 			</button>
 
 		</div>
