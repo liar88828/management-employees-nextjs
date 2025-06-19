@@ -17,11 +17,11 @@ import { constantGender, constantWorkTime } from "@/assets/constant";
 import { UploadDocument } from "@/app/components/ui/upload-document";
 import { employeeUpsertUserAction, registrationFinishedState } from "@/action/user-registration-action";
 import { RegistrationError } from "@/app/components/ui/ErrorComponent";
-import { TEmployeeDB, UserDB } from "@/interface/model";
+import { TEmployeeDB, UserAuth } from "@/interface/model";
 
 
 export function UserRegistrationPage({ employee, method, user, type, error }: {
-	user: UserDB,
+	user: UserAuth,
 	employee: TEmployeeDB | null,
 	method: "POST" | 'PUT',
 	error: string,
@@ -48,15 +48,18 @@ export function UserRegistrationPage({ employee, method, user, type, error }: {
 			postalCode: employee?.postalCode ?? '',
 			workTime: employee?.workTime ?? 'Part-Time',
 			skills: employee?.Skills.map((item) => ( { text: item.text ?? '' } )) ?? [ { text: '' } ],
-			educations: employee?.Educations.map((item) => ( { text: item.text ?? '' } )) ?? [ { text: '' } ],
+			educations: employee?.Educations.map((item) => ( { text: item.text ?? '' } )) ?? [ { text: '(2007 - 2014) SDN Ngijo 1 ' } ],
+			experiences: employee?.Experiences.map((item) => ( { text: item.text ?? '' } )) ?? [ { text: '(2020 - 2021) Bekerja di PT...' } ],
 			dateOfBirth: setDateForm(employee?.dateOfBirth) ?? '',
 			name: user.name,
 			email: user.email,
 			phone: user.phone
 		} satisfies RegistrationUserCreateClient
 	});
+
 	const { handleSubmit, formState: { errors, isLoading }, watch, setValue, reset } = methods
 	// const { clear } = useFormPersist("form-registration-user", { watch, setValue });
+
 	const onSubmit = async (data: any) => {
 		setLoading(true);
 		setErrorImage(undefined)
@@ -116,6 +119,7 @@ export function UserRegistrationPage({ employee, method, user, type, error }: {
 								<InputSelect keys={ 'workTime' } title={ 'Work Time' } lists={ constantWorkTime } />
 								<InputTextDynamic keys={ 'educations' } title={ 'Educations' } />
 								<InputTextDynamic keys={ 'skills' } title={ 'Skills' } />
+								<InputTextDynamic keys={ 'experiences' } title={ 'Experiences' } />
 							</div>
 
 							<div className="form-control mt-6">

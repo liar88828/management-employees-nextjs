@@ -1,5 +1,8 @@
 'use client'
-import { employeeUpdateUserAction, registrationFinishedState } from "@/action/user-registration-action";
+import {
+	employeeUpsertUserAction,
+	registrationFinishedState
+} from "@/action/user-registration-action";
 import { RegistrationError } from "@/app/components/ui/ErrorComponent";
 import {
 	InputDate,
@@ -46,6 +49,7 @@ export function AdminRegistrationPage({ employee, user, type, error }: {
 			workTime: employee?.workTime,
 			skills: employee?.Skills.map((item) => ( { text: item.text } )) ?? [ { text: '' } ],
 			educations: employee?.Educations.map((item) => ( { text: item.text } )) ?? [ { text: '' } ],
+			experiences: employee?.Experiences.map((item) => ( { text: item.text } )) ?? [ { text: '' } ],
 			dateOfBirth: setDateForm(employee?.dateOfBirth),
 			name: user.name,
 			email: user.email,
@@ -56,7 +60,7 @@ export function AdminRegistrationPage({ employee, user, type, error }: {
 	const onSubmit = async (data: any) => {
 		setLoading(true);
 		setErrorImage(undefined)
-		const response = await employeeUpdateUserAction(data, employee.id, user)
+		const response = await employeeUpsertUserAction(data, user, employee.id,)
 		if (response.success) {
 			toast.success(response.message);
 		} else {

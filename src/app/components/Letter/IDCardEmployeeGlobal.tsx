@@ -8,7 +8,6 @@ import { Printer, XIcon } from 'lucide-react';
 import React from "react";
 import JobApplication from "@/app/components/Letter/JobApplication";
 
-
 export default function EmployeeIDCardGlobal(
 	{ employee, contentRef }:
 	Readonly<{ employee: TEmployeeDB, contentRef: React.Ref<HTMLDivElement> }>
@@ -97,19 +96,20 @@ export function EmployeeIDCardModal(
 ) {
 
 	const { isPrinting, handlePrint, contentRef } = usePrint()
+	const buttonTitle = "ID Card"
+	const title = `ID Card ${ employee?.User.name }`
+	const keyModal = `my_modal_id_card_${ employee?.id }`;
 
-	if (!employee) {
+	if (!employee || employee.statusEmployee !== 'Accept') {
 		return <button type={ 'button' }
 		               disabled={ true }
 		               className="btn btn-info"
 		               onClick={ () => modalOpen(keyModal) }
 		>
-			Show ID Card
+			{ buttonTitle } (Admin Acc)
 		</button>
 
 	}
-
-	const keyModal = `my_modal_id_card_${ employee.id }`;
 
 	return (
 		<>
@@ -117,13 +117,13 @@ export function EmployeeIDCardModal(
 			        className="btn btn-info"
 			        onClick={ () => modalOpen(keyModal) }
 			>
-				Show ID Card
+				{ buttonTitle }
 			</button>
 			{/*modal-bottom sm:modal-middle */ }
 			<dialog id={ keyModal } className="modal ">
 				<div className="modal-box w-full max-w-3xl bg-base-200 ">
 					<div className="flex justify-between mb-4">
-						<h1>ID Card { employee.User.name }</h1>
+						<h1>{ title }</h1>
 						<button
 							className="btn btn-sm  btn-ghost btn-circle "
 							onClick={ () => modalClose(keyModal) }
@@ -166,19 +166,19 @@ export function EmployeeJobApplicationModal(
 ) {
 
 	const { isPrinting, handlePrint, contentRef } = usePrint()
-
+	const buttonTitle = 'Lamaran Kerja'
+	const keyModal = `my_modal_job_application_${ employee?.id }`;
+	const title = `Surat Lamaran Kerja ${ employee?.User.name }`
 	if (!employee) {
 		return <button type={ 'button' }
 		               disabled={ true }
 		               className="btn btn-info"
 		               onClick={ () => modalOpen(keyModal) }
 		>
-			Show Job Application
+			{ buttonTitle }
 		</button>
 
 	}
-
-	const keyModal = `my_modal_job_application_${ employee.id }`;
 
 	return (
 		<>
@@ -186,22 +186,22 @@ export function EmployeeJobApplicationModal(
 			        className="btn btn-info"
 			        onClick={ () => modalOpen(keyModal) }
 			>
-				Show Job Application
+				{ buttonTitle }
 			</button>
 			{/*modal-bottom sm:modal-middle */ }
 			<dialog id={ keyModal } className="modal ">
 				<div className="modal-box w-full max-w-4xl bg-base-200 ">
 					<div className="flex justify-between mb-4">
-						<h1>ID Card { employee.User.name }</h1>
-						<button
-							className="btn btn-sm  btn-ghost btn-circle "
-							onClick={ () => modalClose(keyModal) }
+						<h1>{ title }</h1>
+						<button className="btn btn-sm  btn-ghost btn-circle "
+						        onClick={ () => modalClose(keyModal) }
 						>
 							<XIcon />
 						</button>
 					</div>
-					<div className="overflow-y-scroll h-96 sm:h-fit">
+					<div className=" ">
 						<JobApplication employee={ employee } contentRef={ contentRef } />
+						{/*<JobApplicationLetter/>*/ }
 					</div>
 					<div className="modal-action">
 						<button

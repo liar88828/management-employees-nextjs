@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "generate": "pnpm dlx prisma generate",
     "open": "next dev & open http://localhost:3000",
-    "migration": "bunx prisma db push --force-reset"
+    "migration": "pnpm dlx prisma db push --force-reset"
   },
   "keywords": [
     "react",
@@ -25,7 +26,7 @@
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
     "autoprefixer": "10.4.20",
-    "bcrypt": "^5.1.1",
+    "bcrypt": "^6.0.0",
     "classnames": "^2.5.1",
     "eslint": "9.17.0",
     "eslint-config-next": "15.1.6",
@@ -48,6 +49,7 @@
     "typescript": "5.7.2",
     "uuid": "^11.1.0",
     "zod": "^3.24.2",
+    "zod-prisma-types": "^3.2.4",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

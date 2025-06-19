@@ -11,11 +11,9 @@ export const ImageEmployeeModel = z.object({
 	employeeId: z.string(),
 })
 
-
 export interface CompleteImageEmployee extends z.infer<typeof ImageEmployeeModel> {
 	Employees: CompleteEmployees
 }
-
 
 /**
  * RelatedImageEmployeeModel contains all relations on your model in addition to the scalars

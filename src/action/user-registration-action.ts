@@ -1,7 +1,7 @@
 'use server'
 import { prisma } from "@/config/prisma";
 import { STATUS_EMPLOYEES } from "@/interface/enum";
-import { ResponseAction, TEmployeeDB, UserClient, UserDB } from "@/interface/model";
+import { ResponseAction, TEmployeeDB, UserAuth, UserClient } from "@/interface/model";
 import { RegistrationUserCreateClient } from "@/schema/registration-user-sanitizer";
 import { ErrorDatabase } from "@/utils/error/ErrorClass";
 import { revalidatePath } from "next/cache";
@@ -12,9 +12,9 @@ import { Prisma } from "@prisma/client";
 import { v4 as uuidv4 } from 'uuid';
 
 
-export async function employeeCreateUserAction(
+export async function _employeeCreateUserAction(
 	{ educations, skills, ...employeeRaw }: RegistrationUserCreateClient,
-	user: UserDB
+	user: UserAuth
 ):
 	Promise<ResponseAction<RegistrationUserCreateClient>> {
 	try {
@@ -96,7 +96,7 @@ export async function employeeCreateUserAction(
 	}
 }
 
-export async function employeeUpdateUserAction(
+export async function _employeeUpdateUserAction(
 	{ skills, educations, ...employeeRaw }: RegistrationUserCreateClient,
 	employeeId: string,
 	user: UserClient
@@ -186,8 +186,8 @@ export async function employeeUpdateUserAction(
 }
 
 export async function employeeUpsertUserAction(
-	{ skills, educations, ...employeeRaw }: RegistrationUserCreateClient,
-	user: UserDB,
+	{ skills, educations, experiences, ...employeeRaw }: RegistrationUserCreateClient,
+	user: UserClient,
 	employeeId?: string,
 ): Promise<ResponseAction<RegistrationUserCreateClient>> {
 
@@ -231,10 +231,12 @@ export async function employeeUpsertUserAction(
 				create: employee,
 				update: employee
 			});
+
 			if (employeeId) {
 				console.log('execute deleteMany')
 				await tx.skills.deleteMany({ where: { employeeId } })
 				await tx.educations.deleteMany({ where: { employeeId } })
+				await tx.experiences.deleteMany({ where: { employeeId } })
 			}
 			console.log('execute skills.createMany')
 
@@ -244,6 +246,7 @@ export async function employeeUpsertUserAction(
 					text
 				} ))
 			})
+
 			console.log('execute educations.createMany')
 			const educationDB = await tx.educations.createMany({
 				data: educations.map(({ text }) => ( {
@@ -251,7 +254,15 @@ export async function employeeUpsertUserAction(
 					text
 				} ))
 			})
-			return { employeeDB, skillDB, educationDB };
+
+			console.log('execute experiences.createMany')
+			const experiencesDB = await tx.experiences.createMany({
+				data: experiences.map(({ text }) => ( {
+					employeeId: employeeDB.id, text
+				} ))
+			})
+
+			return { employeeDB, skillDB, educationDB, experiencesDB };
 		})
 
 		return {
@@ -291,7 +302,7 @@ export async function employeeUpsertUserAction(
 	}
 }
 
-// export async function onUpsertDataUserAction(method: "POST" | "PUT", data: RegistrationUserCreateClient, user: UserDB, idEmployee?: string,):
+// export async function onUpsertDataUserAction(method: "POST" | "PUT", data: RegistrationUserCreateClient, user: UserAuth, idEmployee?: string,):
 // 	Promise<ResponseAction> {
 //
 // 	return employeeUpsertUserAction(data, user, idEmployee,)
@@ -357,6 +368,7 @@ export async function userEmployeeDetailLoader(
 			},
 			// languages: true,
 			Skills: true,
+			Experiences: true,
 			Educations: true,
 		},
 	});

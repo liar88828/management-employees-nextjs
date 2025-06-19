@@ -30,7 +30,7 @@ export function ModalInput(
 		<>
 			<button
 				type="button"
-				className={ `btn join-item  ${ active ? ' btn-info ' : '' } ` }
+				className={ ` btn join-item  ${ active ? ' btn-info  ' : '' } ` }
 				onClick={ () => {
 					modalOpen(title);
 					setOpen(true)

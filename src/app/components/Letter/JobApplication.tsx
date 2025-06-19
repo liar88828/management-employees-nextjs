@@ -3,56 +3,74 @@ import { exampleCompany } from "@/assets/company";
 import { TEmployeeDB } from "@/interface/model";
 import React from "react";
 
-
 export default function JobApplication(
 	{ employee, contentRef }:
 	{ employee: TEmployeeDB, contentRef: React.Ref<HTMLDivElement> }
 ) {
 	const company = exampleCompany
 	return (
-		<div className=" bg-white text-black shadow-lg card w-[210mm] h-[297mm] ">
+		<div ref={ contentRef } className=" bg-white text-black shadow-lg card w-[210mm] h-[297mm] ">
 			<div className="card-body">
-				<h2 className="text-center text-3xl font-bold mb-6">Surat Lamaran Kerja</h2>
-				<p className="text-right">{ employee.city }, { toDateIndo(new Date()) }</p>
-				<p className="mt-4 font-semibold">Hal: Lamaran Kerja</p>
-				<div>
-					<p className="mt-2">Kepada Yth,</p>
-					<p>Manager Personalia</p>
-					<p>PT { company.name }</p>
-					<p>{ company.address }</p>
-					<br />
+				<div className="p-6">
+					<h2 className="text-center text-3xl font-bold mb-6">Surat Lamaran Kerja</h2>
+					<p className="text-right  mb-4">{ employee.city }, { toDateIndo(employee.hireDate) }</p>
+					<div className="mb-4">
+						{/*mt-4 font-semibold*/ }
+						<p className="">Hal: Lamaran Kerja</p>
+					</div>
+					<div className="mb-4">
+						<p>Kepada Yth,</p>
+						{/*<p>Manager Personalia</p>*/ }
+						<p>{ company.name }</p>
+						<p>{ company.address }</p>
+						<br />
+					</div>
+					<div className="mb-4">
+						<p>Dengan hormat,</p>
+						<p className="mt-4 text-justify">
+							Sesuai dengan iklan lowongan pekerjaan dari { company.name },
+							Perusahaan Bapak/Ibu membuka lowongan pekerjaan di bidang { employee.jobTitle }. Melalui
+							surat lamaran ini, saya ingin mengajukan diri untuk melamar di instansi
+							yang Bapak/Ibu pimpin guna mengisi posisi yang dibutuhkan saat ini.
+						</p>
+						<div className="mt-10">
+							<p>Adapun data diri saya sebagai berikut:</p>
+							<ol className="list-disc list-inside ml-6 mt-2 ">
+								<li>Nama: { employee.User.name }</li>
+								<li>Tempat/Tanggal Lahir: { toDateIndo(employee.dateOfBirth) }</li>
+								<li>Nomor Telepon (HP): { employee.User.phone }</li>
+								<li>Alamat: { employee.address }</li>
+							</ol>
+						</div>
+						{/*<p className="mt-4">*/ }
+						{/*	Saya dalam kondisi sehat jasmani dan rohani, serta lancar berbahasa Inggris secara lisan dan tertulis. Saya memiliki pengalaman kerja selama { employee.experience } tahun sebagai { employee.jobTitle}.*/ }
+						{/*</p>*/ }
+						<div className="mt-10">
+							<p className=" text-justify">
+								Berikut ini saya lampirkan beberapa surat keterangan yang sekiranya dapat
+								dijadikan bahan pertimbangan oleh Bapak/Ibu pimpinan:
+
+							</p>
+							<ol className="list-decimal list-inside mt-2 ml-6">
+								{/*<li>Daftar Riwayat Hidup</li>*/ }
+								<li>Surat lamaran pekerjaan;</li>
+								<li>Daftar Riwayat hidup;</li>
+								<li>Fotokopi ijazah</li>
+								<li>Fotokopi sertifikat kursus/pelatihan</li>
+								<li>Fotokopi SKCK;</li>
+								<li>Pas foto berukuran 3x4.</li>
+							</ol>
+						</div>
+
+						<p className="mt-10 text-justify">
+							Demikian surat lamaran pekerjaan ini saya buat dengan sebenar-benarnya dan
+							sejujur-jujurnya. Atas perhatian Bapak/Ibu pimpinan, saya mengucapkan
+							terima kasih.
+						</p>
+						<p className="mt-10">Hormat saya,</p>
+						<p className="mt-10">{ employee.User.name }</p>
+					</div>
 				</div>
-				<p>Dengan hormat,</p>
-				<p className="mt-4">
-					Sesuai dengan iklan lowongan pekerjaan dari PT { company.name },
-					saya mengajukan diri untuk bergabung sebagai { employee.jobTitle } di PT { employee.User.name }.
-				</p>
-				<p className="mt-4">Adapun data diri saya sebagai berikut:</p>
-				<ul className="list-disc ml-6 mt-2">
-					<li>Nama: { employee.User.name }</li>
-					<li>Tempat/Tanggal Lahir: { toDateIndo(employee.dateOfBirth) }</li>
-					<li>Nomor Telepon (HP): { employee.User.phone }</li>
-					<li>Alamat: { employee.address }</li>
-				</ul>
-				<p className="mt-4">
-					Saya dalam kondisi sehat jasmani dan rohani, serta lancar berbahasa Inggris secara lisan dan
-					tertulis.
-					{/*Saya memiliki pengalaman kerja selama { employee.experience } tahun*/ }
-					{/*sebagai { employee.jobTitle}.*/ }
-				</p>
-				<p className="mt-4">Sebagai bahan pertimbangan, saya lampirkan:</p>
-				<ul className="list-disc ml-6 mt-2">
-					<li>Daftar Riwayat Hidup</li>
-					<li>Fotokopi ijazah S1 dan transkrip nilai</li>
-					<li>Fotokopi sertifikat kursus/pelatihan</li>
-					<li>Pas foto terbaru</li>
-				</ul>
-				<p className="mt-4">
-					Besar harapan saya Bapak/Ibu bersedia memberikan kesempatan wawancara,
-					sehingga saya dapat menjelaskan lebih lanjut tentang potensi saya.
-				</p>
-				<p className="mt-6">Hormat saya,</p>
-				<p className="mt-2">{ employee.User.name }</p>
 			</div>
 		</div>
 	);

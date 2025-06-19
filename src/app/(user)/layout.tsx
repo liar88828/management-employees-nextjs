@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
 	const { isLogin, userId, session } = await validSession()
-	console.log(session)
+	// console.log(session)
 	if (session.role === 'ADMIN') {
 		redirect('/admin');
 

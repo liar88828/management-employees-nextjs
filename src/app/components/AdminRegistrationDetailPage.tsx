@@ -1,7 +1,7 @@
 'use client'
 import { adminRegistrationUpdateAction } from "@/action/admin-registration-action";
 import { UserEmployeeDocumentModal } from "@/app/components/AdminEmployeeDetailPage";
-import { UserEmployeeCVModal } from "@/app/components/Letter/cv/EmployeeCVGlobal";
+import { UserEmployeeCVModal } from "@/app/components/Letter/CVGlobal";
 import { InputNum, InputSelect, InputText, InputTextArea } from "@/app/components/ui/FormComponent";
 import { StatusEmployeeList } from "@/interface/enum";
 import { TEmployeeDB } from "@/interface/model";
@@ -11,6 +11,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { EmployeeJobApplicationModal } from "@/app/components/Letter/IDCardEmployeeGlobal";
 
 
 export function AdminRegistrationDetailPage({ employee }: { employee: TEmployeeDB }) {
@@ -93,6 +94,8 @@ export function AdminRegistrationDetailPage({ employee }: { employee: TEmployeeD
 				<Link href={ '/admin/registration' } className={ 'btn' }>Back</Link>
 				<UserEmployeeCVModal employee={ employee } />
 				<UserEmployeeDocumentModal employee={ employee } />
+				<EmployeeJobApplicationModal employee={ employee } />
+
 			</div>
 		</div>
 	);

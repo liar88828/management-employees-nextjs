@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { decrypt, encrypt, SessionPayload } from "@/secure/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { deleteSession } from "@/secure/cookies";
-import { UserDB } from "@/interface/model";
+import { UserAuth } from "@/interface/model";
 
 
 export type UserSession = { isAuth: boolean, userId: string }
@@ -114,7 +114,7 @@ export const getUser = cache(async () => {
 		})
 		const { password, ...data } = user
 
-		return data as UserDB
+		return data as UserAuth
 	} catch (error) {
 		console.log('Failed to fetch user')
 		return null

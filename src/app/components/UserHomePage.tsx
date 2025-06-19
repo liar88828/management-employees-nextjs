@@ -1,7 +1,7 @@
 import { UserEmployeeDocumentModal } from "@/app/components/AdminEmployeeDetailPage";
-import { EmployeeIDCardModal, EmployeeJobApplicationModal } from "@/app/components/IDCardEmployeeGlobal";
-import { UserEmployeeCVModal } from "@/app/components/Letter/cv/EmployeeCVGlobal";
-import { TEmployeeDB, UserDB } from "@/interface/model";
+import { EmployeeIDCardModal, EmployeeJobApplicationModal } from "@/app/components/Letter/IDCardEmployeeGlobal";
+import { UserEmployeeCVModal } from "@/app/components/Letter/CVGlobal";
+import { TEmployeeDB, UserAuth } from "@/interface/model";
 import { statusEmployee } from "@/utils/statusEmployee";
 import { toDateIndo } from "@/utils/toDate";
 import Link from "next/link";
@@ -11,7 +11,7 @@ import React from 'react';
 export function UserHomePage({ employee, message, user }: {
 	employee: TEmployeeDB | null,
 	message?: string,
-	user: UserDB
+	user: UserAuth
 }) {
 	const hasEmployee = Boolean(employee);
 	const employeeStatus = statusEmployee(employee);

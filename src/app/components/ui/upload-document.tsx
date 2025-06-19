@@ -4,7 +4,7 @@ import { ImageStream } from "@/app/components/ui/imageStream";
 import { LoadingSpin } from "@/app/components/ui/LoadingData";
 import { ModalInput } from "@/app/components/ui/ModalComponent";
 import { url_fastapi } from "@/config/nextPublicBaseUrl";
-import { photoIjazah, photoKtp, UserClient, UserDB } from "@/interface/model";
+import { photoIjazah, photoKtp, UserClient, UserAuth } from "@/interface/model";
 import { ImageIcon } from "lucide-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -16,7 +16,7 @@ export function UploadDocument(
 		imageData,
 		title,
 	}: {
-		user: UserDB | UserClient;
+		user: UserClient;
 		imageData: string | null | undefined;
 		title: TypeFile;
 	}) {

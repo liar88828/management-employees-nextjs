@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { STATUS_EMPLOYEE } from "@/interface/enum";
 import toast from "react-hot-toast";
-import { CVEmployeeUser } from "@/app/components/Letter/cv/EmployeeCVGlobal";
+import { CVEmployeeUser } from "@/app/components/Letter/CVGlobal";
 import React from "react";
 import { TEmployeeDB } from "@/interface/model";
 

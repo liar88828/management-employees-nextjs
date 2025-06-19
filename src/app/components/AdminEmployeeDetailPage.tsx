@@ -1,6 +1,6 @@
 'use client'
 import { updateStatus } from "@/action/admin-employee-action";
-import { CVEmployeeBase } from "@/app/components/Letter/cv/EmployeeCVGlobal";
+import { CVEmployeeBase, UserEmployeeCVModal } from "@/app/components/Letter/CVGlobal";
 import { ImageStream } from "@/app/components/ui/imageStream";
 import { modalClose, modalOpen } from "@/app/components/ui/ModalComponent";
 import { url_fastapi } from "@/config/nextPublicBaseUrl";
@@ -10,6 +10,7 @@ import { EmployeeUserPhotoClient, photoKtp, TEmployeeDB } from "@/interface/mode
 import { Printer, XIcon } from "lucide-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { EmployeeIDCardModal, EmployeeJobApplicationModal } from "@/app/components/Letter/IDCardEmployeeGlobal";
 
 
 export function EmployeeShowDocumentSingle(
@@ -17,8 +18,10 @@ export function EmployeeShowDocumentSingle(
 	: { imageUrl?: string | null, title: string, buttonText: string, employee: EmployeeUserPhotoClient | null }) {
 	const [ open, setOpen ] = useState(false)
 	// const [loading, setLoading] = useState(true)
+
 	const isPhotoData = imageUrl ? `${ url_fastapi }${ imageUrl }` : photoKtp
 	const modal_key = `my_modal_document_${ title }`
+
 	if (!imageUrl || !employee) {
 		return <button
 			type={ 'button' }
@@ -40,7 +43,7 @@ export function EmployeeShowDocumentSingle(
 			>
 				{ buttonText }
 			</button>
-			<dialog id={ `my_modal_document_${ title }` } className="modal">
+			<dialog id={ modal_key } className="modal">
 				<div className="modal-box w-11/12 max-w-4xl space-y-4">
 					<div className="flex justify-between">
 						<h3 className="card-title">{ title }</h3>
@@ -98,7 +101,10 @@ export function AdminEmployeeDetailPage({ employee }: { employee: TEmployeeDB })
 				>
 					{ isPrinting ? 'Printing...' : <Printer /> }
 				</button>
+				<UserEmployeeCVModal employee={ employee } />
 				<UserEmployeeDocumentModal employee={ employee } />
+				<EmployeeIDCardModal employee={ employee } />
+				<EmployeeJobApplicationModal employee={ employee } />
 				<EmployeeUpdateStatus employee={ employee } />
 			</div>
 		</>
@@ -111,13 +117,13 @@ export function UserEmployeeDocumentModal({ employee }: { employee: EmployeeUser
 			<EmployeeShowDocumentSingle employee={ employee }
 			                            imageUrl={ employee?.ImageEmployee?.photoKtp }
 			                            title={ `KTP ${ employee?.User.name }` }
-			                            buttonText={ 'Open KTP' }
+			                            buttonText={ 'Show KTP' }
 			/>
 
 			<EmployeeShowDocumentSingle employee={ employee }
 			                            imageUrl={ employee?.ImageEmployee?.photoIjazah }
 			                            title={ `Ijazah ${ employee?.User.name }` }
-			                            buttonText={ 'Open Ijazah' }
+			                            buttonText={ 'Show Ijazah' }
 			/>
 		</>
 	)

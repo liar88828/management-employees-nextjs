@@ -1,7 +1,6 @@
-import { Educations, Employees, ImageEmployee, Skills, Users } from "@prisma/client";
+import { Educations, Employees, Experiences, ImageEmployee, Skills, Users } from "@/generate/zod-test";
 
-
-export type UserDB = Omit<Users, "password">
+export type UserAuth = Omit<Users, "password">
 export type UserClient = Omit<Users, 'password' | 'otp' | 'otpExpired'>;
 export const imageDefault = 'https://dummyimage.com/300x300/000/ffffff.jpg';
 export const photoKtp = 'https://dummyimage.com/400x300/000/ffffff.jpg';
@@ -16,6 +15,7 @@ export type TEmployeeDB = EmployeeUserPhotoClient & {
 	statusEmployee: string | 'UnRegister' | 'Register' | 'Interview' | 'Accept' | 'Reject';
 	Skills: Skills[];
 	Educations: Educations[];
+	Experiences: Experiences[];
 	createdAt: Date;
 	updatedAt: Date;
 }
