@@ -1,16 +1,21 @@
 'use client'
 import { updateStatus } from "@/action/admin-employee-action";
-import { CVEmployeeBase, UserEmployeeCVModal } from "@/app/components/Letter/CVGlobal";
+import { UserEmployeeCVModal } from "@/app/components/Letter/CVGlobal";
 import { ImageStream } from "@/app/components/ui/imageStream";
 import { modalClose, modalOpen } from "@/app/components/ui/ModalComponent";
 import { url_fastapi } from "@/config/nextPublicBaseUrl";
-import { usePrint } from "@/hook/usePrint";
 import { StatusEmployeeList } from "@/interface/enum";
 import { EmployeeUserPhotoClient, photoKtp, TEmployeeDB } from "@/interface/model";
-import { Printer, XIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { EmployeeIDCardModal, EmployeeJobApplicationModal } from "@/app/components/Letter/IDCardEmployeeGlobal";
+import { FormProvider, useForm } from "react-hook-form";
+import { adminRegistrationSchema, AdminRegistrationSchemaType } from "@/schema/admin-registration-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { adminRegistrationUpdateAction } from "@/action/admin-registration-action";
+import { InputNum, InputSelect, InputText, InputTextArea } from "@/app/components/ui/FormComponent";
+import Link from "next/link";
 
 
 export function EmployeeShowDocumentSingle(
@@ -89,25 +94,96 @@ export function EmployeeShowDocumentSingle(
 }
 
 export function AdminEmployeeDetailPage({ employee }: { employee: TEmployeeDB }) {
-	const { isPrinting, handlePrint, contentRef } = usePrint()
+
+	const [ message, setMessage ] = useState('')
+	const [ error, setError ] = useState('')
+	const methods = useForm<AdminRegistrationSchemaType>({
+		resolver: zodResolver(adminRegistrationSchema),
+		defaultValues: {
+			id: employee.id,
+			salary: employee.salary,
+			jobTitle: employee.jobTitle,
+			status: employee.statusEmployee,
+			notes: employee.notes
+		} satisfies  AdminRegistrationSchemaType
+	});
+
+	const { handleSubmit, formState: { isLoading, errors }, reset } = methods
+	const onSubmit = async (data: AdminRegistrationSchemaType) => {
+		const response = await adminRegistrationUpdateAction(data);
+		if (response.success) {
+			reset()
+			toast.success(response.message);
+			setMessage(response.message)
+		} else {
+			toast.error(response.message);
+			setError(response.message)
+		}
+	}
+
+	// const {isPrinting, handlePrint, contentRef} = usePrint()
 	return (
-		<>
-			<CVEmployeeBase employee={ employee } ref={ contentRef } />
-			<div className=" print:hidden gap-2 mt-2 flex items-center">
-				<button
-					onClick={ handlePrint }
-					disabled={ isPrinting }
-					className={ 'btn btn-info' }
-				>
-					{ isPrinting ? 'Printing...' : <Printer /> }
-				</button>
+		<div className={ 'space-y-4 w-auto max-w-4xl ' }>
+
+			<FormProvider { ...methods }>
+				<form onSubmit={ handleSubmit(onSubmit) } className={ 'card max-w-4xl bg-base-200' }>
+
+					<div className="card-body ">
+						<div className="">
+							<h1 className={ 'card-title' }>Registration { employee.User.name }</h1>
+							<p className={ 'text-sm text-success' }>{ message }</p>
+							<p className={ 'text-sm text-error' }>{ error }</p>
+						</div>
+						<input type="hidden" value={ employee.id } name={ 'id' } />
+						<div className="grid grid-cols-2 gap-5">
+
+							<InputText
+								title={ "Job Title" }
+								keys={ 'jobTitle' }
+							/>
+
+							<InputSelect
+								keys={ 'status' }
+								title={ 'Status' }
+								lists={ StatusEmployeeList }
+							/>
+
+							<InputNum
+								title={ "Salary" }
+								keys={ "salary" }
+							/>
+
+							<InputTextArea
+								keys={ 'notes' }
+								title={ 'Notes' }
+							/>
+						</div>
+						<div className="card-actions">
+							<button
+								type="submit"
+								disabled={ isLoading }
+								className={ 'btn btn-info btn-block' }
+							>
+								Submit
+							</button>
+
+						</div>
+					</div>
+
+				</form>
+			</FormProvider>
+
+			<div className=" flex justify-end flex-wrap gap-4 ">
 				<UserEmployeeCVModal employee={ employee } />
 				<UserEmployeeDocumentModal employee={ employee } />
 				<EmployeeIDCardModal employee={ employee } />
 				<EmployeeJobApplicationModal employee={ employee } />
-				<EmployeeUpdateStatus employee={ employee } />
+				{/*<EmployeeUpdateStatus employee={employee}/>*/ }
+				<Link href={ '/admin/registration' } className={ 'btn' }>Back</Link>
+
 			</div>
-		</>
+
+		</div>
 	);
 }
 

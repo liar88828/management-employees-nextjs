@@ -43,6 +43,7 @@ export function AdminRegistrationDetailPage({ employee }: { employee: TEmployeeD
 
 	return (
 		<div className={ 'space-y-4' }>
+
 			<FormProvider { ...methods }>
 				<form onSubmit={ handleSubmit(onSubmit) } className={ 'card max-w-4xl bg-base-200' }>
 
@@ -90,6 +91,7 @@ export function AdminRegistrationDetailPage({ employee }: { employee: TEmployeeD
 
 				</form>
 			</FormProvider>
+
 			<div className="space-x-4">
 				<Link href={ '/admin/registration' } className={ 'btn' }>Back</Link>
 				<UserEmployeeCVModal employee={ employee } />

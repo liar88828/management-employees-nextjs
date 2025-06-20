@@ -101,6 +101,7 @@ export async function adminEmployeeDetailLoader(
 				}
 			},
 			Skills: true,
+			Experiences: true,
 			Educations: true,
 		},
 	});
