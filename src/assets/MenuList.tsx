@@ -1,4 +1,4 @@
-import { Clipboard, HomeIcon, Inbox, User, } from "lucide-react";
+import { Clipboard, HomeIcon, User, } from "lucide-react";
 import React from "react";
 
 export type TMenuList = {
@@ -21,11 +21,11 @@ export const linkAdmin: TMenuList[] = [
         label: 'Employee',
     },
 
-    {
-        href: '/admin/registration',
-        icon: <Inbox className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' } />,
-        label: 'Registration',
-    },
+    // {
+    //     href: '/admin/registration',
+    //     icon: <Inbox className={ 'flex-shrink-0 w-5 h-5  transition duration-75 ' } />,
+    //     label: 'Registration',
+    // },
 
     // {
     //     href: '/admin/send',

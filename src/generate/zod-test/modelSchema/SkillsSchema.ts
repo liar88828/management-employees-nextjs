@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { EmployeesWithRelationsSchema, EmployeesOptionalDefaultsWithRelationsSchema } from './EmployeesSchema'
-import type { EmployeesWithRelations, EmployeesOptionalDefaultsWithRelations } from './EmployeesSchema'
+import type { EmployeesOptionalDefaultsWithRelations, EmployeesWithRelations } from './EmployeesSchema'
+import { EmployeesOptionalDefaultsWithRelationsSchema, EmployeesWithRelationsSchema } from './EmployeesSchema'
 
 /////////////////////////////////////////
 // SKILLS SCHEMA

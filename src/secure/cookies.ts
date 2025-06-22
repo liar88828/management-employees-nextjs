@@ -3,8 +3,8 @@ import 'server-only'
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { Users } from ".prisma/client";
 import { decrypt, encrypt } from "@/secure/jwt";
+import { Users } from "@/generate/zod-test";
 
 
 export async function deleteSession() {

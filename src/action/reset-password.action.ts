@@ -12,6 +12,7 @@ import { toDateIndoFull } from "@/utils/toDate";
 import { nodemailerSendOtp } from "@/action/nodemailer.action";
 import { ResponseAction } from "@/interface/model";
 
+
 export async function checkEmailAction(json: OTPGenerate): Promise<ResponseAction> {
     // console.log(json)
     const { success, data, error } = otpValid.safeParse(json)
@@ -53,7 +54,7 @@ export async function checkEmailAction(json: OTPGenerate): Promise<ResponseActio
                 data: {
                     otp,
                     otpExpired: data.time,
-                    statusEmployee: STATUS_USER.OTP,
+                    statusUser: STATUS_USER.OTP,
                     // otpCount: { increment: 1 },
                 }
             })
@@ -65,7 +66,7 @@ export async function checkEmailAction(json: OTPGenerate): Promise<ResponseActio
                 data: {
                     otp,
                     otpExpired: data.time,
-                    statusEmployee: STATUS_USER.RESET
+                    statusUser: STATUS_USER.RESET
                     // otpCount: { increment: 1 },
                 }
             })
@@ -167,7 +168,7 @@ export async function resetPasswordAction({ password, confirm, email, otp }: Res
             where: { id: user.id },
             data: {
                 password: hashedPassword,
-                statusEmployee: STATUS_USER.COMPLETED,
+                statusUser: STATUS_USER.COMPLETED,
                 otp: null,
                 // otpExpired: null
             }
@@ -199,7 +200,7 @@ export async function validOtpAction(email: string) {
     await prisma.users.update({
         where: { email },
         data: {
-            statusEmployee: STATUS_USER.COMPLETED,
+            statusUser: STATUS_USER.COMPLETED,
             otp: null
         }
     })

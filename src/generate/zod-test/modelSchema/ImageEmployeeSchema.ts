@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { EmployeesWithRelationsSchema, EmployeesOptionalDefaultsWithRelationsSchema } from './EmployeesSchema'
-import type { EmployeesWithRelations, EmployeesOptionalDefaultsWithRelations } from './EmployeesSchema'
+import type { EmployeesOptionalDefaultsWithRelations, EmployeesWithRelations } from './EmployeesSchema'
+import { EmployeesOptionalDefaultsWithRelationsSchema, EmployeesWithRelationsSchema } from './EmployeesSchema'
 
 /////////////////////////////////////////
 // IMAGE EMPLOYEE SCHEMA
@@ -9,7 +9,6 @@ import type { EmployeesWithRelations, EmployeesOptionalDefaultsWithRelations } f
 export const ImageEmployeeSchema = z.object({
 	id: z.number().int(),
 	photoProfile: z.string().nullish(),
-	photoSignature: z.string().nullish(),
 	photoKtp: z.string().nullish(),
 	photoIjazah: z.string().nullish(),
 	employeeId: z.string(),

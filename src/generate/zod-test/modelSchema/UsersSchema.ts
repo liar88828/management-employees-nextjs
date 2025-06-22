@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { EmployeesWithRelationsSchema, EmployeesOptionalDefaultsWithRelationsSchema } from './EmployeesSchema'
-import type { EmployeesWithRelations, EmployeesOptionalDefaultsWithRelations } from './EmployeesSchema'
+import type { EmployeesOptionalDefaultsWithRelations, EmployeesWithRelations } from './EmployeesSchema'
+import { EmployeesOptionalDefaultsWithRelationsSchema, EmployeesWithRelationsSchema } from './EmployeesSchema'
 
 /////////////////////////////////////////
 // USERS SCHEMA
@@ -16,7 +16,7 @@ export const UsersSchema = z.object({
 	otp: z.string().nullish(),
 	otpExpired: z.date(),
 	imgPass: z.string(),
-	statusEmployee: z.string(),
+	statusUser: z.string(),
 })
 
 export type Users = z.infer<typeof UsersSchema>
@@ -28,7 +28,7 @@ export type Users = z.infer<typeof UsersSchema>
 export const UsersOptionalDefaultsSchema = UsersSchema.merge(z.object({
 	id: z.string().uuid().optional(),
 	otpExpired: z.date().optional(),
-	statusEmployee: z.string().optional(),
+	statusUser: z.string().optional(),
 }))
 
 export type UsersOptionalDefaults = z.infer<typeof UsersOptionalDefaultsSchema>

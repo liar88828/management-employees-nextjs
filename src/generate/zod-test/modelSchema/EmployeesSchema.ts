@@ -1,17 +1,17 @@
 import { z } from 'zod';
-import { EducationsWithRelationsSchema, EducationsOptionalDefaultsWithRelationsSchema } from './EducationsSchema'
-import type { EducationsWithRelations, EducationsOptionalDefaultsWithRelations } from './EducationsSchema'
-import { SkillsWithRelationsSchema, SkillsOptionalDefaultsWithRelationsSchema } from './SkillsSchema'
-import type { SkillsWithRelations, SkillsOptionalDefaultsWithRelations } from './SkillsSchema'
-import { ExperiencesWithRelationsSchema, ExperiencesOptionalDefaultsWithRelationsSchema } from './ExperiencesSchema'
-import type { ExperiencesWithRelations, ExperiencesOptionalDefaultsWithRelations } from './ExperiencesSchema'
-import { UsersWithRelationsSchema, UsersOptionalDefaultsWithRelationsSchema } from './UsersSchema'
-import type { UsersWithRelations, UsersOptionalDefaultsWithRelations } from './UsersSchema'
+import type { EducationsOptionalDefaultsWithRelations, EducationsWithRelations } from './EducationsSchema'
+import { EducationsOptionalDefaultsWithRelationsSchema, EducationsWithRelationsSchema } from './EducationsSchema'
+import type { SkillsOptionalDefaultsWithRelations, SkillsWithRelations } from './SkillsSchema'
+import { SkillsOptionalDefaultsWithRelationsSchema, SkillsWithRelationsSchema } from './SkillsSchema'
+import type { ExperiencesOptionalDefaultsWithRelations, ExperiencesWithRelations } from './ExperiencesSchema'
+import { ExperiencesOptionalDefaultsWithRelationsSchema, ExperiencesWithRelationsSchema } from './ExperiencesSchema'
+import type { UsersOptionalDefaultsWithRelations, UsersWithRelations } from './UsersSchema'
+import { UsersOptionalDefaultsWithRelationsSchema, UsersWithRelationsSchema } from './UsersSchema'
+import type { ImageEmployeeOptionalDefaultsWithRelations, ImageEmployeeWithRelations } from './ImageEmployeeSchema'
 import {
-	ImageEmployeeWithRelationsSchema,
-	ImageEmployeeOptionalDefaultsWithRelationsSchema
+	ImageEmployeeOptionalDefaultsWithRelationsSchema,
+	ImageEmployeeWithRelationsSchema
 } from './ImageEmployeeSchema'
-import type { ImageEmployeeWithRelations, ImageEmployeeOptionalDefaultsWithRelations } from './ImageEmployeeSchema'
 
 /////////////////////////////////////////
 // EMPLOYEES SCHEMA
@@ -32,7 +32,6 @@ export const EmployeesSchema = z.object({
 	notes: z.string().min(0),
 	salary: z.number().min(0),
 	userId: z.string(),
-	createdAt: z.date(),
 	updatedAt: z.date(),
 })
 
@@ -46,7 +45,6 @@ export const EmployeesOptionalDefaultsSchema = EmployeesSchema.merge(z.object({
 	id: z.string().uuid().optional(),
 	statusEmployee: z.string().min(1).optional(),
 	registration: z.boolean().optional(),
-	createdAt: z.date().optional(),
 	updatedAt: z.date().optional(),
 }))
 

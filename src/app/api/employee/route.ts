@@ -1,76 +1,76 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/config/prisma";
 import { faker } from '@faker-js/faker/locale/id_ID';
-import { ROLE, StatusEmployeeList } from "@/interface/enum";
+import { ROLE, STATUS_USER, StatusEmployeeList } from "@/interface/enum";
 import { constantGender, constantWorkTime } from "@/assets/constant";
 import { toArrayRange } from "@/utils/toArray";
 
 
 export async function GET() {
-    return NextResponse.json({ message: 'test success' })
+	return NextResponse.json({ message: 'test success' })
 }
+
 export async function POST() {
-    console.log('Seeding test response...');
+	console.log('Seeding test response...');
 
-    try {
-        for (let _ of toArrayRange(100)) {
-            await prisma.$transaction(async (tx) => {
-                const userDB = await tx.users.create({
-                    data: {
-                        password: faker.internet.password({ length: 10 }),
-                        email: faker.internet.email(),
-                        name: faker.person.fullName(),
-                        phone: faker.phone.number(),
-                        statusEmployee: 'COMPLETED',
-                        role: ROLE.USER,
-                        imgPass: faker.internet.password({ length: 10 }),
-                    },
-                });
-                console.log(userDB, 'userDB');
-                // const position: string[] = await tx.positions.findMany({}).then(response => response.map(item => item.position))
-                const employeeDB = await tx.employees.create({
-                    data: {
-                        address: faker.location.streetAddress(),
-                        statusEmployee: faker.helpers.arrayElement(StatusEmployeeList),
-                        city: faker.location.city(),
-                        jobTitle: faker.person.jobTitle(),
-                        gender: faker.helpers.arrayElement(constantGender),
-                        notes: faker.person.jobDescriptor(),
-                        postalCode: faker.location.zipCode(),
-                        hireDate: faker.date.past({ years: 5 }),
-                        dateOfBirth: faker.date.birthdate(),
-                        salary: faker.number.int({ max: 1_000_000 }),
-                        registration: faker.datatype.boolean(),
-                        sendEmail: faker.number.int({ max: 1_000_000 }),
-                        userId: userDB.id,
-                        workTime: faker.helpers.arrayElement(constantWorkTime),
-                    },
-                });
-                console.log(employeeDB, 'employeeDB')
-                await tx.skills.create({
-                    data: {
-                        text: faker.person.jobType(),
-                        employeeId: employeeDB.id,
-                    },
-                });
+	try {
+		for (let _ of toArrayRange(100)) {
+			await prisma.$transaction(async (tx) => {
+				const userDB = await tx.users.create({
+					data: {
+						password: faker.internet.password({ length: 10 }),
+						email: faker.internet.email(),
+						name: faker.person.fullName(),
+						phone: faker.phone.number(),
+						statusUser: STATUS_USER.COMPLETED,
+						role: ROLE.USER,
+						imgPass: faker.internet.password({ length: 10 }),
+					},
+				});
+				console.log(userDB, 'userDB');
+				// const position: string[] = await tx.positions.findMany({}).then(response => response.map(item => item.position))
+				const employeeDB = await tx.employees.create({
+					data: {
+						address: faker.location.streetAddress(),
+						statusEmployee: faker.helpers.arrayElement(StatusEmployeeList),
+						city: faker.location.city(),
+						jobTitle: faker.person.jobTitle(),
+						gender: faker.helpers.arrayElement(constantGender),
+						notes: faker.person.jobDescriptor(),
+						postalCode: faker.location.zipCode(),
+						hireDate: faker.date.past({ years: 5 }),
+						dateOfBirth: faker.date.birthdate(),
+						salary: faker.number.int({ max: 1_000_000 }),
+						registration: faker.datatype.boolean(),
+						userId: userDB.id,
+						workTime: faker.helpers.arrayElement(constantWorkTime),
+					},
+				});
+				console.log(employeeDB, 'employeeDB')
+				await tx.skills.create({
+					data: {
+						text: faker.person.jobType(),
+						employeeId: employeeDB.id,
+					},
+				});
 
-                await tx.educations.create({
-                    data: {
-                        text: faker.company.name(),
-                        employeeId: employeeDB.id,
-                    },
-                });
+				await tx.educations.create({
+					data: {
+						text: faker.company.name(),
+						employeeId: employeeDB.id,
+					},
+				});
 
-            });
-        }
+			});
+		}
 
-        return NextResponse.json({ message: 'Test response seeded successfully' });
+		return NextResponse.json({ message: 'Test response seeded successfully' });
 
-    } catch (error) {
-        console.log('Error seeding response:', error);
-        return NextResponse.json({
-            message: 'Failed to seed response',
-            error: error instanceof Error ? error.stack : String(error),
-        }, { status: 500 });
-    }
+	} catch (error) {
+		console.log('Error seeding response:', error);
+		return NextResponse.json({
+			message: 'Failed to seed response',
+			error: error instanceof Error ? error.stack : String(error),
+		}, { status: 500 });
+	}
 }

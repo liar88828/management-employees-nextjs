@@ -1,65 +1,65 @@
 generator client {
-	provider = "prisma-client-js"
-	// output   = "prevData"
+  provider = "prisma-client-js"
+  // output   = "prevData"
 }
 
 datasource db {
-	provider = "sqlite"
-	// provider = "mysql"
-	url      = env("DATABASE_URL")
+  provider = "sqlite"
+  // provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 generator zod {
-	// provider                  = "zod-prisma"
-	provider = "zod-prisma-types"
-	output   = "../src/generate/zod-test" // (default) the directory where generated zod schemas will be saved
+  // provider                  = "zod-prisma"
+  provider = "zod-prisma-types"
+  output   = "../src/generate/zod-test" // (default) the directory where generated zod schemas will be saved
 
-	useMultipleFiles                 = true // default is false
-	// writeBarrelFiles                 = false // default is true
-	createInputTypes                 = false // default is true x
-	// createModelTypes = false // default is true v
-	// addInputTypeValidation           = false // default is true
-	// addIncludeType                   = false // default is true
-	// addSelectType                    = false // default is true
-	// validateWhereUniqueInput         = false // default is true
-	createOptionalDefaultValuesTypes = true // default is false
-	createRelationValuesTypes        = true // default is false
-	// createPartialTypes               = true // default is false x
-	// useDefaultValidators             = false // default is true x
-	coerceDate                       = false // default is true x
-	writeNullishInModelTypes         = true // default is false
+  useMultipleFiles                 = true // default is false
+  // writeBarrelFiles                 = false // default is true
+  createInputTypes                 = false // default is true x
+  // createModelTypes = false // default is true v
+  // addInputTypeValidation           = false // default is true
+  // addIncludeType                   = false // default is true
+  // addSelectType                    = false // default is true
+  // validateWhereUniqueInput         = false // default is true
+  createOptionalDefaultValuesTypes = true // default is false
+  createRelationValuesTypes        = true // default is false
+  // createPartialTypes               = true // default is false x
+  // useDefaultValidators             = false // default is true x
+  coerceDate                       = false // default is true x
+  writeNullishInModelTypes         = true // default is false
 
-	// relationModel = true // (default) Create and export both plain and related models.
-	// // relationModel         = "default" // Do not export model without relations.
-	// // relationModel         = false // Do not generate related model
-	//
-	// modelCase = "PascalCase" // (default) Output models using pascal case (ex. UserModel, PostModel)
-	// // modelCase             = "camelCase" // Output models using camel case (ex. userModel, postModel)
-	//
-	// modelSuffix = "Model" // (default) Suffix to apply to your prisma models when naming Zod schemas
-	//
-	// // useDecimalJs          = false // (default) represent the prisma Decimal type using as a JS number
-	// useDecimalJs = true // represent the prisma Decimal type using Decimal.js (as Prisma does)
-	//
-	// // imports                  = null // (default) will import the referenced file in generated schemas to be used via imports.someExportedVariable
-	//
-	// // https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-by-null-values
-	// prismaJsonNullability = true // (default) uses prisma's scheme for JSON field nullability
-	// // prismaJsonNullability = false // allows null assignment to optional JSON fields
+  // relationModel = true // (default) Create and export both plain and related models.
+  // // relationModel         = "default" // Do not export model without relations.
+  // // relationModel         = false // Do not generate related model
+  //
+  // modelCase = "PascalCase" // (default) Output models using pascal case (ex. UserModel, PostModel)
+  // // modelCase             = "camelCase" // Output models using camel case (ex. userModel, postModel)
+  //
+  // modelSuffix = "Model" // (default) Suffix to apply to your prisma models when naming Zod schemas
+  //
+  // // useDecimalJs          = false // (default) represent the prisma Decimal type using as a JS number
+  // useDecimalJs = true // represent the prisma Decimal type using Decimal.js (as Prisma does)
+  //
+  // // imports                  = null // (default) will import the referenced file in generated schemas to be used via imports.someExportedVariable
+  //
+  // // https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-by-null-values
+  // prismaJsonNullability = true // (default) uses prisma's scheme for JSON field nullability
+  // // prismaJsonNullability = false // allows null assignment to optional JSON fields
 }
 
 model Users {
-	id             String     @id @default(uuid())
-	name           String
-	phone          String     @unique
-	email          String     @unique /// @zod.string.email()
-	password       String
-	role           String
-	otp            String?
-	otpExpired     DateTime   @default(now())
-	imgPass        String
-	statusEmployee String     @default("OTP")
-	Employees      Employees?
+  id         String     @id @default(uuid())
+  name       String
+  phone      String     @unique
+  email      String     @unique /// @zod.string.email()
+  password   String
+  role       String
+  otp        String?
+  otpExpired DateTime   @default(now())
+  imgPass    String
+  statusUser String     @default("OTP")
+  Employees  Employees?
 }
 
 // model Sessions {
@@ -71,78 +71,76 @@ model Users {
 // }
 
 model Employees {
-	id          String   @id @default(uuid())
-	/// @zod.string.min(1)
-	gender      String // Gender (e.g., "Male", "Female", "Other")
-	dateOfBirth DateTime
-	hireDate    DateTime
-	/// @zod.string.min(1)
-	jobTitle    String // Employee's job position
+  id          String   @id @default(uuid())
+  /// @zod.string.min(1)
+  gender      String // Gender (e.g., "Male", "Female", "Other")
+  dateOfBirth DateTime
+  hireDate    DateTime
+  /// @zod.string.min(1)
+  jobTitle    String // Employee's job position
 
-	/// @zod.string.min(1)
-	statusEmployee String        @default("Create") // Employment statusEmployee
-	registration   Boolean       @default(false) // Employment statusEmployee
-	address        String /// @zod.string.min(1)
-	city           String /// @zod.string.min(1)
-	postalCode     String /// @zod.string.min(1)
-	/// @zod.string.min(1)
-	workTime       String // Work Time (e.g., "Full-Time", "Part-Time")
-	/// @zod.string.min(0)
-	notes          String // Additional notes about the employee
-	/// @zod.number.min(0)
-	salary         Int
-	//
-	Educations     Educations[]
-	Skills         Skills[] // Stored as an lists of strings
-	Experiences    Experiences[]
+  /// @zod.string.min(1)
+  statusEmployee String        @default("Create") // Employment statusEmployee
+  registration   Boolean       @default(false) // Employment statusEmployee
+  address        String /// @zod.string.min(1)
+  city           String /// @zod.string.min(1)
+  postalCode     String /// @zod.string.min(1)
+  /// @zod.string.min(1)
+  workTime       String // Work Time (e.g., "Full-Time", "Part-Time")
+  /// @zod.string.min(0)
+  notes          String // Additional notes about the employee
+  /// @zod.number.min(0)
+  salary         Int
+  //
+  Educations     Educations[]
+  Skills         Skills[] // Stored as an lists of strings
+  Experiences    Experiences[]
 
-	//
-	User   Users  @relation(fields: [userId], references: [id])
-	userId String @unique
+  //
+  User   Users  @relation(fields: [userId], references: [id])
+  userId String @unique
 
-	ImageEmployee ImageEmployee?
-	//
-	createdAt     DateTime       @default(now())
-	updatedAt     DateTime       @updatedAt
+  ImageEmployee ImageEmployee?
+  //
+  updatedAt     DateTime       @updatedAt
 }
 
 model ImageEmployee {
-	// @zod.number.optional()
-	id             Int       @id() @default(autoincrement())
-	photoProfile   String?
-	photoSignature String?
-	photoKtp       String?
-	photoIjazah    String?
-	Employees      Employees @relation(fields: [employeeId], references: [id])
-	employeeId     String    @unique
+  // @zod.number.optional()
+  id           Int       @id() @default(autoincrement())
+  photoProfile String?
+  photoKtp     String?
+  photoIjazah  String?
+  Employees    Employees @relation(fields: [employeeId], references: [id])
+  employeeId   String    @unique
 }
 
 model Educations {
-	// @zod.number.optional()
-	id         Int       @id @default(autoincrement())
-	/// @zod.string.min(1)
-	text       String
-	/// @zod.string.min(1)
-	employeeId String
-	Employees  Employees @relation(fields: [employeeId], references: [id])
+  // @zod.number.optional()
+  id         Int       @id @default(autoincrement())
+  /// @zod.string.min(1)
+  text       String
+  /// @zod.string.min(1)
+  employeeId String
+  Employees  Employees @relation(fields: [employeeId], references: [id])
 }
 
 model Skills {
-	// @zod.number.optional()
-	id         Int       @id @default(autoincrement())
-	/// @zod.string.min(1)
-	text       String
-	/// @zod.string.min(1)
-	employeeId String
-	Employees  Employees @relation(fields: [employeeId], references: [id])
+  // @zod.number.optional()
+  id         Int       @id @default(autoincrement())
+  /// @zod.string.min(1)
+  text       String
+  /// @zod.string.min(1)
+  employeeId String
+  Employees  Employees @relation(fields: [employeeId], references: [id])
 }
 
 model Experiences {
-	// @zod.number.optional()
-	id         Int       @id @default(autoincrement())
-	/// @zod.string.min(1)
-	text       String
-	/// @zod.string.min(1)
-	employeeId String
-	Employees  Employees @relation(fields: [employeeId], references: [id])
+  // @zod.number.optional()
+  id         Int       @id @default(autoincrement())
+  /// @zod.string.min(1)
+  text       String
+  /// @zod.string.min(1)
+  employeeId String
+  Employees  Employees @relation(fields: [employeeId], references: [id])
 }
