@@ -1,5 +1,5 @@
 'use client'
-import { updateStatus } from "@/action/admin-employee-action";
+import { deleteEmployee, updateStatus } from "@/action/admin-employee-action";
 import { UserEmployeeCVModal } from "@/app/components/Letter/CVGlobal";
 import { ImageStream } from "@/app/components/ui/imageStream";
 import { modalClose, modalOpen } from "@/app/components/ui/ModalComponent";
@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { adminRegistrationUpdateAction } from "@/action/admin-registration-action";
 import { InputNum, InputSelect, InputText, InputTextArea } from "@/app/components/ui/FormComponent";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 
 export function EmployeeShowDocumentSingle(
@@ -25,6 +26,7 @@ export function EmployeeShowDocumentSingle(
 	// const [loading, setLoading] = useState(true)
 
 	const isPhotoData = imageUrl ? `${ url_fastapi }${ imageUrl }` : photoKtp
+	console.log(isPhotoData, '--------------------')
 	const modal_key = `my_modal_document_${ title }`
 
 	if (!imageUrl || !employee) {
@@ -178,6 +180,7 @@ export function AdminEmployeeDetailPage({ employee }: { employee: TEmployeeDB })
 				<UserEmployeeDocumentModal employee={ employee } />
 				<EmployeeIDCardModal employee={ employee } />
 				<EmployeeJobApplicationModal employee={ employee } />
+				<EmployeeDelete employee={ employee } />
 				{/*<EmployeeUpdateStatus employee={employee}/>*/ }
 				<Link href={ '/admin/registration' } className={ 'btn' }>Back</Link>
 
@@ -263,5 +266,84 @@ export function EmployeeUpdateStatus({ employee }: { employee: EmployeeUserPhoto
 				</form>
 			</dialog>
 		</>
+	);
+}
+
+export function EmployeeDelete(
+	{ employee, }:
+	Readonly<{ employee: TEmployeeDB | null, }>
+) {
+	const router = useRouter()
+	const buttonTitle = "Delete Employee"
+	const title = `ID Card ${ employee?.User.name }`
+	const keyModal = `my_modal_delete_${ employee?.id }`;
+	const [ isLoading, setIsLoading ] = useState(false);
+
+	if (!employee) {
+		return <button type={ 'button' }
+		               disabled={ true }
+		               className="btn btn-error"
+		               onClick={ () => modalOpen(keyModal) }
+		>
+			{ buttonTitle } (Admin Acc)
+		</button>
+	}
+	const handleDeleteEmployee = async () => {
+		setIsLoading(true)
+		const response = await deleteEmployee(employee)
+		if (response.success) {
+			toast.success(response.message)
+			router.push('/admin/employee')
+		} else {
+			toast.error(response.message)
+		}
+		setIsLoading(false)
+	}
+	return (
+		<>
+			<button type={ 'button' }
+			        className="btn btn-error"
+			        onClick={ () => modalOpen(keyModal) }
+			>
+				{ buttonTitle }
+			</button>
+			{/*modal-bottom sm:modal-middle */ }
+			<dialog id={ keyModal } className="modal ">
+				<div className="modal-box w-full max-w-3xl bg-base-200 ">
+					<div className="flex justify-between mb-4">
+						<h1>{ title }</h1>
+						<button
+							className="btn btn-sm  btn-ghost btn-circle "
+							onClick={ () => modalClose(keyModal) }
+						>
+							<XIcon />
+						</button>
+					</div>
+					<div className="overflow-y-scroll h-96 sm:h-fit">
+						Apakah Anda Yakin Untuk Menghapus : { employee.User.name }
+					</div>
+					<div className="modal-action">
+						<button
+							onClick={ handleDeleteEmployee }
+							disabled={ isLoading }
+							className={ 'btn btn-error' }
+						>
+							{ isLoading ? 'Sedang Menghapus...' : "Hapus" }
+						</button>
+						<button
+							onClick={ () => modalClose(keyModal) }
+							className={ 'btn btn-neutral' }
+						>
+							Close
+						</button>
+					</div>
+				</div>
+
+				<form method="dialog" className="modal-backdrop">
+					<button>close</button>
+				</form>
+			</dialog>
+		</ >
+
 	);
 }

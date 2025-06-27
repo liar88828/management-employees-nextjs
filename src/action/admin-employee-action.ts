@@ -1,9 +1,10 @@
 'use server'
 
-import { globalPageSize } from "@/config/nextPublicBaseUrl";
+import { globalPageSize, url_fastapi } from "@/config/nextPublicBaseUrl";
 import { prisma } from "@/config/prisma";
 import { ROLE } from "@/interface/enum";
 import { EmployeeUserClient, EmployeeUserPhotoClient, ResponseAction, TEmployeeDB } from "@/interface/model";
+import { deleteImage, ResponseUploadEncrypt } from "@/action/upload.action";
 
 
 export async function updateStatus(employee: EmployeeUserPhotoClient, status?: string): Promise<ResponseAction> {
@@ -105,4 +106,79 @@ export async function adminEmployeeDetailLoader(
 			Educations: true,
 		},
 	});
+}
+
+export async function deleteEmployee({ id, ImageEmployee }: TEmployeeDB): Promise<ResponseAction> {
+	try {
+
+		const response = await fetch(`${ url_fastapi }/images/`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				photoIjazah: ImageEmployee?.photoIjazah?.replace('/images', '') || null,
+				photoKtp: ImageEmployee?.photoKtp?.replace('/images', '') || null,
+			}),
+		});
+
+		const data: ResponseUploadEncrypt = await response.json()
+
+		console.log(data, 'from api ')
+		if (!data.success) {
+			// throw new Error(`Error uploading file: ${ typeFile } : ${ data.detail }`)
+			return {
+				message: `Error : ${ data.detail }`,
+				success: false
+			}
+		}
+
+		await prisma.$transaction(async (tx) => {
+
+			// Delete related records first
+			await tx.imageEmployee.deleteMany({
+				where: { employeeId: id },
+			});
+			console.log("delete database imageEmployee");
+
+			await tx.skills.deleteMany({
+				where: { employeeId: id },
+			});
+			console.log("delete database skills");
+
+			await tx.experiences.deleteMany({
+				where: { employeeId: id },
+			});
+			console.log("delete database experiences");
+
+			await tx.educations.deleteMany({
+				where: { employeeId: id },
+			});
+			console.log("delete database educations");
+
+			const employeeDB = await tx.employees.delete({
+				where: { id }
+			});
+			console.log("delete database educations");
+
+			await tx.users.delete({
+				where: { id: employeeDB.userId },
+			});
+			console.log("delete database");
+		})
+
+		await deleteImage(ImageEmployee?.photoProfile)
+		console.log("delete local next js");
+
+		return {
+			success: true,
+			message: 'Employee and related data successfully deleted',
+		};
+	} catch (error) {
+		console.error('Error deleting employee and related data:', error);
+		return {
+			success: false,
+			message: 'Failed to delete employee',
+		};
+	}
 }

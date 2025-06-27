@@ -35,14 +35,14 @@ export const STATUS_EMPLOYEES = {
 // export const employeeList = [ 'Pending', 'Fail', 'Complete', 'Active', 'Disabled' ]
 export const StatusEmployeeList = [
 	'Registration',
-	// 'Reject',
+	'Reject',
 	'Accept',
 	// 'Interview',
 	// 'Interview_Accept',
 	// 'Interview_Reject',
 	// 'Active',
 	// 'Disabled',
-	// 'Resign',
+	'Resign',
 ];
 
 export const EmployeeCompletePhoto =

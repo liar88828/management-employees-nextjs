@@ -5,7 +5,7 @@ import { SessionPayload } from "@/secure/jwt";
 // 1. Specify protected and public routes
 const adminRoute = [ '/admin', '/admin/employee', '/admin/registration' ]
 const userRoute = [ '/user', '/interview', '/registration' ]
-const publicRoutes = [ '/login', '/register' ]
+const publicRoutes = [ '/login', '/register', '/otp', '/reset' ]
 
 export default async function middleware(req: NextRequest) {
 	// 2. Check if the current route is protected or public

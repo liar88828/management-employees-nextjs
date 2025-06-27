@@ -264,7 +264,7 @@ export async function employeeUpsertUserAction(
 
 			return { employeeDB, skillDB, educationDB, experiencesDB };
 		})
-
+		revalidatePath('/')
 		return {
 			response: response,
 			success: true,

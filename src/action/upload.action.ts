@@ -5,7 +5,6 @@ import fs from "fs";
 import { revalidatePath } from "next/cache";
 import path from "path";
 
-
 export type TypeFile = 'KTP' | 'Ijazah'
 const allowedExtensions = [ 'jpg', 'jpeg', 'png' ];
 // Validate file size (e.g., max 5 MB)
@@ -147,7 +146,10 @@ export const saveImage = async (
 	fs.writeFileSync(filePath, buffer);
 	return pathImage
 }
-export const deleteImage = async (imagePath: string) => {
+export const deleteImage = async (imagePath?: string | null) => {
+	if (!imagePath) {
+		return 'Please add file ';
+	}
 	// Get the absolute file path
 	const filePath = path.join(process.cwd(), 'public', imagePath);
 
@@ -161,6 +163,7 @@ export const deleteImage = async (imagePath: string) => {
 	//     throw new Error(`File ${ imagePath } not found.`);
 	// }
 };
+
 export const updateImage = async (imageFile: File, imagePath: string, oldImagePath?: string | null) => {
 	if (oldImagePath) {
 		await deleteImage(oldImagePath)

@@ -16,7 +16,7 @@ export type TEmployeeDB = EmployeeUserPhotoClient & {
 	Skills: Skills[];
 	Educations: Educations[];
 	Experiences: Experiences[];
-	createdAt: Date;
+	// createdAt: Date;
 	updatedAt: Date;
 }
 
