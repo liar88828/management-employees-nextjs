@@ -96,7 +96,7 @@ export function EmployeeShowDocumentSingle(
 }
 
 export function AdminEmployeeDetailPage({ employee }: { employee: TEmployeeDB }) {
-
+const router = useRouter();
 	const [ message, setMessage ] = useState('')
 	const [ error, setError ] = useState('')
 	const methods = useForm<AdminRegistrationSchemaType>({
@@ -132,15 +132,14 @@ export function AdminEmployeeDetailPage({ employee }: { employee: TEmployeeDB })
 
 					<div className="card-body ">
 						<div className="">
-							<h1 className={ 'card-title' }>Registration { employee.User.name }</h1>
+							<h1 className={ 'card-title' }>Detail { employee.User.name }</h1>
 							<p className={ 'text-sm text-success' }>{ message }</p>
 							<p className={ 'text-sm text-error' }>{ error }</p>
 						</div>
 						<input type="hidden" value={ employee.id } name={ 'id' } />
 						<div className="grid grid-cols-2 gap-5">
-
 							<InputText
-								title={ "Job Title" }
+								title={ "Nama Pekerjaan" }
 								keys={ 'jobTitle' }
 							/>
 
@@ -151,14 +150,15 @@ export function AdminEmployeeDetailPage({ employee }: { employee: TEmployeeDB })
 							/>
 
 							<InputNum
-								title={ "Salary" }
+								title={ "Gaji" }
 								keys={ "salary" }
 							/>
 
 							<InputTextArea
 								keys={ 'notes' }
-								title={ 'Notes' }
+								title={ 'Catatan' }
 							/>
+
 						</div>
 						<div className="card-actions">
 							<button
@@ -182,7 +182,8 @@ export function AdminEmployeeDetailPage({ employee }: { employee: TEmployeeDB })
 				<EmployeeJobApplicationModal employee={ employee } />
 				<EmployeeDelete employee={ employee } />
 				{/*<EmployeeUpdateStatus employee={employee}/>*/ }
-				<Link href={ '/admin/registration' } className={ 'btn' }>Back</Link>
+				{/*<Link href={ '/admin/registration' } className={ 'btn' }>Back</Link>*/}
+				<button onClick={()=>router.back()} className={ 'btn' }>Back</button>
 
 			</div>
 
@@ -274,7 +275,7 @@ export function EmployeeDelete(
 	Readonly<{ employee: TEmployeeDB | null, }>
 ) {
 	const router = useRouter()
-	const buttonTitle = "Delete Employee"
+	const buttonTitle = "Delete Karyawan"
 	const title = `ID Card ${ employee?.User.name }`
 	const keyModal = `my_modal_delete_${ employee?.id }`;
 	const [ isLoading, setIsLoading ] = useState(false);

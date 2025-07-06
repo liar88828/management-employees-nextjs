@@ -16,7 +16,7 @@ export function AuthOtpPage() {
                 >{ store.successOtp && 'Otp Is Valid' }</span></h2>
                 <p>
                     { store.email
-                        ? <span>Was send this email { store.email }. please check the mail box</span>
+                        ? <span>Email telah dikirim ke {store.email}. Silakan periksa kotak masuk Anda.</span>
                         : <span><Countdown setData={ (now) => setData({ remainingTime: now }) }
                                            targetTime={ store.time }
                         /></span>

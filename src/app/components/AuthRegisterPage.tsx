@@ -50,17 +50,17 @@ export function AuthRegisterPage() {
 			<FormProvider { ...methods }>
 				<form onSubmit={ handleSubmit(onSubmit) } className="card-body">
 					<div className="">
-						<h2 className="card-title">Register </h2>
+						<h2 className="card-title">Daftar </h2>
 						<p className={ 'text-error' }>{ error }</p>
 						<p className={ 'text-success' }>{ message }</p>
 					</div>
 					<div className="grid grid-cols-2 gap-4">
-						<InputText title={ 'name' } keys={ 'name' } />
-						<InputEmail title={ 'email' } keys={ 'email' } onChange={ email => setData({ email }) } />
-						<InputText title={ 'phone' } keys={ 'phone' } />
+						<InputText title="Nama" keys="name" />
+						<InputEmail title="Email" keys="email" onChange={email => setData({ email })} />
+						<InputText title="Telepon" keys="phone" />
 						<div className=""></div>
-						<InputPassword title={ 'password' } keys={ 'password' } />
-						<InputPassword title={ 'confirm' } keys={ 'confirm' } />
+						<InputPassword title="Kata Sandi" keys="password" />
+						<InputPassword title="Konfirmasi Kata Sandi" keys="confirm" />
 					</div>
 
 					{/* Submit Button */ }
@@ -75,14 +75,14 @@ export function AuthRegisterPage() {
 							type="submit"
 							className={ `btn btn-primary w-full ${ isDisabled ? "btn-disabled" : "" }` }
 						>
-							{ isDisabled ? "Register..." : "Register" }
+							{isDisabled ? "Mendaftarkan..." : "Daftar"}
 						</button>
 						<div>
-							Already have an account?
+							Sudah punya akun?
 							<Link href="/login" className="btn btn-link mx-0.5 px-0.5">
-								Login
+								Masuk
 							</Link>
-							Now!
+							Sekarang!
 						</div>
 					</div>
 				</form>

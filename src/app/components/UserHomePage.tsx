@@ -28,7 +28,7 @@ export function UserHomePage({ employee, message, user }: {
 				<div className="">
 					<h1 className="card-title">{ user?.name }</h1>
 					<p className="text-sm">ID # { employee?.id || 'Empty' }</p>
-					<p>Register At: { employee ? toDateIndo(employee.createdAt) : 'Empty' }</p>
+					<p>Register At: { employee ? toDateIndo(employee.hireDate) : 'Empty' }</p>
 					<p>Status: { employeeStatus }</p>
 				</div>
 

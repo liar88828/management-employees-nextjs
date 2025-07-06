@@ -27,7 +27,7 @@ export default function EmployeeIDCardGlobal(
 					{/* Header Kartu */ }
 					<div className="bg-blue-600 p-4 text-center">
 						<h1 className="text-white text-2xl font-bold">{ company.name }</h1>
-						<p className="text-blue-100">Wawancara Karyawan</p>
+						<p className="text-blue-100">Karyawan</p>
 					</div>
 
 					{/* Isi Kartu */ }
@@ -57,7 +57,7 @@ export default function EmployeeIDCardGlobal(
 								</div>
 								<div className="flex justify-between">
 									<span className="text-gray-500">Bergabung:</span>
-									<span className="font-medium">{ toDateIndo(employee.createdAt) }</span>
+									<span className="font-medium">{ toDateIndo(employee.hireDate) }</span>
 								</div>
 							</div>
 						</div>

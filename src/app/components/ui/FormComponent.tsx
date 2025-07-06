@@ -242,7 +242,7 @@ export function InputText(
 					{ disabled: isDisable }
 				) }
 				className="input input-bordered"
-				placeholder={ `Add ${ title }...` }
+				placeholder={ `Masukan ${ title }...` }
 			/>
 			{ errors[keys] && <p className="text-error text-sm mt-1">{ errors[keys].message as string }</p> }
 		</div>
@@ -306,7 +306,7 @@ export function InputDate(
 				min={ now ? today : undefined }
 				{ ...register(keys) }
 				className="input input-bordered"
-				placeholder={ `Add ${ title }...` }
+				placeholder={ `Masukan ${ title }...` }
 			/>
 			{ errors[keys] && <p className="text-error text-sm mt-1">{ errors[keys].message as string }</p> }
 		</div>
@@ -336,7 +336,7 @@ export function InputEmail(
 				{ ...register(keys) }
 				onChange={ (e) => onChange(e.target.value) }
 				className="input input-bordered"
-				placeholder={ `Add ${ title }...` }
+				placeholder={ `Masukan ${ title }...` }
 			/>
 			{ errors[keys] && <p className="text-error text-sm mt-1">{ errors[keys].message as string }</p> }
 		</div>
@@ -363,7 +363,7 @@ export function InputPassword(
 				type={ 'password' }
 				{ ...register(keys) }
 				className="input input-bordered"
-				placeholder={ `Add ${ title }...` }
+				placeholder={ `Masukan ${ title }...` }
 			/>
 			{ errors[keys] && <p className="text-error text-sm mt-1">{ errors[keys].message as string }</p> }
 		</div>

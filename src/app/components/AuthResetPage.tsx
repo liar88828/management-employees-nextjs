@@ -74,7 +74,7 @@ export function ResetCheckEmail() {
                         className="btn  btn-primary w-full mt-2"
                         onClick={ addOneMinute }
                     >
-                        Send email : <Countdown
+                        Kirim Email : <Countdown
                         setData={ (now) => setData({ remainingTime: now }) }
                         targetTime={ store.time }
                     />
@@ -109,7 +109,7 @@ export const Countdown = ({ targetTime, setData }: {
     }, [ isMounted, setData, targetTime ]);
 
     // If there's no target time, or it's null, show a message
-    if (!targetTime) return ( <>Is button will add 1 min</> );
+    if (!targetTime) return ( <>Tekan akan menambah 1 menit</> );
 
     // If countdown has finished
     if (remainingTime <= 0) return ( <>Time&#39;s up!</> );
@@ -165,7 +165,7 @@ export function ResetCheckOtp() {
                 </h2>
                 { store.email && (
                     <p className={ '~text-sm/base text-base-content/50' }>
-                        Was send this email { store.email }. please check the mail box
+                        Kami telah mengirim email ke {store.email}. Silakan periksa kotak masuk Anda.
                     </p>
                 ) }
                 <div>
@@ -237,7 +237,7 @@ export function ResetPassword() {
         <div className="card card-bordered bg-base-200 ">
             <div className="card-body">
                 <h2 className="card-title">Reset</h2>
-                <p>Please fill the password and confirm password.</p>
+                <p>Silakan isi kata sandi dan konfirmasi kata sandi Anda.</p>
 
                 {/* Password Input */ }
                 <div className="form-control w-full">

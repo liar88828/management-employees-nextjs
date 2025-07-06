@@ -12,9 +12,11 @@ import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { EmployeeJobApplicationModal } from "@/app/components/Letter/IDCardEmployeeGlobal";
+import { useRouter } from "next/navigation";
 
 
 export function AdminRegistrationDetailPage({ employee }: { employee: TEmployeeDB }) {
+	const router = useRouter();
 	const [ message, setMessage ] = useState('')
 	const [ error, setError ] = useState('')
 	const methods = useForm<AdminRegistrationSchemaType>({
@@ -93,7 +95,7 @@ export function AdminRegistrationDetailPage({ employee }: { employee: TEmployeeD
 			</FormProvider>
 
 			<div className="space-x-4">
-				<Link href={ '/admin/registration' } className={ 'btn' }>Back</Link>
+				<button onClick={()=>router.back()} className={ 'btn' }>Back</button>
 				<UserEmployeeCVModal employee={ employee } />
 				<UserEmployeeDocumentModal employee={ employee } />
 				<EmployeeJobApplicationModal employee={ employee } />

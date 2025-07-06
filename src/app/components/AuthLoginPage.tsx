@@ -65,12 +65,12 @@ export function AuthLoginPage() {
 
 						<div className="flex sm:justify-between w-full flex-col sm:flex-row">
 							<div>
-								Dont Have Account
-								<Link href="/register" className={ `btn btn-link mx-0.5 px-0.5` }>Register</Link>Now!
+								Belum punya akun?
+								<Link href="/register" className="btn btn-link mx-0.5 px-0.5">Daftar</Link>
 							</div>
 							<div>
-								Forget Password
-								<Link href="/reset" className={ `btn btn-link mx-0.5 px-0.5` }>Reset</Link>Now!
+								Lupa kata sandi?
+								<Link href="/reset" className="btn btn-link mx-0.5 px-0.5">Reset</Link>
 							</div>
 						</div>
 					</div>
