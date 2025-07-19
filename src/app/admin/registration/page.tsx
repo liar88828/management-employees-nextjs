@@ -1,7 +1,7 @@
 import React from 'react';
 import { TContext } from "@/interface/server/param";
 import { getContextQuery } from "@/utils/toRequest";
-import { EmployeeCompletePhotoType, STATUS_EMPLOYEE } from "@/interface/enum";
+import { EmployeeCompletePhotoType, STATUS_EMPLOYEES } from "@/interface/enum";
 import { adminRegistrationPageLoader } from "@/action/admin-registration-action";
 import { AdminRegistrationPage } from "@/app/components/AdminRegistrationPage";
 
@@ -14,8 +14,8 @@ export default async function Page(context: TContext) {
         employees
     } = await adminRegistrationPageLoader(name,
         [
-            STATUS_EMPLOYEE.Registration,
-            STATUS_EMPLOYEE.Reject,
+            STATUS_EMPLOYEES.Registration,
+            STATUS_EMPLOYEES.Reject,
             // STATUS_EMPLOYEE.Interview,
             // STATUS_EMPLOYEE.Interview_Reject,
         ],

@@ -175,7 +175,9 @@ export async function uploadImageEmployeeProfile(
 	idUser: string,
 	imageFile: File,
 	method: string,) {
-	try {
+	try
+	{
+		
 		const extension = imageFile?.name.split('.').pop(); // get file extension
 		const isImage = typeof imageFile === 'object'
 		const imagePath = imageFile ? `/uploads/user_profile_${ idUser }.${ extension }` : null

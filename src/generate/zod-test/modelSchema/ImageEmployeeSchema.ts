@@ -1,17 +1,17 @@
 import { z } from 'zod';
-import type { EmployeesOptionalDefaultsWithRelations, EmployeesWithRelations } from './EmployeesSchema'
-import { EmployeesOptionalDefaultsWithRelationsSchema, EmployeesWithRelationsSchema } from './EmployeesSchema'
+import { EmployeesWithRelationsSchema, EmployeesOptionalDefaultsWithRelationsSchema } from './EmployeesSchema'
+import type { EmployeesWithRelations, EmployeesOptionalDefaultsWithRelations } from './EmployeesSchema'
 
 /////////////////////////////////////////
 // IMAGE EMPLOYEE SCHEMA
 /////////////////////////////////////////
 
 export const ImageEmployeeSchema = z.object({
-	id: z.number().int(),
-	photoProfile: z.string().nullish(),
-	photoKtp: z.string().nullish(),
-	photoIjazah: z.string().nullish(),
-	employeeId: z.string(),
+  id: z.number().int(),
+  photoProfile: z.string().nullish(),
+  photoKtp: z.string().nullish(),
+  photoIjazah: z.string().nullish(),
+  employeeId: z.string(),
 })
 
 export type ImageEmployee = z.infer<typeof ImageEmployeeSchema>
@@ -21,7 +21,7 @@ export type ImageEmployee = z.infer<typeof ImageEmployeeSchema>
 /////////////////////////////////////////
 
 export const ImageEmployeeOptionalDefaultsSchema = ImageEmployeeSchema.merge(z.object({
-	id: z.number().int().optional(),
+  id: z.number().int().optional(),
 }))
 
 export type ImageEmployeeOptionalDefaults = z.infer<typeof ImageEmployeeOptionalDefaultsSchema>
@@ -31,13 +31,13 @@ export type ImageEmployeeOptionalDefaults = z.infer<typeof ImageEmployeeOptional
 /////////////////////////////////////////
 
 export type ImageEmployeeRelations = {
-	Employees: EmployeesWithRelations;
+  Employees: EmployeesWithRelations;
 };
 
 export type ImageEmployeeWithRelations = z.infer<typeof ImageEmployeeSchema> & ImageEmployeeRelations
 
 export const ImageEmployeeWithRelationsSchema: z.ZodType<ImageEmployeeWithRelations> = ImageEmployeeSchema.merge(z.object({
-	Employees: z.lazy(() => EmployeesWithRelationsSchema),
+  Employees: z.lazy(() => EmployeesWithRelationsSchema),
 }))
 
 /////////////////////////////////////////
@@ -45,15 +45,13 @@ export const ImageEmployeeWithRelationsSchema: z.ZodType<ImageEmployeeWithRelati
 /////////////////////////////////////////
 
 export type ImageEmployeeOptionalDefaultsRelations = {
-	Employees: EmployeesOptionalDefaultsWithRelations;
+  Employees: EmployeesOptionalDefaultsWithRelations;
 };
 
-export type ImageEmployeeOptionalDefaultsWithRelations =
-	z.infer<typeof ImageEmployeeOptionalDefaultsSchema>
-	& ImageEmployeeOptionalDefaultsRelations
+export type ImageEmployeeOptionalDefaultsWithRelations = z.infer<typeof ImageEmployeeOptionalDefaultsSchema> & ImageEmployeeOptionalDefaultsRelations
 
 export const ImageEmployeeOptionalDefaultsWithRelationsSchema: z.ZodType<ImageEmployeeOptionalDefaultsWithRelations> = ImageEmployeeOptionalDefaultsSchema.merge(z.object({
-	Employees: z.lazy(() => EmployeesOptionalDefaultsWithRelationsSchema),
+  Employees: z.lazy(() => EmployeesOptionalDefaultsWithRelationsSchema),
 }))
 
 export default ImageEmployeeSchema;

@@ -1,7 +1,4 @@
 'use client'
-import { useRouter } from "next/navigation";
-import { STATUS_EMPLOYEE } from "@/interface/enum";
-import toast from "react-hot-toast";
 import React from "react";
 import { TEmployeeDB } from "@/interface/model";
 
@@ -9,12 +6,12 @@ import { TEmployeeDB } from "@/interface/model";
 export function UserInterviewPage({ employee }: {
     employee: TEmployeeDB,
 }) {
-    const router = useRouter();
+    // const router = useRouter();
 
-    if (employee.statusEmployee === STATUS_EMPLOYEE.Registration) {
-        toast.error('Silakan lengkapi proses pendaftaran');
-        router.push('/user');
-    }
+    // if (employee.statusEmployee === STATUS_EMPLOYEE.Registration) {
+    //     toast.error('Silakan lengkapi proses pendaftaran');
+    //     router.push('/user');
+    // }
 
     return (
         <>

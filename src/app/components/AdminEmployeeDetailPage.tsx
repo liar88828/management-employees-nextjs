@@ -14,7 +14,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { adminRegistrationSchema, AdminRegistrationSchemaType } from "@/schema/admin-registration-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { adminRegistrationUpdateAction } from "@/action/admin-registration-action";
-import { InputNum, InputSelect, InputText, InputTextArea } from "@/app/components/ui/FormComponent";
+import { InputNum, InputNumPrice, InputSelect, InputText, InputTextArea } from "@/app/components/ui/FormComponent";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -26,7 +26,7 @@ export function EmployeeShowDocumentSingle(
 	// const [loading, setLoading] = useState(true)
 
 	const isPhotoData = imageUrl ? `${ url_fastapi }${ imageUrl }` : photoKtp
-	console.log(isPhotoData, '--------------------')
+	// console.log(isPhotoData, '--------------------')
 	const modal_key = `my_modal_document_${ title }`
 
 	if (!imageUrl || !employee) {
@@ -114,7 +114,7 @@ const router = useRouter();
 	const onSubmit = async (data: AdminRegistrationSchemaType) => {
 		const response = await adminRegistrationUpdateAction(data);
 		if (response.success) {
-			reset()
+			// reset()
 			toast.success(response.message);
 			setMessage(response.message)
 		} else {
@@ -149,7 +149,7 @@ const router = useRouter();
 								lists={ StatusEmployeeList }
 							/>
 
-							<InputNum
+							<InputNumPrice
 								title={ "Gaji" }
 								keys={ "salary" }
 							/>

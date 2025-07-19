@@ -1,22 +1,22 @@
 import { z } from 'zod';
-import type { EmployeesOptionalDefaultsWithRelations, EmployeesWithRelations } from './EmployeesSchema'
-import { EmployeesOptionalDefaultsWithRelationsSchema, EmployeesWithRelationsSchema } from './EmployeesSchema'
+import { EmployeesWithRelationsSchema, EmployeesOptionalDefaultsWithRelationsSchema } from './EmployeesSchema'
+import type { EmployeesWithRelations, EmployeesOptionalDefaultsWithRelations } from './EmployeesSchema'
 
 /////////////////////////////////////////
 // USERS SCHEMA
 /////////////////////////////////////////
 
 export const UsersSchema = z.object({
-	id: z.string().uuid(),
-	name: z.string(),
-	phone: z.string(),
-	email: z.string().email(),
-	password: z.string(),
-	role: z.string(),
-	otp: z.string().nullish(),
-	otpExpired: z.date(),
-	imgPass: z.string(),
-	statusUser: z.string(),
+  id: z.string().uuid(),
+  name: z.string(),
+  phone: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+  role: z.string(),
+  otp: z.string().nullish(),
+  otpExpired: z.date(),
+  imgPass: z.string(),
+  statusUser: z.string(),
 })
 
 export type Users = z.infer<typeof UsersSchema>
@@ -26,9 +26,9 @@ export type Users = z.infer<typeof UsersSchema>
 /////////////////////////////////////////
 
 export const UsersOptionalDefaultsSchema = UsersSchema.merge(z.object({
-	id: z.string().uuid().optional(),
-	otpExpired: z.date().optional(),
-	statusUser: z.string().optional(),
+  id: z.string().uuid().optional(),
+  otpExpired: z.date().optional(),
+  statusUser: z.string().optional(),
 }))
 
 export type UsersOptionalDefaults = z.infer<typeof UsersOptionalDefaultsSchema>
@@ -38,13 +38,13 @@ export type UsersOptionalDefaults = z.infer<typeof UsersOptionalDefaultsSchema>
 /////////////////////////////////////////
 
 export type UsersRelations = {
-	Employees?: EmployeesWithRelations | null;
+  Employees?: EmployeesWithRelations | null;
 };
 
 export type UsersWithRelations = z.infer<typeof UsersSchema> & UsersRelations
 
 export const UsersWithRelationsSchema: z.ZodType<UsersWithRelations> = UsersSchema.merge(z.object({
-	Employees: z.lazy(() => EmployeesWithRelationsSchema).nullish(),
+  Employees: z.lazy(() => EmployeesWithRelationsSchema).nullish(),
 }))
 
 /////////////////////////////////////////
@@ -52,15 +52,13 @@ export const UsersWithRelationsSchema: z.ZodType<UsersWithRelations> = UsersSche
 /////////////////////////////////////////
 
 export type UsersOptionalDefaultsRelations = {
-	Employees?: EmployeesOptionalDefaultsWithRelations | null;
+  Employees?: EmployeesOptionalDefaultsWithRelations | null;
 };
 
-export type UsersOptionalDefaultsWithRelations =
-	z.infer<typeof UsersOptionalDefaultsSchema>
-	& UsersOptionalDefaultsRelations
+export type UsersOptionalDefaultsWithRelations = z.infer<typeof UsersOptionalDefaultsSchema> & UsersOptionalDefaultsRelations
 
 export const UsersOptionalDefaultsWithRelationsSchema: z.ZodType<UsersOptionalDefaultsWithRelations> = UsersOptionalDefaultsSchema.merge(z.object({
-	Employees: z.lazy(() => EmployeesOptionalDefaultsWithRelationsSchema).nullish(),
+  Employees: z.lazy(() => EmployeesOptionalDefaultsWithRelationsSchema).nullish(),
 }))
 
 export default UsersSchema;

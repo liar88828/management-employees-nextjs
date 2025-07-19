@@ -1,15 +1,15 @@
 import { z } from 'zod';
-import type { EmployeesOptionalDefaultsWithRelations, EmployeesWithRelations } from './EmployeesSchema'
-import { EmployeesOptionalDefaultsWithRelationsSchema, EmployeesWithRelationsSchema } from './EmployeesSchema'
+import { EmployeesWithRelationsSchema, EmployeesOptionalDefaultsWithRelationsSchema } from './EmployeesSchema'
+import type { EmployeesWithRelations, EmployeesOptionalDefaultsWithRelations } from './EmployeesSchema'
 
 /////////////////////////////////////////
 // EDUCATIONS SCHEMA
 /////////////////////////////////////////
 
 export const EducationsSchema = z.object({
-	id: z.number().int(),
-	text: z.string().min(1),
-	employeeId: z.string().min(1),
+  id: z.number().int(),
+  text: z.string().min(1),
+  employeeId: z.string().min(1),
 })
 
 export type Educations = z.infer<typeof EducationsSchema>
@@ -19,7 +19,7 @@ export type Educations = z.infer<typeof EducationsSchema>
 /////////////////////////////////////////
 
 export const EducationsOptionalDefaultsSchema = EducationsSchema.merge(z.object({
-	id: z.number().int().optional(),
+  id: z.number().int().optional(),
 }))
 
 export type EducationsOptionalDefaults = z.infer<typeof EducationsOptionalDefaultsSchema>
@@ -29,13 +29,13 @@ export type EducationsOptionalDefaults = z.infer<typeof EducationsOptionalDefaul
 /////////////////////////////////////////
 
 export type EducationsRelations = {
-	Employees: EmployeesWithRelations;
+  Employees: EmployeesWithRelations;
 };
 
 export type EducationsWithRelations = z.infer<typeof EducationsSchema> & EducationsRelations
 
 export const EducationsWithRelationsSchema: z.ZodType<EducationsWithRelations> = EducationsSchema.merge(z.object({
-	Employees: z.lazy(() => EmployeesWithRelationsSchema),
+  Employees: z.lazy(() => EmployeesWithRelationsSchema),
 }))
 
 /////////////////////////////////////////
@@ -43,15 +43,13 @@ export const EducationsWithRelationsSchema: z.ZodType<EducationsWithRelations> =
 /////////////////////////////////////////
 
 export type EducationsOptionalDefaultsRelations = {
-	Employees: EmployeesOptionalDefaultsWithRelations;
+  Employees: EmployeesOptionalDefaultsWithRelations;
 };
 
-export type EducationsOptionalDefaultsWithRelations =
-	z.infer<typeof EducationsOptionalDefaultsSchema>
-	& EducationsOptionalDefaultsRelations
+export type EducationsOptionalDefaultsWithRelations = z.infer<typeof EducationsOptionalDefaultsSchema> & EducationsOptionalDefaultsRelations
 
 export const EducationsOptionalDefaultsWithRelationsSchema: z.ZodType<EducationsOptionalDefaultsWithRelations> = EducationsOptionalDefaultsSchema.merge(z.object({
-	Employees: z.lazy(() => EmployeesOptionalDefaultsWithRelationsSchema),
+  Employees: z.lazy(() => EmployeesOptionalDefaultsWithRelationsSchema),
 }))
 
 export default EducationsSchema;

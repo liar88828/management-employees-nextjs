@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { createSession } from "@/secure/cookies";
 import { loginFormSchema, LoginFormSchemaType, registerFormSchema, RegisterFormSchemaType } from "@/schema/auth.valid";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { ROLE, STATUS_USER } from "@/interface/enum";
+import { ROLE, STATUS_EMPLOYEE, STATUS_EMPLOYEES, STATUS_USER, StatusEmployeeList } from "@/interface/enum";
 import { toRandom } from "@/utils/toRandom";
 import { nodemailerSendOtp } from "@/action/nodemailer.action";
 import { ResponseAction } from "@/interface/model";
@@ -122,6 +122,15 @@ export async function authLoginAction(formDataRaw: LoginFormSchemaType): Promise
 		}
 		if (user.statusUser === STATUS_USER.OTP) {
 			redirect('/otp')
+		}
+
+		const employee=await prisma.employees.findUnique( { where: {userId:user.id} } )
+		if ( employee?.statusEmployee === STATUS_EMPLOYEES.Resign )
+		{ 
+			return {
+				message: 'Anda Sudah Keluar',
+				success: false
+			}
 		}
 
 		const validPassword = await bcrypt.compare(valid.password, user.password)

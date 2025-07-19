@@ -309,7 +309,10 @@ export async function employeeUpsertUserAction(
 //
 // }
 
-export async function registrationFinishedState({ userId }: { userId: string }): Promise<{
+export async function registrationFinishedState ( { userId, isPhoto }: {
+	userId: string,
+	isPhoto:boolean
+ }): Promise<{
 	message: string,
 	success: boolean,
 }> {

@@ -18,7 +18,6 @@
   "dependencies": {
     "@faker-js/faker": "^9.7.0",
     "@hookform/resolvers": "^3.10.0",
-    "@prisma/client": "^6.3.1",
     "@types/bcrypt": "^5.0.2",
     "@types/formidable": "^3.4.5",
     "@types/node": "22.10.2",
@@ -50,12 +49,13 @@
     "uuid": "^11.1.0",
     "zod": "^3.24.2",
     "zod-prisma-types": "^3.2.4",
-    "zustand": "^5.0.3"
+    "zustand": "^5.0.3",
+    "@prisma/client": "^6.3.1"
   },
   "devDependencies": {
+    "prisma": "^6.3.1",
     "daisyui": "4.12.22",
     "fluid-tailwind": "^1.0.4",
-    "prisma": "^6.3.1",
     "zod-prisma": "^0.5.4"
   },
   "overrides": {

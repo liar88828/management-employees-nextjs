@@ -30,6 +30,7 @@ export const STATUS_EMPLOYEES = {
 	Registration: 'Registration',
 	Reject: 'Reject',
 	Accept: 'Accept',
+	Resign: "Resign",
 }
 
 // export const employeeList = [ 'Pending', 'Fail', 'Complete', 'Active', 'Disabled' ]

@@ -7,6 +7,7 @@ import { toDateIndo } from "@/utils/toDate";
 import { Printer, XIcon } from 'lucide-react';
 import React from "react";
 import JobApplication from "@/app/components/Letter/JobApplication";
+import { STATUS_EMPLOYEES } from "@/interface/enum";
 
 export default function EmployeeIDCardGlobal(
 	{ employee, contentRef }:
@@ -14,7 +15,7 @@ export default function EmployeeIDCardGlobal(
 ) {
 	// const { isPrinting, handlePrint, contentRef } = usePrint()
 	const company = exampleCompany
-	const imageProfile = employee?.ImageEmployee?.photoProfile ?? '';
+	const imageProfile = employee?.ImageEmployee?.photoProfile ??  "/person_default.webp"
 
 	return (
 		<div>
@@ -27,7 +28,11 @@ export default function EmployeeIDCardGlobal(
 					{/* Header Kartu */ }
 					<div className="bg-blue-600 p-4 text-center">
 						<h1 className="text-white text-2xl font-bold">{ company.name }</h1>
-						<p className="text-blue-100">Karyawan</p>
+						<p className="text-blue-100"> {
+							employee.statusEmployee === STATUS_EMPLOYEES.Accept
+								? employee.jobTitle
+								: 'Wawancara Karyawan'
+						} </p>
 					</div>
 
 					{/* Isi Kartu */ }
@@ -114,7 +119,10 @@ export function EmployeeIDCardModal(
 	const title = `ID Card ${ employee?.User.name }`
 	const keyModal = `my_modal_id_card_${ employee?.id }`;
 
-	if (!employee || employee.statusEmployee !== 'Accept') {
+	if ( !employee
+		//|| employee.statusEmployee !== STATUS_EMPLOYEES.Accept
+		
+	) {
 		return <button type={ 'button' }
 		               disabled={ true }
 		               className="btn btn-info"

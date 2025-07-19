@@ -1,7 +1,7 @@
 import { ModalInput } from "@/app/components/ui/ModalComponent";
 import { ImageIcon, Minus, Plus } from "lucide-react";
 import React, { ChangeEvent, useState } from "react";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { LoadingSpin } from "@/app/components/ui/LoadingData";
 import toast from "react-hot-toast";
 import { imageDefault } from "@/interface/model";
@@ -60,7 +60,7 @@ export function InputImageOld({ img, title, errorText }: { img?: string | null, 
 }
 
 export function InputImage({ imageData, title, method, idUser }: {
-	idUser: string,
+	idUser?: string,
 	imageData?: string | null,
 	title: string,
 	method: MethodProps
@@ -81,7 +81,7 @@ export function InputImage({ imageData, title, method, idUser }: {
 	const onHandleSubmit = async () => {
 		setLoading(true);
 
-		if (!imageFile) {
+		if (!imageFile||!idUser) {
 			toast.error("Please select a file before submitting.")
 
 			return;
@@ -277,6 +277,70 @@ export function InputNum(
 		</div>
 	);
 }
+
+
+export function InputNumPrice ( {
+	keys,
+	title,
+	isDisable = false
+}: {
+	isDisable?: boolean;
+	keys: string;
+	title: string;
+} )
+{
+	const { control, formState: { errors } } = useFormContext();
+
+	// Helper to format number: 2000000 => "2.000.000"
+	const formatNumber = ( value: number | string ) =>
+	{
+		const num = typeof value === "number" ? value : parseInt( value.replace( /\D/g, '' ) );
+		if ( isNaN( num ) ) return '';
+		return num.toLocaleString( 'id-ID' );
+	};
+
+	// Helper to unformat: "2.000.000" => 2000000
+	const parseNumber = ( formatted: string ) =>
+	{
+		const raw = formatted.replace( /\./g, '' );
+		return raw ? parseInt( raw, 10 ) : undefined;
+	};
+
+	return (
+		<div className="form-control">
+			<label className="label">
+				<span className="label-text capitalize">{ title }</span>
+			</label>
+			<Controller
+				control={ control }
+				name={ keys }
+				disabled={ isDisable }
+				render={ ( { field } ) => (
+					<input
+						type="text"
+						inputMode="numeric"
+						placeholder={ `Add ${ title }...` }
+						className="input input-bordered"
+						value={ field.value ? formatNumber( field.value ) : '' }
+						onChange={ ( e ) =>
+						{
+							const raw = parseNumber( e.target.value );
+							field.onChange( raw );
+						} }
+						onBlur={ field.onBlur }
+						disabled={ isDisable }
+					/>
+				) }
+			/>
+			{ errors[ keys ] && (
+				<p className="text-error text-sm mt-1">
+					{ errors[ keys ]?.message as string }
+				</p>
+			) }
+		</div>
+	);
+}
+
 
 export function InputDate(
 	{

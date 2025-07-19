@@ -18,6 +18,7 @@ import { UploadDocument } from "@/app/components/ui/upload-document";
 import { employeeUpsertUserAction, registrationFinishedState } from "@/action/user-registration-action";
 import { RegistrationError } from "@/app/components/ui/ErrorComponent";
 import { TEmployeeDB, UserAuth } from "@/interface/model";
+import { STATUS_EMPLOYEES, StatusEmployeeList } from "@/interface/enum";
 
 
 export function UserRegistrationPage({ employee, method, user, type, error }: {
@@ -85,7 +86,11 @@ export function UserRegistrationPage({ employee, method, user, type, error }: {
 
 	async function onComplete() {
 		setLoading(true);
-		const response = await registrationFinishedState({ userId: user.id })
+		const response = await registrationFinishedState( {
+			userId: user.id,
+			isPhoto:false
+
+		})
 		if (response.success) {
 			toast.success(response.message);
 		} else {
@@ -134,14 +139,16 @@ export function UserRegistrationPage({ employee, method, user, type, error }: {
 						</form>
 					</FormProvider>
 
-					{ employee && (
+					<InputImage
+						imageData={ employee?.ImageEmployee?.photoProfile }
+						title="Foto Profil"
+						idUser={ employee?.userId }
+						method="POST"
+					/>
+
+					{ ( employee && employee?.statusEmployee===STATUS_EMPLOYEES.Accept)&& (
 						<>
-							<InputImage
-								imageData={ employee?.ImageEmployee?.photoProfile }
-								title="Foto Profil"
-								idUser={ employee.userId }
-								method="POST"
-							/>
+					
 
 							{ error && type === 'ktp' && <RegistrationError error={ error } /> }
 							<UploadDocument user={ user } imageData={ employee?.ImageEmployee?.photoKtp } title="KTP" />
@@ -150,9 +157,7 @@ export function UserRegistrationPage({ employee, method, user, type, error }: {
 							<UploadDocument user={ user } imageData={ employee?.ImageEmployee?.photoIjazah }
 							                title="Ijazah"
 							/>
-						</>
-					) }
-
+				
 					<button
 						type="button"
 						onClick={ onComplete }
@@ -164,7 +169,10 @@ export function UserRegistrationPage({ employee, method, user, type, error }: {
 							: employee?.registration
 								? 'Menunggu Validasi Admin'
 								: 'Kirim' }
-					</button>
+							</button>
+						</>
+					) }
+
 				</div>
 			</div>
 		</div>
